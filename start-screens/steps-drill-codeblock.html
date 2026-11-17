@@ -308,7 +308,7 @@ function drawExample(i=0,step=-1){
   const dots=$('board').querySelectorAll('circle[r="22"]');
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   $('said').textContent=tip[step];
-  if(step===0){ setBar(0,22000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
+  if(step===0){ setBar(0,16500); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),5500); } // half as long (CJ Nov 17)
   else if(step===1){ const ps=$('board').querySelectorAll('path'); coach(H,ps[ps.length-1]||dots[0],tip[1]); /* points at the target note (the arrow's end) */ demoT=setTimeout(()=>drawExample(i,2),11000); }
   else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),3000); }
 }
