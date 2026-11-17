@@ -107,7 +107,7 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .err{color:var(--bad)}
 @media (max-width:560px){.row{grid-template-columns:96px minmax(0,1fr)}.srow{grid-template-columns:44px 22px 64px minmax(0,1fr);gap:8px}.lvl{display:none}.btn{min-width:104px;padding:9px 12px}}
 </style>
-<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button{position:relative}.kwtip{display:none;position:absolute;z-index:20;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#15120f;border:1px solid #4a4038;border-radius:10px;padding:6px 8px 4px;flex-direction:column;align-items:center;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.6)}.kwtip b{font-size:13px;color:#f2b25c;font-weight:700;line-height:1}@media (hover:hover){.kwchips button:hover .kwtip{display:flex}}.kwchips button.show .kwtip{display:flex}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
+<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button{position:relative}.kwtip{display:none;position:absolute;z-index:20;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#15120f;border:0;border-radius:10px;padding:8px 10px 6px;flex-direction:column;align-items:center;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.6)}.kwtip b{font-size:15px;color:#f2b25c;font-weight:700;line-height:1}@media (hover:hover){.kwchips button:hover .kwtip{display:flex}}.kwchips button.show .kwtip{display:flex}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -463,7 +463,7 @@ const CHORDS = [
     ['D',[-1,-1,0,2,3,2]],['Dsus4',[-1,-1,0,2,3,3]],['Dsus2',[-1,-1,0,2,3,0]],
     ['A',[-1,0,2,2,2,0]],['Asus2',[-1,0,2,2,0,0]],['Asus4',[-1,0,2,2,3,0]],
     ['E',[0,2,2,1,0,0]],['Em',[0,2,2,0,0,0]],['Em7',[0,2,2,0,3,3]],
-    ['Am',[-1,0,2,2,1,0]],['Am7',[-1,0,2,0,1,0]],['Dm',[-1,-1,0,2,3,1]],['Fmaj7',[-1,-1,3,2,1,0]],
+    ['Am',[-1,0,2,2,1,0]],['Bm11',[-1,2,-1,2,3,0]],['C#m7 (open)',[-1,4,2,4,0,0],'C#m7'],['Am7',[-1,0,2,0,1,0]],['Dm',[-1,-1,0,2,3,1]],['Fmaj7',[-1,-1,3,2,1,0]],
     ['A7',[-1,0,2,0,2,0]],['B7',[-1,2,1,2,0,2]],['C7',[-1,3,2,3,1,0]],['D7',[-1,-1,0,2,1,2]],['E7',[0,2,0,1,0,0]],['G7',[3,2,0,0,0,1]]
   ]],
   ['Barre chords', [
@@ -507,7 +507,7 @@ const kwFits = (c, capo) => {
   const t = [0,1,2,3,4,5,6,7,8,9,10,11][KW_K], scale = [0,2,4,5,7,9,11].map(i => (t + i) % 12);
   const m = /^([A-G][#b]?)(.*)$/.exec(c.name), suf = m[2], d = scale.indexOf((rootPc(c.name) + capo) % 12);
   if (d < 0) return false;
-  if (suf === 'm' || suf === 'm7') return [1,2,5].includes(d);
+  if (suf === 'm' || suf === 'm7' || suf === 'm11') return [1,2,5].includes(d);
   if (suf === '7') return d === 4;
   if (suf === 'maj7') return d === 0 || d === 3;
   return ['', 'sus2', 'sus4', 'add9'].includes(suf) && [0,3,4].includes(d);
@@ -1024,15 +1024,15 @@ const kwAvail = () => LIST.map((c, i) => i).filter(i => kwFits(LIST[i], st.capo)
 const KW_NUM = ['1','2m','3m','4','5','6m','7°'];
 function kwDiagram(i) {
   const fr = LIST[i].frets, on = fr.filter(f => f > 0), hi = on.length ? Math.max(...on) : 0;
-  const base = hi <= 4 ? 1 : Math.min(...on), W = 84, X0 = 14, DX = 11, Y0 = 22, DY = 15, R = 4;
+  const base = hi <= 4 ? 1 : Math.min(...on), W = 108, X0 = 16, DX = 14, Y0 = 26, DY = 19, R = 5.2;   // a bit bigger (CJ Nov 17)
   let g = '';
   for (let f = 0; f <= 4; f++) g += `<line x1="${X0}" x2="${X0 + 5 * DX}" y1="${Y0 + f * DY}" y2="${Y0 + f * DY}" stroke="#6f665b" stroke-width="${f === 0 && base === 1 ? 3 : 1}"/>`;
   for (let s = 0; s < 6; s++) g += `<line x1="${X0 + s * DX}" x2="${X0 + s * DX}" y1="${Y0}" y2="${Y0 + 4 * DY}" stroke="#6f665b" stroke-width="1"/>`;
   fr.forEach((f, s) => { const x = X0 + s * DX;
-    if (f < 0) g += `<text x="${x}" y="${Y0 - 6}" text-anchor="middle" font-size="9" fill="#a69b8d">×</text>`;
-    else if (f === 0) g += `<circle cx="${x}" cy="${Y0 - 9}" r="3" fill="none" stroke="#a69b8d" stroke-width="1.2"/>`;
+    if (f < 0) g += `<text x="${x}" y="${Y0 - 7}" text-anchor="middle" font-size="12" fill="#a69b8d">×</text>`;
+    else if (f === 0) g += `<circle cx="${x}" cy="${Y0 - 11}" r="3.8" fill="none" stroke="#a69b8d" stroke-width="1.2"/>`;
     else g += `<circle cx="${x}" cy="${Y0 + (f - base + .5) * DY}" r="${R}" fill="#f2b25c"/>`; });
-  if (base > 1) g += `<text x="${X0 + 5 * DX + 6}" y="${Y0 + .5 * DY + 3}" font-size="9" fill="#a69b8d">${base}fr</text>`;
+  if (base > 1) g += `<text x="${X0 + 5 * DX + 6}" y="${Y0 + .5 * DY + 3}" font-size="11" fill="#a69b8d">${base}fr</text>`;
   const d = kwDeg(i);
   return `<span class="kwtip" aria-hidden="true"><b>${d >= 0 ? KW_NUM[d] : ''}</b><svg viewBox="0 0 ${W} ${Y0 + 4 * DY + 4}" width="${W}" height="${Y0 + 4 * DY + 4}">${g}</svg></span>`;
 }
