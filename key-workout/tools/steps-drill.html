@@ -98,11 +98,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .chroma .a{font-size:.7em;font-weight:400;vertical-align:.4em;margin-left:.03em}
 @media (max-width:520px){.chroma{gap:2px}.chroma span{font-size:15px;padding:6px 0}.chroma span small{font-size:12px}}
 #chromaBtn{min-width:200px}
-.chroma{grid-template-columns:repeat(7,minmax(0,1fr));max-width:620px;background:#15120f;border-radius:10px;padding:8px 6px;gap:0}
-.chroma span{background:none}
-.chroma span .dg{display:block;font-size:17px;font-weight:600;color:#f2b25c;margin-bottom:4px}
-.chroma span{font-size:32px;padding:10px 2px 12px}
-@media (max-width:520px){.chroma span{font-size:22px;padding:8px 0}.chroma span .dg{font-size:13px}}
 .chroma:not([hidden])+.ask{margin-top:20px}
 .ask-arrow{display:none!important}   /* CJ Nov 17: a curved arrow on the diagram points at the note instead */
 #ask+.ask-arrow+.keytag:empty{display:none}
@@ -135,7 +130,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   <section id="session" class="session-col">
     <div class="stage">
       <div class="progress" id="progress"></div>
-      <div class="chroma" id="chroma" hidden aria-label="The 7 notes of the major scale"></div>   <!-- above the prompt (CJ Nov 17) -->
+      <div class="chroma" id="chroma" hidden aria-label="The 12 notes of the chromatic scale"></div>   <!-- above the prompt (CJ Nov 17) -->
       <div class="ask" id="ask">Ready</div>
       <div class="ask-arrow" id="askArrow" aria-hidden="true"></div>
       <div class="keytag" id="keyTag"></div>
@@ -154,7 +149,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       </div>
       <div class="toolbar">
         <button class="btn" id="stepsBtn" aria-pressed="false" hidden>Show Steps</button>
-        <button class="btn" id="chromaBtn" aria-pressed="false">Show Major Scale</button>
+        <button class="btn" id="chromaBtn" aria-pressed="false">Show Chromatic Scale</button>
         <button class="btn" id="replayBtn" hidden>Play again</button><!-- removed (CJ, Nov 7); kept hidden so the script needs no changes -->
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
@@ -509,9 +504,9 @@ function togglePause(){
 /* Chromatic scale strip, same as Find the Note: starts at A, sharp name with the flat name under it */
 function renderChroma(){
   const acc=n=>n[0]+(n[1]?`<span class="a">${n[1]}</span>`:'');
-  $('chroma').innerHTML=keyScale(settings.keys[0]).map((t,d)=>`<span><b class="dg">${d+1}</b>${acc(t.name)}</span>`).join('');
+  $('chroma').innerHTML=[9,10,11,0,1,2,3,4,5,6,7,8].map(i=>SHARP[i]===FLAT[i]?`<span>${SHARP[i]}</span>`:`<span>${acc(SHARP[i])}<small>${acc(FLAT[i])}</small></span>`).join('');
 }
-function syncChroma(){ $('chroma').hidden=!settings.chroma; const b=$('chromaBtn'); b.textContent=settings.chroma?'Hide Major Scale':'Show Major Scale'; b.setAttribute('aria-pressed',String(settings.chroma)); }
+function syncChroma(){ $('chroma').hidden=!settings.chroma; const b=$('chromaBtn'); b.textContent=settings.chroma?'Hide Chromatic Scale':'Show Chromatic Scale'; b.setAttribute('aria-pressed',String(settings.chroma)); }
 $('chromaBtn').onclick=()=>{ settings.chroma=!settings.chroma; save(); syncChroma(); };
 function syncMute(){ const b=$('muteBtn'); b.textContent=settings.sound?'Sound off':'Sound on'; b.setAttribute('aria-pressed',String(!settings.sound)); }
 
