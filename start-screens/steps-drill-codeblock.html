@@ -305,11 +305,11 @@ function drawExample(i=0,step=-1){
   $('progress').innerHTML='<span class="tag">Example</span>';
   if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,step>=0); }
   const dots=$('board').querySelectorAll('circle[r="22"]');
-  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),6500); return; }
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),13000); return; }
   $('said').textContent=tip[step];
-  if(step===0){ setBar(0,11000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),5500); }
-  else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),5500); }
-  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),6000); }
+  if(step===0){ setBar(0,22000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
+  else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),12000); }
 }
 function start(){
   audio(); preloadSamples();
