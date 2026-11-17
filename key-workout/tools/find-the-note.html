@@ -428,7 +428,7 @@ function demoCard(i){
 function drawExample(i=0,step=-1){
   clearTimeout(demoT);
   const H=$('qNote').closest('.wrap');
-  if(i>=4){ coach(H,$('nextBtn'),'Press Start when you are ready.'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
+  if(i>=4){ coach(H,$('nextBtn'),'Press Start when ready'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
   DEMO=true; $('session').classList.add('demo');
   const ex=demoCard(i%2), host=H;
   ex.revealed=step===2;

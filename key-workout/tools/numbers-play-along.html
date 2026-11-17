@@ -511,7 +511,7 @@ function demoBar(ms){ const b=$('timerBar'); b.style.transition='none'; b.style.
 function drawExample(i=0,step=-1){
   clearTimeout(demoT);
   const host=$('card').closest('.wrap'), next=(ms,a,b)=>{ demoT=setTimeout(()=>drawExample(a,b),ms); };
-  if(i>=4){ clearInterval(demoTick); demoTick=null; coach(host,$('nextBtn'),'Press Start when you are ready.'); demoT=setTimeout(()=>coach(host,null),6000); return; } // plays through twice, then stops (CJ)
+  if(i>=4){ clearInterval(demoTick); demoTick=null; coach(host,$('nextBtn'),'Press Start when ready'); demoT=setTimeout(()=>coach(host,null),6000); return; } // plays through twice, then stops (CJ)
   $('card').parentNode.classList.add('demo');
   $('progress').innerHTML='<span class="tag">Example</span>';
   if(i%2===0){ // Number drill

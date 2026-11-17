@@ -428,7 +428,7 @@ function drawExample(){
   const SET=['First, pick which chords can show up, your seconds and how many problems.', ()=>$('setup'), true, 13000, 12];
   const tick=()=>{
     // plays through twice, then stops on the last answer with one box on Start, which fades after 6 s (CJ, Nov 17)
-    if(step===10){ tip('Press Start when you are ready.',$('nextBtn'),false,12); step++; demoT=setTimeout(tick,12000); return; }
+    if(step===10){ tip('Press Start when ready',$('nextBtn'),false,12); step++; demoT=setTimeout(tick,12000); return; }
     if(step>10){ $('tip').hidden=true; demoT=null; return; }
     const k=step%5, setStep=k===0, c=cards[setStep?0:Math.floor((k-1)/2)], part=setStep?0:(k-1)%2, ans=part===1, kn=KEYS[c.key][0], known=ans||oneKey();
     {

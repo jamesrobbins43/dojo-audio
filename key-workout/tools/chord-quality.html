@@ -970,7 +970,7 @@ function example(on) {
 function demo(i, step) {
   clearTimeout(demoT);
   const H = $('go').closest('.wrap'), hold = $('hold'), next = (ms) => { demoT = setTimeout(() => step < 4 ? demo(i, step + 1) : demo(i + 1, 0), ms); };
-  if (i >= 2) { cur = -1; drawBoard(); renderStrings(); coach(H, $('go'), 'Press Start when you are ready.'); demoT = setTimeout(() => coach(H, null), 6000); return; } // plays through twice, then stops (CJ)
+  if (i >= 2) { cur = -1; drawBoard(); renderStrings(); coach(H, $('go'), 'Press Start when ready'); demoT = setTimeout(() => coach(H, null), 6000); return; } // plays through twice, then stops (CJ)
   hold.style.transition = 'none'; hold.style.width = '0';
   if (step < 3) { clearScores(); $('exTag').hidden = true; }
   if (step === 0) { cur = -1; drawBoard(); renderStrings(); status('Ready', 'Strum once, then pick each string');
