@@ -74,6 +74,11 @@ select option,select optgroup{background:#000;color:var(--fg)}
 
 /* results */
 .results{display:flex;flex-direction:column;gap:16px}
+/* start screen (CJ, Nov 17): example scores + short how-to before Start, same look as Find the Number */
+.extag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted);text-align:left;max-width:440px}
+.how li{margin:2px 0}.how li::marker{color:var(--brand);font-weight:700}
+.how b{color:var(--fg);font-weight:600}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
 .card h2{margin-bottom:8px}
 .row{display:grid;grid-template-columns:116px minmax(0,1fr);gap:12px;align-items:center;padding:5px 0;min-height:34px}
@@ -136,10 +141,16 @@ select option,select optgroup{background:#000;color:var(--fg)}
         <button class="btn primary" id="go">Start</button>
         <button class="btn" id="redo" disabled>Redo</button>
       </div>
+      <ol class="how" id="how">
+        <li>Pick a chord, press <b>Start</b> and <b>strum once</b>. Let it ring until the blue bar fills.</li>
+        <li>Then <b>pick each string</b> one at a time as it lights up.</li>
+        <li>At the end you get a <b>score</b> like the example, and tips on what to <b>work on</b>.</li>
+      </ol>
     </section>
 
     <section class="results">
       <div class="card">
+        <div class="extag" id="exTag" hidden>Example</div>
         <div class="sc">
           <div class="ov"><span class="tag">Overall</span><strong id="scO">—</strong></div>
           <div><span class="tag">Notes</span><strong id="scN">—</strong></div>
@@ -933,8 +944,15 @@ function reset() {
   stopAll(true); strum = null; picks = {}; marks = {}; lastString = -1; reveal = false; clearScores();
   renderHeader(); drawBoard(); blankRows(); renderStrings(); renderTips(false); buttons();
   status('Ready', 'Strum once, then pick each string');
+  example(true);
+}
+// start screen (CJ, Nov 17): sample scores in the score card + the how-to, until the first Start
+function example(on) {
+  $('how').hidden = !on; $('exTag').hidden = !on;
+  if (on) [['scO', 92], ['scN', 95], ['scT', 88], ['scR', 84], ['scC', 96]].forEach(a => setScore(a[0], a[1]));
 }
 async function begin(steps) {
+  if (!$('exTag').hidden) { example(false); clearScores(); }
   if (!(await openMic())) return;
   running = true; queue = steps.slice(); L.calib = 0; buttons(); next();
 }
