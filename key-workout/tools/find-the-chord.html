@@ -232,15 +232,18 @@ const DEG_IV={maj:[0,4,7],min:[0,3,7],dim:[0,3,6]};
 // Major Scale mode: each item is one key with one of its 7 chords missing; never the same key and gap twice in a row
 function buildScaleSequence(n){
   const keys=settings.keyMode==='all'?ALL12:settings.keys, pool=[];
-  for(const k of keys) for(let p=1;p<7;p++) for(let q=p+1;q<7;q++) pool.push({k,p:[p,q]});
-  const seq=[]; let bag=[];
+  const pool2=[];
+  for(const k of keys) for(let p=1;p<7;p++){ pool.push({k,p:[p]}); for(let q=p+1;q<7;q++) pool2.push({k,p:[p,q]}); }
+  const seq=[], half=Math.ceil(n/2); let bag=[], bag2=[], last='';
   while(seq.length<n){
-    if(!bag.length) bag=pool.slice().sort(()=>Math.random()-.5);
-    let it=bag.pop(); const prev=seq[seq.length-1];
-    if(prev&&prev.key===it.k&&bag.length){ bag.unshift(it); it=bag.pop(); }
+    const two=seq.length>=half, P=two?pool2:pool;
+    if(two?!bag2.length:!bag.length){ const b=P.slice().sort(()=>Math.random()-.5); if(two) bag2=b; else bag=b; }
+    const B=two?bag2:bag; let it=B.pop();
+    if(it.p.join()===last&&B.length){ B.unshift(it); it=B.pop(); }
+    last=it.p.join();
     const sc=keyScale(it.k), chords=sc.map((t,d)=>({name:t.name, q:DEG_Q[d], pc:t.pc}));
     const mid=d=>{ const r=chords[d]; let m=48; while(m%12!==r.pc) m++; return DEG_IV[r.q].map(iv=>m+iv); };   // each missing chord in root position, root between C3 and B3
-    seq.push({mode:'scale', key:it.k, miss:it.p, chords, midis:mid(it.p[0]), midis2:mid(it.p[1])});
+    seq.push({mode:'scale', key:it.k, miss:it.p, chords, midis:mid(it.p[0]), midis2:it.p[1]!=null?mid(it.p[1]):null});
   }
   return seq;
 }
@@ -338,7 +341,7 @@ function drawScale(c,revealed,pop){
     h+=`<div class="gap${STEP_GAPS[d]==='H'?' h':''}" aria-label="${STEP_GAPS[d]==='H'?'half step':'whole step'}"><span>${STEP_GAPS[d]}</span></div>`;
   }
   el.innerHTML=h; el.classList.toggle('steps',!!settings.showSteps);
-  clearTimeout(window.kwLateT); if(c&&revealed&&pop){ const ch2=c.chords[c.miss[1]]; window.kwLateT=setTimeout(()=>{ const x=document.getElementById('kwLate'); if(x) x.outerHTML=`<div class="ch ans">${chordHTML(ch2)}</div>`; },1200); }
+  clearTimeout(window.kwLateT); if(c&&revealed&&pop&&c.miss.length>1){ const ch2=c.chords[c.miss[1]]; window.kwLateT=setTimeout(()=>{ const x=document.getElementById('kwLate'); if(x) x.outerHTML=`<div class="ch ans">${chordHTML(ch2)}</div>`; },1200); }
 }
 function syncMode(){
   const sc=settings.mode==='scale';
@@ -458,13 +461,13 @@ function enterScale(c,rev,sound){
   $('replayBtn').disabled=!rev;
   const sayCh=d=>{ const x=c.chords[d]; return x.name.replace('♭',' flat').replace('♯',' sharp')+(x.q==='min'?' minor':x.q==='dim'?' diminished':'')+', chord '+DEGS[d].replace('°',' diminished'); };
   if(!rev){
-    $('said').textContent='Which two chords are missing?';
+    $('said').textContent=c.miss.length>1?'Which two chords are missing?':'Which chord is missing?';
     $('nextBtn').textContent='Show answer';
     const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
     setBar(0,S.paused?0:ms);
     if(!S.paused) S.timer=setTimeout(reveal,ms);
   }else{
-    $('said').textContent=`The missing chords are ${sayCh(c.miss[0])} and ${sayCh(c.miss[1])}`;
+    $('said').textContent=c.miss.length>1?`The missing chords are ${sayCh(c.miss[0])} and ${sayCh(c.miss[1])}`:`The missing chord is ${sayCh(c.miss[0])}`;
     $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next scale';
     $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
     const ms=(settings.pace>=8?3.5:3)*1000; S.remaining=ms; S.t0=performance.now(); // one second shorter than Steps mode (CJ)
