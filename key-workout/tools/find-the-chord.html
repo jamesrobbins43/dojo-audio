@@ -124,7 +124,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 #session.demo .ask .dir,#session.demo .scale .deg{color:var(--brand)}
 /* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
 .coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
-.coach.on{opacity:1;transform:none}
+.coach.on{opacity:1;transform:none;pointer-events:auto}.coach.two::before,.coach.two::after{display:none}.coach .ar{position:absolute;bottom:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}.coach .ar::after{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border:9px solid transparent;border-top:0;border-bottom:11px solid #18CEFB}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}
 .coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
 .coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
 @media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
@@ -427,11 +427,15 @@ function playChord(c,force){ if((!settings.sound&&!force)||!c||!audio()) return;
 function preloadSamples(){ if(!ctx) return; for(let m=50;m<=70;m++){ const key=nearestKey(TONE,m); if(key!=null) sampleBuffer(TONE,key).catch(()=>{}); } }
 
 // demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+// the X on a demo box stops the demo (CJ Nov 17)
+function demoX(){ clearTimeout(demoT); demoT=null; }
 function coach(host,el,text,below){
   let c=host.querySelector(':scope > .coach');
   if(!el){ if(c) c.classList.remove('on'); return; }
-  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c); }
-  c.classList.remove('on'); c.textContent=text; c.classList.toggle('below',!!below);
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
+    c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
+    c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text; c.classList.toggle('below',!!below);
   const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
   const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
   c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
@@ -447,10 +451,23 @@ function demoCard(k,ps){
   const many=DEMO_TWO, sc=keyScale(k), chords=sc.map((t,d)=>({name:t.name,q:DEG_Q[d],pc:t.pc}));
   return {mode:'scale', key:k, miss:many?ps:ps[0], chords, midis:[]};
 }
+// one box with an arrow to each missing chord (CJ Nov 17)
+function coachTwo(H,els,text){
+  const rs=els.map(e=>e.getBoundingClientRect()), u={left:Math.min(...rs.map(r=>r.left)),right:Math.max(...rs.map(r=>r.right)),top:Math.min(...rs.map(r=>r.top)),bottom:Math.max(...rs.map(r=>r.bottom))};
+  u.width=u.right-u.left; u.height=u.bottom-u.top;
+  const fake={getBoundingClientRect:()=>u};
+  coach(H,fake,text,true); const c=H.querySelector(':scope > .coach');
+  c.style.maxWidth='none'; c.style.width=Math.min(H.getBoundingClientRect().width-8,u.width+40)+'px'; c.classList.add('two');
+  coach(H,fake,text,true);
+  const cr=c.getBoundingClientRect();
+  rs.forEach(r=>{ const a=H.ownerDocument.createElement('i'); a.className='ar'; a.style.left=(r.left+r.width/2-cr.left)+'px'; c.appendChild(a); });
+}
+function coachTwoOff(H){ const c=H.querySelector(':scope > .coach'); if(!c) return; c.querySelectorAll('.ar').forEach(a=>a.remove()); c.classList.remove('two'); c.style.width=''; c.style.maxWidth=''; }
 function drawExample(i=0,step=-1){
   clearTimeout(demoT);
   if(settings.mode!=='scale') return;
   const H=$('ask').closest('.wrap');
+  coachTwoOff(H);
   if(i>=4){ coach(H,$('nextBtn'),'Press Start when ready'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
   const two=i%2===1&&DEMO_TWO;
   const k=settings.keyMode==='all'?ALL12[0]:settings.keys[0], ps=i%2===0?[4]:two?[0,5]:[5], c=demoCard(k,ps);
@@ -462,7 +479,8 @@ function drawExample(i=0,step=-1){
   const q=$('scale').querySelector('.ch.q');
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(H,$('setup'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   if(step===0){ setBar(0,4000); // short, then straight to the reveal (CJ Nov 17)
-    coach(H,q||$('scale'),two?'Two chords are missing. Name both.':'One chord is missing. Name it.',true);
+    const qs=[...$('scale').querySelectorAll('.ch.q')];
+    if(two&&qs.length>1) coachTwo(H,qs,'Two chords are missing. Name both.'); else coach(H,q||$('scale'),'One chord is missing. Name it.',true);
     demoT=setTimeout(()=>drawExample(i,2),4000); return; }
   if(step===1){ coach(H,q||$('scale'),two?'Say the names of both missing chords out loud.':'Say the missing chord\'s name out loud.',true); demoT=setTimeout(()=>drawExample(i,2),11000); return; }
   const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null);
