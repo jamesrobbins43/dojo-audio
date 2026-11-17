@@ -1519,7 +1519,7 @@ select option { background: #141414; color: #fff; }\
   function demoBeats(on) {
     if (!DM) return; clearInterval(DM.iv); DM.iv = null; if (!on) return;
     DM.d = 0; timer(0);
-    DM.iv = setInterval(function () { if (!DM) return; DM.d++; var b = DM.d % BPC; if (b === 0) move(1); timer(b); }, 60000 / st.bpm);
+    DM.iv = setInterval(function () { if (!DM) return; DM.d++; var b = DM.d % BPC; if (b === 0) move(1); timer(b); }, 25000 / st.bpm); // demo count runs fast (CJ Nov 17)
   }
   function demoStop(reset) {
     if (!DM) return; clearTimeout(DM.t); clearInterval(DM.iv); DM = null; coach(null);
