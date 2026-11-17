@@ -356,7 +356,7 @@ function drawExample(i=0,step=-1){
     $('main').innerHTML='<div class="slots narrow">'+['1','4','5','4'].map(n=>`<div class="slot"><div class="row one"><span class="cw"><span class="hm"></span>${lab(n)}</span></div><div class="cnt"></div></div>`).join('')+'</div>';
     let k=0; const tick=()=>{ const sl=$('main').querySelectorAll('.slot'); sl.forEach(x=>x.querySelector('.cnt').innerHTML=''); const si=Math.floor(k/4)%4, bib=k%4; sl[si].querySelector('.cnt').innerHTML=`<span>${bib+1}</span>`; placeCount(si,[{n:'',at:0,b:4}],bib); k++; };
     clearInterval(demoTick); tick(); demoTick=setInterval(tick,850);
-    demoBar(35000); coach(host,$('main').querySelector('.slot .cw'),'Play along: strum each chord with the band, one bar each.',true); next(11000,i,1);
+    demoBar(35000); coach(host,$('main').querySelector('.slot .cw'),'Play along: strum each chord with the band, one bar each.',true); next(11000,i,2); // no beat-count box (CJ Nov 17)
   }else if(step===1){ coach(host,$('main').querySelector('.cnt span'),'This small number counts the beats: 1, 2, 3, 4.',true); next(11000,i,2); }
   else { coach(host,$('chart'),'Bit by bit the names, the key and the count go away, until you play from the numbers alone.',true); $('chart').classList.add('off'); next(13000,i+1,-1); }
 }
