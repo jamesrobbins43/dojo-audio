@@ -327,7 +327,7 @@ function drawKey(pop){
   const bass=c.degs.filter(d=>SLASH[d]).map(d=>SLASH[d][1]);  // ...and their bass notes (3, 7) light up too, without the m / ° (CJ, Nov 16)
   drawChart(c.key, rev?'full':keyShown()?'one':'nums', used, bass); syncKey();
 }
-$('keyBtn').onclick=()=>{ settings.showKey=!settings.showKey; save(); if(S&&!S.over) drawKey(settings.showKey); else syncKey(); };
+$('keyBtn').onclick=()=>{ settings.showKey=!settings.showKey; save(); if(S&&!S.over) drawKey(settings.showKey); else if(!S) idle(); else syncKey(); };
 
 /* ---------- Sound: recorded acoustic guitar (window.GUITAR_TONES.acoustic, MIDI 38-74) ---------- */
 let ctx=null; const bufCache={};
@@ -430,12 +430,12 @@ function drawExample(){
     // plays through twice, then stops on the last answer with one box on Start, which fades after 6 s (CJ, Nov 17)
     if(step===10){ tip('Press Start when ready',$('nextBtn'),false,12); step++; demoT=setTimeout(tick,12000); return; }
     if(step>10){ $('tip').hidden=true; demoT=null; return; }
-    const k=step%5, setStep=k===0, c=cards[setStep?0:Math.floor((k-1)/2)], part=setStep?0:(k-1)%2, ans=part===1, kn=KEYS[c.key][0], known=ans||oneKey();
+    const k=step%5, setStep=k===0, c=cards[setStep?0:Math.floor((k-1)/2)], part=setStep?0:(k-1)%2, ans=part===1, kn=KEYS[c.key][0], known=ans||keyShown();  // the demo shows exactly what the drill would: the 1 chord only when the drill shows it
     {
       const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
-      $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
+      $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!keyShown()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
       const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
-      drawRow(c,ans,ans,.35); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
+      drawRow(c,ans,ans,.35); drawChart(c.key,ans?'full':keyShown()?'one':'nums',used,[]); syncKey();
       if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
       else setBar(0,setStep?0:SAY[0][3]);
       $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
