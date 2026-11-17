@@ -510,7 +510,8 @@ const kwFits = (c, capo) => {
   if (suf === 'm' || suf === 'm7' || suf === 'm11') return [1,2,5].includes(d);
   if (suf === '7') return d === 4;
   if (suf === 'maj7') return d === 0 || d === 3;
-  return ['', 'sus2', 'sus4', 'add9'].includes(suf) && [0,3,4].includes(d);
+  if (suf === 'sus2') return d === 0 || d === 3;   // CJ Nov 17: no sus2 on the 5 chord
+  return ['', 'sus4', 'add9'].includes(suf) && [0,3,4].includes(d);
 };
 // sounding chord name spelled the way the key spells it (D♭, not C♯, in the key of A♭)
 const KW_LI = [0,1,1,2,2,3,4,4,5,5,6,6][KW_K];
