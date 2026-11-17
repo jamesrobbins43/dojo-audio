@@ -331,7 +331,7 @@ function build(){
   if(settings.mode==='play'){ plays.forEach(add); }
   else {
     // in the video the 1 4 1 4 demo comes before the first flash cards
-    if(settings.mode==='both' && plays[0] && plays[0].pr.first) add(plays.shift());
+    // the Number drill always comes first when it's on (CJ Nov 17), even in 1 4 5 where the video plays the 1 4 1 4 demo first
     add({type:'flash', F:P.flash, clip:P.flash.clip, dur:P.flash.dur});
     if(settings.mode==='both') plays.forEach(add);
   }
