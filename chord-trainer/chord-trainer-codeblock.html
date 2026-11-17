@@ -164,6 +164,13 @@ select option { background: #141414; color: #fff; }\
 .cnt span.on { background: var(--blue); color: #141414; }\
 .cnt span.done { color: #4a4a4a; }\
 .cnt.wait div { visibility: hidden; }\
+.cnt { flex-direction: column; gap: 2px; top: -104px; }\
+.cnt b { font-size: 12px; letter-spacing: .14em; color: var(--mute); font-weight: 600; }\
+.cnt div.cbig { display: block; font-size: 64px; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; min-height: 64px; }\
+.cnt div.cmeter { display: block; font-size: 18px; font-weight: 600; letter-spacing: .04em; color: var(--ink); }\
+.cnt .cmeter i { font-style: normal; margin-left: .7em; } .cnt .cmeter small { font-size: .8em; font-weight: 600; margin-left: .25em; }\
+.cnt.wait div.cbig { visibility: hidden; } .cnt.wait div.cmeter { visibility: visible; }\
+@media (max-width: 560px) { .cnt { top: -14px; } .cnt b { display: none; } .cnt div.cbig { font-size: 44px; min-height: 44px; } .cnt div.cmeter { font-size: 14px; } .stage > .now.cin .nm { visibility: hidden; } }\
 .stage > .now.cin > .tag { visibility: hidden; }\
 .w.light .cnt span { background: #e9e6df; color: #9a968e; } .w.light .cnt span.on { background: var(--blue); color: #141414; }\
 @media (max-width: 560px) { .cnt { top: -12px; gap: 8px; } .cnt b { font-size: 12px; } .cnt div { gap: 5px; } .cnt span { width: 26px; height: 26px; font-size: 14px; border-radius: 5px; } }\
@@ -296,7 +303,7 @@ select option { background: #141414; color: #fff; }\
   <section class="setup" id="setup"><div class="sh"><h2>Set up to record</h2></div><ol class="steps" id="steps"><li><i>1</i>Connect</li><li><i>2</i>Sync timing</li></ol></section>\
   <section class="tuner" id="tuner"><div class="sh"><h2>Tuner</h2><button class="btn" id="tdone" type="button">Done</button></div><div class="tbox" id="tbox"></div></section>\
   <section class="stage">\
-    <div class="now" aria-live="polite"><span class="tag">Play</span><div id="cur"></div><div class="cnt" id="cnt" hidden><b>Record in:</b><div><span>1</span><span>2</span><span>3</span><span>4</span></div></div></div>\
+    <div class="now" aria-live="polite"><span class="tag">Play</span><div id="cur"></div><div class="cnt" id="cnt" hidden><b>Record in</b><div class="cbig"></div><div class="cmeter">4/4<i></i><small>BPM</small></div></div></div>\
     <div class="nxt"><span class="tag">Next</span><div id="nx"></div></div>\
     <div class="timer" id="timer" aria-hidden="true"></div>\
     <div class="rp" id="rp"></div>\
@@ -560,11 +567,11 @@ select option { background: #141414; color: #fff; }\
   // Record: a small "Ready" beside the chord from the first click; its 1 2 3 4 light up in the bar before recording.
   function cntShow(k, lbl) {
     var c = $('cnt'); if (!c) return;
-    if (lbl) c.querySelector('b').textContent = lbl;
+    if (lbl) c.querySelector('b').textContent = lbl.replace(':', '');
     var nw = root.querySelector('.stage > .now');
     if (k === null) { c.hidden = true; if (nw) nw.classList.remove('cin'); return; }
     c.hidden = false; if (nw) nw.classList.add('cin'); c.classList.toggle('wait', k < 0);
-    var sp = c.querySelectorAll('span'); for (var q = 0; q < sp.length; q++) sp[q].className = q === k ? 'on' : q < k ? 'done' : '';
+    c.querySelector('.cbig').textContent = k >= 0 ? String(k + 1) : ''; c.querySelector('.cmeter i').textContent = st.bpm;
   }
   function tick(k) {
     if (k < BEATS && rec.state === 'rec' && rec.mode === 'take') { cntShow(k); return; }
