@@ -107,7 +107,7 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .err{color:var(--bad)}
 @media (max-width:560px){.row{grid-template-columns:96px minmax(0,1fr)}.srow{grid-template-columns:44px 22px 64px minmax(0,1fr);gap:8px}.lvl{display:none}.btn{min-width:104px;padding:9px 12px}}
 </style>
-<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
+<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button{position:relative}.kwtip{display:none;position:absolute;z-index:20;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#15120f;border:1px solid #4a4038;border-radius:10px;padding:6px 8px 4px;flex-direction:column;align-items:center;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.6)}.kwtip b{font-size:13px;color:#f2b25c;font-weight:700;line-height:1}@media (hover:hover){.kwchips button:hover .kwtip{display:flex}}.kwchips button.show .kwtip{display:flex}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -1017,8 +1017,29 @@ function hideResults() { reveal = false; marks = {}; blankRows(); clearScores();
 // Pick any chords of the key, record them one after another (strum + each string), then ONE overall score
 // plus a score for each chord. Tap a chord in "Your chords" to see its details.
 let KW_SEL = Array.isArray(st.kwsel) ? st.kwsel.slice() : null, KW_RUN = null;
-const kwAvail = () => LIST.map((c, i) => i).filter(i => kwFits(LIST[i], st.capo));
-const kwDefault = () => { const a = kwAvail(), d = a.filter(i => /^[A-G][#b]?m?$/.test(LIST[i].name) && !/\(/.test(LIST[i].label)); return (d.length ? d : a).slice(0, 4); };
+// chips in key order (CJ Nov 17): by the sounding chord's number in the key (1-7), then the original list order
+const kwDeg = i => [0,2,4,5,7,9,11].map(x => (KW_K + x) % 12).indexOf((rootPc(LIST[i].name) + st.capo) % 12);
+const kwAvail = () => LIST.map((c, i) => i).filter(i => kwFits(LIST[i], st.capo)).sort((a, b) => kwDeg(a) - kwDeg(b) || a - b);
+// small vertical chord diagram shown when a chip is hovered or tapped (CJ Nov 17)
+const KW_NUM = ['1','2m','3m','4','5','6m','7°'];
+function kwDiagram(i) {
+  const fr = LIST[i].frets, on = fr.filter(f => f > 0), hi = on.length ? Math.max(...on) : 0;
+  const base = hi <= 4 ? 1 : Math.min(...on), W = 84, X0 = 14, DX = 11, Y0 = 22, DY = 15, R = 4;
+  let g = '';
+  for (let f = 0; f <= 4; f++) g += `<line x1="${X0}" x2="${X0 + 5 * DX}" y1="${Y0 + f * DY}" y2="${Y0 + f * DY}" stroke="#6f665b" stroke-width="${f === 0 && base === 1 ? 3 : 1}"/>`;
+  for (let s = 0; s < 6; s++) g += `<line x1="${X0 + s * DX}" x2="${X0 + s * DX}" y1="${Y0}" y2="${Y0 + 4 * DY}" stroke="#6f665b" stroke-width="1"/>`;
+  fr.forEach((f, s) => { const x = X0 + s * DX;
+    if (f < 0) g += `<text x="${x}" y="${Y0 - 6}" text-anchor="middle" font-size="9" fill="#a69b8d">×</text>`;
+    else if (f === 0) g += `<circle cx="${x}" cy="${Y0 - 9}" r="3" fill="none" stroke="#a69b8d" stroke-width="1.2"/>`;
+    else g += `<circle cx="${x}" cy="${Y0 + (f - base + .5) * DY}" r="${R}" fill="#f2b25c"/>`; });
+  if (base > 1) g += `<text x="${X0 + 5 * DX + 6}" y="${Y0 + .5 * DY + 3}" font-size="9" fill="#a69b8d">${base}fr</text>`;
+  const d = kwDeg(i);
+  return `<span class="kwtip" aria-hidden="true"><b>${d >= 0 ? KW_NUM[d] : ''}</b><svg viewBox="0 0 ${W} ${Y0 + 4 * DY + 4}" width="${W}" height="${Y0 + 4 * DY + 4}">${g}</svg></span>`;
+}
+// default: one plain shape each for 1, 4, 5 and 6m when the capo allows, else the first plain shapes
+const kwDefault = () => { const a = kwAvail(), d = a.filter(i => /^[A-G][#b]?m?$/.test(LIST[i].name) && !/\(/.test(LIST[i].label));
+  const pick = [0, 3, 4, 5].map(g => d.find(i => kwDeg(i) === g)).filter(i => i != null);
+  return pick.length >= 2 ? pick : (d.length ? d : a).slice(0, 4); };
 const kwAcc = s => s.replace('#', '♯').replace(/^([A-G])b/, '$1♭');
 const kwLabel = i => { const c = LIST[i]; return st.capo ? kwAcc(kwSpell(c.name, st.capo)) + '<small>' + kwAcc(c.label) + ' shape</small>' : kwAcc(c.label); };
 function kwPicker() {
@@ -1026,7 +1047,7 @@ function kwPicker() {
   KW_SEL = (KW_SEL || []).filter(i => a.includes(i));
   if (!KW_SEL.length) KW_SEL = kwDefault();
   st.kwsel = KW_SEL; save();
-  $('kwChords').innerHTML = a.map(i => `<button type="button" data-kc="${i}" aria-pressed="${KW_SEL.includes(i)}">${kwLabel(i)}</button>`).join('');
+  $('kwChords').innerHTML = a.map(i => `<button type="button" data-kc="${i}" aria-pressed="${KW_SEL.includes(i)}">${kwLabel(i)}${kwDiagram(i)}</button>`).join('');
   st.idx = KW_SEL[0];
 }
 $('kwChords').addEventListener('click', e => {
@@ -1035,6 +1056,8 @@ $('kwChords').addEventListener('click', e => {
   if (has && KW_SEL.length === 1) return;
   KW_SEL = has ? KW_SEL.filter(x => x !== i) : kwAvail().filter(x => x === i || KW_SEL.includes(x));
   kwPicker(); reset();
+  // a tap on a phone has no hover: show that chord's diagram for a moment
+  const nb = $('kwChords').querySelector(`[data-kc="${i}"]`); if (nb) { nb.classList.add('show'); setTimeout(() => nb.classList.remove('show'), 1800); }
 });
 const kwFill0 = kwFill;
 kwFill = function () { kwFill0(); kwPicker(); };
