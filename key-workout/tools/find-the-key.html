@@ -83,6 +83,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .ask .kb .dir{display:inline-block}
 .ask .kb .pop{animation:pop .24s ease-out both}
 /* Key chart (Show Key): the 7 numbers over the key's 7 chords */
+#ask{display:none!important}
 .chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:100%;max-width:640px;margin:4px auto 0;row-gap:6px}
 .chart .kc{display:flex;justify-content:center;align-items:flex-end}
 .chart .kn{height:clamp(20px,3.2vw,26px)}
@@ -297,7 +298,7 @@ function drawChart(k,mode,used,bass){
 }
 // one key chosen (CJ, Nov 16): the key isn't a puzzle, so the chord under 1 always shows and there is no Show/Hide Key button
 const oneKey=()=>settings.keyMode==='pick'&&settings.keys.length===1;
-const keyShown=()=>oneKey()||settings.showKey;
+const keyShown=()=>false;
 function syncKey(){
   const b=$('keyBtn'); b.hidden=oneKey(); b.textContent=settings.showKey?'Hide Key':'Show Key'; b.setAttribute('aria-pressed',String(!!settings.showKey));
   $('chart').hidden=!$('chart').innerHTML;
