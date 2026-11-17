@@ -43,6 +43,7 @@ button:focus-visible,select:focus-visible{outline:3px solid var(--brand);outline
 select{-webkit-appearance:none;-moz-appearance:none;appearance:none;font:inherit;font-size:16px;font-weight:600;background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center/12px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg);max-width:100%}
 select option,select optgroup{background:#000;color:var(--fg)}
 #chord{min-width:190px}
+#triOpt select{margin-right:6px}
 #input{min-width:190px;max-width:320px;text-overflow:ellipsis}
 
 /* main */
@@ -119,7 +120,8 @@ select option,select optgroup{background:#000;color:var(--fg)}
   <div class="sets">
     <h2>Settings</h2>
     <select id="chord" hidden></select><div class="opt kwopt"><span class="lab">Chords</span><div class="kwchips" id="kwChords" role="group" aria-label="Chords to test"></div></div>
-    <label class="opt"><span class="lab">Capo</span><select id="capo"></select></label>
+    <label class="opt" id="capoOpt"><span class="lab">Capo</span><select id="capo"></select></label>
+    <span class="opt" id="triOpt" hidden><span class="lab">Triad</span><select id="triRoot" aria-label="Triad"></select><select id="triInv" aria-label="Inversion"><option value="0">Root position</option><option value="1">1st inversion</option><option value="2">2nd inversion</option></select><select id="triSet" aria-label="Strings"><option value="0">E-A-D strings</option><option value="1">A-D-G strings</option><option value="2">D-G-B strings</option><option value="3">G-B-E strings</option></select></span>
     <label class="opt"><span class="lab">Input</span><select id="input"><option value="">Default microphone</option></select><span class="meter" title="Input level"><i id="meter"></i></span></label>
   </div>
 
@@ -473,6 +475,21 @@ const CHORDS = [
 ];
 const LIST = [];
 CHORDS.forEach(([g, items]) => items.forEach(([label, frets, name]) => LIST.push({ group: g, label, frets, name: name || label })));
+// Triads (CJ Nov 17): close triad on 3 adjacent strings, lowest playable spot; built from the Triad pickers
+const TRI = LIST.length;
+LIST.push({ group: 'Triads', label: 'Triads', frets: [-1, -1, -1, -1, -1, -1], name: 'G' });
+const TRI_ROOTS = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'], TRI_Q = [['', [0, 4, 7]], ['m', [0, 3, 7]], ['°', [0, 3, 6]]];
+function triBuild(t) {
+  const iv = TRI_Q[t.q][1], order = [[0, 1, 2], [1, 2, 0], [2, 0, 1]][t.inv].map(i => (t.root + iv[i]) % 12);
+  const OPN = [40, 45, 50, 55, 59, 64], m = OPN.slice(t.set, t.set + 3);
+  for (let f0 = 0; f0 <= 17; f0++) {
+    if ((m[0] + f0) % 12 !== order[0]) continue;
+    let prev = m[0] + f0; const fr = [f0];
+    for (let k = 1; k < 3; k++) { let q = prev + 1; while (q % 12 !== order[k]) q++; fr.push(q - m[k]); prev = q; }
+    if (fr.every(f => f >= 0 && f <= 17) && Math.max(...fr) - Math.min(...fr) <= 4) { const out = [-1, -1, -1, -1, -1, -1]; fr.forEach((f, k) => out[t.set + k] = f); return out; }
+  }
+  return null;
+}
 
 // ---------- text helpers ----------
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -498,8 +515,8 @@ const rootPc = name => { const m = /^([A-G])([#b]?)/.exec(name); return (PC[m[1]
 const fmtC = c => (c > 0 ? '+' : c < 0 ? '−' : '') + Math.abs(Math.round(c)) + '¢';
 
 // ---------- settings ----------
-let st = { idx: 0, capo: 0, input: '' };
-try { const s = JSON.parse(localStorage.getItem('dgkp-nqe') || '{}'); if (s.idx >= 0 && s.idx < LIST.length) st.idx = s.idx; if (s.capo >= 0 && s.capo <= 7) st.capo = s.capo; if (typeof s.input === 'string') st.input = s.input; } catch (e) {}
+let st = { idx: 0, capo: 0, input: '', tri: { root: 7, q: 0, inv: 0, set: 2 } };
+try { const s = JSON.parse(localStorage.getItem('dgkp-nqe') || '{}'); if (s.idx >= 0 && s.idx < LIST.length) st.idx = s.idx; if (s.capo >= 0 && s.capo <= 7) st.capo = s.capo; if (typeof s.input === 'string') st.input = s.input; if (s.tri && s.tri.root >= 0 && s.tri.root < 12 && s.tri.q >= 0 && s.tri.q < 3 && s.tri.inv >= 0 && s.tri.inv < 3 && s.tri.set >= 0 && s.tri.set < 4) st.tri = s.tri; } catch (e) {}
 const save = () => { try { localStorage.setItem('dgkp-nqe', JSON.stringify(st)); } catch (e) {} };
 // Key Workout: only the chord shapes that sound as a chord of the chosen key (with the chosen capo)
 const KW_K = window.KW_KEY;
@@ -540,7 +557,19 @@ function kwFill() {
 
 for (let i = 0; i <= 7; i++) { const o = document.createElement('option'); o.value = i; o.textContent = i ? 'Fret ' + i : 'None'; $('capo').appendChild(o); }
 { const ok = c => LIST.some(x => kwFits(x, c)); [...$('capo').options].forEach(o => o.disabled = !ok(+o.value)); if (!ok(st.capo)) { for (let c = 0; c <= 7; c++) if (ok(c)) { st.capo = c; break; } } kwFill(); $('capo').value = st.capo; }
-$('chord').onchange = () => { st.idx = +$('chord').value; save(); reset(); };
+// Triads: the chord list ends with 'Triads'; then the Triad pickers choose the triad, inversion and strings (no capo)
+{ const og = document.createElement('optgroup'); og.label = 'Triads'; const o = document.createElement('option'); o.value = TRI; o.textContent = 'Triads'; og.appendChild(o); $('chord').appendChild(og); }
+$('triRoot').innerHTML = TRI_Q.map((q, qi) => `<optgroup label="${['Major', 'Minor', 'Diminished'][qi]}">` + TRI_ROOTS.map((r, ri) => `<option value="${ri}-${qi}">${r.replace('#', '♯').replace(/^([A-G])b/, '$1♭')}${q[0]}</option>`).join('') + '</optgroup>').join('');
+function triApply() {
+  const t = st.tri, fr = triBuild(t), c = LIST[TRI];
+  c.frets = fr || [-1, -1, -1, -1, -1, -1]; c.name = TRI_ROOTS[t.root] + TRI_Q[t.q][0];
+  c.label = c.name; c.sub = ['Root position', '1st inversion', '2nd inversion'][t.inv] + ' · ' + ['E-A-D', 'A-D-G', 'D-G-B', 'G-B-E'][t.set] + ' strings';
+  $('triRoot').value = t.root + '-' + t.q; $('triInv').value = t.inv; $('triSet').value = t.set;
+}
+function triShow() { const on = st.idx === TRI; $('triOpt').hidden = !on; $('capoOpt').hidden = on; if (on) { st.capo = 0; $('capo').value = 0; } }
+['triRoot', 'triInv', 'triSet'].forEach(id => $(id).onchange = () => { const [r, q] = $('triRoot').value.split('-').map(Number); st.tri = { root: r, q, inv: +$('triInv').value, set: +$('triSet').value }; triApply(); save(); reset(); });
+triApply(); $('chord').value = st.idx; triShow();
+$('chord').onchange = () => { st.idx = +$('chord').value; triShow(); save(); reset(); };
 $('capo').onchange = () => { st.capo = +$('capo').value; kwFill(); save(); reset(); };
 
 const chord = () => LIST[st.idx];
@@ -607,7 +636,7 @@ function blankRows() {
 function renderHeader() {
   const c = chord();
   $('cname').innerHTML = chordHTML(c.name);
-  $('capoLine').innerHTML = st.capo ? `Capo ${st.capo} · sounds like ${chordHTML(kwSpell(c.name, st.capo))}` : '';
+  $('capoLine').innerHTML = st.capo ? `Capo ${st.capo} · sounds like ${chordHTML(kwSpell(c.name, st.capo))}` : c.sub ? esc(c.sub) : '';
 }
 function transName(name, k) {
   const m = /^([A-G][#b]?)(.*)$/.exec(name);

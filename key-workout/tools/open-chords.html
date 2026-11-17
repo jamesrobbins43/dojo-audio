@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>html,body{background:#000;margin:0}body{padding:6px 0 28px}</style>
-<script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var N=["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"],SH={C:0,A:9,G:7,E:4,D:2},own={7:"G",0:"C",2:"D",4:"E"}[k];window.KWOC_NAME=N[k];window.KWOC_OPTS=[];window.KWOC_CAPO=0;if(own){window.KWOC=own;return;}Object.keys(SH).forEach(function(sh){var c=(k-SH[sh]+12)%12;if(c<=7)window.KWOC_OPTS.push({shape:sh,capo:c});});window.KWOC_OPTS.sort(function(a,b){return a.capo-b.capo});window.KWOC=window.KWOC_OPTS[0].shape;})();</script>
+<script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var N=["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"],SH={C:0,A:9,G:7,E:4,D:2},own={7:"G",0:"C",2:"D",4:"E"}[k];window.KWOC_NAME=N[k];window.KWOC_OPTS=[];window.KWOC_CAPO=0;var LI=[0,1,1,2,2,3,4,4,5,5,6,6][k],IV=[0,2,4,5,7,9,11],NAT=[0,2,4,5,7,9,11],Q=["","m","m","","","m","°"];window.KWT_DIA=IV.map(function(x,d){var pc=(k+x)%12,l=(LI+d)%7,a=((pc-NAT[l]+18)%12)-6;return "CDEFGAB"[l]+(a<0?"b":a>0?"#":"")+Q[d];});if(own){window.KWOC=own;return;}Object.keys(SH).forEach(function(sh){var c=(k-SH[sh]+12)%12;if(c<=7)window.KWOC_OPTS.push({shape:sh,capo:c});});window.KWOC_OPTS.sort(function(a,b){return a.capo-b.capo});window.KWOC=window.KWOC_OPTS[0].shape;})();</script>
 </head><body>
 
   
@@ -413,6 +413,8 @@ select option { background: #141414; color: #fff; }\
   });
   // A shapes (Open - Standard only) for the capo keys
   [['A', [-1, 0, 2, 2, 2, 0]], ['Bm', [-1, 2, 4, 4, 3, 2]], ['C#m', [-1, 4, 6, 6, 5, 4]], ['D', [-1, -1, 0, 2, 3, 2]], ['E', [0, 2, 2, 1, 0, 0]], ['F#m', [2, 4, 4, 2, 2, 2]]].forEach(function (d, i) { ALL.push({ type: 'open', key: 'A', name: d[0], frets: d[1], anchor: [], fn: FN[i], id: 'open-A' + i }); });
+  if (typeof voicing === 'function' && window.KWT_DIA) { ['Db','Eb','Gb','Ab','Bb','Cb','Fb'].forEach(function (n, i) { PC[n] = [1, 3, 6, 8, 10, 11, 4][i]; }); PC['E#'] = 5; PC['B#'] = 0;
+    Object.keys(SETS).forEach(function (set) { INV.forEach(function (inv, v) { window.KWT_DIA.forEach(function (n, i) { var t = voicing(n, SETS[set], v); if (t) ALL.push({ type: 'ts', set: set, key: 'KWT', name: n, inv: inv, frets: t.frets, root: t.root, rl: 'R', anchor: [], fn: FN7[i], id: 'ts-KWT' + set + v + i }); }); }); }); }
   function fnText(c) { return c.fn + (c.shape ? ' · ' + c.shape + ' shape' : c.inv ? ' · ' + c.inv : ''); }
 
   var $ = function (id) { return root.getElementById(id); };
@@ -441,7 +443,7 @@ select option { background: #141414; color: #fff; }\
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   // Sharps and flats drawn small, light and raised.
   function acc(s) {
-    return s.replace(/#/g, '<span class="acc">♯</span>').replace(/b(?=\d)/g, '<span class="acc">♭</span>');
+    return s.replace(/#/g, '<span class="acc">♯</span>').replace(/([A-G])b/g, '$1<span class="acc">♭</span>').replace(/b(?=\d)/g, '<span class="acc">♭</span>');
   }
   // Root letter and minor "m" full size; everything else (numbers, sus, maj, slash bass, °) smaller.
   function nm(name, pair) {
@@ -494,7 +496,7 @@ select option { background: #141414; color: #fff; }\
 
   function board() {
     var b = $('board'), v = vis();
-    $('gt').textContent = window.KWOC_CAPO ? 'Key of ' + window.KWOC_NAME + ' · Capo ' + window.KWOC_CAPO + ', ' + st.key + ' shapes' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; $('setf').style.display = st.type === 'ts' ? '' : 'none';
+    $('gt').textContent = st.key === 'KWT' ? 'Key of ' + window.KWOC_NAME + ' · Triads' : window.KWOC_CAPO ? 'Key of ' + window.KWOC_NAME + ' · Capo ' + window.KWOC_CAPO + ', ' + st.key + ' shapes' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; $('setf').style.display = st.type === 'ts' ? '' : 'none';
     b.innerHTML = '';
     if (!v.length) { b.innerHTML = '<div class="empty">No ' + esc($('type').selectedOptions[0].text.toLowerCase()) + ' chords in this key.</div>'; return; }
     (st.key === 'all' ? KEY_ORDER : [st.key]).forEach(function (k) {
@@ -506,7 +508,7 @@ select option { background: #141414; color: #fff; }\
         var el = document.createElement('button');
         el.type = 'button'; el.className = 'card' + (st.off[c.id] ? ' off' : ''); el.dataset.id = c.id;
         el.setAttribute('aria-pressed', st.off[c.id] ? 'false' : 'true');
-        el.setAttribute('aria-label', c.name + ' in ' + c.key + (st.off[c.id] ? ', skipped' : ', in practice'));
+        el.setAttribute('aria-label', c.name + ' in ' + (c.key === 'KWT' ? window.KWOC_NAME : c.key) + (st.off[c.id] ? ', skipped' : ', in practice'));
         el.innerHTML = '<span class="fn">' + c.fn + '</span><span class="nm">' + nm(c.name, c.type === 'tw') + '</span>' + diagram(c) + (c.shape || c.inv ? '<span class="sub">' + (c.shape ? c.shape + ' shape' : c.inv) + '</span>' : '');
         el.addEventListener('click', function () { if (st.off[c.id]) delete st.off[c.id]; else st.off[c.id] = 1; refresh(); });
         g.appendChild(el);
@@ -528,7 +530,7 @@ select option { background: #141414; color: #fff; }\
   }
   function stage() {
     var c = seq[pos], n = seq.length > 1 ? seq[(pos + 1) % seq.length] : null;
-    $('cur').innerHTML = c ? '<div class="now" style="padding:0"><span class="nm">' + nm(c.name, c.type === 'tw') + '</span>' + diagram(c) + '<span class="fn">' + fnText(c) + ' in ' + c.key + '</span></div>'
+    $('cur').innerHTML = c ? '<div class="now" style="padding:0"><span class="nm">' + nm(c.name, c.type === 'tw') + '</span>' + diagram(c) + '<span class="fn">' + fnText(c) + ' in ' + (c.key === 'KWT' ? window.KWOC_NAME : c.key) + '</span></div>'
       : '<div class="fn" style="padding:48px 0">Every chord is skipped. Tap a chord below to add it.</div>';
     $('nx').innerHTML = n ? '<div class="nxt" style="opacity:1"><span class="nm">' + nm(n.name, n.type === 'tw') + '</span>' + diagram(n) + '</div>' : '';
     root.querySelectorAll('.card').forEach(function (el) { el.classList.toggle('cur', !!c && el.dataset.id === c.id); });
@@ -1453,8 +1455,7 @@ select option { background: #141414; color: #fff; }\
 
   (function () {
     var O = window.KWOC_OPTS || [], sel = $('kwcapo'), BASE = [40, 45, 50, 55, 59, 64];
-    if (!O.length) return;
-    $('kwcapof').style.display = '';
+    var own = st.key;
     sel.innerHTML = O.map(function (o, i) { return '<option value="' + i + '">' + (o.capo ? 'Capo ' + o.capo : 'No capo') + ' · ' + o.shape + ' shapes</option>'; }).join('');
     function use(i) {
       var o = O[i] || O[0]; sel.value = String(O.indexOf(o));
@@ -1465,8 +1466,15 @@ select option { background: #141414; color: #fff; }\
       try { localStorage.setItem('dgkp-oc-capo-' + window.KWOC_NAME, String(i)); } catch (e) {}
     }
     var saved = 0; try { saved = +localStorage.getItem('dgkp-oc-capo-' + window.KWOC_NAME) || 0; } catch (e) {}
-    use(saved);
+    // triads: the real key, no capo (Chord Trainer)
+    window.kwMode = function () {
+      if (st.type === 'ts' && window.KWT_DIA) { st.key = 'KWT'; window.KWOC_CAPO = 0; for (var s = 0; s < 6; s++) OPENM[s] = BASE[s]; $('kwcapof').style.display = 'none'; return; }
+      if (O.length) { $('kwcapof').style.display = ''; use(+sel.value || 0); } else st.key = own;
+    };
+    if (O.length) use(saved);
+    window.kwMode();
     sel.addEventListener('change', function () { use(+this.value); refresh(); });
+    $('type').addEventListener('change', function () { window.kwMode(); refresh(); });
   })();
   setBpm(st.bpm); refresh(); timer(-1);
 })();
