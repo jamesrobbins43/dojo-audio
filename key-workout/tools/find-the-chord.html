@@ -474,7 +474,7 @@ function enterScale(c,rev,sound){
     if(!S.paused) S.timer=setTimeout(reveal,ms);
   }else{
     $('said').textContent=c.miss.length>1?`The missing chords are ${sayCh(c.miss[0])} and ${sayCh(c.miss[1])}`:`The missing chord is ${sayCh(c.miss[0])}`;
-    $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next scale';
+    $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next Chord';
     $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
     const ms=(settings.pace>=8?3.5:3)*1000; S.remaining=ms; S.t0=performance.now(); // one second shorter than Steps mode (CJ)
     if(!S.paused) S.timer=setTimeout(advance,ms);
