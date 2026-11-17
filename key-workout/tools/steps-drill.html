@@ -111,6 +111,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .credit{font-size:12px;color:var(--muted);margin:0}
+/* start screen (CJ, Nov 17): an example + short how-to before Start, same look as Find the Number */
+.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
+.how li{margin:2px 0}.how li::marker{color:var(--accent);font-weight:700}
+.how b{color:var(--fg);font-weight:600}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}
 </style>
 
@@ -154,6 +159,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
+    <ol class="how" id="how">
+      <li>A note shows on one string and plays, with <b>half step</b> or <b>whole step</b>, <b>up</b> or <b>down</b>.</li>
+      <li>Before the timer runs out, find and say the answer. A half step is <b>1 fret</b>, a whole step is <b>2 frets</b>. Up moves toward the body, down toward the nut.</li>
+      <li>Then the answer lights up and plays, so you can check yourself.</li>
+    </ol>
   </section>
 
   <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
@@ -425,11 +435,22 @@ function idle(over){
   $('nextBtn').textContent=over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('replayBtn').disabled=true;
   drawPair(null); setArrow(null); $('keyTag').textContent=''; syncMode(); drawScale(null);
+  $('how').hidden=!!over;
+  if(!over) drawExample();
+}
+// start screen (CJ, Nov 17): a worked example instead of an empty neck: C on the G string, whole step up = D two frets higher
+function drawExample(){
+  const K=settings.keys[0], sc=keyScale(K), OP=[40,45,50,55,59,64]; let str=3, fret=5; for(const s0 of [3,2,4,1,5,0]){ const f=((sc[0].pc-OP[s0])%12+12)%12; if(f>=1&&f<=9){ str=s0; fret=f; break; } }
+  const ex={mode:'steps',st:'whole',dr:'up',str,fret,to2:fret+2,from:sc[0].name,to:sc[1].name,key:K,m1:OP[str]+fret,m2:OP[str]+fret+2};
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  $('ask').innerHTML=`${STEPS.whole.name} <span class="dir">up</span>`;
+  drawPair(ex,true,false);
+  $('said').textContent=`Example. Whole step up from ${ex.from} is ${ex.to}, two frets higher.`;
 }
 function start(){
   audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
-  $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  $('ask').className='ask'; $('how').hidden=true; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   enter(true);
 }
 const card=()=>S.seq[S.i];
