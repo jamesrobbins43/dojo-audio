@@ -138,7 +138,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   <section class="sets" id="setup">
     <div class="prow"><div class="lab">Key</div><div class="opts"><label class="opt"><select id="key" aria-label="Key"></select></label></div></div>
     <div class="prow"><div class="lab">Numbers</div><div class="seg nums" id="parts" role="group" aria-label="Numbers"></div></div>
-    <div class="prow"><div class="lab">Practice</div><div class="seg" id="modes" role="group" aria-label="Practice"></div></div>
+    <div class="prow"><div class="lab">Practice</div><div class="opts"><label class="check"><input id="drill" type="checkbox"> Start with the Number drill</label></div></div>
     <div class="prow" id="rowProg"><div class="lab">Play along</div><div class="opts">
       <label class="opt"><select id="prog" aria-label="Progression"></select></label>
       <label class="check"><input id="names" type="checkbox"> Start with chord names</label>
@@ -275,12 +275,12 @@ const store = {
   get(k,d){ try{ const v=localStorage.getItem('dgkp-dgnp:'+k); return v==null?d:JSON.parse(v);}catch(e){return d;} },
   set(k,v){ try{ localStorage.setItem('dgkp-dgnp:'+k, JSON.stringify(v)); }catch(e){} }
 };
-const MODES=[['play','Play along'],['flash','Number drill']];
-const settings=Object.assign({part:0, mode:'play', prog:-1, names:true, sound:true, key:DEFAULT_KEY}, store.get('settings',{}));
+// CJ Nov 17: no Number drill tab; a box (checked by default) puts the Number drill before the play along
+const settings=Object.assign({part:0, drill:true, prog:-1, names:true, sound:true, key:DEFAULT_KEY}, store.get('settings',{}));
 if(!KEY_ORDER.includes(settings.key)) settings.key=DEFAULT_KEY;
 setKey(settings.key);
 if(!PARTS[settings.part]) settings.part=0;
-if(!MODES.some(m=>m[0]===settings.mode)) settings.mode='play';
+settings.mode=settings.drill===false?'play':'both';
 const save=()=>store.set('settings',settings);
 
 /* ---------- Setup ---------- */
@@ -288,7 +288,7 @@ function renderSetup(){
   $('key').innerHTML=KEY_ORDER.map(k=>`<option value="${k}">${keyName(k)}</option>`).join('');
   $('key').value=settings.key;
   $('parts').innerHTML=PARTS.map((p,i)=>`<button type="button" data-part="${i}" aria-pressed="${i===settings.part}">${p.label.replace(/m\b/,'<span class="m">m</span>')}</button>`).join('');
-  $('modes').innerHTML=MODES.map(([k,t])=>`<button type="button" data-mode="${k}" aria-pressed="${k===settings.mode}">${t}</button>`).join('');
+  $('drill').checked=settings.drill!==false;
   const P=PARTS[settings.part];
   if(settings.prog>=P.progs.length) settings.prog=-1;
   const progName=pr=>pr.bars.map(b=>b.map(c=>c.n).join(' ')).join(' | ')+'  ·  '+pr.bpm+' BPM';
@@ -296,10 +296,9 @@ function renderSetup(){
   if(P.progs.length===1) settings.prog=0;
   $('prog').value=String(settings.prog);
   $('names').checked=settings.names;
-  $('rowProg').hidden=settings.mode==='flash';
 }
 $('parts').addEventListener('click',e=>{ const b=e.target.closest('[data-part]'); if(!b) return; settings.part=+b.dataset.part; settings.prog=-1; save(); renderSetup(); stop(); });
-$('modes').addEventListener('click',e=>{ const b=e.target.closest('[data-mode]'); if(!b) return; settings.mode=b.dataset.mode; save(); renderSetup(); stop(); });
+$('drill').addEventListener('change',e=>{ settings.drill=e.target.checked; settings.mode=settings.drill?'both':'play'; save(); stop(); });
 $('key').addEventListener('change',e=>{ settings.key=e.target.value; save(); setKey(settings.key); $('chart').innerHTML=chartHTML(); stop(); });
 $('prog').addEventListener('change',e=>{ settings.prog=+e.target.value; save(); stop(); });
 $('names').addEventListener('change',e=>{ settings.names=e.target.checked; save(); stop(); });
