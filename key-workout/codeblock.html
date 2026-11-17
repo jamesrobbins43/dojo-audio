@@ -47,12 +47,12 @@ function load(){
   const t=TOOLS.find(x=>x[0]===tab);
   $('frame').title=t[1]+', key of '+KEYS[key].replace('♭',' flat');
   // fetch the tool page (pinned on jsDelivr), write the key in, show it in a same-origin frame; a fresh load also stops whatever the last tool was playing
-  const my=++ticket, f=$('frame'); f.srcdoc='<body style="background:#000"></body>';
+  const my=++ticket, f=$('frame'), id=tab; f.srcdoc='<body style="background:#000"></body>';
   const get=u=>fetch(u).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); });
   // jsDelivr first; GitHub's raw file server (same pinned commit) if jsDelivr refuses (it can, for big repos)
-  (CACHE[tab]||(CACHE[tab]=get(BASE+tab+'.html').catch(()=>get(RAW+tab+'.html'))))
+  (CACHE[id]||(CACHE[id]=get(BASE+id+'.html').catch(()=>get(RAW+id+'.html'))))
     .then(t=>{ if(my===ticket) f.srcdoc=t.split('new URLSearchParams(location.search).get("key")').join(String(key)); })
-    .catch(()=>{ delete CACHE[tab]; if(my===ticket) f.srcdoc='<body style="background:#000;color:#a69b8d;font:16px system-ui;text-align:center;padding:40px">This tool could not load. Check your connection and tap the tab again.</body>'; });
+    .catch(()=>{ delete CACHE[id]; if(my===ticket) f.srcdoc='<body style="background:#000;color:#a69b8d;font:16px system-ui;text-align:center;padding:40px">This tool could not load. Check your connection and tap the tab again.</body>'; });
 }
 $('keys').addEventListener('click',e=>{ const b=e.target.closest('[data-key]'); if(!b) return; key=+b.dataset.key; store.set('key',key); showWork(); });
 $('tabs').addEventListener('click',e=>{ const b=e.target.closest('[data-tab]'); if(!b||b.dataset.tab===tab) return; tab=b.dataset.tab; store.set('tab',tab); load(); });
