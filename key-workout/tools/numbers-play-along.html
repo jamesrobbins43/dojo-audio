@@ -518,9 +518,9 @@ function drawExample(i=0,step=-1){
   $('progress').innerHTML='<span class="tag">Example</span>';
   if(i%2===0){ // Number drill
     clearInterval(demoTick); demoTick=null; { const c=$('chart'); if(c.classList.contains('off')){ c.style.transition='none'; c.classList.remove('off'); void c.offsetWidth; c.style.transition=''; } }
-    $('main').innerHTML=`<div class="flash"><div class="q">${lab('4')}</div><div class="arrow">${ARROW}</div><div class="a${step>0?'':' off'}">${lab(LETTER['4'])}</div></div>`;
+    $('main').innerHTML=`<div class="flash"><div class="q"><span class="qn">${lab('4')}</span></div><div class="arrow">${ARROW}</div><div class="a${step>0?'':' off'}">${lab(LETTER['4'])}</div></div>`;
     if(step===-1){ demoBar(0); $('timerBar').style.width='0%'; coach(host,$('setup'),'First pick your settings',true); next(4000,i,0); }
-    else if(step===0){ demoBar(11000); coach(host,$('main').querySelector('.q'),'Number drill: play the chord for this number before its name shows.',true); next(11000,i,1); }
+    else if(step===0){ demoBar(11000); coach(host,$('main').querySelector('.qn'),'Play the chord for this number before its name shows.',true); next(11000,i,1); }
     else { demoBar(0); coach(host,null); next(3000,i+1,0); }
     return;
   }
