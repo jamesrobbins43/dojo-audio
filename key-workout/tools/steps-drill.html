@@ -103,6 +103,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .chroma span .dg{display:block;font-size:17px;font-weight:600;color:#f2b25c;margin-bottom:4px}
 .chroma span{font-size:32px;padding:10px 2px 12px}
 @media (max-width:520px){.chroma span{font-size:22px;padding:8px 0}.chroma span .dg{font-size:13px}}
+.chroma:not([hidden])+.ask{margin-top:20px}
 .ask-arrow{display:none!important}   /* CJ Nov 17: a curved arrow on the diagram points at the note instead */
 #ask+.ask-arrow+.keytag:empty{display:none}
 .stage:has(#boardWrap:not([hidden])) #ask{margin-bottom:-12px}
@@ -134,10 +135,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   <section id="session" class="session-col">
     <div class="stage">
       <div class="progress" id="progress"></div>
+      <div class="chroma" id="chroma" hidden aria-label="The 7 notes of the major scale"></div>   <!-- above the prompt (CJ Nov 17) -->
       <div class="ask" id="ask">Ready</div>
       <div class="ask-arrow" id="askArrow" aria-hidden="true"></div>
       <div class="keytag" id="keyTag"></div>
-      <div class="chroma" id="chroma" hidden aria-label="The 7 notes of the major scale"></div>
       <div class="scale" id="scale" hidden></div>
       <div class="board-wrap" id="boardWrap"><svg id="board" viewBox="0 0 1000 250" role="img" aria-label="Guitar neck"></svg></div>
       <div class="sr" id="said" aria-live="polite"></div>
