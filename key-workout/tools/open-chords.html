@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>html,body{background:#000;margin:0}body{padding:6px 0 28px}</style>
-<script>(function(){var k=+new URLSearchParams(location.search).get("key");window.KWOC={7:"G",0:"C",2:"D",4:"E"}[k]||null;})();</script>
+<script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var N=["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"],SH={C:0,A:9,G:7,E:4,D:2},own={7:"G",0:"C",2:"D",4:"E"}[k];window.KWOC_NAME=N[k];window.KWOC_OPTS=[];window.KWOC_CAPO=0;if(own){window.KWOC=own;return;}Object.keys(SH).forEach(function(sh){var c=(k-SH[sh]+12)%12;if(c<=7)window.KWOC_OPTS.push({shape:sh,capo:c});});window.KWOC_OPTS.sort(function(a,b){return a.capo-b.capo});window.KWOC=window.KWOC_OPTS[0].shape;})();</script>
 </head><body>
 
   
@@ -286,7 +286,7 @@ select option { background: #141414; color: #fff; }\
   <div class="bar">\
     <div class="f" id="lenf"><span>Take length</span><b id="len"></b></div>\
     <label class="f" id="prf"><span>Practice round</span><select id="pr"><option value="0">Off</option><option value="1">On</option></select></label>\
-    <label class="f" style="display:none"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
+    <label class="f" id="kwcapof" style="display:none"><span>Capo</span><select id="kwcapo"></select></label><label class="f" style="display:none"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
     <label class="f"><span>Chord type</span><select id="type"><option value="anchor">Open - Anchored</option><option value="open">Open - Standard</option></select></label>\
     <label class="f" id="setf"><span>Strings</span><select id="set"><option value="EAD">E-A-D</option><option value="ADG">A-D-G</option><option value="DGB">D-G-B</option><option value="GBE">G-B-E</option></select></label>\
     <label class="f"><span>Order</span><select id="order"><option value="inorder">In order</option><option value="shuffle">Shuffle</option></select></label>\
@@ -411,6 +411,8 @@ select option { background: #141414; color: #fff; }\
       });
     });
   });
+  // A shapes (Open - Standard only) for the capo keys
+  [['A', [-1, 0, 2, 2, 2, 0]], ['Bm', [-1, 2, 4, 4, 3, 2]], ['C#m', [-1, 4, 6, 6, 5, 4]], ['D', [-1, -1, 0, 2, 3, 2]], ['E', [0, 2, 2, 1, 0, 0]], ['F#m', [2, 4, 4, 2, 2, 2]]].forEach(function (d, i) { ALL.push({ type: 'open', key: 'A', name: d[0], frets: d[1], anchor: [], fn: FN[i], id: 'open-A' + i }); });
   function fnText(c) { return c.fn + (c.shape ? ' · ' + c.shape + ' shape' : c.inv ? ' · ' + c.inv : ''); }
 
   var $ = function (id) { return root.getElementById(id); };
@@ -492,7 +494,7 @@ select option { background: #141414; color: #fff; }\
 
   function board() {
     var b = $('board'), v = vis();
-    $('gt').textContent = st.key === 'all' ? 'All keys' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; $('setf').style.display = st.type === 'ts' ? '' : 'none';
+    $('gt').textContent = window.KWOC_CAPO ? 'Key of ' + window.KWOC_NAME + ' · Capo ' + window.KWOC_CAPO + ', ' + st.key + ' shapes' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; $('setf').style.display = st.type === 'ts' ? '' : 'none';
     b.innerHTML = '';
     if (!v.length) { b.innerHTML = '<div class="empty">No ' + esc($('type').selectedOptions[0].text.toLowerCase()) + ' chords in this key.</div>'; return; }
     (st.key === 'all' ? KEY_ORDER : [st.key]).forEach(function (k) {
@@ -1449,6 +1451,23 @@ select option { background: #141414; color: #fff; }\
   $('strum').addEventListener('change', function () { st.strum = +this.value; save(); recInfo(); });
 
 
+  (function () {
+    var O = window.KWOC_OPTS || [], sel = $('kwcapo'), BASE = [40, 45, 50, 55, 59, 64];
+    if (!O.length) return;
+    $('kwcapof').style.display = '';
+    sel.innerHTML = O.map(function (o, i) { return '<option value="' + i + '">' + (o.capo ? 'Capo ' + o.capo : 'No capo') + ' · ' + o.shape + ' shapes</option>'; }).join('');
+    function use(i) {
+      var o = O[i] || O[0]; sel.value = String(O.indexOf(o));
+      st.key = o.shape; window.KWOC_CAPO = o.capo;
+      for (var s = 0; s < 6; s++) OPENM[s] = BASE[s] + o.capo;   // what the guitar sounds with the capo on
+      var an = $('type').querySelector('option[value="anchor"]'); an.disabled = !KEYS[o.shape];
+      if (!KEYS[o.shape] && st.type === 'anchor') { st.type = 'open'; $('type').value = 'open'; }
+      try { localStorage.setItem('dgkp-oc-capo-' + window.KWOC_NAME, String(i)); } catch (e) {}
+    }
+    var saved = 0; try { saved = +localStorage.getItem('dgkp-oc-capo-' + window.KWOC_NAME) || 0; } catch (e) {}
+    use(saved);
+    sel.addEventListener('change', function () { use(+this.value); refresh(); });
+  })();
   setBpm(st.bpm); refresh(); timer(-1);
 })();
 </script>
