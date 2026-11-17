@@ -72,6 +72,27 @@ rep("    if (lbl) c.querySelector('b').textContent = lbl;\n", "    if (lbl) c.qu
 # the settling bar before the count-in counts 1 2 3 4 too, so the numbers show from the first click (CJ Nov 17)
 rep("if (beat < -BEATS) { click(nt, (beat + 2 * BEATS) % BEATS === 0 ? 2 : 0); click(nt + 30 / st.bpm, -2); ",
     "if (beat < -BEATS) { click(nt, (beat + 2 * BEATS) % BEATS === 0 ? 2 : 0); click(nt + 30 / st.bpm, -2); if (rec.state === 'rec' && rec.mode === 'take') (function (k, t) { tos.push(setTimeout(function () { if (run) cntShow(k); }, Math.max(0, (t - ctx.currentTime) * 1000) + 5)); })(beat + 2 * BEATS, nt); ")
+# Diamond = one strum down on beat 1 of every measure (CJ Nov 17): scored that way, and said on screen after Start, before the click
+rep("sub: mode === 'cal' ? 1 : st.strum || 1 / BPC,", "sub: mode === 'cal' ? 1 : st.strum || 1 / BEATS,")
+rep("st.strum === 0 ? 'Strum once on each chord change'", "st.strum === 0 ? 'Strum down on beat 1 of every measure'")
+rep('<div class="cnt" id="cnt" hidden>', '<div class="dmsg" id="dmsg" hidden><b>Diamond strum</b><div class="dar">&darr;</div><p>Strum down once on <em>beat 1</em> of every measure</p><small>Let it ring through 2, 3, 4</small></div><div class="cnt" id="cnt" hidden>')
+rep('.cnt.wait div.cbig { visibility: hidden; }', '.dmsg { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 6px; text-align: center; z-index: 2; }\\\n'
+    '.dmsg[hidden] { display: none; } .now.dm > :not(.dmsg) { visibility: hidden; }\\\n'
+    '.dmsg b { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }\\\n'
+    '.dmsg .dar { font-size: 72px; font-weight: 700; line-height: 1; color: var(--ink); }\\\n'
+    '.dmsg p { margin: 0; font-size: 24px; font-weight: 600; color: var(--ink); max-width: 24em; text-wrap: balance; }\\\n.dmsg em { font-style: normal; color: var(--blue); }\\\n'
+    '.dmsg small { font-size: 15px; color: var(--mute); }\\\n'
+    '@media (max-width: 560px) { .dmsg .dar { font-size: 48px; } .dmsg p { font-size: 18px; } }\\\n'
+    '.cnt.wait div.cbig { visibility: hidden; }')
+rep("    if (!ctx) return;\n    var lead = rec.state === 'rec' && rec.mode === 'take' ? BEATS : 0;",
+    "    if (!ctx) return;\n"
+    "    // Diamond: say how to strum for a few seconds before the click starts\n"
+    "    if (st.strum === 0 && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';\n"
+    "      tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.go = true; start(); start.go = false; }, 4000)); return; }\n"
+    "    var lead = rec.state === 'rec' && rec.mode === 'take' ? BEATS : 0;")
+rep("  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null);",
+    "  function dmShow(on) { var d = $('dmsg'); if (!d) return; d.hidden = !on; d.parentNode.classList.toggle('dm', on); }\n"
+    "  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); dmShow(false);")
 os.makedirs(os.path.join(H, 'preview'), exist_ok=True)
 open(os.path.join(H, 'chord-trainer-codeblock.html'), 'w', encoding='utf-8').write(s)
 open(os.path.join(H, 'preview', 'index.html'), 'w', encoding='utf-8').write(

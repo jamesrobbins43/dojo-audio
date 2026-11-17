@@ -169,6 +169,14 @@ select option { background: #141414; color: #fff; }\
 .cnt div.cbig { display: block; font-size: 72px; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; min-height: 72px; text-align: center; }\
 .cnt div.cmeter { display: block; font-size: 20px; font-weight: 600; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }\
 .cnt .cmeter i { font-style: normal; margin-left: .7em; } .cnt .cmeter small { font-size: .8em; font-weight: 600; margin-left: .25em; }\
+.dmsg { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 6px; text-align: center; z-index: 2; }\
+.dmsg[hidden] { display: none; } .now.dm > :not(.dmsg) { visibility: hidden; }\
+.dmsg b { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }\
+.dmsg .dar { font-size: 72px; font-weight: 700; line-height: 1; color: var(--ink); }\
+.dmsg p { margin: 0; font-size: 24px; font-weight: 600; color: var(--ink); max-width: 24em; text-wrap: balance; }\
+.dmsg em { font-style: normal; color: var(--blue); }\
+.dmsg small { font-size: 15px; color: var(--mute); }\
+@media (max-width: 560px) { .dmsg .dar { font-size: 48px; } .dmsg p { font-size: 18px; } }\
 .cnt.wait div.cbig { visibility: hidden; } .cnt.wait div.cmeter { visibility: visible; }\
 @media (max-width: 560px) { .cnt div.cbig { font-size: 44px; min-height: 44px; } .cnt div.cmeter { font-size: 13px; } }\
 .stage > .now.cin > .tag { visibility: hidden; }\
@@ -304,7 +312,7 @@ select option { background: #141414; color: #fff; }\
   <section class="setup" id="setup"><div class="sh"><h2>Set up to record</h2></div><ol class="steps" id="steps"><li><i>1</i>Connect</li><li><i>2</i>Sync timing</li></ol></section>\
   <section class="tuner" id="tuner"><div class="sh"><h2>Tuner</h2><button class="btn" id="tdone" type="button">Done</button></div><div class="tbox" id="tbox"></div></section>\
   <section class="stage">\
-    <div class="now" aria-live="polite"><span class="tag">Play</span><div id="cur"></div><div class="cnt" id="cnt" hidden><b>Record in</b><div class="cbig"></div><div class="cmeter">4/4<i></i><small>BPM</small></div></div></div>\
+    <div class="now" aria-live="polite"><span class="tag">Play</span><div id="cur"></div><div class="dmsg" id="dmsg" hidden><b>Diamond strum</b><div class="dar">&darr;</div><p>Strum down once on <em>beat 1</em> of every measure</p><small>Let it ring through 2, 3, 4</small></div><div class="cnt" id="cnt" hidden><b>Record in</b><div class="cbig"></div><div class="cmeter">4/4<i></i><small>BPM</small></div></div></div>\
     <div class="nxt"><span class="tag">Next</span><div id="nx"></div></div>\
     <div class="timer" id="timer" aria-hidden="true"></div>\
     <div class="rp" id="rp"></div>\
@@ -641,11 +649,15 @@ select option { background: #141414; color: #fff; }\
     if (rec.play) stopPlay();
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; }
     if (!ctx) return;
+    // Diamond: say how to strum for a few seconds before the click starts
+    if (st.strum === 0 && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
+      tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.go = true; start(); start.go = false; }, 4000)); return; }
     var lead = rec.state === 'rec' && rec.mode === 'take' ? BEATS : 0;
     run = true; beat = -BEATS - lead; nt = ctx.currentTime + .1; rec.T0 = nt + (BEATS + lead) * 60 / st.bpm; sched(); iv = setInterval(sched, 25);
     $('play').textContent = 'Stop'; summary();
   }
-  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); $('play').textContent = 'Start'; tagSet('Play'); summary();
+  function dmShow(on) { var d = $('dmsg'); if (!d) return; d.hidden = !on; d.parentNode.classList.toggle('dm', on); }
+  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); dmShow(false); $('play').textContent = 'Start'; tagSet('Play'); summary();
     if (rec.state === 'rec' || rec.state === 'end') { rec.state = 'arm'; rec.chunks = null; lockUI(false); if (rec.mode === 'cal') recInfo(); else recInfo('Take stopped. Press Record to try again.'); }
   }
   function resync() { if (run && beat > 0) beat = Math.ceil(beat / BPC) * BPC; }
@@ -1110,7 +1122,7 @@ select option { background: #141414; color: #fff; }\
   // After syncing: five seconds of big, simple steps before the chords appear.
   function introShow(el) {
     $('rp').classList.add('intro');
-    var s = ['Press Record', 'Wait for 4 clicks', st.strum === 0 ? 'Strum once on each chord change' : 'Strum down on every ' + (st.strum === 2 ? 'eighth note' : 'beat'), 'Let each chord ring until the next one'], h = '<b class="stp">Ready to record</b><ol class="sg">';
+    var s = ['Press Record', 'Wait for 4 clicks', st.strum === 0 ? 'Strum down on beat 1 of every measure' : 'Strum down on every ' + (st.strum === 2 ? 'eighth note' : 'beat'), 'Let each chord ring until the next one'], h = '<b class="stp">Ready to record</b><ol class="sg">';
     s.forEach(function (x, i) { h += '<li class="on"><i>' + (i + 1) + '</i>' + x + '</li>'; });
     el.innerHTML = h + '</ol><div class="ib"><b></b></div>';
   }
@@ -1217,7 +1229,7 @@ select option { background: #141414; color: #fff; }\
     if (run) stop();
     if (mode === 'take') { pos = 0; stage(); var sg = root.querySelector('.stage'), bb = sg.getBoundingClientRect(); var vh = window.innerHeight || 800; var dy = bb.top < 24 ? bb.top - 24 : bb.bottom > vh - 16 ? Math.min(bb.bottom - vh + 16, bb.top - 24) : 0; if (dy) window.scrollBy({ top: dy, behavior: 'smooth' }); }
     rec.mode = mode; rec.chunks = []; rec.state = 'rec';
-    rec.take = { bpm: st.bpm, sub: mode === 'cal' ? 1 : st.strum || 1 / BPC, bpc: BPC, total: mode === 'cal' ? 8 : seq.length * BPC, chords: mode === 'cal' ? [] : seq.slice(), win: mode === 'cal' ? .35 : 0, pr: mode === 'take' && st.pr === 1 };
+    rec.take = { bpm: st.bpm, sub: mode === 'cal' ? 1 : st.strum || 1 / BEATS, bpc: BPC, total: mode === 'cal' ? 8 : seq.length * BPC, chords: mode === 'cal' ? [] : seq.slice(), win: mode === 'cal' ? .35 : 0, pr: mode === 'take' && st.pr === 1 };
     rec.take.run = rec.take.total * (rec.take.pr ? 2 : 1);
     rec.syncMsg = ''; if (mode === 'cal') rec.calOK = false; recInfo(mode === 'cal' ? '' : rec.take.pr ? 'Practice round first (not recorded), then the recorded pass.' : 'Recording starts after the 1 2 3 4.');
     lockUI(true);
