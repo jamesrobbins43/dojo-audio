@@ -171,7 +171,7 @@ function drawBoard(c,revealed,popAns){
   if(c){
     // curved arrow from the given note dipping under the string to the fret of the note in question (CJ Nov 17); over the string on the low E
     { const sx=nx(c.fret), tx=nx(c.to2), y=sy(c.str), up=c.str===0, k=up?-1:1, d=tx>sx?1:-1;
-      const x0=sx+d*14, y0=y+k*20, x1=tx-d*6, y1=y+k*16, dip=y+k*58;
+      const x0=sx+d*22, y0=y+k*30, x1=tx-d*24, y1=y+k*30, dip=y+k*62;   // gaps so it never touches the notes (CJ Nov 17)
       h+=`<path d="M${x0} ${y0} C${x0+d*20} ${dip} ${x1-d*34} ${dip} ${x1} ${y1}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round"/>`;
       // arrowhead along the curve's end direction
       const ang=Math.atan2(y1-dip,x1-(x1-d*34)), L=13, a1=ang+2.6, a2=ang-2.6;
