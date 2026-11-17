@@ -3,7 +3,7 @@
 <title>Find the Note (live copy)</title>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");k=(k>=0&&k<12)?k:7;window.KW_KEY=k;var LI=[0,1,1,2,2,3,4,4,5,5,6,6][k],IV=[0,2,4,5,7,9,11],SC=IV.map(function(i){return (k+i)%12});window.kwIn=function(pc){return SC.indexOf(pc)>=0};window.kwName=function(pc){var d=SC.indexOf(pc);if(d<0)return ["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"][pc];var l=(LI+d)%7,a=((pc-IV[l]+18)%12)-6;return "CDEFGAB"[l]+(a<0?"♭":a>0?"♯":"")};})();</script>
 <style>html,body{margin:0;background:#000}</style>
-<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026 (Record-mode input moved to top).
+<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026 (Record-mode input moved to top; open-string labels centered).
      The live block is the source of truth; note-identifier.html is older. Samples are inlined below
      so this works offline; the block itself would otherwise stream them from jsDelivr. -->
 <script>
@@ -258,7 +258,7 @@ function drawBoard(card){
     const hl=card&&card.s===k;
     const bright = card ? hl : settings.strings.includes(k);
     h+=`<line x1="${NUT}" x2="${END+8}" y1="${S.y}" y2="${S.y}" stroke="var(--string)" stroke-width="${S.w}" opacity="${bright?1:.28}"/>`;
-    h+=`<text x="${NUT-18}" y="${S.y+(bright?11:8)}" text-anchor="end" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="700" font-size="${bright?32:24}" fill="${hl?'#f2b25c':bright?'#e6dccd':'#5a524a'}">${S.short||S.label}</text>`;
+    h+=`<text x="${NUT-31}" y="${S.y+(bright?11:8)}" text-anchor="middle" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="700" font-size="${bright?32:24}" fill="${hl?'#f2b25c':bright?'#e6dccd':'#5a524a'}">${S.short||S.label}</text>`;
   }
   for(let f=1;f<=12;f++) h+=`<text x="${spotX(f)}" y="${BOTY+42}" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="600" font-size="16" fill="#a8998a">${f}</text>`;
   if(settings.warmup){
