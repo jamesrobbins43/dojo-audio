@@ -337,7 +337,7 @@ function drawExample(i=0,step=-1){
   const host=$('card').closest('.wrap'), next=(ms,a,b)=>{ demoT=setTimeout(()=>drawExample(a,b),ms); };
   if(i>=4){ clearInterval(demoTick); demoTick=null; coach(host,$('nextBtn'),'Press Start when ready'); demoT=setTimeout(()=>coach(host,null),6000); return; } // plays through twice, then stops (CJ)
   $('card').parentNode.classList.add('demo');
-  $('progress').innerHTML='<span class="tag">Example</span>';
+  $('progress').innerHTML=`<span class="tag">Example: <span style="color:#18CEFB;font-size:16px">${i%2===0?'Number Drill':'Play Along'}</span></span>`; // which part is showing (CJ Nov 17)
   if(i%2===0){ // Number drill
     clearInterval(demoTick); demoTick=null; { const c=$('chart'); if(c.classList.contains('off')){ c.style.transition='none'; c.classList.remove('off'); void c.offsetWidth; c.style.transition=''; } }
     $('main').innerHTML=`<div class="flash"><div class="q"><span class="qn">${lab('4')}</span></div><div class="arrow">${ARROW}</div><div class="a${step>0?'':' off'}">${lab(LETTER['4'])}</div></div>`;
