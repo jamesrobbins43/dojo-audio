@@ -295,7 +295,7 @@ select option { background: #141414; color: #fff; }\
 </style>\
 <div class="w">\
   <div class="top">\
-  <div class="hd"><h1>Chord Trainer</h1><div class="mode" id="mode" role="tablist"><button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button></div><button class="btn tnb" id="tnb" type="button">Tuner</button></div>\
+  <div class="hd"><h1>Chord Trainer</h1><div class="mode" id="mode" role="tablist"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div><button class="btn tnb" id="tnb" type="button">Tuner</button></div>\
   <button class="tg" id="theme" type="button" aria-label="Light or dark background" title="Light / dark"><svg width="14" height="14" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>\
   <div class="bar">\
     <div class="f" id="lenf"><span>Take length</span><b id="len"></b></div>\
@@ -1475,7 +1475,7 @@ select option { background: #141414; color: #fff; }\
     summary();
   }
   root.querySelectorAll('#mode button').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.m); }); });
-  setMode($('go') ? 'rec' : 'prac');
+  setMode('prac');
   $('strum').value = String(st.strum);
   $('pr').value = String(st.pr);
   $('pr').addEventListener('change', function () { st.pr = +this.value; save(); recInfo(); });

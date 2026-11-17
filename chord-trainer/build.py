@@ -93,6 +93,9 @@ rep("    if (!ctx) return;\n    var lead = rec.state === 'rec' && rec.mode === '
 rep("  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null);",
     "  function dmShow(on) { var d = $('dmsg'); if (!d) return; d.hidden = !on; d.parentNode.classList.toggle('dm', on); }\n"
     "  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); dmShow(false);")
+# opens in Practice so everything is on screen; Record sits on the right of the switch (CJ Nov 17)
+rep('<button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button>', '<button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button>')
+rep("  setMode($('go') ? 'rec' : 'prac');\n", "  setMode('prac');\n")
 os.makedirs(os.path.join(H, 'preview'), exist_ok=True)
 open(os.path.join(H, 'chord-trainer-codeblock.html'), 'w', encoding='utf-8').write(s)
 open(os.path.join(H, 'preview', 'index.html'), 'w', encoding='utf-8').write(
