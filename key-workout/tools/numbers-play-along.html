@@ -127,11 +127,19 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .credit{font-size:12px;color:var(--muted);margin:0}
-/* start screen (CJ, Nov 17): an example + short how-to before Start, same look as Find the Number */
+/* start screen (CJ, Nov 17): two examples loop before Start in DGU blue, with black instruction boxes + arrows */
 .tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
-.how li{margin:2px 0}.how li::marker{color:var(--accent);font-weight:700}
-.how b{color:var(--fg);font-weight:600}
+.demo .flash .a,.demo .flash .arrow,.demo .slot .cnt span{color:var(--brand)}
+.demo .timer i{background:var(--brand)}
+.wrap{position:relative}
+/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach.on{opacity:1;transform:none}
+.coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
+.coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
+@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
+.coach.below::before{top:auto;bottom:calc(100% + 2px)}
+.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){.chart,.status{transition:none}}
 </style>
@@ -173,11 +181,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
-    <ol class="how" id="how">
-      <li><b>Number drill:</b> a number shows up. Play that chord before its name appears.</li>
-      <li><b>Play along:</b> play each bar's chord with the band. The big count-in sets the tempo and the small number under the chord counts the beats.</li>
-      <li>Bit by bit the chord names, the key, the count and the beats are taken away, until you're playing from the numbers alone.</li>
-    </ol>
   </section>
 
 </div>
@@ -481,13 +484,53 @@ function idleView(state){
   $('main').innerHTML= state==='done'? '<div class="msg brand">Nice work</div>'
     : state==='loading'? '<div class="msg">Loading</div>'
     : state==='error'? '<div class="msg">No sound</div><p class="msg-sub">The audio didn’t load. Check your connection and press Start again.</p>'
-    : '<div class="slots narrow">'+['1','4','5','4'].map((n,i)=>`<div class="slot"><div class="row one"><span class="cw"><span class="hm"></span>${lab(n)}</span></div><div class="cnt">${i?'':'<span style="left:12.5%">1</span>'}</div></div>`).join('')+'</div>';  // start screen (CJ, Nov 17): a sample play-along line instead of "Ready"
+    : '';
   $('countin').innerHTML=''; setBar(0);
   $('nextBtn').textContent= state==='done'?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('nextBtn').disabled= state==='loading';
   $('pauseBtn').disabled=true; $('backBtn').disabled=true;
-  $('how').hidden= !!state;
-  if(!state){ $('progress').innerHTML='<span class="tag">Example</span>'; placeCount(0,[{n:'1',at:0,b:4}],0); }
+  if(state) demoStop(); else drawExample();
+}
+// start screen (CJ, Nov 17): a Number drill card, then a play-along line, loop until Start, in DGU blue, no sound;
+// each step gets a black box with an arrow pointing at it
+let demoT=null, demoTick=null;
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c); }
+  c.classList.remove('on'); c.textContent=text; c.classList.toggle('below',!!below);
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+function demoStop(){ clearTimeout(demoT); clearInterval(demoTick); demoT=demoTick=null; $('card').parentNode.classList.remove('demo'); coach($('card').closest('.wrap'),null); $('chart').classList.remove('off'); const b=$('timerBar'); b.style.transition=''; }
+function demoBar(ms){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; void b.offsetWidth; if(ms){ b.style.transition=`width ${ms}ms linear`; b.style.width='100%'; } else b.style.width='100%'; }
+function drawExample(i=0,step=-1){
+  clearTimeout(demoT);
+  const host=$('card').closest('.wrap'), next=(ms,a,b)=>{ demoT=setTimeout(()=>drawExample(a,b),ms); };
+  if(i>=4){ clearInterval(demoTick); demoTick=null; coach(host,$('nextBtn'),'Press Start when you are ready.'); demoT=setTimeout(()=>coach(host,null),6000); return; } // plays through twice, then stops (CJ)
+  $('card').parentNode.classList.add('demo');
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  if(i%2===0){ // Number drill
+    clearInterval(demoTick); demoTick=null; { const c=$('chart'); if(c.classList.contains('off')){ c.style.transition='none'; c.classList.remove('off'); void c.offsetWidth; c.style.transition=''; } }
+    $('main').innerHTML=`<div class="flash"><div class="q">${lab('4')}</div><div class="arrow">${ARROW}</div><div class="a${step>0?'':' off'}">${lab(LETTER['4'])}</div></div>`;
+    if(step===-1){ demoBar(0); $('timerBar').style.width='0%'; coach(host,$('setup'),'First pick your settings: the key, which numbers to practice, whether to start with the Number drill, and which play-along.',true); next(6500,i,0); }
+    else if(step===0){ demoBar(5500); coach(host,$('main').querySelector('.q'),'Number drill: play the chord for this number before its name shows.',true); next(5500,i,1); }
+    else { demoBar(0); coach(host,$('main').querySelector('.a'),`Then the name shows, so you can check: 4 is ${LETTER['4']} in this key.`,true); next(6000,i+1,0); }
+    return;
+  }
+  // play along: one bar per chord, the small beat number walks 1 2 3 4
+  if(step<=0){
+    $('chart').classList.remove('off');
+    $('main').innerHTML='<div class="slots narrow">'+['1','4','5','4'].map(n=>`<div class="slot"><div class="row one"><span class="cw"><span class="hm"></span>${lab(n)}</span></div><div class="cnt"></div></div>`).join('')+'</div>';
+    let k=0; const tick=()=>{ const sl=$('main').querySelectorAll('.slot'); sl.forEach(x=>x.querySelector('.cnt').innerHTML=''); const si=Math.floor(k/4)%4, bib=k%4; sl[si].querySelector('.cnt').innerHTML=`<span>${bib+1}</span>`; placeCount(si,[{n:'',at:0,b:4}],bib); k++; };
+    clearInterval(demoTick); tick(); demoTick=setInterval(tick,850);
+    demoBar(17500); coach(host,$('main').querySelector('.slot .cw'),'Play along: strum each chord with the band, one bar each.',true); next(5500,i,1);
+  }else if(step===1){ coach(host,$('main').querySelector('.cnt span'),'This small number counts the beats: 1, 2, 3, 4.',true); next(5500,i,2); }
+  else { coach(host,$('chart'),'Bit by bit the names, the key and the count go away, until you play from the numbers alone.',true); $('chart').classList.add('off'); next(6500,i+1,-1); }
 }
 async function start(){
   if(!audio()) return idleView('error');

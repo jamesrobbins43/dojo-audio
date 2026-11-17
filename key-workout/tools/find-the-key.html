@@ -131,7 +131,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .stage{position:relative}
 /* start-screen callouts (CJ, Nov 17): one-sentence steps in black boxes with arrows pointing at each part of the demo */
-.tip{position:absolute;z-index:3;width:max-content;max-width:min(92%,440px);background:#000;color:var(--fg);border:2px solid var(--brand);border-radius:12px;padding:10px 16px;font-size:clamp(15px,2.4vw,18px);font-weight:600;line-height:1.3;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.7);animation:tipIn .25s ease-out both;pointer-events:none}
+.tip{position:absolute;z-index:3;width:max-content;max-width:min(92%,440px);background:#000;color:var(--fg);border:2px solid var(--brand);border-radius:12px;padding:10px 16px;font-size:clamp(17px,2.9vw,21px);font-weight:600;line-height:1.3;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.7);animation:tipIn .25s ease-out both;pointer-events:none}
 /* blue stem + arrowhead, same as the other tools' demo callouts */
 .tip::before{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + 2px);width:3px;height:var(--stem,22px);background:var(--brand);transform:translateX(-50%)}
 .tip::after{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + var(--stem,22px));transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid var(--brand)}
@@ -408,7 +408,7 @@ function tip(text,target,below,stem=22){
   const t=$('tip'), st=$('stage').getBoundingClientRect(), r=target.getBoundingClientRect?target.getBoundingClientRect():target;
   t.hidden=false; t.textContent=text; t.className='tip '+(below?'up':'down'); t.style.animation='none'; void t.offsetWidth; t.style.animation='';
   const w=t.offsetWidth, h=t.offsetHeight, cx=r.left+r.width/2-st.left, left=Math.max(0,Math.min(st.width-w,cx-w/2));
-  t.style.left=left+'px'; t.style.top=(below?r.bottom-st.top+stem+14:r.top-st.top-h-stem-14)+'px';
+  t.style.left=left+'px'; t.style.top=(below?r.bottom-st.top+stem+26:r.top-st.top-h-stem-26)+'px';
   t.style.setProperty('--stem',stem+'px'); t.style.setProperty('--ax',Math.max(18,Math.min(w-18,cx-left))+'px');
 }
 function demoCards(){
@@ -421,21 +421,26 @@ function drawExample(){
   const cards=demoCards(); let step=0;
   // each example: chords (callout on the chords) -> timer (callout on the bar) -> answer (callout under the row)
   const SAY=[
-    ['These 4 chords all come from one major key.', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 1900, 22],
-    [oneKey()?'Give each chord its number (1 to 7) before the bar fills up.':'Name the key and give each chord its number before the bar fills up.', ()=>{ const ns=[...$('chart').querySelectorAll('.kn')].map(e=>e.getBoundingClientRect()); return {left:ns[0].left, width:ns[6].right-ns[0].left, top:ns[0].top, bottom:ns[0].bottom}; }, true, 1900, 12],
-    [oneKey()?'The numbers pop up so you can check yourself.':'The key and numbers pop up so you can check.', ()=>{ const cs=[...$('row').querySelectorAll('.ch')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:cs[0].top, bottom:cs[0].bottom-6}; }, true, 3200, 10]];
+    ['These 4 chords all come from one major key.', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 11000, 22],
+    [oneKey()?'Give each chord its number (1 to 7) before the bar fills up.':'Name the key and give each chord its number before the bar fills up.', ()=>{ const ns=[...$('chart').querySelectorAll('.kn')].map(e=>e.getBoundingClientRect()); return {left:ns[0].left, width:ns[6].right-ns[0].left, top:ns[0].top, bottom:ns[0].bottom}; }, true, 11000, 8],
+    [oneKey()?'The numbers pop up so you can check yourself.':'The key and numbers pop up so you can check.', ()=>{ const cs=[...$('row').querySelectorAll('.ch')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:cs[0].top, bottom:cs[0].bottom-6}; }, true, 14000, 8]];
+  // first step of every loop explains the settings (CJ, Nov 17), then example 1 and example 2 (3 boxes each)
+  const SET=['First, pick which chords can show up, your seconds and how many problems.', ()=>$('setup'), true, 13000, 12];
   const tick=()=>{
-    const c=cards[Math.floor(step/3)%2], part=step%3, ans=part===2, kn=KEYS[c.key][0], known=ans||oneKey();
+    // plays through twice, then stops on the last answer with one box on Start, which fades after 6 s (CJ, Nov 17)
+    if(step===14){ tip('Press Start when you are ready.',$('nextBtn'),false,12); step++; demoT=setTimeout(tick,12000); return; }
+    if(step>14){ $('tip').hidden=true; demoT=null; return; }
+    const k=step%7, setStep=k===0, c=cards[setStep?0:Math.floor((k-1)/3)], part=setStep?0:(k-1)%3, ans=part===2, kn=KEYS[c.key][0], known=ans||oneKey();
     if(part!==1){
       const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
       $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
       const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
-      drawRow(c,ans,ans,.22); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
+      drawRow(c,ans,ans,.8); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
       if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
-      else setBar(0,SAY[0][3]+SAY[1][3]);
+      else setBar(0,setStep?0:SAY[0][3]+SAY[1][3]);
       $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
     }
-    const [txt,tg,below,ms,stem]=SAY[part]; tip(txt,tg(),below,stem);
+    const [txt,tg,below,ms,stem]=setStep?SET:SAY[part]; tip(txt,tg(),below,stem);
     step++; demoT=setTimeout(tick,ms);
   };
   tick();

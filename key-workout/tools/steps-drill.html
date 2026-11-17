@@ -116,13 +116,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 /* the looping demo uses DGU blue instead of orange so it reads as different from the real drill (CJ, Nov 17) */
 .demo .ask .dir{color:var(--brand)}
 .demo .timer i{background:var(--brand)}
-.demo .stage{position:relative}
+.wrap{position:relative}
 /* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
-.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:16px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
 .coach.on{opacity:1;transform:none}
 .coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
 .coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
-@media (max-width:560px){.coach{font-size:14px;padding:7px 10px}}
+@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
 .coach.below::before{top:auto;bottom:calc(100% + 2px)}
 .coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}
@@ -444,10 +444,11 @@ function idle(over){
 }
 // start screen (CJ, Nov 17): two worked examples loop until Start, drawn in DGU blue (no sound), each step with a blue box + arrow
 let demoT=null, DEMO=false;
-const DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
+let DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
   {mode:'steps',st:'half',dr:'down',str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
-const DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.','Start on this note and say the answer before the bar fills.','The answer shows here: D, 2 frets higher.'],
+let DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.','Start on this note and say the answer before the bar fills.','The answer shows here: D, 2 frets higher.'],
   ['A half step is 1 fret. Down means toward the nut.','Start on F and find the note 1 fret lower.','The answer: E, 1 fret lower.']];
+const SET_TIP='First pick your settings: half steps, whole steps or both, how fast the answer shows, and how many notes.', DEMO_END='Press Start when you are ready.';
 // demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
 function coach(host,el,text,below){
   let c=host.querySelector(':scope > .coach');
@@ -456,28 +457,32 @@ function coach(host,el,text,below){
   c.classList.remove('on'); c.textContent=text; c.classList.toggle('below',!!below);
   const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
   const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
-  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+36 : r.top-hr.top-chh-36)+'px';
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
   c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
   void c.offsetWidth; c.classList.add('on');
 }
-function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('ask').parentNode,null); }
+function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('ask').closest('.wrap'),null); }
 function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
   const at=(pc,lo,hi)=>{ for(const s0 of [1,2,3,0,4,5]){ const f=((pc-OPEN[s0])%12+12)%12; if(f>=lo&&f<=hi) return [s0,f]; } return [1,lo]; };
   const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
-  return [{ex:{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
-    tip:['Read the step. A whole step up is 2 frets toward the body.',`Start on ${sc[0].name} and say the answer before the bar fills.`,`The answer shows here: ${sc[1].name}, 2 frets higher.`]},
-   {ex:{mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1},
-    tip:['A half step is 1 fret. Down means toward the nut.',`Start on ${sc[3].name} and find the note 1 fret lower.`,`The answer: ${sc[2].name}, 1 fret lower.`]}]; }
-function drawExample(i=0,step=0){
-  clearTimeout(demoT); DEMO=true; $('session').classList.add('demo');
-  const DM=kwDemos(), k=i%DM.length, ex=DM[k].ex, tip=DM[k].tip, host=$('ask').parentNode, rev=step===2;
+  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
+    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
+  DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.',`Start on ${sc[0].name} and say the answer before the bar fills.`,`The answer shows here: ${sc[1].name}, 2 frets higher.`],
+    ['A half step is 1 fret. Down means toward the nut.',`Start on ${sc[3].name} and find the note 1 fret lower.`,`The answer: ${sc[2].name}, 1 fret lower.`]]; }
+function drawExample(i=0,step=-1){
+  clearTimeout(demoT); kwDemos();
+  if(i>=2*DEMOS.length){ coach($('ask').closest('.wrap'),$('nextBtn'),DEMO_END); demoT=setTimeout(()=>coach($('ask').closest('.wrap'),null),6000); return; } // plays through twice, then stops (CJ)
+  DEMO=true; $('session').classList.add('demo');
+  const k=i%DEMOS.length, ex=DEMOS[k], tip=DEMO_TIPS[k], host=$('ask').parentNode, rev=step===2;
+  const H=host.closest('.wrap');
   $('progress').innerHTML='<span class="tag">Example</span>';
-  if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,true); }
-  $('said').textContent=tip[step];
+  if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,step>=0); }
   const dots=$('board').querySelectorAll('circle[r="22"]');
-  if(step===0){ setBar(0,5200); coach(host,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),2600); }
-  else if(step===1){ coach(host,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),2600); }
-  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,0),3000); }
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),6500); return; }
+  $('said').textContent=tip[step];
+  if(step===0){ setBar(0,11000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),5500); }
+  else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),5500); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),6000); }
 }
 function start(){
   audio(); preloadSamples();
