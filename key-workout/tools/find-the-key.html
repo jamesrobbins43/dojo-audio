@@ -127,6 +127,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 #keyBtn{min-width:112px}
 #nextBtn{min-width:150px}
+.stage.demo{--num:var(--brand);--accent:var(--brand)} /* the start-screen demo is blue so it reads as different from the real drill (CJ, Nov 17) */
 .tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
 .how li{margin:2px 0}.how li::marker{color:var(--num);font-weight:700}
@@ -149,7 +150,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   <!-- SESSION -->
   <section id="session" class="session-col">
-    <div class="stage">
+    <div class="stage" id="stage">
       <div class="progress" id="progress"></div>
       <div class="ask" id="ask">Ready</div>
       <div class="chart" id="chart" hidden aria-label="Key chart"></div>
@@ -288,11 +289,11 @@ function buildSequence(n,fixKey,fixDegs){
 /* ---------- Drawing ---------- */
 const STAGGER=.75;   // seconds between chords as the numbers appear left to right (each chord strums with its number)
 const gap=()=>settings.sound?STAGGER:.12; // sound off: the numbers come in quickly, no strums to wait for (CJ, Nov 16)
-function drawRow(c,revealed,pop){
+function drawRow(c,revealed,pop,g){
   const el=$('row');
   if(!c){ el.innerHTML=Array.from({length:4},()=>'<div class="cell"><div class="slot"></div><div class="ch blank">C</div></div>').join(''); return; }
   el.innerHTML=c.chords.map((ch,i)=>{
-    const slot=revealed?`<span class="deg${pop?' pop':''}" style="${pop?`animation-delay:${(i*gap()).toFixed(2)}s`:''}" aria-label="${spokenDeg(DEGS[ch.d])}">${degInner(DEGS[ch.d])}</span>`:''; // empty slot until the numbers show (no question marks, CJ Nov 16)
+    const slot=revealed?`<span class="deg${pop?' pop':''}" style="${pop?`animation-delay:${(i*(g??gap())).toFixed(2)}s`:''}" aria-label="${spokenDeg(DEGS[ch.d])}">${degInner(DEGS[ch.d])}</span>`:''; // empty slot until the numbers show (no question marks, CJ Nov 16)
     return `<div class="cell"><div class="slot">${slot}</div><div class="ch on">${chordHTML(ch)}</div></div>`;
   }).join('');
 }
@@ -385,7 +386,7 @@ function setBar(fromPct,ms){
   if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
 }
 function idle(over){
-  if(S) clearT(); S=over?S:null; if(S) S.over=true;
+  if(S) clearT(); stopDemo(); S=over?S:null; if(S) S.over=true;
   stopAll();
   $('progress').innerHTML='<b>&nbsp;</b>'; // keeps the line's height so nothing shifts
   $('ask').className='ask'+(over?' brand':''); $('ask').textContent=over?'Round complete':'Ready';
@@ -397,16 +398,33 @@ function idle(over){
   $('how').hidden=!!over;
   if(!over) drawExample();
 }
-// start screen (CJ, Nov 17): instead of a blank stage, a worked example: Key of G, D C G Em with 5 4 1 6m above, and the key chart's 7 positions
+// start screen (CJ, Nov 17): a looping demo in DGU blue instead of a blank stage. Two example problems, each shown as the
+// question (timer bar filling) then the answer (key fills in, numbers pop up), repeating until Start. No sound.
+let demoT=null;
+function stopDemo(){ clearTimeout(demoT); demoT=null; $('stage').classList.remove('demo'); }
+function demoCards(){
+  const ks=settings.keyMode==='pick'&&settings.keys.length?settings.keys:[7,2], k1=ks[0], k2=ks.length>1?ks[1]:ks===settings.keys?k1:2;
+  return [buildSequence(1,k1,[4,3,0,5])[0], buildSequence(1,k2,[0,1,4,3])[0]];
+}
 function drawExample(){
-  const k=settings.keyMode==='pick'&&settings.keys.length?settings.keys[0]:7, ex=buildSequence(1,k,[4,3,0,5])[0], kn=KEYS[k][0];
+  stopDemo(); $('stage').classList.add('demo');
   $('progress').innerHTML='<span class="tag">Example</span>';
-  $('ask').innerHTML=`Key of <span class="kb on"><span class="dir">${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}</span></span>`;
-  drawRow(ex,true,false); drawChart(k,'full',[4,3,0,5],[]); syncKey();
-  $('said').textContent=`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+ex.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', ');
+  const cards=demoCards(); let step=0;
+  const tick=()=>{
+    const c=cards[(step>>1)%2], ans=step%2===1, kn=KEYS[c.key][0], known=ans||oneKey();
+    const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
+    $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
+    const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
+    drawRow(c,ans,ans,.22); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
+    if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
+    else setBar(0,1500);
+    $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
+    step++; demoT=setTimeout(tick,ans?2600:1500);
+  };
+  tick();
 }
 function start(){
-  audio(); preloadSamples();
+  stopDemo(); audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
   $('ask').className='ask'; $('how').hidden=true; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   enter(true);
