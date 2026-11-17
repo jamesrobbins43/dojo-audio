@@ -127,6 +127,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .credit{font-size:12px;color:var(--muted);margin:0}
+/* start screen (CJ, Nov 17): an example + short how-to before Start, same look as Find the Number */
+.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
+.how li{margin:2px 0}.how li::marker{color:var(--accent);font-weight:700}
+.how b{color:var(--fg);font-weight:600}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){.chart,.status{transition:none}}
 </style>
@@ -168,6 +173,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
+    <ol class="how" id="how">
+      <li><b>Number drill:</b> a number shows up. Play that chord before its name appears.</li>
+      <li><b>Play along:</b> play each bar's chord with the band. The big count-in sets the tempo and the small number under the chord counts the beats.</li>
+      <li>Bit by bit the chord names, the key, the count and the beats are taken away, until you're playing from the numbers alone.</li>
+    </ol>
   </section>
 
 </div>
@@ -471,11 +481,13 @@ function idleView(state){
   $('main').innerHTML= state==='done'? '<div class="msg brand">Nice work</div>'
     : state==='loading'? '<div class="msg">Loading</div>'
     : state==='error'? '<div class="msg">No sound</div><p class="msg-sub">The audio didn’t load. Check your connection and press Start again.</p>'
-    : '<div class="msg">Ready</div>';
+    : '<div class="slots narrow">'+['1','4','5','4'].map((n,i)=>`<div class="slot"><div class="row one"><span class="cw"><span class="hm"></span>${lab(n)}</span></div><div class="cnt">${i?'':'<span style="left:12.5%">1</span>'}</div></div>`).join('')+'</div>';  // start screen (CJ, Nov 17): a sample play-along line instead of "Ready"
   $('countin').innerHTML=''; setBar(0);
   $('nextBtn').textContent= state==='done'?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('nextBtn').disabled= state==='loading';
   $('pauseBtn').disabled=true; $('backBtn').disabled=true;
+  $('how').hidden= !!state;
+  if(!state){ $('progress').innerHTML='<span class="tag">Example</span>'; placeCount(0,[{n:'1',at:0,b:4}],0); }
 }
 async function start(){
   if(!audio()) return idleView('error');
