@@ -233,7 +233,7 @@ const DEG_IV={maj:[0,4,7],min:[0,3,7],dim:[0,3,6]};
 function buildScaleSequence(n){
   const keys=settings.keyMode==='all'?ALL12:settings.keys, pool=[];
   const pool2=[];
-  for(const k of keys) for(let p=1;p<7;p++){ pool.push({k,p:[p]}); for(let q=p+1;q<7;q++) pool2.push({k,p:[p,q]}); }
+  for(const k of keys) for(let p=0;p<7;p++){ if(p) pool.push({k,p:[p]}); for(let q=p+1;q<7;q++) pool2.push({k,p:[p,q]}); }   // the 1 can be hidden only with two missing (CJ Nov 17)
   const seq=[], half=Math.ceil(n/2); let bag=[], bag2=[], last='';
   while(seq.length<n){
     const two=seq.length>=half, P=two?pool2:pool;
