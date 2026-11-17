@@ -164,13 +164,13 @@ select option { background: #141414; color: #fff; }\
 .cnt span.on { background: var(--blue); color: #141414; }\
 .cnt span.done { color: #4a4a4a; }\
 .cnt.wait div { visibility: hidden; }\
-.cnt { flex-direction: column; gap: 2px; top: -104px; }\
-.cnt b { font-size: 12px; letter-spacing: .14em; color: var(--mute); font-weight: 600; }\
-.cnt div.cbig { display: block; font-size: 64px; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; min-height: 64px; }\
-.cnt div.cmeter { display: block; font-size: 18px; font-weight: 600; letter-spacing: .04em; color: var(--ink); }\
+.cnt { flex-direction: column; gap: 2px; top: 0; left: 0; transform: translateY(-50%); }\
+.cnt b { display: none; }\
+.cnt div.cbig { display: block; font-size: 72px; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; min-height: 72px; text-align: center; }\
+.cnt div.cmeter { display: block; font-size: 20px; font-weight: 600; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }\
 .cnt .cmeter i { font-style: normal; margin-left: .7em; } .cnt .cmeter small { font-size: .8em; font-weight: 600; margin-left: .25em; }\
 .cnt.wait div.cbig { visibility: hidden; } .cnt.wait div.cmeter { visibility: visible; }\
-@media (max-width: 560px) { .cnt { top: -14px; } .cnt b { display: none; } .cnt div.cbig { font-size: 44px; min-height: 44px; } .cnt div.cmeter { font-size: 14px; } .stage > .now.cin .nm { visibility: hidden; } }\
+@media (max-width: 560px) { .cnt div.cbig { font-size: 44px; min-height: 44px; } .cnt div.cmeter { font-size: 13px; } }\
 .stage > .now.cin > .tag { visibility: hidden; }\
 .w.light .cnt span { background: #e9e6df; color: #9a968e; } .w.light .cnt span.on { background: var(--blue); color: #141414; }\
 @media (max-width: 560px) { .cnt { top: -12px; gap: 8px; } .cnt b { font-size: 12px; } .cnt div { gap: 5px; } .cnt span { width: 26px; height: 26px; font-size: 14px; border-radius: 5px; } }\
@@ -569,9 +569,13 @@ select option { background: #141414; color: #fff; }\
     var c = $('cnt'); if (!c) return;
     if (lbl) c.querySelector('b').textContent = lbl.replace(':', '');
     var nw = root.querySelector('.stage > .now');
-    if (k === null) { c.hidden = true; if (nw) nw.classList.remove('cin'); return; }
+    if (k === null) { c.hidden = true; if (nw) nw.classList.remove('cin'); var nx0 = root.querySelector('.stage > .nxt'); if (nx0) nx0.style.visibility = ''; return; }
     c.hidden = false; if (nw) nw.classList.add('cin'); c.classList.toggle('wait', k < 0);
     c.querySelector('.cbig').textContent = k >= 0 ? String(k + 1) : ''; c.querySelector('.cmeter i').textContent = st.bpm;
+    // to the right of the chord diagram (CJ Nov 17); the Next chord steps aside if there's no room
+    var sv = nw && nw.querySelector('svg'), nx = root.querySelector('.stage > .nxt');
+    if (sv) { var a = sv.getBoundingClientRect(), r = nw.getBoundingClientRect(); c.style.left = (a.right - r.left + 14) + 'px'; c.style.top = (a.top - r.top + a.height / 2) + 'px';
+      if (nx) { var cr = c.getBoundingClientRect(), xr = nx.getBoundingClientRect(); nx.style.visibility = cr.right > xr.left + 4 ? 'hidden' : ''; } }
   }
   function tick(k) {
     if (k < BEATS && rec.state === 'rec' && rec.mode === 'take') { cntShow(k); return; }
@@ -605,7 +609,7 @@ select option { background: #141414; color: #fff; }\
     while (nt < ctx.currentTime + .12) {
       // Count-in: four clicks before the bar starts.
       // Record: one bar of plain clicks to settle in before the count-in shows.
-      if (beat < -BEATS) { click(nt, (beat + 2 * BEATS) % BEATS === 0 ? 2 : 0); click(nt + 30 / st.bpm, -2); if (beat + 2 * BEATS === 0) (function (t) { tos.push(setTimeout(function () { if (run) cntShow(-1, rec.take && rec.take.pr ? 'Practice in:' : 'Record in:'); }, Math.max(0, (t - ctx.currentTime) * 1000))); })(nt); nt += 60 / st.bpm; beat++; continue; }
+      if (beat < -BEATS) { click(nt, (beat + 2 * BEATS) % BEATS === 0 ? 2 : 0); click(nt + 30 / st.bpm, -2); if (rec.state === 'rec' && rec.mode === 'take') (function (k, t) { tos.push(setTimeout(function () { if (run) cntShow(k); }, Math.max(0, (t - ctx.currentTime) * 1000) + 5)); })(beat + 2 * BEATS, nt); if (beat + 2 * BEATS === 0) (function (t) { tos.push(setTimeout(function () { if (run) cntShow(-1, rec.take && rec.take.pr ? 'Practice in:' : 'Record in:'); }, Math.max(0, (t - ctx.currentTime) * 1000))); })(nt); nt += 60 / st.bpm; beat++; continue; }
       if (beat < 0) { click(nt, beat + BEATS === 0 ? 2 : 0); (function (k, t) { tos.push(setTimeout(function () { if (run) tick(k); }, Math.max(0, (t - ctx.currentTime) * 1000))); })(beat + BEATS, nt); nt += 60 / st.bpm; beat++; continue; }
       // Practice round: after it, a fresh 1 2 3 4 count-in bar before the recorded pass.
       var tkr = rec.state === 'rec' && rec.mode === 'take' && rec.take.pr, tot = tkr ? rec.take.total : 0;
