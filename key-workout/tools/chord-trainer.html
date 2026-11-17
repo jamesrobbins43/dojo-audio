@@ -299,6 +299,16 @@ select option { background: #141414; color: #fff; }\
 .pills button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: #141414; }\
 #tsets { flex-wrap: nowrap; gap: 4px; } #tsets button { flex: 0 1 auto; min-width: 0; padding: 6px 7px; font-size: 14px; white-space: nowrap; letter-spacing: -.01em; }\
 .w:not(.t-ts) .tsf { display: none !important; }\
+.coach { position: absolute; z-index: 6; max-width: min(340px, 86%); padding: 9px 14px; border-radius: 10px; background: #000; border: 2px solid #18CEFB; color: #fff; font-size: 18px; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,.6); line-height: 1.3; text-align: center; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; font-family: inherit; }\
+.coach.on { opacity: 1; transform: none; }\
+.coach::before { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 2px); width: 3px; height: 22px; background: #18CEFB; transform: translateX(-50%); }\
+.coach::after { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 22px); transform: translateX(-50%); border: 9px solid transparent; border-bottom: 0; border-top: 11px solid #18CEFB; }\
+.coach.below::before { top: auto; bottom: calc(100% + 2px); }\
+.coach.below::after { top: auto; bottom: calc(100% + 22px); border-top: 0; border-bottom: 11px solid #18CEFB; }\
+.coach.right::before { left: auto; right: calc(100% + 2px); top: 50%; width: 22px; height: 3px; transform: translateY(-50%); }\
+.coach.right::after { left: auto; right: calc(100% + 22px); top: 50%; transform: translateY(-50%); border: 9px solid transparent; border-left: 0; border-right: 11px solid #18CEFB; }\
+@media (max-width: 560px) { .coach { font-size: 16px; padding: 8px 11px; } }\
+.w.demo .bt.on { background: #18CEFB; color: #141414; }\
 </style>\
 <div class="w">\
   <div class="top">\
@@ -565,7 +575,7 @@ select option { background: #141414; color: #fff; }\
     pos = (np + seq.length) % seq.length;
     stage();
   }
-  function refresh() { board(); buildSeq(); stage(); save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); }
+  function refresh() { board(); buildSeq(); stage(); save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); if (DMok && !run && !busy() && !root.querySelector('.w').classList.contains('m-rec')) demoGo(); }
 
   // 1, 2 or 4 measures per chord (Bars per chord), each with a 1-2-3-4 count. The first beat (blue) is the chord change.
   function timer(on) {
@@ -656,6 +666,7 @@ select option { background: #141414; color: #fff; }\
     if (tos.length > 64) tos = tos.slice(-32);
   }
   function start() {
+    demoStop(true);
     if (!seq.length) return;
     if (rec.play) stopPlay();
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; }
@@ -1422,6 +1433,7 @@ select option { background: #141414; color: #fff; }\
   // Tuner: standard tuning, nearest string, cents off. Uses the same input as recording.
   var TS = [40, 45, 50, 55, 59, 64], TN = ['E', 'A', 'D', 'G', 'B', 'E'], tun = { on: false, raf: 0, hist: [], miss: 0 };
   function tunerOpen(on) {
+    if (on) demoStop(false);
     if (on && busy()) return;
     if (on && run) stop();
     tun.on = on; root.querySelector('.w').classList.toggle('tune', on); $('tnb').classList.toggle('on', on);
@@ -1477,6 +1489,7 @@ select option { background: #141414; color: #fff; }\
     if (busy()) return;
     if (tun.on) tunerOpen(false);
     if (run) stop();
+    demoStop(true);
     var w = root.querySelector('.w'); w.classList.toggle('m-rec', m === 'rec');
     // Record mode needs the room: hide the site's header bar while it's on.
     var sh = document.querySelector('header#header'); if (sh) sh.style.display = m === 'rec' ? 'none' : '';
@@ -1492,6 +1505,51 @@ select option { background: #141414; color: #fff; }\
   $('pr').addEventListener('change', function () { st.pr = +this.value; save(); recInfo(); });
   $('strum').addEventListener('change', function () { st.strum = +this.value; save(); recInfo(); });
 
+
+  // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
+  var DM = null, DMok = false;
+  function coach(el, text, side) {
+    var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
+    if (!el) { if (c) c.classList.remove('on'); return; }
+    if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
+    if (!c) { c = document.createElement('div'); c.className = 'coach'; c.setAttribute('aria-live', 'polite'); w.appendChild(c); }
+    c.classList.remove('on', 'below', 'right'); c.textContent = text;
+    var hr = w.getBoundingClientRect(), r = el.getBoundingClientRect();
+    if (side === 'right' && r.right - hr.left + 48 + Math.min(340, c.offsetWidth) > hr.width - 4) side = 'below';
+    if (side) c.classList.add(side);
+    var cw = c.offsetWidth, chh = c.offsetHeight;
+    if (side === 'right') { c.style.left = (r.right - hr.left + 48) + 'px'; c.style.top = Math.max(4, r.top - hr.top + r.height / 2 - chh / 2) + 'px'; }
+    else {
+      var cx = r.left + r.width / 2 - hr.left, left = Math.max(4, Math.min(hr.width - cw - 4, cx - cw / 2));
+      c.style.left = left + 'px'; c.style.top = (side === 'below' ? r.bottom - hr.top + 48 : r.top - hr.top - chh - 48) + 'px';
+      c.style.setProperty('--px', Math.max(14, Math.min(cw - 14, cx - left)) + 'px');
+    }
+    void c.offsetWidth; c.classList.add('on');
+  }
+  function demoBeats(on) {
+    if (!DM) return; clearInterval(DM.iv); DM.iv = null; if (!on) return;
+    DM.d = 0; timer(0);
+    DM.iv = setInterval(function () { if (!DM) return; DM.d++; var b = DM.d % BPC; if (b === 0) move(1); timer(b); }, 60000 / st.bpm);
+  }
+  function demoStop(reset) {
+    if (!DM) return; clearTimeout(DM.t); clearInterval(DM.iv); DM = null; coach(null);
+    root.querySelector('.w').classList.remove('demo'); tagSet('Play'); timer(-1); if (reset) { pos = 0; stage(); }
+  }
+  function demoGo() { demoStop(true); if (!seq.length) return; DM = { i: 0, step: -1, d: 0, iv: null, t: null }; root.querySelector('.w').classList.add('demo'); tagSet('Example'); demoStep(); }
+  function demoStep() {
+    var k = DM.i, s = DM.step;
+    function nx(ms, i, stp) { DM.t = setTimeout(function () { if (!DM) return; DM.i = i; DM.step = stp; demoStep(); }, ms); }
+    if (k >= 4) { demoBeats(false); timer(-1); coach($('play'), 'Press Start when ready'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays through twice, then stops (CJ)
+    if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
+      coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 1); }
+    if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
+    if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
+    nx(11000, k + 1, k % 2 ? -1 : 0);
+  }
+  $('prev').addEventListener('click', function () { demoStop(false); });
+  $('next').addEventListener('click', function () { demoStop(false); });
 
   (function () {
     var O = window.KWOC_OPTS || [], sel = $('kwcapo'), BASE = [40, 45, 50, 55, 59, 64];
@@ -1517,6 +1575,7 @@ select option { background: #141414; color: #fff; }\
     $('type').addEventListener('change', function () { window.kwMode(); refresh(); });
   })();
   setBpm(st.bpm); refresh(); timer(-1);
+  DMok = true; demoGo();
 })();
 </script>
   

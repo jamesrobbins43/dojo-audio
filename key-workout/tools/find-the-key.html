@@ -423,9 +423,9 @@ function drawExample(){
   // CJ, Nov 17: one instruction box after settings, then just the reveal (no box)
   const SAY=[
     ['Identify which position each chord belongs to', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 11000, 22],
-    [null, null, false, 10000, 0]];
+    [null, null, false, 3500, 0]];
   // first step of every loop explains the settings (CJ, Nov 17), then example 1 and example 2 (question with its box, then the reveal)
-  const SET=['First, pick which chords can show up, your seconds and how many problems.', ()=>$('setup'), true, 13000, 12];
+  const SET=['First pick your settings', ()=>$('setup'), true, 4000, 12];
   const tick=()=>{
     // plays through twice, then stops on the last answer with one box on Start, which fades after 6 s (CJ, Nov 17)
     if(step===10){ tip('Press Start when ready',$('nextBtn'),false,12); step++; demoT=setTimeout(tick,12000); return; }
@@ -435,7 +435,7 @@ function drawExample(){
       const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
       $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
       const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
-      drawRow(c,ans,ans,.8); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
+      drawRow(c,ans,ans,.35); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
       if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
       else setBar(0,setStep?0:SAY[0][3]);
       $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
