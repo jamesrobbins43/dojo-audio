@@ -282,7 +282,7 @@ const DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D'
   {mode:'steps',st:'half',dr:'down',str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
 const DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.','Start on this note and say the answer before the bar fills.','The answer shows here: D, 2 frets higher.'],
   ['A half step is 1 fret. Down means toward the nut.','Start on F and find the note 1 fret lower.','The answer: E, 1 fret lower.']];
-const SET_TIP='First pick your settings: half steps, whole steps or both, which keys, how fast the answer shows, and how many notes.', DEMO_END='Press Start when ready';
+const SET_TIP='First pick your settings', DEMO_END='Press Start when ready';
 // demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
 function coach(host,el,text,below){
   let c=host.querySelector(':scope > .coach');
@@ -305,11 +305,11 @@ function drawExample(i=0,step=-1){
   $('progress').innerHTML='<span class="tag">Example</span>';
   if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,step>=0); }
   const dots=$('board').querySelectorAll('circle[r="22"]');
-  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),13000); return; }
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   $('said').textContent=tip[step];
   if(step===0){ setBar(0,22000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
   else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),11000); }
-  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),12000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),3000); }
 }
 function start(){
   audio(); preloadSamples();

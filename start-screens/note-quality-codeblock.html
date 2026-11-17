@@ -770,15 +770,15 @@ function demo(i, step) {
   hold.style.transition = 'none'; hold.style.width = '0';
   if (step < 3) { clearScores(); $('exTag').hidden = true; }
   if (step === 0) { cur = -1; drawBoard(); renderStrings(); status('Ready', 'Strum once, then pick each string');
-    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings: the chord (or a triad), your capo, and your input, a mic or your audio interface.', true); return next(13000); }
+    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings', true); return next(4000); }
   if (step === 1) { status('Strum once', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
     coach(H, $('board'), 'Press Start and strum the chord once. Let it ring until the blue bar fills.'); return next(11000); }
   if (step === 2) { cur = 2; drawBoard(); renderStrings(); status('Pick the D string', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
     coach(H, $('board'), 'Then pick each string on its own when it lights up.'); return next(11000); }
   if (step === 3) { cur = -1; drawBoard(); renderStrings(); status('Done', 'Here is how it sounded', true); $('exTag').hidden = false;
     [['scO', 92], ['scN', 95], ['scT', 88], ['scR', 84], ['scC', 96]].forEach(a => setScore(a[0], a[1]));
-    coach(H, $('scO').closest('.card'), 'At the end you get a score for the notes, tuning, ring and how clean it sounds.', true); return next(12000); }
-  coach(H, $('tips').closest('.card'), 'Below that are tips on what to work on next.'); return next(12000);
+    coach(H, $('scO').closest('.card'), 'At the end you get a score for the notes, tuning, ring and how clean it sounds.', true); return next(11000); }
+  coach(H, $('tips').closest('.card'), 'Below that are tips on what to work on next.'); return next(11000);
 }
 async function begin(steps) {
   if (demoOn) { example(false); clearScores(); }
