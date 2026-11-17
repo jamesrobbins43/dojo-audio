@@ -252,7 +252,7 @@ function buildSequence(n){
   const pool=[];
   // All keys (CJ): any of the 12 notes, each one spelled with sharps or flats at random (start note and answer alike). Chosen keys: the notes of those keys' major scales, spelled in the key
   const starts = settings.keyMode==='all' ? ALL12.map(pc=>({pc,key:-1})) : settings.keys.flatMap(k=>keyScale(k).map(t=>({pc:t.pc,key:k,name:t.name})));
-  for(const n0 of starts) for(const st of settings.steps) for(const dr of settings.dirs) pool.push({...n0,st,dr});
+  for(const n0 of starts) for(const st of settings.steps) for(const dr of settings.dirs){ const apc=(n0.pc+DIRS[dr].s*STEPS[st].n+12)%12; if(keyScale(n0.key).some(t=>t.pc===apc)) pool.push({...n0,st,dr}); }
   const seq=[]; let bag=[];
   while(seq.length<n){
     if(!bag.length) bag=pool.slice().sort(()=>Math.random()-.5);
