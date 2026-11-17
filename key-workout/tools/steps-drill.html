@@ -111,11 +111,20 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .credit{font-size:12px;color:var(--muted);margin:0}
-/* start screen (CJ, Nov 17): an example + short how-to before Start, same look as Find the Number */
+/* start screen (CJ, Nov 17): two examples loop before Start, with blue instruction boxes pointing at each step */
 .tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
-.how li{margin:2px 0}.how li::marker{color:var(--accent);font-weight:700}
-.how b{color:var(--fg);font-weight:600}
+/* the looping demo uses DGU blue instead of orange so it reads as different from the real drill (CJ, Nov 17) */
+.demo .ask .dir{color:var(--brand)}
+.demo .timer i{background:var(--brand)}
+.demo .stage{position:relative}
+/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:16px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach.on{opacity:1;transform:none}
+.coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
+.coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
+@media (max-width:560px){.coach{font-size:14px;padding:7px 10px}}
+.coach.below::before{top:auto;bottom:calc(100% + 2px)}
+.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}
 </style>
 
@@ -159,11 +168,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
-    <ol class="how" id="how">
-      <li>A note shows on one string and plays, with <b>half step</b> or <b>whole step</b>, <b>up</b> or <b>down</b>.</li>
-      <li>Before the timer runs out, find and say the answer. A half step is <b>1 fret</b>, a whole step is <b>2 frets</b>. Up moves toward the body, down toward the nut.</li>
-      <li>Then the answer lights up and plays, so you can check yourself.</li>
-    </ol>
   </section>
 
   <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
@@ -341,6 +345,7 @@ function drawBoard(c,revealed,popAns){
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
   }
+  if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
   svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`:''):'Guitar neck');
 }
@@ -427,7 +432,7 @@ function setBar(fromPct,ms){
   if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
 }
 function idle(over){
-  if(S) clearT(); S=over?S:null; if(S) S.over=true;
+  demoStop(); if(S) clearT(); S=over?S:null; if(S) S.over=true;
   $('progress').innerHTML='<b>&nbsp;</b>'; // keeps the line's height so nothing shifts
   $('ask').className='ask'+(over?' brand':''); $('ask').textContent=over?'Round complete':'Ready';
   $('said').textContent='';
@@ -435,22 +440,49 @@ function idle(over){
   $('nextBtn').textContent=over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('replayBtn').disabled=true;
   drawPair(null); setArrow(null); $('keyTag').textContent=''; syncMode(); drawScale(null);
-  $('how').hidden=!!over;
   if(!over) drawExample();
 }
-// start screen (CJ, Nov 17): a worked example instead of an empty neck: C on the G string, whole step up = D two frets higher
-function drawExample(){
-  const K=settings.keys[0], sc=keyScale(K), OP=[40,45,50,55,59,64]; let str=3, fret=5; for(const s0 of [3,2,4,1,5,0]){ const f=((sc[0].pc-OP[s0])%12+12)%12; if(f>=1&&f<=9){ str=s0; fret=f; break; } }
-  const ex={mode:'steps',st:'whole',dr:'up',str,fret,to2:fret+2,from:sc[0].name,to:sc[1].name,key:K,m1:OP[str]+fret,m2:OP[str]+fret+2};
+// start screen (CJ, Nov 17): two worked examples loop until Start, drawn in DGU blue (no sound), each step with a blue box + arrow
+let demoT=null, DEMO=false;
+const DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
+  {mode:'steps',st:'half',dr:'down',str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
+const DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.','Start on this note and say the answer before the bar fills.','The answer shows here: D, 2 frets higher.'],
+  ['A half step is 1 fret. Down means toward the nut.','Start on F and find the note 1 fret lower.','The answer: E, 1 fret lower.']];
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c); }
+  c.classList.remove('on'); c.textContent=text; c.classList.toggle('below',!!below);
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+36 : r.top-hr.top-chh-36)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('ask').parentNode,null); }
+function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
+  const at=(pc,lo,hi)=>{ for(const s0 of [1,2,3,0,4,5]){ const f=((pc-OPEN[s0])%12+12)%12; if(f>=lo&&f<=hi) return [s0,f]; } return [1,lo]; };
+  const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
+  return [{ex:{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
+    tip:['Read the step. A whole step up is 2 frets toward the body.',`Start on ${sc[0].name} and say the answer before the bar fills.`,`The answer shows here: ${sc[1].name}, 2 frets higher.`]},
+   {ex:{mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1},
+    tip:['A half step is 1 fret. Down means toward the nut.',`Start on ${sc[3].name} and find the note 1 fret lower.`,`The answer: ${sc[2].name}, 1 fret lower.`]}]; }
+function drawExample(i=0,step=0){
+  clearTimeout(demoT); DEMO=true; $('session').classList.add('demo');
+  const DM=kwDemos(), k=i%DM.length, ex=DM[k].ex, tip=DM[k].tip, host=$('ask').parentNode, rev=step===2;
   $('progress').innerHTML='<span class="tag">Example</span>';
-  $('ask').innerHTML=`${STEPS.whole.name} <span class="dir">up</span>`;
-  drawPair(ex,true,false);
-  $('said').textContent=`Example. Whole step up from ${ex.from} is ${ex.to}, two frets higher.`;
+  if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,true); }
+  $('said').textContent=tip[step];
+  const dots=$('board').querySelectorAll('circle[r="22"]');
+  if(step===0){ setBar(0,5200); coach(host,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),2600); }
+  else if(step===1){ coach(host,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),2600); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,0),3000); }
 }
 function start(){
   audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
-  $('ask').className='ask'; $('how').hidden=true; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  demoStop(); $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   enter(true);
 }
 const card=()=>S.seq[S.i];

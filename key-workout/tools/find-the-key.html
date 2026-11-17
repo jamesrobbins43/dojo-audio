@@ -129,9 +129,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 #nextBtn{min-width:150px}
 .stage.demo{--num:var(--brand);--accent:var(--brand)} /* the start-screen demo is blue so it reads as different from the real drill (CJ, Nov 17) */
 .tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
-.how li{margin:2px 0}.how li::marker{color:var(--num);font-weight:700}
-.how b{color:var(--fg);font-weight:600}
+.stage{position:relative}
+/* start-screen callouts (CJ, Nov 17): one-sentence steps in black boxes with arrows pointing at each part of the demo */
+.tip{position:absolute;z-index:3;width:max-content;max-width:min(92%,440px);background:#000;color:var(--fg);border:2px solid var(--brand);border-radius:12px;padding:10px 16px;font-size:clamp(15px,2.4vw,18px);font-weight:600;line-height:1.3;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.7);animation:tipIn .25s ease-out both;pointer-events:none}
+/* blue stem + arrowhead, same as the other tools' demo callouts */
+.tip::before{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + 2px);width:3px;height:var(--stem,22px);background:var(--brand);transform:translateX(-50%)}
+.tip::after{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + var(--stem,22px));transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid var(--brand)}
+.tip.up::before{top:auto;bottom:calc(100% + 2px)}
+.tip.up::after{top:auto;bottom:calc(100% + var(--stem,22px));border-top:0;border-bottom:11px solid var(--brand)}
+@keyframes tipIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .credit{font-size:12px;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.slot .deg.pop{animation:none}.timer i{transition:none!important}}
 </style>
@@ -156,6 +162,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       <div class="chart" id="chart" hidden aria-label="Key chart"></div>
       <div class="row" id="row"></div>
       <div class="sr" id="said" aria-live="polite"></div>
+      <div class="tip" id="tip" hidden></div>
       <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
     </div>
     <div class="controls">
@@ -171,11 +178,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
-    <ol class="how" id="how">
-      <li>You'll see <b>4 chords from one major key</b>, mixed up.</li>
-      <li>Before the timer runs out, say <b>each chord's number</b> (1 to 7). The chart shows the 7 positions.</li>
-      <li>Then the numbers pop up above the chords, so you can check yourself.</li>
-    </ol>
   </section>
 
   <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
@@ -395,13 +397,20 @@ function idle(over){
   $('nextBtn').textContent=over?'Go again':'Start'; $('nextBtn').style.visibility=''; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true;
   drawRow(null); drawChart(null); syncKey();
-  $('how').hidden=!!over;
   if(!over) drawExample();
 }
 // start screen (CJ, Nov 17): a looping demo in DGU blue instead of a blank stage. Two example problems, each shown as the
 // question (timer bar filling) then the answer (key fills in, numbers pop up), repeating until Start. No sound.
 let demoT=null;
-function stopDemo(){ clearTimeout(demoT); demoT=null; $('stage').classList.remove('demo'); }
+function stopDemo(){ clearTimeout(demoT); demoT=null; $('stage').classList.remove('demo'); $('tip').hidden=true; }
+// a black callout box with an arrow, above ('down' arrow) or below ('up' arrow) the target, kept inside the stage
+function tip(text,target,below,stem=22){
+  const t=$('tip'), st=$('stage').getBoundingClientRect(), r=target.getBoundingClientRect?target.getBoundingClientRect():target;
+  t.hidden=false; t.textContent=text; t.className='tip '+(below?'up':'down'); t.style.animation='none'; void t.offsetWidth; t.style.animation='';
+  const w=t.offsetWidth, h=t.offsetHeight, cx=r.left+r.width/2-st.left, left=Math.max(0,Math.min(st.width-w,cx-w/2));
+  t.style.left=left+'px'; t.style.top=(below?r.bottom-st.top+stem+14:r.top-st.top-h-stem-14)+'px';
+  t.style.setProperty('--stem',stem+'px'); t.style.setProperty('--ax',Math.max(18,Math.min(w-18,cx-left))+'px');
+}
 function demoCards(){
   const ks=settings.keyMode==='pick'&&settings.keys.length?settings.keys:[7,2], k1=ks[0], k2=ks.length>1?ks[1]:ks===settings.keys?k1:2;
   return [buildSequence(1,k1,[4,3,0,5])[0], buildSequence(1,k2,[0,1,4,3])[0]];
@@ -410,23 +419,31 @@ function drawExample(){
   stopDemo(); $('stage').classList.add('demo');
   $('progress').innerHTML='<span class="tag">Example</span>';
   const cards=demoCards(); let step=0;
+  // each example: chords (callout on the chords) -> timer (callout on the bar) -> answer (callout under the row)
+  const SAY=[
+    ['These 4 chords all come from one major key.', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 1900, 22],
+    [oneKey()?'Give each chord its number (1 to 7) before the bar fills up.':'Name the key and give each chord its number before the bar fills up.', ()=>{ const ns=[...$('chart').querySelectorAll('.kn')].map(e=>e.getBoundingClientRect()); return {left:ns[0].left, width:ns[6].right-ns[0].left, top:ns[0].top, bottom:ns[0].bottom}; }, true, 1900, 12],
+    [oneKey()?'The numbers pop up so you can check yourself.':'The key and numbers pop up so you can check.', ()=>{ const cs=[...$('row').querySelectorAll('.ch')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:cs[0].top, bottom:cs[0].bottom-6}; }, true, 3200, 10]];
   const tick=()=>{
-    const c=cards[(step>>1)%2], ans=step%2===1, kn=KEYS[c.key][0], known=ans||oneKey();
-    const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
-    $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
-    const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
-    drawRow(c,ans,ans,.22); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
-    if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
-    else setBar(0,1500);
-    $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
-    step++; demoT=setTimeout(tick,ans?2600:1500);
+    const c=cards[Math.floor(step/3)%2], part=step%3, ans=part===2, kn=KEYS[c.key][0], known=ans||oneKey();
+    if(part!==1){
+      const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
+      $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!oneKey()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
+      const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
+      drawRow(c,ans,ans,.22); drawChart(c.key,ans?'full':oneKey()?'one':'nums',used,[]); syncKey();
+      if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
+      else setBar(0,SAY[0][3]+SAY[1][3]);
+      $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
+    }
+    const [txt,tg,below,ms,stem]=SAY[part]; tip(txt,tg(),below,stem);
+    step++; demoT=setTimeout(tick,ms);
   };
   tick();
 }
 function start(){
   stopDemo(); audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
-  $('ask').className='ask'; $('how').hidden=true; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   enter(true);
 }
 const card=()=>S.seq[S.i];
