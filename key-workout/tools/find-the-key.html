@@ -127,6 +127,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 #keyBtn{min-width:112px}
 #nextBtn{min-width:150px}
+.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted)}
+.how li{margin:2px 0}.how li::marker{color:var(--num);font-weight:700}
+.how b{color:var(--fg);font-weight:600}
 .credit{font-size:12px;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.slot .deg.pop{animation:none}.timer i{transition:none!important}}
 </style>
@@ -166,6 +170,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
       </div>
     </div>
+    <ol class="how" id="how">
+      <li>You'll see <b>4 chords from one major key</b>, mixed up.</li>
+      <li>Before the timer runs out, say <b>each chord's number</b> (1 to 7). The chart shows the 7 positions.</li>
+      <li>Then the numbers pop up above the chords, so you can check yourself.</li>
+    </ol>
   </section>
 
   <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
@@ -258,15 +267,15 @@ function pickExtras(n){
   return out;
 }
 // each problem: one key, 1 4 5 plus extra chords up to the size, in a shuffled order; never the same key twice in a row
-function buildSequence(n){
-  const keys=settings.keyMode==='all'?ALL12:settings.keys, mx=maxSize();
+function buildSequence(n,fixKey,fixDegs){
+  const keys=fixKey!=null?[fixKey]:settings.keyMode==='all'?ALL12:settings.keys, mx=maxSize();
   const seq=[]; let bag=[];
   while(seq.length<n){
     if(!bag.length) bag=shuffle(keys.slice());
     let k=bag.pop(); const prev=seq[seq.length-1];
     if(prev&&prev.key===k&&bag.length){ bag.unshift(k); k=bag.pop(); }
     const size=mx;
-    let degs=shuffle([...ALWAYS,...pickExtras(size-3)]);
+    let degs=fixDegs?fixDegs.slice():shuffle([...ALWAYS,...pickExtras(size-3)]);
     if(prev&&prev.degs.join()===degs.join()&&degs.length>1) degs.push(degs.shift()); // never the exact same row twice in a row
     const sc=keyScale(k);
     const chords=degs.map(d=>{ const [cd,bd]=SLASH[d]||[d,d], r=sc[cd], b=sc[bd]; let m=48; while(m%12!==r.pc) m++; let lo=40; while(lo%12!==b.pc) lo++; const q=DEG_Q[d];
@@ -385,11 +394,21 @@ function idle(over){
   $('nextBtn').textContent=over?'Go again':'Start'; $('nextBtn').style.visibility=''; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true;
   drawRow(null); drawChart(null); syncKey();
+  $('how').hidden=!!over;
+  if(!over) drawExample();
+}
+// start screen (CJ, Nov 17): instead of a blank stage, a worked example: Key of G, D C G Em with 5 4 1 6m above, and the key chart's 7 positions
+function drawExample(){
+  const k=settings.keyMode==='pick'&&settings.keys.length?settings.keys[0]:7, ex=buildSequence(1,k,[4,3,0,5])[0], kn=KEYS[k][0];
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  $('ask').innerHTML=`Key of <span class="kb on"><span class="dir">${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}</span></span>`;
+  drawRow(ex,true,false); drawChart(k,'full',[4,3,0,5],[]); syncKey();
+  $('said').textContent=`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+ex.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', ');
 }
 function start(){
   audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
-  $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  $('ask').className='ask'; $('how').hidden=true; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   enter(true);
 }
 const card=()=>S.seq[S.i];
