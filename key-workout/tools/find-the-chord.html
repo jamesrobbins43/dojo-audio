@@ -438,7 +438,7 @@ function coach(host,el,text,below){
 }
 // start screen (CJ, Nov 17): two worked examples in DGU blue, no sound; a box + arrow per step; twice through, then stops
 let demoT=null;
-const DEMO_TWO=false; // Key Workout sets this true: there the second example hides two chords and miss is a list
+const DEMO_TWO=true; // Key Workout sets this true: there the second example hides two chords and miss is a list
 function demoStop(){ clearTimeout(demoT); demoT=null; $('session').classList.remove('demo'); coach($('ask').closest('.wrap'),null); }
 // Key Workout hides one chord in the first half of a round and two in the second (miss is then a list)
 function demoCard(k,ps){
@@ -454,7 +454,7 @@ function drawExample(i=0,step=-1){
   const k=settings.keyMode==='all'?ALL12[0]:settings.keys[0], ps=i%2===0?[4]:two?[0,5]:[5], c=demoCard(k,ps);
   $('session').classList.add('demo');
   $('progress').innerHTML='<span class="tag">Example</span>';
-  const kn=KEYS[k][0], hide=ps.includes(0)&&step<2;
+  const kn=KEYS[k][0], hide=false;
   $('ask').className='ask'; $('ask').innerHTML=hide?'Key of <span class="dir">?</span>':`Key of <span class="dir">${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}</span>`;
   drawScale(c,step===2,step===2);
   const q=$('scale').querySelector('.ch.q');
