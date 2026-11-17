@@ -438,7 +438,7 @@ function drawExample(i=0,step=-1){
   drawBoard(ex);
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the bar fills.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
-  if(step===0){ setBar(0,22000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
+  if(step===0){ setBar(0,4000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
   else if(step===1){ demoT=setTimeout(()=>drawExample(i,2),11000); }
   else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[1]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),9000); }
 }

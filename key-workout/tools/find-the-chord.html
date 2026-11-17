@@ -462,9 +462,9 @@ function drawExample(i=0,step=-1){
   const q=$('scale').querySelector('.ch.q');
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(H,$('setup'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   if(step===0){ setBar(0,22000);
-    coach(H,q||$('scale'),two?'Later in the round two chords go missing. The 1 chord only goes missing with another one.':'One chord of the key is missing. Name it and its number before the bar fills.',true);
+    coach(H,q||$('scale'),two?'Later in the round two chords go missing. Name both before the bar fills.':'One chord of the key is missing. Name it before the bar fills.',true);
     demoT=setTimeout(()=>drawExample(i,1),11000); return; }
-  if(step===1){ coach(H,q||$('scale'),two?'Say both missing chords out loud, each with its name and number.':'Say the missing chord out loud: its name and its number.',true); demoT=setTimeout(()=>drawExample(i,2),11000); return; }
+  if(step===1){ coach(H,q||$('scale'),two?'Say the names of both missing chords out loud.':'Say the missing chord\'s name out loud.',true); demoT=setTimeout(()=>drawExample(i,2),11000); return; }
   const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null);
   demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),3000);
 }

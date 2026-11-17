@@ -448,8 +448,8 @@ function idle(over){
 let demoT=null, DEMO=false;
 let DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
   {mode:'steps',st:'half',dr:'down',str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
-let DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.','Start on this note and say the answer before the bar fills.','The answer shows here: D, 2 frets higher.'],
-  ['A half step is 1 fret. Down means toward the nut.','Start on F and find the note 1 fret lower.','The answer: E, 1 fret lower.']];
+let DEMO_TIPS=[['Learning half or whole step note intervals','Identify which note is a whole step up from C',''],
+  ['Learning half or whole step note intervals','Identify which note is a half step down from F','']]; // CJ's script, Nov 17
 const SET_TIP='First pick your settings', DEMO_END='Press Start when ready';
 // demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
 function coach(host,el,text,below){
@@ -469,8 +469,8 @@ function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
   const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
   DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
     {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
-  DEMO_TIPS=[['Read the step. A whole step up is 2 frets toward the body.',`Start on ${sc[0].name} and say the answer before the bar fills.`,`The answer shows here: ${sc[1].name}, 2 frets higher.`],
-    ['A half step is 1 fret. Down means toward the nut.',`Start on ${sc[3].name} and find the note 1 fret lower.`,`The answer: ${sc[2].name}, 1 fret lower.`]]; }
+  DEMO_TIPS=[['Learning half or whole step note intervals',`Identify which note is a whole step up from ${sc[0].name}`,''],
+    ['Learning half or whole step note intervals',`Identify which note is a half step down from ${sc[3].name}`,'']]; }   // CJ's script, Nov 17, with the page key's notes
 function drawExample(i=0,step=-1){
   clearTimeout(demoT); kwDemos();
   if(i>=2*DEMOS.length){ coach($('ask').closest('.wrap'),$('nextBtn'),DEMO_END); demoT=setTimeout(()=>coach($('ask').closest('.wrap'),null),6000); return; } // plays through twice, then stops (CJ)
@@ -483,7 +483,7 @@ function drawExample(i=0,step=-1){
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   $('said').textContent=tip[step];
   if(step===0){ setBar(0,22000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
-  else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else if(step===1){ const ps=$('board').querySelectorAll('path'); coach(H,ps[ps.length-1]||dots[0],tip[1]); /* points at the target note (the arrow's end) */ demoT=setTimeout(()=>drawExample(i,2),11000); }
   else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),3000); }
 }
 function start(){
