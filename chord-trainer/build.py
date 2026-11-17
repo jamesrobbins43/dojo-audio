@@ -96,6 +96,82 @@ rep("  function stop() { run = false; clearInterval(iv); tos.forEach(clearTimeou
 # opens in Practice so everything is on screen; Record sits on the right of the switch (CJ Nov 17)
 rep('<button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button>', '<button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button>')
 rep("  setMode($('go') ? 'rec' : 'prac');\n", "  setMode('prac');\n")
+# ---- start screen demo (CJ Nov 17, thread "Add how-to start screens to every Dojo tool") ----
+# Settings box, then two examples (play the chord with the click, beats count in blue, next chord / Record), black boxes
+# with blue arrows, no sound; plays through twice, then "Press Start when ready". Stops on Start; restarts on settings changes.
+CCSS = ('.coach { position: absolute; z-index: 6; max-width: min(340px, 86%); padding: 9px 14px; border-radius: 10px; background: #000; border: 2px solid #18CEFB; color: #fff; font-size: 18px; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,.6); line-height: 1.3; text-align: center; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; font-family: inherit; }\\\n'
+  '.coach.on { opacity: 1; transform: none; }\\\n'
+  '.coach::before { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 2px); width: 3px; height: 22px; background: #18CEFB; transform: translateX(-50%); }\\\n'
+  '.coach::after { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 22px); transform: translateX(-50%); border: 9px solid transparent; border-bottom: 0; border-top: 11px solid #18CEFB; }\\\n'
+  '.coach.below::before { top: auto; bottom: calc(100% + 2px); }\\\n'
+  '.coach.below::after { top: auto; bottom: calc(100% + 22px); border-top: 0; border-bottom: 11px solid #18CEFB; }\\\n'
+  '.coach.right::before { left: auto; right: calc(100% + 2px); top: 50%; width: 22px; height: 3px; transform: translateY(-50%); }\\\n'
+  '.coach.right::after { left: auto; right: calc(100% + 22px); top: 50%; transform: translateY(-50%); border: 9px solid transparent; border-left: 0; border-right: 11px solid #18CEFB; }\\\n'
+  '@media (max-width: 560px) { .coach { font-size: 16px; padding: 8px 11px; } }\\\n'
+  '.w.demo .bt.on { background: #18CEFB; color: #141414; }\\\n')
+rep('.w:not(.t-ts) .tsf { display: none !important; }\\\n</style>', '.w:not(.t-ts) .tsf { display: none !important; }\\\n' + CCSS + '</style>')
+rep("  function start() {\n    if (!seq.length) return;\n", "  function start() {\n    demoStop(true);\n    if (!seq.length) return;\n")
+rep("if (rec.state === 'arm' || rec.state === 'idle') recInfo(); }\n\n  // 1, 2 or 4 measures", "if (rec.state === 'arm' || rec.state === 'idle') recInfo(); if (DMok && !run && !busy() && !root.querySelector('.w').classList.contains('m-rec')) demoGo(); }\n\n  // 1, 2 or 4 measures")
+rep("    if (run) stop();\n    var w = root.querySelector('.w'); w.classList.toggle('m-rec'", "    if (run) stop();\n    demoStop(true);\n    var w = root.querySelector('.w'); w.classList.toggle('m-rec'")
+rep("  function tunerOpen(on) {\n", "  function tunerOpen(on) {\n    if (on) demoStop(false);\n")
+DEMO = r"""  // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
+  var DM = null, DMok = false;
+  function coach(el, text, side) {
+    var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
+    if (!el) { if (c) c.classList.remove('on'); return; }
+    if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
+    if (!c) { c = document.createElement('div'); c.className = 'coach'; c.setAttribute('aria-live', 'polite'); w.appendChild(c); }
+    c.classList.remove('on', 'below', 'right'); c.textContent = text;
+    var hr = w.getBoundingClientRect(), r = el.getBoundingClientRect();
+    if (side === 'right' && r.right - hr.left + 48 + Math.min(340, c.offsetWidth) > hr.width - 4) side = 'below';
+    if (side) c.classList.add(side);
+    var cw = c.offsetWidth, chh = c.offsetHeight;
+    if (side === 'right') { c.style.left = (r.right - hr.left + 48) + 'px'; c.style.top = Math.max(4, r.top - hr.top + r.height / 2 - chh / 2) + 'px'; }
+    else {
+      var cx = r.left + r.width / 2 - hr.left, left = Math.max(4, Math.min(hr.width - cw - 4, cx - cw / 2));
+      c.style.left = left + 'px'; c.style.top = (side === 'below' ? r.bottom - hr.top + 48 : r.top - hr.top - chh - 48) + 'px';
+      c.style.setProperty('--px', Math.max(14, Math.min(cw - 14, cx - left)) + 'px');
+    }
+    void c.offsetWidth; c.classList.add('on');
+  }
+  function demoBeats(on) {
+    if (!DM) return; clearInterval(DM.iv); DM.iv = null; if (!on) return;
+    DM.d = 0; timer(0);
+    DM.iv = setInterval(function () { if (!DM) return; DM.d++; var b = DM.d % BPC; if (b === 0) move(1); timer(b); }, 60000 / st.bpm);
+  }
+  function demoStop(reset) {
+    if (!DM) return; clearTimeout(DM.t); clearInterval(DM.iv); DM = null; coach(null);
+    root.querySelector('.w').classList.remove('demo'); tagSet('Play'); timer(-1); if (reset) { pos = 0; stage(); }
+  }
+  function demoGo() { demoStop(true); if (!seq.length) return; DM = { i: 0, step: -1, d: 0, iv: null, t: null }; root.querySelector('.w').classList.add('demo'); tagSet('Example'); demoStep(); }
+  function demoStep() {
+    var k = DM.i, s = DM.step;
+    function nx(ms, i, stp) { DM.t = setTimeout(function () { if (!DM) return; DM.i = i; DM.step = stp; demoStep(); }, ms); }
+    if (k >= 4) { demoBeats(false); timer(-1); coach($('play'), 'Press Start when ready'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays through twice, then stops (CJ)
+    if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
+      coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 1); }
+    if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
+    if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
+    nx(11000, k + 1, k % 2 ? -1 : 0);
+  }
+  $('prev').addEventListener('click', function () { demoStop(false); });
+  $('next').addEventListener('click', function () { demoStop(false); });
+
+  setBpm(st.bpm); refresh(); timer(-1);
+  DMok = true; demoGo();
+"""
+rep("\n  setBpm(st.bpm); refresh(); timer(-1);\n", "\n" + DEMO)
+# closed 4 (CJ Nov 17): only the 4 comes from Figtree ("DGU Digits"), first in every Outfit list; @font-face must be in the light DOM
+import json
+_ff = [l for l in open('/mnt/project-files/shared/closed-4-fontface.css', encoding='utf-8').read().splitlines() if l.startswith('@font-face')][0]
+rep("  var root = host.attachShadow({ mode: 'open' });",
+    "  if (!document.querySelector('style[data-dgu-digits]')) { var dg = document.createElement('style'); dg.setAttribute('data-dgu-digits', ''); dg.textContent = " + json.dumps(_ff) + "; document.head.appendChild(dg); }\n"
+    "  var root = host.attachShadow({ mode: 'open' });")
+rep('font-family: Outfit, "Helvetica Neue"', 'font-family: "DGU Digits", Outfit, "Helvetica Neue"')
+rep('font: 700 30px/1 Outfit,', 'font: 700 30px/1 "DGU Digits", Outfit,')
+rep('font-family="Outfit, Arial, sans-serif"', 'font-family="DGU Digits, Outfit, Arial, sans-serif"', 2)
 os.makedirs(os.path.join(H, 'preview'), exist_ok=True)
 open(os.path.join(H, 'chord-trainer-codeblock.html'), 'w', encoding='utf-8').write(s)
 open(os.path.join(H, 'preview', 'index.html'), 'w', encoding='utf-8').write(

@@ -14,16 +14,17 @@
     document.head.appendChild(lk);
   }
 
+  if (!document.querySelector('style[data-dgu-digits]')) { var dg = document.createElement('style'); dg.setAttribute('data-dgu-digits', ''); dg.textContent = "@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}"; document.head.appendChild(dg); }
   var root = host.attachShadow({ mode: 'open' });
   root.innerHTML = '\
 <style>\
 :host { all: initial; display: block; }\
 .w { --bg:#141414; --ink:#f2f2f2; --mute:#8c8c8c; --dim:#3a3a3a; --line:#303030; --card:#1b1b1b; --blue:#18CEFB;\
-  background: var(--bg); color: var(--ink); font-family: Outfit, "Helvetica Neue", Arial, sans-serif; font-size: 15px; line-height: 1.4;\
+  background: var(--bg); color: var(--ink); font-family: "DGU Digits", Outfit, "Helvetica Neue", Arial, sans-serif; font-size: 15px; line-height: 1.4;\
   max-width: 1280px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); box-sizing: border-box; -webkit-font-smoothing: antialiased; }\
 .w *, .w *::before, .w *::after { box-sizing: border-box; }\
 h1 { font-family: "Bebas Neue", Outfit, sans-serif; font-weight: 400; font-size: 46px; line-height: 1; letter-spacing: .01em; margin: 0; white-space: nowrap; }\
-h2 { font: 700 30px/1 Outfit, "Helvetica Neue", Arial, sans-serif; letter-spacing: -.01em; margin: 0 0 16px; }\
+h2 { font: 700 30px/1 "DGU Digits", Outfit, "Helvetica Neue", Arial, sans-serif; letter-spacing: -.01em; margin: 0 0 16px; }\
 .or { font-size: .5em; font-weight: 300; margin: 0 .35em; opacity: .75; }\
 .ext { font-size: .62em; margin-left: .03em; }\
 .ext .acc { font-size: .85em; }\
@@ -292,6 +293,16 @@ select option { background: #141414; color: #fff; }\
 .pills button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: #141414; }\
 #tsets { flex-wrap: nowrap; gap: 4px; } #tsets button { flex: 0 1 auto; min-width: 0; padding: 6px 7px; font-size: 14px; white-space: nowrap; letter-spacing: -.01em; }\
 .w:not(.t-ts) .tsf { display: none !important; }\
+.coach { position: absolute; z-index: 6; max-width: min(340px, 86%); padding: 9px 14px; border-radius: 10px; background: #000; border: 2px solid #18CEFB; color: #fff; font-size: 18px; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,.6); line-height: 1.3; text-align: center; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; font-family: inherit; }\
+.coach.on { opacity: 1; transform: none; }\
+.coach::before { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 2px); width: 3px; height: 22px; background: #18CEFB; transform: translateX(-50%); }\
+.coach::after { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 22px); transform: translateX(-50%); border: 9px solid transparent; border-bottom: 0; border-top: 11px solid #18CEFB; }\
+.coach.below::before { top: auto; bottom: calc(100% + 2px); }\
+.coach.below::after { top: auto; bottom: calc(100% + 22px); border-top: 0; border-bottom: 11px solid #18CEFB; }\
+.coach.right::before { left: auto; right: calc(100% + 2px); top: 50%; width: 22px; height: 3px; transform: translateY(-50%); }\
+.coach.right::after { left: auto; right: calc(100% + 22px); top: 50%; transform: translateY(-50%); border: 9px solid transparent; border-left: 0; border-right: 11px solid #18CEFB; }\
+@media (max-width: 560px) { .coach { font-size: 16px; padding: 8px 11px; } }\
+.w.demo .bt.on { background: #18CEFB; color: #141414; }\
 </style>\
 <div class="w">\
   <div class="top">\
@@ -481,7 +492,7 @@ select option { background: #141414; color: #fff; }\
     for (var f = 1; f <= fr; f++) s += '<line x1="' + x0 + '" x2="' + (x0 + gap * 5) + '" y1="' + (y0 + fh * f) + '" y2="' + (y0 + fh * f) + '" stroke="' + K.fret + '" stroke-width="1"/>';
     if (pos > 1) {
       s += '<line x1="' + x0 + '" x2="' + (x0 + gap * 5) + '" y1="' + y0 + '" y2="' + y0 + '" stroke="' + K.pos + '" stroke-width="1"/>';
-      s += '<text x="' + (x0 + gap * 5 + 7) + '" y="' + (y0 + fh * .5 + 3.5) + '" font-size="10" font-weight="500" font-family="Outfit, Arial, sans-serif" fill="' + K.lab + '">' + pos + 'fr</text>';
+      s += '<text x="' + (x0 + gap * 5 + 7) + '" y="' + (y0 + fh * .5 + 3.5) + '" font-size="10" font-weight="500" font-family="DGU Digits, Outfit, Arial, sans-serif" fill="' + K.lab + '">' + pos + 'fr</text>';
     } else s += '<rect x="' + (x0 - 1) + '" y="' + (y0 - 3) + '" width="' + (gap * 5 + 2) + '" height="3" fill="' + K.nut + '"/>';
     var opt = {};
     (c.opt || []).forEach(function (o) { (opt[o[0]] = opt[o[0]] || []).push(o[1]); });
@@ -498,7 +509,7 @@ select option { background: #141414; color: #fff; }\
         var cy = y0 + fh * (v - pos + .5), a = c.anchor.indexOf(i) > -1;
         s += dot(x, v, a ? '#18CEFB' : K.dot);
         var t = c.fingers && c.fingers[i] ? c.fingers[i] : c.root === i ? c.rl : '';
-        if (t) s += '<text x="' + x + '" y="' + (cy + 3.2) + '" text-anchor="middle" font-size="8.5" font-weight="700" font-family="Outfit, Arial, sans-serif" fill="' + (a ? '#000' : K.dt) + '">' + t + '</text>';
+        if (t) s += '<text x="' + x + '" y="' + (cy + 3.2) + '" text-anchor="middle" font-size="8.5" font-weight="700" font-family="DGU Digits, Outfit, Arial, sans-serif" fill="' + (a ? '#000' : K.dt) + '">' + t + '</text>';
       }
     }
     return s + '</svg>';
@@ -554,7 +565,7 @@ select option { background: #141414; color: #fff; }\
     pos = (np + seq.length) % seq.length;
     stage();
   }
-  function refresh() { board(); buildSeq(); stage(); save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); }
+  function refresh() { board(); buildSeq(); stage(); save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); if (DMok && !run && !busy() && !root.querySelector('.w').classList.contains('m-rec')) demoGo(); }
 
   // 1, 2 or 4 measures per chord (Bars per chord), each with a 1-2-3-4 count. The first beat (blue) is the chord change.
   function timer(on) {
@@ -645,6 +656,7 @@ select option { background: #141414; color: #fff; }\
     if (tos.length > 64) tos = tos.slice(-32);
   }
   function start() {
+    demoStop(true);
     if (!seq.length) return;
     if (rec.play) stopPlay();
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; }
@@ -1411,6 +1423,7 @@ select option { background: #141414; color: #fff; }\
   // Tuner: standard tuning, nearest string, cents off. Uses the same input as recording.
   var TS = [40, 45, 50, 55, 59, 64], TN = ['E', 'A', 'D', 'G', 'B', 'E'], tun = { on: false, raf: 0, hist: [], miss: 0 };
   function tunerOpen(on) {
+    if (on) demoStop(false);
     if (on && busy()) return;
     if (on && run) stop();
     tun.on = on; root.querySelector('.w').classList.toggle('tune', on); $('tnb').classList.toggle('on', on);
@@ -1466,6 +1479,7 @@ select option { background: #141414; color: #fff; }\
     if (busy()) return;
     if (tun.on) tunerOpen(false);
     if (run) stop();
+    demoStop(true);
     var w = root.querySelector('.w'); w.classList.toggle('m-rec', m === 'rec');
     // Record mode needs the room: hide the site's header bar while it's on.
     var sh = document.querySelector('header#header'); if (sh) sh.style.display = m === 'rec' ? 'none' : '';
@@ -1482,7 +1496,53 @@ select option { background: #141414; color: #fff; }\
   $('strum').addEventListener('change', function () { st.strum = +this.value; save(); recInfo(); });
 
 
+  // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
+  var DM = null, DMok = false;
+  function coach(el, text, side) {
+    var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
+    if (!el) { if (c) c.classList.remove('on'); return; }
+    if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
+    if (!c) { c = document.createElement('div'); c.className = 'coach'; c.setAttribute('aria-live', 'polite'); w.appendChild(c); }
+    c.classList.remove('on', 'below', 'right'); c.textContent = text;
+    var hr = w.getBoundingClientRect(), r = el.getBoundingClientRect();
+    if (side === 'right' && r.right - hr.left + 48 + Math.min(340, c.offsetWidth) > hr.width - 4) side = 'below';
+    if (side) c.classList.add(side);
+    var cw = c.offsetWidth, chh = c.offsetHeight;
+    if (side === 'right') { c.style.left = (r.right - hr.left + 48) + 'px'; c.style.top = Math.max(4, r.top - hr.top + r.height / 2 - chh / 2) + 'px'; }
+    else {
+      var cx = r.left + r.width / 2 - hr.left, left = Math.max(4, Math.min(hr.width - cw - 4, cx - cw / 2));
+      c.style.left = left + 'px'; c.style.top = (side === 'below' ? r.bottom - hr.top + 48 : r.top - hr.top - chh - 48) + 'px';
+      c.style.setProperty('--px', Math.max(14, Math.min(cw - 14, cx - left)) + 'px');
+    }
+    void c.offsetWidth; c.classList.add('on');
+  }
+  function demoBeats(on) {
+    if (!DM) return; clearInterval(DM.iv); DM.iv = null; if (!on) return;
+    DM.d = 0; timer(0);
+    DM.iv = setInterval(function () { if (!DM) return; DM.d++; var b = DM.d % BPC; if (b === 0) move(1); timer(b); }, 60000 / st.bpm);
+  }
+  function demoStop(reset) {
+    if (!DM) return; clearTimeout(DM.t); clearInterval(DM.iv); DM = null; coach(null);
+    root.querySelector('.w').classList.remove('demo'); tagSet('Play'); timer(-1); if (reset) { pos = 0; stage(); }
+  }
+  function demoGo() { demoStop(true); if (!seq.length) return; DM = { i: 0, step: -1, d: 0, iv: null, t: null }; root.querySelector('.w').classList.add('demo'); tagSet('Example'); demoStep(); }
+  function demoStep() {
+    var k = DM.i, s = DM.step;
+    function nx(ms, i, stp) { DM.t = setTimeout(function () { if (!DM) return; DM.i = i; DM.step = stp; demoStep(); }, ms); }
+    if (k >= 4) { demoBeats(false); timer(-1); coach($('play'), 'Press Start when ready'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays through twice, then stops (CJ)
+    if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
+      coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 1); }
+    if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
+    if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
+    nx(11000, k + 1, k % 2 ? -1 : 0);
+  }
+  $('prev').addEventListener('click', function () { demoStop(false); });
+  $('next').addEventListener('click', function () { demoStop(false); });
+
   setBpm(st.bpm); refresh(); timer(-1);
+  DMok = true; demoGo();
 })();
 </script>
   
