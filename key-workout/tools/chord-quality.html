@@ -74,11 +74,17 @@ select option,select optgroup{background:#000;color:var(--fg)}
 
 /* results */
 .results{display:flex;flex-direction:column;gap:16px}
-/* start screen (CJ, Nov 17): example scores + short how-to before Start, same look as Find the Number */
+/* start screen (CJ, Nov 17): a demo plays twice before Start, with black instruction boxes + blue arrows */
 .extag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.how{margin:4px 0 0;padding:16px 18px 16px 38px;border:1px solid var(--line);border-radius:14px;font-size:16px;line-height:1.45;color:var(--muted);text-align:left;max-width:440px}
-.how li{margin:2px 0}.how li::marker{color:var(--brand);font-weight:700}
-.how b{color:var(--fg);font-weight:600}
+.wrap{position:relative}
+/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach.on{opacity:1;transform:none}
+.coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
+.coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
+@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
+.coach.below::before{top:auto;bottom:calc(100% + 2px)}
+.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
 .card h2{margin-bottom:8px}
 .row{display:grid;grid-template-columns:116px minmax(0,1fr);gap:12px;align-items:center;padding:5px 0;min-height:34px}
@@ -141,11 +147,6 @@ select option,select optgroup{background:#000;color:var(--fg)}
         <button class="btn primary" id="go">Start</button>
         <button class="btn" id="redo" disabled>Redo</button>
       </div>
-      <ol class="how" id="how">
-        <li>Pick a chord, press <b>Start</b> and <b>strum once</b>. Let it ring until the blue bar fills.</li>
-        <li>Then <b>pick each string</b> one at a time as it lights up.</li>
-        <li>At the end you get a <b>score</b> like the example, and tips on what to <b>work on</b>.</li>
-      </ol>
     </section>
 
     <section class="results">
@@ -946,13 +947,45 @@ function reset() {
   status('Ready', 'Strum once, then pick each string');
   example(true);
 }
-// start screen (CJ, Nov 17): sample scores in the score card + the how-to, until the first Start
+// start screen (CJ, Nov 17): settings, strum, pick each string, score, tips; plays twice then stops; each step gets a box + arrow
+let demoT = null;
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c); }
+  c.classList.remove('on'); c.textContent=text; c.classList.toggle('below',!!below);
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+let demoOn = false;
 function example(on) {
-  $('how').hidden = !on; $('exTag').hidden = !on;
-  if (on) [['scO', 92], ['scN', 95], ['scT', 88], ['scR', 84], ['scC', 96]].forEach(a => setScore(a[0], a[1]));
+  clearTimeout(demoT); demoT = null; $('exTag').hidden = !on; demoOn = !!on;
+  if (!on) { coach($('go').closest('.wrap'), null); $('hold').style.transition = ''; $('hold').style.width = '0'; return; }
+  demo(0, 0);
+}
+function demo(i, step) {
+  clearTimeout(demoT);
+  const H = $('go').closest('.wrap'), hold = $('hold'), next = (ms) => { demoT = setTimeout(() => step < 4 ? demo(i, step + 1) : demo(i + 1, 0), ms); };
+  if (i >= 2) { cur = -1; drawBoard(); renderStrings(); coach(H, $('go'), 'Press Start when you are ready.'); demoT = setTimeout(() => coach(H, null), 6000); return; } // plays through twice, then stops (CJ)
+  hold.style.transition = 'none'; hold.style.width = '0';
+  if (step < 3) { clearScores(); $('exTag').hidden = true; }
+  if (step === 0) { cur = -1; drawBoard(); renderStrings(); status('Ready', 'Strum once, then pick each string');
+    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings: the chord (or a triad), your capo, and your input, a mic or your audio interface.', true); return next(13000); }
+  if (step === 1) { status('Strum once', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
+    coach(H, $('board'), 'Press Start and strum the chord once. Let it ring until the blue bar fills.'); return next(11000); }
+  if (step === 2) { cur = 2; drawBoard(); renderStrings(); status('Pick the D string', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
+    coach(H, $('board'), 'Then pick each string on its own when it lights up.'); return next(11000); }
+  if (step === 3) { cur = -1; drawBoard(); renderStrings(); status('Done', 'Here is how it sounded', true); $('exTag').hidden = false;
+    [['scO', 92], ['scN', 95], ['scT', 88], ['scR', 84], ['scC', 96]].forEach(a => setScore(a[0], a[1]));
+    coach(H, $('scO').closest('.card'), 'At the end you get a score for the notes, tuning, ring and how clean it sounds.', true); return next(12000); }
+  coach(H, $('tips').closest('.card'), 'Below that are tips on what to work on next.'); return next(12000);
 }
 async function begin(steps) {
-  if (!$('exTag').hidden) { example(false); clearScores(); }
+  if (demoOn) { example(false); clearScores(); }
   if (!(await openMic())) return;
   running = true; queue = steps.slice(); L.calib = 0; buttons(); next();
 }

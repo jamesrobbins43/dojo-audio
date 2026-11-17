@@ -482,7 +482,7 @@ function drawExample(i=0,step=-1){
   $('said').textContent=tip[step];
   if(step===0){ setBar(0,22000); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
   else if(step===1){ coach(H,dots[0],tip[1]); demoT=setTimeout(()=>drawExample(i,2),11000); }
-  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,dots[1]||dots[0],tip[2]); demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),12000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),12000); }
 }
 function start(){
   audio(); preloadSamples();

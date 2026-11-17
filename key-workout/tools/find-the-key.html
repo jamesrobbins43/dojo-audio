@@ -422,7 +422,7 @@ function drawExample(){
   // each example: chords (callout on the chords) -> timer (callout on the bar) -> answer (callout under the row)
   // CJ, Nov 17: one instruction box after settings, then just the reveal (no box)
   const SAY=[
-    ['Identify which chord position each chord belongs to', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 11000, 22],
+    ['Identify which position each chord belongs to', ()=>{ const cs=[...$('row').querySelectorAll('.ch .nm')].map(e=>e.getBoundingClientRect()); return {left:cs[0].left, width:cs[cs.length-1].right-cs[0].left, top:Math.min(...cs.map(r=>r.top)), bottom:0}; }, false, 11000, 22],
     [null, null, false, 10000, 0]];
   // first step of every loop explains the settings (CJ, Nov 17), then example 1 and example 2 (question with its box, then the reveal)
   const SET=['First, pick which chords can show up, your seconds and how many problems.', ()=>$('setup'), true, 13000, 12];
