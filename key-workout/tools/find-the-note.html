@@ -319,9 +319,16 @@ function tapAnswer(f){
         why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
     }
   }
-  if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); drawBoard(c); return; }
-  S.quiet=true; reveal();
+  if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); c.mark='no'; setMark('no'); drawBoard(c); return; }
+  c.mark='ok'; S.quiet=true; reveal();
 }
+// Right/wrong mark next to the prompt (CJ, Nov 17): green check or red X; sits outside the title so the title never shifts
+{ const st=document.createElement('style'); st.textContent='.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
+  $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>'); }
+function setMark(v){ const m=$('qmark'); if(!m) return; const was=m.dataset.v||''; v=v||''; m.dataset.v=v;
+  m.innerHTML = v==='ok' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Correct"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#3ccf6e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    : v==='no' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Wrong"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#ff5c5c" stroke-width="3.4" stroke-linecap="round"/></svg>' : '';
+  if(v&&v!==was){ m.classList.remove('pop'); void m.offsetWidth; m.classList.add('pop'); } }
 
 /* ---------- Sound (plucked string synth) ---------- */
 let ctx=null; const bufCache={};
@@ -385,7 +392,7 @@ function idle(over){
   const n=settings.perLevel, a=delayAt(0,n), b=delayAt(n-1,n);
   $('progress').innerHTML='';
   $('qNote').className='note msg'+(over?' brand':''); $('qNote').textContent= over?'Round complete':'Ready';
-  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML='';
+  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null);
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
   $('nextBtn').textContent= over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('nextBtn').disabled=false;
@@ -398,7 +405,7 @@ function start(){
   S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
   // 2.5 s to get ready after Start or Restart (CJ)
   S.lead=true; $('pauseBtn').textContent='Pause'; $('pauseBtn').disabled=true; $('undoBtn').disabled=false; $('nextBtn').disabled=true; $('nextBtn').textContent='Starting…';
-  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent='Get ready'; $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML='';
+  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent='Get ready'; $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null);
   { const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%'; } drawBoard(null);
   S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },2500);
 }
@@ -412,7 +419,7 @@ function setBar(fromPct,ms){
 }
 function enter(){
   clearT();
-  const c=card(); c.revealed = S.phase==='reveal'; if(S.phase==='ask'){ c.miss=null; c.tapT0=0; }
+  const c=card(); c.revealed = S.phase==='reveal'; if(S.phase==='ask'){ c.miss=null; c.tapT0=0; c.mark=null; } setMark(c.mark);
   S.d=delayAt(S.i,S.seq.length);
   $('progress').innerHTML=`${S.i+1}<span class="of">of</span>${S.seq.length}`;
   $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
@@ -433,7 +440,7 @@ function enter(){
     $('answer').innerHTML='';
     $('nextBtn').textContent= S.i===S.seq.length-1 ? 'Finish' : 'Next note';
     $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
-    const rr=S.rec&&R.res[S.i], ms=rr&&rr.n===100?1500:(S.d>=10?5:S.d>=5?4:S.d>2.5?3.5:3)*1000; S.remaining=ms; S.t0=performance.now(); // answer stays up longer while the pace is slow
+    const rr=S.rec&&R.res[S.i], ms=rr&&rr.n===100&&!rr.tap?1500:Math.max(1500,(S.d>=10?5:S.d>=5?4:S.d>2.5?3.5:3)*1000-(c.mark==='ok'?1500:0)); // right answer: 1.5 s shorter (CJ, Nov 17) S.remaining=ms; S.t0=performance.now(); // answer stays up longer while the pace is slow
     if(!S.paused) S.timer=setTimeout(advance, ms);
   }
 }
@@ -580,6 +587,7 @@ function heard(L,midi,t){
   const pc=((midi%12)+12)%12;
   const ok=targets.includes(midi), oct=!ok&&pc===c.pc;
   L.hit={midi, t, cs:[], peak:L.arm.peak, ok, oct}; L.arm=null;
+  c.mark=ok?'ok':'no'; if(S&&S.i===L.i) setMark(c.mark);
   const nm= (c.name.length>1&&pc===c.pc) ? c.name : NATURAL.includes(pc)?SHARP[pc]:SHARP[pc]+'/'+FLAT[pc];
   $('lis').hidden=true;
   $('heard').innerHTML=`<small>You played</small><span style="color:${ok?'#18CEFB':oct?'#f0b429':'#ff5c5c'}">${nm}${ok?' ✓':''}</span>`;
