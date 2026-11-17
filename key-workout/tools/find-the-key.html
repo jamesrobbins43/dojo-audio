@@ -84,6 +84,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .ask .kb .pop{animation:pop .24s ease-out both}
 /* Key chart (Show Key): the 7 numbers over the key's 7 chords */
 #ask{display:none!important}
+.row{grid-auto-columns:minmax(0,170px)!important;column-gap:clamp(10px,4.5vw,52px)!important}
 .chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:100%;max-width:640px;margin:4px auto 0;row-gap:6px}
 .chart .kc{display:flex;justify-content:center;align-items:flex-end}
 .chart .kn{height:clamp(20px,3.2vw,26px)}
