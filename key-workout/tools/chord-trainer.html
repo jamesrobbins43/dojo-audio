@@ -21,16 +21,17 @@
     document.head.appendChild(lk);
   }
 
+  if (!document.querySelector('style[data-dgu-digits]')) { var dg = document.createElement('style'); dg.setAttribute('data-dgu-digits', ''); dg.textContent = "@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}"; document.head.appendChild(dg); }
   var root = host.attachShadow({ mode: 'open' });
   root.innerHTML = '\
 <style>\
 :host { all: initial; display: block; }\
 .w { --bg:#000; --ink:#f2f2f2; --mute:#8c8c8c; --dim:#3a3a3a; --line:#303030; --card:#1b1b1b; --blue:#18CEFB;\
-  background: var(--bg); color: var(--ink); font-family: Outfit, "Helvetica Neue", Arial, sans-serif; font-size: 15px; line-height: 1.4;\
+  background: var(--bg); color: var(--ink); font-family: "DGU Digits", Outfit, "Helvetica Neue", Arial, sans-serif; font-size: 15px; line-height: 1.4;\
   max-width: 1280px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); box-sizing: border-box; -webkit-font-smoothing: antialiased; }\
 .w *, .w *::before, .w *::after { box-sizing: border-box; }\
 h1 { font-family: "Bebas Neue", Outfit, sans-serif; font-weight: 400; font-size: 46px; line-height: 1; letter-spacing: .01em; margin: 0; white-space: nowrap; }\
-h2 { font: 700 30px/1 Outfit, "Helvetica Neue", Arial, sans-serif; letter-spacing: -.01em; margin: 0 0 16px; }\
+h2 { font: 700 30px/1 "DGU Digits", Outfit, "Helvetica Neue", Arial, sans-serif; letter-spacing: -.01em; margin: 0 0 16px; }\
 .or { font-size: .5em; font-weight: 300; margin: 0 .35em; opacity: .75; }\
 .ext { font-size: .62em; margin-left: .03em; }\
 .ext .acc { font-size: .85em; }\
@@ -502,7 +503,7 @@ select option { background: #141414; color: #fff; }\
     for (var f = 1; f <= fr; f++) s += '<line x1="' + x0 + '" x2="' + (x0 + gap * 5) + '" y1="' + (y0 + fh * f) + '" y2="' + (y0 + fh * f) + '" stroke="' + K.fret + '" stroke-width="1"/>';
     if (pos > 1) {
       s += '<line x1="' + x0 + '" x2="' + (x0 + gap * 5) + '" y1="' + y0 + '" y2="' + y0 + '" stroke="' + K.pos + '" stroke-width="1"/>';
-      s += '<text x="' + (x0 + gap * 5 + 7) + '" y="' + (y0 + fh * .5 + 3.5) + '" font-size="10" font-weight="500" font-family="Outfit, Arial, sans-serif" fill="' + K.lab + '">' + pos + 'fr</text>';
+      s += '<text x="' + (x0 + gap * 5 + 7) + '" y="' + (y0 + fh * .5 + 3.5) + '" font-size="10" font-weight="500" font-family="DGU Digits, Outfit, Arial, sans-serif" fill="' + K.lab + '">' + pos + 'fr</text>';
     } else s += '<rect x="' + (x0 - 1) + '" y="' + (y0 - 3) + '" width="' + (gap * 5 + 2) + '" height="3" fill="' + K.nut + '"/>';
     var opt = {};
     (c.opt || []).forEach(function (o) { (opt[o[0]] = opt[o[0]] || []).push(o[1]); });
@@ -519,7 +520,7 @@ select option { background: #141414; color: #fff; }\
         var cy = y0 + fh * (v - pos + .5), a = c.anchor.indexOf(i) > -1;
         s += dot(x, v, a ? '#18CEFB' : K.dot);
         var t = c.fingers && c.fingers[i] ? c.fingers[i] : c.root === i ? c.rl : '';
-        if (t) s += '<text x="' + x + '" y="' + (cy + 3.2) + '" text-anchor="middle" font-size="8.5" font-weight="700" font-family="Outfit, Arial, sans-serif" fill="' + (a ? '#000' : K.dt) + '">' + t + '</text>';
+        if (t) s += '<text x="' + x + '" y="' + (cy + 3.2) + '" text-anchor="middle" font-size="8.5" font-weight="700" font-family="DGU Digits, Outfit, Arial, sans-serif" fill="' + (a ? '#000' : K.dt) + '">' + t + '</text>';
       }
     }
     return s + '</svg>';

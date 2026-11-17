@@ -5,6 +5,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Outfit:wght@600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>/* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}</style>
 <style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.prow:has([data-key]){display:none!important}</style>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var K=k,n="dgkp-dgtt:settings2",s={};try{s=JSON.parse(localStorage.getItem(n))||{}}catch(e){}s.keys=[K];try{localStorage.setItem(n,JSON.stringify(s))}catch(e){}})();</script>
 <style>
@@ -30,11 +32,11 @@ header{display:flex;justify-content:space-between;align-items:center;gap:16px;fl
 .shape{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
 .shape svg{width:66px;height:auto;display:block}
 .shape .sh-name{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.1}
-.shape .sh-f{font-size:12px;color:var(--muted);font-family:"Outfit",var(--body);font-weight:600;letter-spacing:.05em}
+.shape .sh-f{font-size:12px;color:var(--muted);font-family:"DGU Digits","Outfit",var(--body);font-weight:600;letter-spacing:.05em}
 .shapes .sh-cap{grid-column:1 / -1;order:2;font-size:12px;color:var(--muted);text-align:center}
 .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
-h1{font-family:"Outfit",var(--body);font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
-h2{font-family:"Outfit",var(--body);font-weight:700;font-size:28px;margin:0;line-height:1.1}
+h1{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+h2{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:28px;margin:0;line-height:1.1}
 p{margin:0}
 .muted{color:var(--muted)}
 button{font:inherit;cursor:pointer}
@@ -59,12 +61,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .seg button:hover{color:var(--fg)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .seg.keys{grid-auto-flow:row;grid-template-columns:repeat(12,minmax(0,1fr));gap:1px;background:var(--line)}
-.seg.keys button{border-left:0;background:var(--bg);position:relative;padding:9px 0;min-width:0;font-family:"Outfit",var(--body)}
+.seg.keys button{border-left:0;background:var(--bg);position:relative;padding:9px 0;min-width:0;font-family:"DGU Digits","Outfit",var(--body)}
 .seg.keys button[aria-pressed="true"]{background:var(--accent)}
 .seg.keys .kl{position:relative}
 .seg.keys .kacc{position:absolute;left:100%;top:-.35em;font-size:.7em;font-weight:400;margin-left:.08em}
 .seg.strings .dash{font-weight:400;opacity:.7;margin:0 .06em}
-.seg.strings button{font-family:"Outfit",var(--body);font-weight:700;font-size:20px;letter-spacing:.02em;padding:7px 6px}
+.seg.strings button{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:20px;letter-spacing:.02em;padding:7px 6px}
 @media (max-width:520px){.prow{grid-template-columns:1fr;gap:8px}}
 .levels{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .level{display:grid;grid-template-columns:56px minmax(0,1fr) auto auto;gap:16px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}
@@ -81,7 +83,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .speed .sp{display:flex;align-items:center;gap:10px}
 .speed .sp span{font-size:14px;font-weight:600}
 .speed input[type=range]{width:110px;accent-color:var(--accent)}
-.speed output{font-family:"Outfit",var(--body);font-weight:700;min-width:34px;font-size:15px}
+.speed output{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;min-width:34px;font-size:15px}
 .speed output .u{margin-left:.2em}
 .speed select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 6px}
 /* dropdowns: see-through black so the panel shows through, softer border; the opened list stays solid black (matches the other Dojo tools) */
@@ -103,7 +105,7 @@ kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-b
 .timer-wide{height:12px;width:100%;margin-top:22px}
 .stage{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .stage .q{display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1}
-.stage .chord{font-family:"Outfit",var(--body);font-weight:700;font-size:clamp(64px,8vw,96px);letter-spacing:-.02em}
+.stage .chord{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:clamp(64px,8vw,96px);letter-spacing:-.02em}
 .stage .chord.msg{font-size:clamp(52px,6vw,72px);letter-spacing:0}
 .stage .chord.brand{color:var(--brand)}
 .stage .chord .acc{display:inline-block;vertical-align:top;margin:.06em 0 0 .04em}
@@ -113,7 +115,7 @@ kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-b
 .stage .chord .suf-dim svg{display:block;height:.26em;width:auto}
 .stage .chord .suf-aug{font-size:.5em;vertical-align:top;font-weight:500;margin-left:.04em}
 .stage .inv{font-family:var(--display);font-weight:400;font-size:26px;color:var(--muted)}
-.stage .formula{font-family:"Outfit",var(--body);font-weight:600;font-size:20px;letter-spacing:.06em;color:#f2b25c;margin-top:6px}
+.stage .formula{font-family:"DGU Digits","Outfit",var(--body);font-weight:600;font-size:20px;letter-spacing:.06em;color:#f2b25c;margin-top:6px}
 .stage .qrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:56px;width:100%}
 .btn.small{padding:3px 10px;font-size:12px;border-radius:7px}
 .stage .hint{font-size:15px;color:var(--muted)}
@@ -121,7 +123,7 @@ kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-b
 .timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
 .answer{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .answer strong{font-family:var(--display);font-size:32px;color:var(--accent);display:block;line-height:1.1}
-.progress{font-family:"Outfit",var(--body);font-size:16px;color:var(--muted);align-self:flex-start;font-weight:500}
+.progress{font-family:"DGU Digits","Outfit",var(--body);font-size:16px;color:var(--muted);align-self:flex-start;font-weight:500}
 .progress b{font-size:24px;font-weight:700;color:var(--fg);margin-right:16px}
 .progress .of{font-size:21px;font-weight:400}
 .btn:disabled{opacity:.45;cursor:default}
@@ -131,7 +133,7 @@ kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-b
 .board-wrap svg{width:100%;max-width:470px;max-height:58vh;height:auto;display:block}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .done-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:560px}
-.done-card .big{font-family:"Outfit",var(--body);font-size:56px;font-weight:700;line-height:1;color:var(--brand)}
+.done-card .big{font-family:"DGU Digits","Outfit",var(--body);font-size:56px;font-weight:700;line-height:1;color:var(--brand)}
 
 @media (max-width:860px){.setup{grid-template-columns:1fr}.side{position:static}}
 @media (max-width:620px){.sets{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -293,7 +295,7 @@ function invDesc(){ return settings.invs.length===3?'all inversions':settings.in
 // Letter/number centred; any ♭ ♯ 𝄫 𝄪 drawn small and light at its top right
 function svgLabel(x,y,lab,size,fill,weight){
   const acc=(lab.match(/[♭♯𝄫𝄪]/gu)||[]).join(''), base=lab.replace(/[♭♯𝄫𝄪]/gu,'');
-  const F='font-family="Outfit, Figtree, system-ui, sans-serif"';
+  const F='font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif"';
   let t=`<text x="${x}" y="${y}" text-anchor="middle" ${F} font-weight="${weight||700}" font-size="${size}" fill="${fill}">${base}</text>`;
   const pre=/^[♭♯𝄫𝄪]/u.test(lab); // ♭3 / ♯5: sign at top left; B♭ / F♯: sign at top right
   if(acc) t+=`<text x="${pre?x-size*.32:x+size*.32}" y="${y-size*.38}" text-anchor="${pre?'end':'start'}" ${F} font-weight="400" font-size="${size*.72}" fill="${fill}">${acc}</text>`;
@@ -380,11 +382,11 @@ function drawBoard(c){
   }
   for(let r=0;r<=NF;r++) h+=`<rect x="${SX(0)-1}" y="${NUTY+r*FH-2}" width="${SX(5)-SX(0)+2}" height="4" fill="var(--fret)"/>`;
   const rf=any?V.frets[V.tones.findIndex(t=>t.deg==='R')]:0, lf=rf>0?rf:base; // fret label sits beside the root (or the top fret if the root is open)
-  if(any&&V.frets.some(f=>f>0)) h+=`<text x="${SX(0)-26}" y="${NUTY+(lf-base+.5)*FH+8}" text-anchor="end" font-family="Outfit, Figtree, system-ui, sans-serif" font-weight="700" font-size="24" fill="#f2b25c">${lf}<tspan dx="4" font-size="15" font-weight="500">fr</tspan></text>`;
+  if(any&&V.frets.some(f=>f>0)) h+=`<text x="${SX(0)-26}" y="${NUTY+(lf-base+.5)*FH+8}" text-anchor="end" font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif" font-weight="700" font-size="24" fill="#f2b25c">${lf}<tspan dx="4" font-size="15" font-weight="500">fr</tspan></text>`;
   for(let i=0;i<6;i++){
     const on=i>=st&&i<st+3, w=[3.4,3,2.6,2.2,1.8,1.4][i];
     h+=`<line x1="${SX(i)}" x2="${SX(i)}" y1="${NUTY}" y2="${NUTY+FH*NF}" stroke="var(--string)" stroke-width="${w}" opacity="${on?1:.3}"/>`;
-    h+=`<text x="${SX(i)}" y="${NUTY-18}" text-anchor="middle" font-family="Outfit, Figtree, system-ui, sans-serif" font-weight="700" font-size="${on?26:22}" fill="${on?'#f2b25c':'#6a5d50'}">${STRING_NAMES[i]}</text>`;
+    h+=`<text x="${SX(i)}" y="${NUTY-18}" text-anchor="middle" font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif" font-weight="700" font-size="${on?26:22}" fill="${on?'#f2b25c':'#6a5d50'}">${STRING_NAMES[i]}</text>`;
   }
   if(any){
     V.frets.forEach((f,k)=>{

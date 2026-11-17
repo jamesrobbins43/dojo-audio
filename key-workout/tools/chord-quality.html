@@ -9,13 +9,16 @@
 <style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}</style>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");window.KW_KEY=(k>=0&&k<12)?k:7;})();</script>
 <style>
+/* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}
+
 /* Chord Quality Evaluator: strum a chord once, then pick each string; the mic checks notes, tuning, ring and buzz */
 :root{
   color-scheme:dark;
   --bg:#000000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;
   --brand:#18CEFB; /* Don't Give Up blue */
   --good:#5cbf80; --warn:#e8a54a; --bad:#ef6a5e;
-  --font:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font:"DGU Digits","Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -613,7 +616,7 @@ function drawBoard() {
   const col = { good: 'var(--good)', warn: 'var(--warn)', bad: 'var(--bad)' };
   let g = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(c.label)} chord shape">`;
   for (let i = 0; i <= nF; i++) { const y = y0 + i * fh; g += `<line x1="${sx(0)}" y1="${y}" x2="${sx(5)}" y2="${y}" stroke="#6d655c" stroke-width="${i === 0 && first === 1 ? 3 : 1.5}"/>`; }
-  if (first > 1) g += `<text x="${x0 - 14}" y="${y0 + fh / 2 + 5}" text-anchor="end" font-family="Outfit,sans-serif" font-size="15" fill="#a69b8d"><tspan font-weight="600">${first}</tspan><tspan font-size="12" font-weight="300" fill="#8a8178">fr</tspan></text>`;
+  if (first > 1) g += `<text x="${x0 - 14}" y="${y0 + fh / 2 + 5}" text-anchor="end" font-family="'DGU Digits',Outfit,sans-serif" font-size="15" fill="#a69b8d"><tspan font-weight="600">${first}</tspan><tspan font-size="12" font-weight="300" fill="#8a8178">fr</tspan></text>`;
   for (let s = 0; s < 6; s++) {
     const on = fr[s] >= 0, x = sx(s), dim = !on || (cur >= 0 && cur !== s);
     const op = !on ? 0.28 : dim ? 0.45 : 1;
@@ -623,14 +626,14 @@ function drawBoard() {
     const mk = marks[s] ? col[marks[s]] : (cur === s ? 'var(--brand)' : null);
     const ny = y0 - 22;
     if (isOpen) g += `<circle cx="${x}" cy="${ny}" r="13" fill="none" stroke="${mk || '#f1ebe2'}" stroke-width="2" opacity="${op}"/>`;
-    g += `<text x="${x}" y="${ny + nameSize * 0.35}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="700" font-size="${nameSize}" fill="${isOpen && mk ? mk : '#f1ebe2'}" opacity="${op}">${SNAME[s]}</text>`;
+    g += `<text x="${x}" y="${ny + nameSize * 0.35}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="700" font-size="${nameSize}" fill="${isOpen && mk ? mk : '#f1ebe2'}" opacity="${op}">${SNAME[s]}</text>`;
     if (fr[s] > 0) {
       const y = y0 + (fr[s] - first + 0.5) * fh;
       const fill = mk || '#f1ebe2';
       g += `<g opacity="${dim ? 0.45 : 1}"><circle cx="${x}" cy="${y}" r="14" fill="${fill}"/>`;
       const n = NOTE[shapePc(s)];
-      g += `<text x="${x - (n.length > 1 ? 3 : 0)}" y="${y + 5}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="700" font-size="14" fill="#000">${n[0]}</text>`;
-      if (n.length > 1) g += `<text x="${x + 5.5}" y="${y - 1}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="400" font-size="9" fill="#000">${n[1] === '#' ? '♯' : '♭'}</text>`;
+      g += `<text x="${x - (n.length > 1 ? 3 : 0)}" y="${y + 5}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="700" font-size="14" fill="#000">${n[0]}</text>`;
+      if (n.length > 1) g += `<text x="${x + 5.5}" y="${y - 1}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="400" font-size="9" fill="#000">${n[1] === '#' ? '♯' : '♭'}</text>`;
       g += `</g>`;
     }
   }
