@@ -461,9 +461,9 @@ function drawExample(i=0,step=-1){
   drawScale(c,step===2,step===2);
   const q=$('scale').querySelector('.ch.q');
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(H,$('setup'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
-  if(step===0){ setBar(0,22000);
-    coach(H,q||$('scale'),two?'Later in the round two chords go missing. Name both before the bar fills.':'One chord of the key is missing. Name it before the bar fills.',true);
-    demoT=setTimeout(()=>drawExample(i,1),11000); return; }
+  if(step===0){ setBar(0,4000); // short, then straight to the reveal (CJ Nov 17)
+    coach(H,q||$('scale'),two?'Two chords are missing. Name both.':'One chord is missing. Name it.',true);
+    demoT=setTimeout(()=>drawExample(i,2),4000); return; }
   if(step===1){ coach(H,q||$('scale'),two?'Say the names of both missing chords out loud.':'Say the missing chord\'s name out loud.',true); demoT=setTimeout(()=>drawExample(i,2),11000); return; }
   const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null);
   demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),3000);

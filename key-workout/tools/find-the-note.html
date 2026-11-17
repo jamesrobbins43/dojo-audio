@@ -528,7 +528,7 @@ const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
 const esc=s=>String(s).replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'})[c]);
 const R={mode:store.get('mode','rec'), stream:null, src:null, an:null, raf:0, dev:store.get('dev',''), state:'idle', L:null, res:[]};
 const wrap=root.querySelector('.wrap');
-root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button></div>');
+root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div>');
 root.querySelector('.stage').insertAdjacentHTML('beforeend','<div class="rmon"><div class="tmt"><b id="tmNote">–</b><span class="tmc" id="tmC"></span></div><div class="tm"><i class="tmz"></i><i class="tmn idle" id="tmN"></i></div><div class="lis" id="lis" hidden><i></i>Listening</div><div class="heard" id="heard" aria-live="polite"></div></div>');
 root.querySelector('.stage').insertAdjacentHTML('afterend','<div class="res" id="res" hidden></div>');
 root.querySelector('#optbar').insertAdjacentHTML('beforebegin','<div class="rp" id="rp"><span class="rstep" id="rstep"><b>1</b>Connect your guitar first</span><select id="dev" aria-label="Audio input"><option value="">Press Connect to list your inputs</option></select><div class="meter" title="Input level"><b id="mtr"></b></div><button class="btn recgo" id="go" type="button">Connect</button><div class="rinfo" id="rinfo"></div></div>');
