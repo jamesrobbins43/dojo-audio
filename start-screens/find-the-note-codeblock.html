@@ -421,7 +421,7 @@ function drawExample(i=0,step=-1){
   $('qString').textContent=strName(ex.s); $('qNote').nextElementSibling.hidden=false;
   drawBoard(ex);
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
-  const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the bar fills.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
+  const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the note is revealed.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
   if(step===0){ setBar(0,4000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
   else if(step===1){ demoT=setTimeout(()=>drawExample(i,2),11000); }
   else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[1]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),9000); }
@@ -510,9 +510,9 @@ $('muteBtn').onclick=()=>{ settings.sound=!settings.sound; store.set('settings',
 const PCN=SHARP;
 const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
 const esc=s=>String(s).replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'})[c]);
-const R={mode:store.get('mode','rec'), stream:null, src:null, an:null, raf:0, dev:store.get('dev',''), state:'idle', L:null, res:[]};
+const R={mode:store.get('mode','prac'), stream:null, src:null, an:null, raf:0, dev:store.get('dev',''), state:'idle', L:null, res:[]};
 const wrap=root.querySelector('.wrap');
-root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button></div>');
+root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div>');
 root.querySelector('.stage').insertAdjacentHTML('beforeend','<div class="rmon"><div class="tmt"><b id="tmNote">–</b><span class="tmc" id="tmC"></span></div><div class="tm"><i class="tmz"></i><i class="tmn idle" id="tmN"></i></div><div class="lis" id="lis" hidden><i></i>Listening</div><div class="heard" id="heard" aria-live="polite"></div></div>');
 root.querySelector('.stage').insertAdjacentHTML('afterend','<div class="res" id="res" hidden></div>');
 root.querySelector('#optbar').insertAdjacentHTML('beforebegin','<div class="rp" id="rp"><span class="rstep" id="rstep"><b>1</b>Connect your guitar first</span><select id="dev" aria-label="Audio input"><option value="">Press Connect to list your inputs</option></select><div class="meter" title="Input level"><b id="mtr"></b></div><button class="btn recgo" id="go" type="button">Connect</button><div class="rinfo" id="rinfo"></div></div>');
