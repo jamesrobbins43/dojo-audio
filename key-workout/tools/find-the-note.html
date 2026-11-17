@@ -3,7 +3,7 @@
 <title>Find the Note (live copy)</title>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");k=(k>=0&&k<12)?k:7;window.KW_KEY=k;var LI=[0,1,1,2,2,3,4,4,5,5,6,6][k],IV=[0,2,4,5,7,9,11],SC=IV.map(function(i){return (k+i)%12});window.kwIn=function(pc){return SC.indexOf(pc)>=0};window.kwName=function(pc){var d=SC.indexOf(pc);if(d<0)return ["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"][pc];var l=(LI+d)%7,a=((pc-IV[l]+18)%12)-6;return "CDEFGAB"[l]+(a<0?"♭":a>0?"♯":"")};})();</script>
 <style>html,body{margin:0;background:#000}</style>
-<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026 (Record-mode input moved to top; open-string labels centered).
+<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026.
      The live block is the source of truth; note-identifier.html is older. Samples are inlined below
      so this works offline; the block itself would otherwise stream them from jsDelivr. -->
 <script>
@@ -286,7 +286,41 @@ function drawBoard(card){
          (card.name.length>1?`<text x="${spotX(f)+(card.name.endsWith('♭')?4:6)}" y="${y+(card.name.endsWith('♭')?1:-1)}" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="400" font-size="13" fill="#1a120a">${card.name.slice(1)}</text>`:'')+`</g>`;
     }
   }
+  if(card&&card.miss){
+    // wrong taps (CJ, Nov 17): a red X on each spot tried
+    const y=STRINGS[card.s].y;
+    for(const f of card.miss){ if(card.revealed&&card.frets.includes(f)) continue; const x=spotX(f);
+      h+=`<g class="dot"><path d="M${x-11} ${y-11}L${x+11} ${y+11}M${x+11} ${y-11}L${x-11} ${y+11}" stroke="#ff5c5c" stroke-width="5" stroke-linecap="round"/></g>`; }
+  }
+  if(card&&!card.revealed&&S&&!S.over&&!S.lead&&S.phase==='ask'){
+    // tap the note's spot between the frets to answer (CJ, Nov 17)
+    const j=ORDER.indexOf(card.s), y=STRINGS[card.s].y;
+    const yU=j>0?(STRINGS[ORDER[j-1]].y+y)/2:y-30, yD=j<ORDER.length-1?(STRINGS[ORDER[j+1]].y+y)/2:y+30;
+    for(let f=0;f<=12;f++){ const x0=f?fretX(f-1)+2:NUT-58, x1=f?fretX(f)-2:NUT-9;
+      h+=`<rect class="tap" data-f="${f}" x="${x0}" y="${yU}" width="${x1-x0}" height="${yD-yU}" fill="#fff" fill-opacity="0" style="cursor:pointer"/>`; }
+  }
   svg.innerHTML=h;
+}
+$('board').addEventListener('click',e=>{ const t=e.target.closest('.tap'); if(t) tapAnswer(+t.dataset.f); });
+// Tap to answer (CJ, Nov 17): the tapped note sounds at once; a wrong spot gets a red X and they can keep trying until time runs out; the right spot shows the normal answer
+function tapAnswer(f){
+  if(!S||S.over||S.lead||S.phase!=='ask') return;
+  const c=card(), ok=c.frets.includes(f);
+  if(settings.sound&&audio()){ hush(); ringFor=S.d<=2.5?1.1:2.2; playMidi(STRINGS[c.s].midi+f); }
+  if(S.rec){
+    // Record mode: once they tap, taps decide this note (the mic would hear the tapped sound)
+    const L=R.L; if(L){ L.done=true; R.L=null; $('lis').hidden=true; $('heard').innerHTML=''; }
+    if(!c.tapT0) c.tapT0=L?L.t0:S.t0;
+    const prev=R.res[S.i];
+    if(!prev||prev.tap){
+      const t=Math.max(0,(performance.now()-c.tapT0)/1000), miss=(c.miss||[]).length+(ok?0:1);
+      const n=ok?(miss?50:100):0, ts=ok?tScore(t):0;
+      R.res[S.i]={name:c.name,s:c.s,frets:c.frets,played:null,tap:true,n,t:ts,u:null,sc:Math.round((n+ts)/2),
+        why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
+    }
+  }
+  if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); drawBoard(c); return; }
+  S.quiet=true; reveal();
 }
 
 /* ---------- Sound (plucked string synth) ---------- */
@@ -378,7 +412,7 @@ function setBar(fromPct,ms){
 }
 function enter(){
   clearT();
-  const c=card(); c.revealed = S.phase==='reveal';
+  const c=card(); c.revealed = S.phase==='reveal'; if(S.phase==='ask'){ c.miss=null; c.tapT0=0; }
   S.d=delayAt(S.i,S.seq.length);
   $('progress').innerHTML=`${S.i+1}<span class="of">of</span>${S.seq.length}`;
   $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
@@ -456,7 +490,7 @@ function setMode(m){
   if(m==='rec'&&!R.stream) devList(); rinfo(); idle();
 }
 root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
-function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it and let it ring.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first'; }
+function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first'; }
 function devList(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
   navigator.mediaDevices.enumerateDevices().then(ds=>{
@@ -589,11 +623,11 @@ function stopListen(){
 function results(){
   const rs=R.res.filter(Boolean), n=rs.length||1;
   const avg=k=>Math.round(rs.reduce((a,r)=>a+r[k],0)/n);
-  const N=avg('n'), T=avg('t'), U=avg('u'), ov=Math.round((N+T+U)/3);
+  const N=avg('n'), T=avg('t'), pu=rs.filter(r=>r.u!=null), U=pu.length?Math.round(pu.reduce((a,r)=>a+r.u,0)/pu.length):null, ov=U===null?Math.round((N+T)/2):Math.round((N+T+U)/3);
   const bar=(l,v)=>`<div class="bar"><span>${l}</span><div class="tr"><i style="width:${v}%;background:${col(v)}"></i></div><b style="color:${col(v)}">${v}</b></div>`;
-  $('res').innerHTML=`<div class="res-top"><div class="ov" style="color:${col(ov)}"><small>Overall</small>${ov}</div><div class="bars">${bar('Notes',N)}${bar('Speed',T)}${bar('Pitch',U)}</div></div>`+
+  $('res').innerHTML=`<div class="res-top"><div class="ov" style="color:${col(ov)}"><small>Overall</small>${ov}</div><div class="bars">${bar('Notes',N)}${bar('Speed',T)}${U===null?'':bar('Pitch',U)}</div></div>`+
     `<div class="res-btns"><button class="btn recgo" id="again" type="button">Record again</button><button class="btn" id="toPrac" type="button">Practice</button></div>`+
-    `<div class="cards">${rs.map((r,i)=>`<div class="cd"><div class="t"><span class="nm">${r.name}<span>${strName(r.s)}${settings.strings.length>1?' string':''}</span></span><span class="sc" style="color:${col(r.sc)}">${r.sc}</span></div><div class="mini"><i title="Notes ${r.n}" style="background:${col(r.n)}"></i><i title="Speed ${r.t}" style="background:${col(r.t)}"></i><i title="Pitch ${r.u}" style="background:${col(r.u)}"></i></div><div class="why">${r.why}</div></div>`).join('')}</div>`;
+    `<div class="cards">${rs.map((r,i)=>`<div class="cd"><div class="t"><span class="nm">${r.name}<span>${strName(r.s)}${settings.strings.length>1?' string':''}</span></span><span class="sc" style="color:${col(r.sc)}">${r.sc}</span></div><div class="mini"><i title="Notes ${r.n}" style="background:${col(r.n)}"></i><i title="Speed ${r.t}" style="background:${col(r.t)}"></i>${r.u==null?'':`<i title="Pitch ${r.u}" style="background:${col(r.u)}"></i>`}</div><div class="why">${r.why}</div></div>`).join('')}</div>`;
   root.querySelector('.stage').hidden=true; root.querySelector('.controls').hidden=true; $('res').hidden=false;
   $('again').onclick=()=>{ $('res').hidden=true; root.querySelector('.stage').hidden=false; root.querySelector('.controls').hidden=false; start(); };
   $('toPrac').onclick=()=>{ root.querySelector('.controls').hidden=false; setMode('prac'); };

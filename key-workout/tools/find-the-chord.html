@@ -333,11 +333,12 @@ function drawScale(c,revealed,pop){
   const el=$('scale'); let h='';
   for(let d=0;d<7;d++){
     const ch=c?c.chords[d]:null, miss=c&&c.miss.includes(d);
-    const box = !c ? '<div class="ch"></div>' : miss ? (revealed?`<div class="ch ans${pop?'':' still'}">${chordHTML(ch)}</div>`:'<div class="ch q" aria-label="missing chord">?</div>') : `<div class="ch">${chordHTML(ch)}</div>`;
+    const box = !c ? '<div class="ch"></div>' : miss ? (revealed?(pop&&d===c.miss[1]?'<div class="ch q" id="kwLate" aria-label="missing chord">?</div>':`<div class="ch ans${pop?'':' still'}">${chordHTML(ch)}</div>`):'<div class="ch q" aria-label="missing chord">?</div>') : `<div class="ch">${chordHTML(ch)}</div>`;
     h+=`<div class="cell">${degHTML(DEGS[d])}${box}</div>`;
     h+=`<div class="gap${STEP_GAPS[d]==='H'?' h':''}" aria-label="${STEP_GAPS[d]==='H'?'half step':'whole step'}"><span>${STEP_GAPS[d]}</span></div>`;
   }
   el.innerHTML=h; el.classList.toggle('steps',!!settings.showSteps);
+  clearTimeout(window.kwLateT); if(c&&revealed&&pop){ const ch2=c.chords[c.miss[1]]; window.kwLateT=setTimeout(()=>{ const x=document.getElementById('kwLate'); if(x) x.outerHTML=`<div class="ch ans">${chordHTML(ch2)}</div>`; },1200); }
 }
 function syncMode(){
   const sc=settings.mode==='scale';
@@ -396,7 +397,7 @@ function playMidi(midi,when,len){
 function playGiven(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); playMidi(c.m1,0,2.4); }
 function playStep(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); playMidi(c.m2,0,2.4); }
 // Major Scale mode: the missing chord, strummed low to high in root position
-function playChord(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); c.midis.forEach((m,k)=>playMidi(m,k*.04,2)); if(c.midis2) c.midis2.forEach((m,k)=>playMidi(m,1.1+k*.04,2)); }
+function playChord(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); c.midis.forEach((m,k)=>playMidi(m,k*.04,2)); if(c.midis2) c.midis2.forEach((m,k)=>playMidi(m,1.2+k*.04,2)); }
 function preloadSamples(){ if(!ctx) return; for(let m=50;m<=70;m++){ const key=nearestKey(TONE,m); if(key!=null) sampleBuffer(TONE,key).catch(()=>{}); } }
 
 /* ---------- Session ---------- */
