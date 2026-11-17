@@ -230,7 +230,7 @@ function buildSequence(L,n){
   while(seq.length<n){
     if(!bag.length){
       // Open-string notes (G on the G string, E on the E string...) come up only about a quarter as often
-      bag=pool.filter(it=>!it.frets.includes(0)||Math.random()<.25).sort(()=>Math.random()-.5);
+      bag=pool.flatMap(it=>it.pc===window.KW_KEY?[it,it,it]:[it]).filter(it=>!it.frets.includes(0)||Math.random()<.25).sort(()=>Math.random()-.5);
       if(!bag.length) bag=pool.slice();
     }
     let item=bag.pop();
