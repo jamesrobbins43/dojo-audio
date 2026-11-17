@@ -66,7 +66,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .progress{font-size:16px;color:var(--muted);align-self:flex-start;font-weight:500}
 .progress b{font-size:24px;font-weight:700;color:var(--fg)}
 .progress .of{font-size:21px;font-weight:400;color:var(--muted)}
-.ask{font-weight:700;font-size:clamp(40px,7vw,72px);line-height:1;letter-spacing:-.01em;min-height:1em}
+.ask{font-weight:700;font-size:clamp(28px,4.4vw,44px);line-height:1;letter-spacing:-.01em;min-height:1em}
 .ask.brand{color:var(--brand)}
 .ask .dir{color:#f2b25c}
 .ask .kacc{font-size:.68em;font-weight:400;vertical-align:.48em;margin-left:.03em}
@@ -103,7 +103,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .chroma span .dg{display:block;font-size:17px;font-weight:600;color:#f2b25c;margin-bottom:4px}
 .chroma span{font-size:32px;padding:10px 2px 12px}
 @media (max-width:520px){.chroma span{font-size:22px;padding:8px 0}.chroma span .dg{font-size:13px}}
-.ask-arrow{height:34px;color:#f2b25c;margin-top:-4px}
+.ask-arrow{display:none!important}   /* CJ Nov 17: a curved arrow on the diagram points at the note instead */
+#ask+.ask-arrow+.keytag:empty{display:none}
+.stage:has(#boardWrap:not([hidden])) #ask{margin-bottom:-12px}
 .ask-arrow svg{height:100%;width:auto;display:block}
 .board-wrap svg{width:100%;height:auto;display:block}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
@@ -295,7 +297,7 @@ function windowLo(c){
 }
 function drawBoard(c,revealed,popAns){
   const svg=$('board'), lo=windowLo(c), nut=lo===1;
-  const W=560, X0=60, X1=W-30, FW=(X1-X0)/3, SP=38, Y0=30, H=Y0+SP*5+58;
+  const W=560, X0=60, X1=W-30, FW=(X1-X0)/3, SP=38, Y0=58, H=Y0+SP*5+58;
   const wx=k=>X0+k*FW;                                   // x of the k-th fret wire in the window (k=0 is the nut or fret lo-1)
   const nx=f=>f===0?X0-34:wx(f-lo)+FW/2;                 // x of a note played at fret f (open string sits left of the nut)
   const sy=i=>Y0+(5-i)*SP;                               // y of string i (0 = low E at the bottom)
@@ -323,6 +325,10 @@ function drawBoard(c,revealed,popAns){
       ? `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="#000" stroke="${fill}" stroke-width="3.5"/>${svgLabel(x,y+8,lab,22,fill)}</g>`
       : `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#fff4e3" stroke-width="2"/>${svgLabel(x,y+8,lab,22,ink)}</g>`; };
   if(c){
+    // curved arrow from the prompt (just above the diagram) dipping down to the note (CJ Nov 17)
+    { const tx=nx(c.fret), ty=sy(c.str)-25, x0=W/2+(tx<W/2?40:-40), y0=2;
+      h+=`<path d="M${x0} ${y0} C${x0} ${ty+20} ${tx} ${ty-46} ${tx} ${ty}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round"/>`
+        +`<path d="M${tx-8} ${ty-11}L${tx} ${ty}L${tx+8} ${ty-11}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`; }
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
   }
