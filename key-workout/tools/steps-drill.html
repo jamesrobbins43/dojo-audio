@@ -509,6 +509,10 @@ $('nextBtn').onclick=next; $('undoBtn').onclick=undo; $('pauseBtn').onclick=togg
 $('replayBtn').onclick=()=>{ if(!S||S.over) return; const c=card(); if(c.mode==='scale'){ if(S.phase==='reveal') playChord(c,true); return; } S.phase==='reveal'?playStep(c,true):playGiven(c,true); };
 $('muteBtn').onclick=()=>{ settings.sound=!settings.sound; save(); syncMute(); if(!settings.sound) stopAll(); };
 
+// space bar: pause / resume (starts when nothing is running), never presses the focused button (CJ Nov 17). Ignored while typing or in a dropdown.
+const spaceKey=e=>{ if(e.code!=='Space'&&e.key!==' ') return false; if(e.metaKey||e.ctrlKey||e.altKey) return false; const t=(e.composedPath&&e.composedPath()[0])||e.target; return !(t&&(/^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName)||t.isContentEditable)); };
+window.addEventListener('keydown',e=>{ if(!spaceKey(e)) return; e.preventDefault(); if(e.repeat) return; if(!S||S.over) start(); else togglePause(); });
+window.addEventListener('keyup',e=>{ if(spaceKey(e)) e.preventDefault(); });
 renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
 })();
 </script>
