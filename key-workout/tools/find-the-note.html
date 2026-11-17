@@ -319,12 +319,17 @@ function tapAnswer(f){
         why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
     }
   }
+  S.tapped=1;
   if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); c.mark='no'; setMark('no'); drawBoard(c); return; }
+  if(!S.tapped) S.tapped=1; S.found=(S.found||0)+1; if(!c.miss) S.first=(S.first||0)+1;
   c.mark='ok'; S.quiet=true; reveal();
 }
 // Right/wrong mark next to the prompt (CJ, Nov 17): green check or red X; sits outside the title so the title never shifts
 { const st=document.createElement('style'); st.textContent='.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
-  $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>'); }
+  $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>');
+  // simple end-of-round score when they answered by tapping (CJ, Nov 17)
+  const s2=document.createElement('style'); s2.textContent='.tscore{text-align:center;font-family:var(--notes);font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.2;margin-top:-4px}.tscore b{color:#3ccf6e}.tscore small{display:block;font-family:var(--body);font-weight:500;font-size:16px;color:var(--muted);margin-top:4px}'; root.appendChild(s2);
+  root.querySelector('.stage-top').insertAdjacentHTML('afterend','<div class="tscore" id="tscore" hidden></div>'); }
 function setMark(v){ const m=$('qmark'); if(!m) return; const was=m.dataset.v||''; v=v||''; m.dataset.v=v;
   m.innerHTML = v==='ok' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Correct"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#3ccf6e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     : v==='no' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Wrong"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#ff5c5c" stroke-width="3.4" stroke-linecap="round"/></svg>' : '';
@@ -392,7 +397,7 @@ function idle(over){
   const n=settings.perLevel, a=delayAt(0,n), b=delayAt(n-1,n);
   $('progress').innerHTML='';
   $('qNote').className='note msg'+(over?' brand':''); $('qNote').textContent= over?'Round complete':'Ready';
-  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null);
+  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
   $('nextBtn').textContent= over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('nextBtn').disabled=false;
@@ -405,7 +410,7 @@ function start(){
   S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
   // 2.5 s to get ready after Start or Restart (CJ)
   S.lead=true; $('pauseBtn').textContent='Pause'; $('pauseBtn').disabled=true; $('undoBtn').disabled=false; $('nextBtn').disabled=true; $('nextBtn').textContent='Starting…';
-  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent='Get ready'; $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null);
+  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent='Get ready'; $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
   { const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%'; } drawBoard(null);
   S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },2500);
 }
@@ -469,7 +474,7 @@ function togglePause(){
     else S.timer=setTimeout(advance,Math.max(0,S.remaining));
   }
 }
-function finish(){ const rec=S&&S.rec; idle(true); if(rec) results(); }
+function finish(){ const rec=S&&S.rec; idle(true); if(rec) results(); else if(S&&S.tapped){ const n=S.seq.length, f=S.found||0, ft=S.first||0; $('tscore').innerHTML=`Score <b>${f}</b> / ${n}<small>${ft} right on the first tap</small>`; $('tscore').hidden=false; } }
 function syncMute(){ const b=$('muteBtn'); b.innerHTML=settings.sound?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>Sound off':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>Sound on'; b.setAttribute('aria-pressed',String(!settings.sound));  }
 
 $('nextBtn').onclick=next; $('undoBtn').onclick=restart; $('pauseBtn').onclick=()=>S&&!S.over&&togglePause();
