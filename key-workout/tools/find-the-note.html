@@ -408,10 +408,10 @@ function idle(over){
 // start screen (CJ, Nov 17): a worked example instead of an empty neck: a natural note on the first chosen string, shown with its answer
 function drawExample(){
   const k=settings.strings[0]||ORDER[0], st=STRINGS[k];
-  let f=[2,3,1,4,5,7,8].find(x=>NATURAL.includes((st.midi+x)%12));
-  const ex={s:k,frets:[f],name:SHARP[(st.midi+f)%12],revealed:true};
+  let f=[2,3,1,4,5,7,8,9,10,6,11,0].find(x=>(st.midi+x)%12===window.KW_KEY);
+  const ex={s:k,frets:[f],name:kwName(window.KW_KEY),revealed:true};
   $('progress').innerHTML='<span class="tag">Example</span>';
-  $('qNote').className='note'; $('qNote').textContent=ex.name;
+  $('qNote').className='note'; $('qNote').innerHTML=ex.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
   $('qString').textContent=strName(k); $('qNote').nextElementSibling.hidden=false;
   drawBoard(ex);
 }
