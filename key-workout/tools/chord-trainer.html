@@ -1540,7 +1540,7 @@ select option { background: #141414; color: #fff; }\
   function demoStep() {
     var k = DM.i, s = DM.step;
     function nx(ms, i, stp) { DM.t = setTimeout(function () { if (!DM) return; DM.i = i; DM.step = stp; demoStep(); }, ms); }
-    if (k >= 4) { demoBeats(false); timer(-1); coach($('play'), 'Press Start when ready'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays through twice, then stops (CJ)
+    if (k >= 2) { demoBeats(false); timer(-1); coach($('play'), 'Press Start when ready'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays once, then stops (CJ Nov 17: Chord Trainer only)
     if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
       coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
     if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
