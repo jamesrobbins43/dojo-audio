@@ -106,6 +106,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .timer{height:12px;width:100%;border-radius:99px;background:var(--line);overflow:hidden}
 .timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.controls,.controls .toolbar{flex-wrap:nowrap!important}
+.controls .toolbar{gap:clamp(4px,1.2vw,10px)!important}
+.controls .btn{white-space:nowrap}
+.ask{font-size:clamp(26px,3.6vw,38px)!important}   /* smaller Key of X title (CJ Nov 17) */
+@media (max-width:1000px){.controls .btn{min-width:0!important;padding:8px clamp(5px,1.4vw,14px)!important;font-size:clamp(10px,1.75vw,15px)!important;white-space:nowrap}.controls .icon-btn svg{width:16px;height:16px}.controls .icon-btn{gap:4px}}
+@media (max-width:520px){.controls{gap:5px!important}.controls .toolbar{gap:3px!important}.controls .btn{padding:7px 3px!important;font-size:9.5px!important}.controls .icon-btn svg{display:none}}
 .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .credit{font-size:12px;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}
