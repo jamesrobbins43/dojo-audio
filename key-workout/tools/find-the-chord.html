@@ -336,7 +336,7 @@ function drawScale(c,revealed,pop){
   const el=$('scale'); let h='';
   for(let d=0;d<7;d++){
     const ch=c?c.chords[d]:null, miss=c&&c.miss.includes(d);
-    const box = !c ? '<div class="ch"></div>' : miss ? (revealed?(pop&&d===c.miss[1]?'<div class="ch q" id="kwLate" aria-label="missing chord">?</div>':`<div class="ch ans${pop?'':' still'}">${chordHTML(ch)}</div>`):'<div class="ch q" aria-label="missing chord">?</div>') : `<div class="ch">${chordHTML(ch)}</div>`;
+    const box = !c ? `<div class="ch">${(()=>{ const t=keyScale(settings.keys[0])[d]; return chordHTML({name:t.name, q:DEG_Q[d], pc:t.pc}); })()}</div>` : miss ? (revealed?(pop&&d===c.miss[1]?'<div class="ch q" id="kwLate" aria-label="missing chord">?</div>':`<div class="ch ans${pop?'':' still'}">${chordHTML(ch)}</div>`):'<div class="ch q" aria-label="missing chord">?</div>') : `<div class="ch">${chordHTML(ch)}</div>`;
     h+=`<div class="cell">${degHTML(DEGS[d])}${box}</div>`;
     h+=`<div class="gap${STEP_GAPS[d]==='H'?' h':''}" aria-label="${STEP_GAPS[d]==='H'?'half step':'whole step'}"><span>${STEP_GAPS[d]}</span></div>`;
   }
