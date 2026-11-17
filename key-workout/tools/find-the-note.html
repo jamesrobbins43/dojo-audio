@@ -436,11 +436,11 @@ function drawExample(i=0,step=-1){
   $('qNote').className='note'; $('qNote').innerHTML=ex.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
   $('qString').textContent=strName(ex.s); $('qNote').nextElementSibling.hidden=false;
   drawBoard(ex);
-  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings: guitar or bass, which strings, which notes, how fast the answer shows, and how many notes per round.',true); demoT=setTimeout(()=>drawExample(i,0),6500); return; }
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings: guitar or bass, which strings, which notes, how fast the answer shows, and how many notes per round.',true); demoT=setTimeout(()=>drawExample(i,0),13000); return; }
   const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the bar fills.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
-  if(step===0){ setBar(0,11000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,1),5500); }
-  else if(step===1){ coach(host,$('board').querySelector('text[fill="#18CEFB"]')||$('board'),tips[1]); demoT=setTimeout(()=>drawExample(i,2),5500); }
-  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[2]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),6000); }
+  if(step===0){ setBar(0,22000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,1),11000); }
+  else if(step===1){ coach(host,$('board').querySelector('text[fill="#18CEFB"]')||$('board'),tips[1]); demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[2]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),12000); }
 }
 function start(){
   audio(); preloadSamples();
