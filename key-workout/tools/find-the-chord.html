@@ -124,7 +124,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 #session.demo .ask .dir,#session.demo .scale .deg{color:var(--brand)}
 /* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
 .coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
-.coach.on{opacity:1;transform:none;pointer-events:auto}.coach.two::before,.coach.two::after{display:none}.coach .ar{position:absolute;bottom:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}.coach .ar::after{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border:9px solid transparent;border-top:0;border-bottom:11px solid #18CEFB}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}
+.coach.on{opacity:1;transform:none;pointer-events:auto}.coach.two::before,.coach.two::after{display:none}.coach .ar{position:absolute;bottom:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}.coach .ar::after{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border:9px solid transparent;border-top:0;border-bottom:11px solid #18CEFB}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}
 .coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
 .coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
 @media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
@@ -428,6 +428,12 @@ function preloadSamples(){ if(!ctx) return; for(let m=50;m<=70;m++){ const key=n
 
 // demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
 // the X on a demo box stops the demo (CJ Nov 17)
+// get-ready moment before a run (CJ Nov 18): 'Ready', then 'Begin' for the last 1.5 s, fading out; done() after 4 s
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=host.ownerDocument.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.textContent='Ready'; void o.offsetWidth; o.classList.add('on');
+  o._t=[setTimeout(function(){ o.textContent='Begin'; o.classList.add('go'); },2500), setTimeout(function(){ o.classList.add('out'); },3300), setTimeout(function(){ o.className='prep'; if(done) done(); },4000)]; }
+function prepCancel(host){ var o=host.querySelector(':scope > .prep'); if(!o) return; (o._t||[]).forEach(clearTimeout); o._t=[]; o.className='prep'; }
 function demoX(){ clearTimeout(demoT); demoT=null; }
 function coach(host,el,text,below){
   let c=host.querySelector(':scope > .coach');
@@ -505,6 +511,7 @@ function idle(over){
   demoStop(); if(!over) drawExample();
 }
 function start(){
+  if(!start.go){ audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   demoStop();
   audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
