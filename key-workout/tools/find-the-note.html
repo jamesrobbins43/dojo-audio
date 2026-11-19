@@ -236,7 +236,8 @@ function buildSequence(L,n){
     let item=bag.pop();
     const prev=seq[seq.length-1];
     if(prev&&prev.s===item.s&&prev.pc===item.pc&&pool.length>1){ bag.unshift(item); item=bag.pop(); }
-    seq.push({...item, name:spell(item.pc)});
+    // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH (CJ, Nov 18)
+    seq.push(item.frets.includes(0)&&item.frets.includes(12) ? {...item, frets:[12], high:true, name:spell(item.pc)} : {...item, name:spell(item.pc)});
   }
   return seq;
 }
@@ -326,7 +327,7 @@ function tapAnswer(f){
   c.mark='ok'; S.quiet=true; reveal();
 }
 // Right/wrong mark next to the prompt (CJ, Nov 17): green check or red X; sits outside the title so the title never shifts
-{ const st=document.createElement('style'); st.textContent='.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
+{ const st=document.createElement('style'); st.textContent='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
   $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>');
   // simple end-of-round score when they answered by tapping (CJ, Nov 17)
   const s2=document.createElement('style'); s2.textContent='.tscore{text-align:center;font-family:var(--notes);font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.2;margin-top:-4px}.tscore b{color:#3ccf6e}.tscore small{display:block;font-family:var(--body);font-weight:500;font-size:16px;color:var(--muted);margin-top:4px}'; root.appendChild(s2);
@@ -477,6 +478,7 @@ function enter(){
   S.d=delayAt(S.i,S.seq.length);
   $('progress').innerHTML=`${S.i+1}<span class="of">of</span>${S.seq.length}`;
   $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
+  if(c.high) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>');
   $('qString').textContent=strName(c.s);
   $('qNote').nextElementSibling.hidden = settings.strings.length===1; // one string picked: just the note (CJ, Nov 6)
   drawBoard(c);
