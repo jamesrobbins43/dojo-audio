@@ -301,7 +301,7 @@ select option { background: #141414; color: #fff; }\
 #tsets { flex-wrap: nowrap; gap: 4px; } #tsets button { flex: 0 1 auto; min-width: 0; padding: 6px 7px; font-size: 14px; white-space: nowrap; letter-spacing: -.01em; }\
 .w:not(.t-ts) .tsf { display: none !important; }\
 .coach { position: absolute; z-index: 6; max-width: min(340px, 86%); padding: 9px 14px; border-radius: 10px; background: #000; border: 2px solid #18CEFB; color: #fff; font-size: 18px; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,.6); line-height: 1.3; text-align: center; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; font-family: inherit; }\
-.coach.on { opacity: 1; transform: none; pointer-events: auto; } .coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}\
+.coach.on { opacity: 1; transform: none; pointer-events: auto; } .coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}.vs{margin:6px 0 4px}.vsq{font-size:clamp(20px,3vw,26px);font-weight:700;line-height:1.2;margin:4px 0 14px;text-wrap:balance}.vtw{position:relative;padding-top:40px;margin-right:30px}.vcue{position:absolute;right:0;top:0;transform:translateX(50%);display:flex;flex-direction:column;align-items:center;color:var(--mute);font-weight:700;font-size:14px;letter-spacing:.1em;line-height:1}.vcue::after{content:"";margin-top:6px;border:7px solid transparent;border-bottom:0;border-top:10px solid currentColor}.vtw.hit .vcue{color:#e09a3e}.vtr{position:relative;height:64px;border-radius:12px 0 0 12px;border:2px solid var(--line);overflow:hidden}.vfl{position:absolute;top:0;bottom:0;left:0;width:0;background:#e09a3e}.vsn{color:var(--mute);font-size:15px;margin:12px 0 0;min-height:22px}.vsn.bad{color:#ff5c5c}.vsq.ok{color:#3ccf6e}\
 .coach::before { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 2px); width: 3px; height: 22px; background: #18CEFB; transform: translateX(-50%); }\
 .coach::after { content: ""; position: absolute; left: var(--px, 50%); top: calc(100% + 22px); transform: translateX(-50%); border: 9px solid transparent; border-bottom: 0; border-top: 11px solid #18CEFB; }\
 .coach.below::before { top: auto; bottom: calc(100% + 2px); }\
@@ -683,7 +683,7 @@ select option { background: #141414; color: #fff; }\
     $('play').textContent = 'Stop'; summary();
   }
   function dmShow(on) { var d = $('dmsg'); if (!d) return; d.hidden = !on; d.parentNode.classList.toggle('dm', on); }
-  function stop() { run = false; prepCancel(root.querySelector('.stage .now')); clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); dmShow(false); $('play').textContent = 'Start'; tagSet('Play'); summary();
+  function stop() { if (VS) { cancelAnimationFrame(VS.raf); VS = null; } run = false; prepCancel(root.querySelector('.stage .now')); clearInterval(iv); tos.forEach(clearTimeout); tos = []; timer(-1); cntShow(null); dmShow(false); $('play').textContent = 'Start'; tagSet('Play'); summary();
     if (rec.state === 'rec' || rec.state === 'end') { rec.state = 'arm'; rec.chunks = null; lockUI(false); if (rec.mode === 'cal') recInfo(); else recInfo('Take stopped. Press Record to try again.'); }
   }
   function resync() { if (run && beat > 0) beat = Math.ceil(beat / BPC) * BPC; }
@@ -1153,22 +1153,74 @@ select option { background: #141414; color: #fff; }\
     el.innerHTML = h + '</ol><div class="ib"><b></b></div>';
   }
   function syncGuide(el) {
-    var s = ['Mute the strings with your fretting hand', 'Press Sync timing', 'Wait for 4 clicks', 'Strum down on the next 8 clicks'], h = '<b class="stp">Step 2 of 2: sync timing</b><div class="big" id="big"></div><ol class="sg" id="sg" hidden>';
-    s.forEach(function (x, i) { h += '<li><i>' + (i + 1) + '</i>' + x + '</li>'; });
-    h += '</ol><div class="bxl"><span>Count-in</span><span></span><span>Strum</span></div><div class="bx" id="bx">';
-    for (var i = 0; i < 12; i++) h += (i === 4 ? '<span class="gp"></span>' : '') + '<span' + (i < 4 ? '>' + (i + 1) : ' class="s">&darr;') + '</span>';
-    var busy = rec.state === 'rec' && rec.mode === 'cal';
-    h += '</div><div class="sgb">' + (rec.calOK && !busy ? '<button class="btn" id="sagain" type="button">Sync again</button><button class="btn main" id="snext" type="button">Next</button>'
+    var busy = !!VS, h = '<b class="stp">Step 2 of 2: sync timing</b><div class="vs"><div class="vsq' + (rec.calOK && !busy ? ' ok' : '') + '" id="vsq">'
+      + (busy ? 'Strum <b>' + VS.n + '</b> of 4' : rec.calOK ? 'Synced &#10003;' : 'Strum down when the bar reaches the end') + '</div>'
+      + '<div class="vtw" id="vtw"' + (rec.calOK && !busy ? ' hidden' : '') + '><div class="vcue">STRUM</div><div class="vtr"><div class="vfl" id="vfl"></div></div></div>'
+      + '<p class="vsn' + (rec.syncMsg ? ' bad' : '') + '" id="vsn">' + (rec.syncMsg || (busy || rec.calOK ? '' : 'Mute the strings with your fretting hand. No rhythm needed: just watch the bar.')) + '</p></div>';
+    h += '<div class="sgb">' + (rec.calOK && !busy ? '<button class="btn" id="sagain" type="button">Sync again</button><button class="btn main" id="snext" type="button">Next</button>'
       : '<button class="btn recgo" id="sgo" type="button"' + (busy ? ' disabled>Syncing…' : '>Sync timing') + '</button>') + '</div>';
-    // One big cue under the heading takes the place of step-by-step instructions.
     el.innerHTML = h;
     var b1 = $('sgo'), b2 = $('sagain'), b3 = $('snext');
-    if (b1) b1.addEventListener('click', function () { doRec('cal'); });
-    if (b2) b2.addEventListener('click', function () { doRec('cal'); });
+    if (b1) b1.addEventListener('click', function () { vsync(); });
+    if (b2) b2.addEventListener('click', function () { vsync(); });
     if (b3) b3.addEventListener('click', function () {
       rec.synced = true; rec.calOK = false; rec.mode = 'take'; rec.intro = false; pos = 0; stage(); recInfo(); lockUI(false);
     });
-    syncShow(busy ? -1 : -2);
+  }
+  // Visual sync (CJ Nov 19): 4 slow bars, strum when each reaches the end, random pauses so it never becomes a rhythm.
+  var VS = null;
+  function vsync() {
+    if (!rec.stream || VS || rec.state === 'rec' || rec.state === 'end' || rec.state === 'proc') return;
+    if (run) stop();
+    rec.mode = 'cal'; rec.state = 'rec'; rec.chunks = []; rec.calOK = false; rec.syncMsg = '';
+    VS = { res: [], ons: [], p: 0, f: 0, fl: .002, last: -1, n: 1, g: 0, miss: 0 };
+    lockUI(true); recInfo(); vsRound(.8);
+  }
+  function vsScan() {
+    var c = rec.chunks || [], sr = ctx.sampleRate; rec.chunks = [];
+    for (var i = 0; i < c.length; i++) {
+      var t = c[i][0], d = c[i][1];
+      for (var o = 0; o + 128 <= d.length; o += 128) {
+        var e = 0, pv = VS.p; for (var k = o; k < o + 128; k++) { var df = d[k] - pv; pv = d[k]; e += df * df; } VS.p = pv; e = Math.sqrt(e / 128);
+        var tt = t + o / sr; if (e > Math.max(.006, VS.fl * 6) && e > VS.f * 1.8 && tt - VS.last > .15) { VS.last = tt; VS.ons.push(tt); }
+        VS.f = e; VS.fl = e < VS.fl ? VS.fl * .9 + e * .1 : VS.fl * 1.0015;
+      }
+    }
+  }
+  function vsRound(pause) {
+    if (!VS) return;
+    var t0 = ctx.currentTime + pause, g = t0 + 2.5; VS.g = g;
+    var q = $('vsq'); if (q) q.innerHTML = 'Strum <b>' + VS.n + '</b> of 4';
+    (function f() {
+      if (!VS || VS.g !== g) return;
+      var now = ctx.currentTime, fl = $('vfl'), tw = $('vtw');
+      if (fl) fl.style.width = Math.max(0, Math.min(1, (now - t0) / 2.5)) * 100 + '%';
+      if (tw) tw.classList.toggle('hit', now >= g && now < g + .35);
+      if (now > g + .7) { vsJudge(); return; }
+      VS.raf = requestAnimationFrame(f);
+    })();
+  }
+  function vsJudge() {
+    vsScan(); var g = VS.g, hit = null, i;
+    for (i = 0; i < VS.ons.length; i++) if (VS.ons[i] >= g - .6 && VS.ons[i] <= g + .7) { hit = VS.ons[i]; break; }
+    VS.ons = []; var n = $('vsn'), fl = $('vfl'); if (fl) fl.style.width = '0%';
+    if (hit === null) {
+      if (++VS.miss >= 3) { cancelAnimationFrame(VS.raf); VS = null; rec.chunks = null; rec.state = 'arm'; rec.syncMsg = 'Couldn’t hear your strums. Check your input level and press Sync timing again.'; lockUI(false); recInfo(); return; }
+      if (n) { n.className = 'vsn bad'; n.textContent = 'Didn’t hear a strum. Strum a little harder and let’s do that one again.'; } vsRound(1.2 + Math.random()); return; }
+    VS.miss = 0;
+    if (n) { n.className = 'vsn'; n.textContent = ''; }
+    VS.res.push(hit - g);
+    if (VS.res.length >= 4) { vsDone(); return; }
+    VS.n++; vsRound(1 + Math.random() * 1.6);
+  }
+  function vsDone() {
+    var r = VS.res.slice().sort(function (a, b) { return a - b; }), mid = (r[1] + r[2]) / 2;
+    var dv = r.map(function (v) { return Math.abs(v - mid); }).sort(function (a, b) { return a - b; }), spread = (dv[1] + dv[2]) / 2;
+    cancelAnimationFrame(VS.raf); VS = null; rec.chunks = null; rec.state = 'arm';
+    if (spread > .06) rec.syncMsg = 'Those strums were pretty spread out. Press Sync timing and try again.';
+    else if (Math.abs(mid) > .25) rec.syncMsg = 'That came out ' + Math.round(Math.abs(mid) * 1000) + ' ms ' + (mid > 0 ? 'late' : 'early') + '. Press Sync timing and try again.';
+    else { st.cal = Math.max(0, (ctx.outputLatency || 0) + (ctx.baseLatency || 0) + Math.max(0, mid)); save(); rec.calOK = true; pos = 0; stage(); }
+    lockUI(false); recInfo();
   }
   function syncShow(k) {
     var li = root.querySelectorAll('#sg li'), bx = root.querySelectorAll('#bx span:not(.gp)'), big = $('big'), q;
@@ -1249,6 +1301,7 @@ select option { background: #141414; color: #fff; }\
   }
   function lockUI(on) { root.querySelector('.w').classList.toggle('recording', on); var g = $('go'); if (g) g.textContent = on ? (rec.mode === 'cal' ? 'Syncing…' : 'Recording…') : !rec.stream ? 'Connect' : rec.synced ? 'Record' : 'Sync timing'; }
   function doRec(mode) {
+    if (mode === 'cal' || (mode === 'take' && !rec.synced)) { vsync(); return; } // visual sync (CJ Nov 19)
     if (!rec.stream || rec.state === 'rec' || rec.state === 'end' || rec.state === 'proc') return;
     if (mode === 'take' && !seq.length) return;
     if (mode === 'take' && !rec.synced) mode = 'cal';
