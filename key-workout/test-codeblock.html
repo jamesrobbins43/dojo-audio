@@ -23,12 +23,13 @@ const PARTS=[
   ['chord-trainer','Chord Trainer','Play the key’s chords along with the click. One take.',5,true],
   ['numbers-play-along','Numbers Play Along','Pick your chords, warm up with the Number drill (not scored), then play along with one song. One take.',4,true],
 ];
-// seconds per question (CJ Nov 18): the member picks it; the number of questions is sized to fit the part's minutes.
-// rev = seconds the answer stays up after each question
+// question speed (CJ Nov 18): Slow / Medium / Fast; the number of questions is sized to fit the part's minutes.
+// opts = seconds per question for Slow, Medium, Fast; rev = seconds the answer stays up after each question
+const SPEEDS=['Slow','Medium','Fast'];
 const PACE={
-  'steps-drill':   {opts:[3,5,8,10], def:8,  rev:p=>p>=8?2.5:2},
-  'find-the-chord':{opts:[5,8,10,12],def:10, rev:p=>(p>=8?3.5:3)+1},
-  'find-the-key':  {opts:[8,12,16,20],def:16, rev:()=>5.5},
+  'steps-drill':   {opts:[10,6,3],  def:6,  rev:p=>p>=8?2.5:2},
+  'find-the-chord':{opts:[12,9,6],  def:9,  rev:p=>(p>=8?3.5:3)+1},
+  'find-the-key':  {opts:[20,14,8], def:14, rev:()=>5.5},
 };
 const $=id=>root.getElementById(id);
 const store={ get(k,d){ try{ const v=localStorage.getItem('dgwo:'+k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
@@ -41,11 +42,11 @@ function count(id,m){ const c=PACE[id], p=pace[id]; return Math.max(6,Math.min(4
 
 $('keys').innerHTML=KEYS.map((n,k)=>`<button type="button" data-key="${k}" aria-label="${n.replace('♭',' flat')} major">${keyHTML(n)}</button>`).join('');
 function drawParts(){ $('parts').innerHTML=PARTS.map(([id,t,d,m,r],i)=>`<li><span class="n">${i+1}</span><span class="t"><b>${t}${r?'<span class="rec">Record</span>':''}</b><span>${d.replace('{n}',PACE[id]?count(id,m):'')}</span>`+
-  (PACE[id]?`<span class="pace"><span class="pl">Seconds per question</span><span class="seg" role="group" aria-label="Seconds per question, ${t}">${PACE[id].opts.map(o=>`<button type="button" data-id="${id}" data-p="${o}" aria-pressed="${o===pace[id]}">${o}</button>`).join('')}</span></span>`:'')+
+  (PACE[id]?`<span class="pace"><span class="pl">Speed</span><span class="seg" role="group" aria-label="Question speed, ${t}">${PACE[id].opts.map((o,k)=>`<button type="button" data-id="${id}" data-p="${o}" aria-pressed="${o===pace[id]}">${SPEEDS[k]}</button>`).join('')}</span></span>`:'')+
   `</span><span class="m">~${m} min</span></li>`).join(''); }
 drawParts();
-$('parts').addEventListener('click',e=>{ const b=e.target.closest('[data-p]'); if(!b) return; pace[b.dataset.id]=+b.dataset.p; store.set('pace',pace); drawParts(); });
-Object.assign(pace,store.get('pace',{})); drawParts();
+$('parts').addEventListener('click',e=>{ const b=e.target.closest('[data-p]'); if(!b) return; pace[b.dataset.id]=+b.dataset.p; store.set('speed',pace); drawParts(); });
+{ const sv=store.get('speed',{}); for(const k in sv) if(PACE[k]&&PACE[k].opts.includes(sv[k])) pace[k]=sv[k]; } drawParts();
 $('steps').innerHTML=PARTS.map(()=>'<i></i>').join('');
 
 function show(id){ ['pick','plan','run','final'].forEach(x=>$(x).hidden=x!==id); $('keyName').hidden=$('changeBtn').hidden=(id==='pick'); if(id!=='run'){ clearInterval(clockT); ticket++; $('frame').srcdoc=''; } }
