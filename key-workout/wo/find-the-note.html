@@ -703,6 +703,10 @@ renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); sync
   const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}'; root.appendChild(css);
   try{ demoStop(); }catch(e){} drawExample=function(){};
   setMode('rec');
+  // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH over the note (CJ Nov 18)
+  const _bs=buildSequence; buildSequence=function(L,n){ return _bs(L,n).map(c=>c.frets.includes(0)&&c.frets.includes(12)?Object.assign({},c,{frets:[12],high:true}):c); };
+  css.textContent+='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}';
+  const _en=enter; enter=function(){ _en.apply(this,arguments); const c=card(); if(c&&c.high&&!$('qNote').querySelector('.hi')) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>'); };
   const _r=results; results=function(){ _r.apply(this,arguments);
     const t=root.querySelector('#res .ov'), m=t&&t.textContent.match(/(\d+)\s*$/), score=m?+m[1]:0;
     try{ window.parent.postMessage({kwwo:'done',tool:'find-the-note',score},'*'); }catch(e){} };
