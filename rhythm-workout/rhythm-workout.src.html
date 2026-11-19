@@ -82,6 +82,15 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .next{font-size:16px;font-weight:600;text-align:right;white-space:nowrap;color:var(--fg);opacity:0;transition:opacity .3s}
 .next.on{opacity:1}
 .next span{color:var(--muted);font-weight:500}
+/* Record sync (CJ Nov 19): slow bar, strum when it reaches the end, 4 times */
+.sync{padding:4px 0 2px}
+.vtw{position:relative;padding-top:44px;margin-right:30px}
+.vcue{position:absolute;right:0;top:0;transform:translateX(50%);display:flex;flex-direction:column;align-items:center;color:var(--muted);font-weight:700;font-size:15px;letter-spacing:.1em;line-height:1;transition:color .1s}
+.vcue::after{content:"";margin-top:6px;border:7px solid transparent;border-bottom:0;border-top:10px solid currentColor}
+.vtw.hit .vcue{color:var(--accent)}
+.vtr{position:relative;height:clamp(64px,10vw,96px);border-radius:12px 0 0 12px;border:2px solid var(--line);background:#000;overflow:hidden}
+.vfl{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--accent)}
+.vsn{color:var(--muted);font-size:16px;margin:14px 0 0;min-height:24px}.vsn.bad{color:var(--bad)}
 /* results */
 .res{padding:6px 0 2px}
 .res .big{font-size:clamp(56px,10vw,88px);font-weight:700;line-height:1}
@@ -161,6 +170,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <div class="grid" id="grid"></div>
       <div class="cin" id="cin" hidden><div class="n" id="cinN">1</div><div class="m" id="cinM">4/4 · 50 BPM</div></div>
     </div>
+    <div class="sync" id="sync" hidden><div class="vtw" id="vtw"><div class="vcue">STRUM</div><div class="vtr"><div class="vfl" id="vfl"></div></div></div><p class="vsn" id="vsn"></p></div>
     <div class="res" id="res" hidden></div>
     <div class="tbar"><div class="tfill" id="tfill"></div></div>
     <div class="foot"><p class="tip" id="tip"></p><div class="next" id="next"></div></div>
@@ -290,11 +300,13 @@ async function micOn(){
     mic={stream,node}; return true;
   }catch(e){ return false; }
 }
+let CAL=null; // measured input delay from the bar sync (this visit)
 const IN_LAT=0.012;
 function onset(tc){
+  if(VS){ VS.ons.push(tc); }
   const d=$('heardDot'); d.classList.add('on'); clearTimeout(d._t); d._t=setTimeout(()=>d.classList.remove('on'),90);
   if(!S||S.paused||!S.rec) return;
-  S.on.push(tc-S.startCtx+S.startPos-outLat()-IN_LAT);
+  S.on.push(tc-S.startCtx+S.startPos-outLat()-(CAL!=null?CAL:IN_LAT));
 }
 function judge(p){ // grade each expected strum once it has passed
   const E=S.exp;
@@ -317,8 +329,9 @@ function lean(ms){ return Math.abs(ms)<15?'Locked in':ms<0?`Rushing ${Math.round
 function lock(on){ $('sets').classList.toggle('locked',on); $('startBtn').disabled=on; $('pauseBtn').disabled=!on; $('stopBtn').disabled=!on; }
 async function start(){
   audio(); demoStop(); const rec=ST.mode==='record';
-  lock(true); $('session').classList.remove('done'); $('res').hidden=true; $('gw').hidden=false; $('pauseBtn').textContent='Pause';
-  if(rec){ $('prog').textContent='Turning on the mic…'; if(!await micOn()){ lock(false); $('prog').textContent=''; $('tip').textContent='Record needs the microphone. Allow mic access in your browser and press Start again.'; return; } $('heard').hidden=false; }
+  lock(true); $('session').classList.remove('done'); $('res').hidden=true; $('gw').hidden=false; $('sync').hidden=true; $('pauseBtn').textContent='Pause';
+  if(rec){ $('prog').textContent='Turning on the mic…'; if(!await micOn()){ lock(false); $('prog').textContent=''; $('tip').textContent='Record needs the microphone. Allow mic access in your browser and press Start again.'; return; } $('heard').hidden=false;
+    if(CAL==null){ vsync(); return; } } // sync timing first, once per visit (CJ Nov 19)
   $('prog').textContent='Loading…';
   const [first,last]=PARTS[ST.part];
   const ready=new Promise(r=>prep($('session'),r));   // 4 s Ready / Begin (CJ Nov 18)
@@ -384,9 +397,50 @@ function finish(done){
     :'<p class="line">No strums were scored yet.</p>';
   $('tip').textContent=sc.pc>=90&&nextT?`Great timing. Try ${nextT} BPM next.`:'On time = within 50 ms of the beat. Close = within 120 ms.';
 }
-function stop(){ if(!S){ prepCancel($('session')); lock(false); idle(); return; } finish(false); }
+function stop(){ if(VS){ vsEnd('Sync stopped. Press Start to try again.'); return; } if(!S){ prepCancel($('session')); lock(false); idle(); return; } finish(false); }
 
 $('startBtn').onclick=start; $('pauseBtn').onclick=pause; $('stopBtn').onclick=stop;
+
+// ---------- Record sync (CJ Nov 19): a slow bar fills to the end, strum when it gets there; 4 times, random pauses, no rhythm needed ----------
+let VS=null;
+function vsync(){
+  $('gw').hidden=true; $('res').hidden=true; $('sync').hidden=false; $('vtw').hidden=false; $('next').classList.remove('on'); $('tfill').style.width='0%';
+  $('pname').textContent='Strum down when the bar reaches the end'; $('stage').textContent='Sync timing';
+  $('tip').textContent='Mute the strings with your fretting hand. No rhythm needed: just watch the bar.';
+  $('vsn').textContent=''; $('vsn').className='vsn';
+  VS={res:[],ons:[],n:1,miss:0,g:0}; vsRound(0.8);
+}
+function vsRound(pause){
+  if(!VS) return; const t0=ctx.currentTime+pause, g=t0+2.5; VS.g=g;
+  $('prog').innerHTML=`Strum <b>${VS.n}</b> <span class="of">of 4</span>`;
+  const f=()=>{ if(!VS||VS.g!==g) return; const now=ctx.currentTime;
+    $('vfl').style.width=Math.max(0,Math.min(1,(now-t0)/2.5))*100+'%'; $('vtw').classList.toggle('hit',now>=g&&now<g+.35);
+    if(now>g+.7) return vsJudge(); VS.raf=requestAnimationFrame(f); };
+  f();
+}
+function vsJudge(){
+  const g=VS.g, hit=VS.ons.find(t=>t>=g-.6&&t<=g+.7); VS.ons=[]; $('vfl').style.width='0%'; $('vtw').classList.remove('hit');
+  if(hit==null){
+    if(++VS.miss>=3) return vsEnd('Couldn’t hear your strums. Check your mic and press Start to sync again.');
+    $('vsn').className='vsn bad'; $('vsn').textContent='Didn’t hear a strum. Strum a little harder and let’s do that one again.'; return vsRound(1.2+Math.random());
+  }
+  VS.miss=0; $('vsn').className='vsn'; $('vsn').textContent=''; VS.res.push(hit-g);
+  if(VS.res.length>=4) return vsDone();
+  VS.n++; vsRound(1+Math.random()*1.6);
+}
+function vsDone(){
+  const r=[...VS.res].sort((a,b)=>a-b), mid=(r[1]+r[2])/2, dv=r.map(v=>Math.abs(v-mid)).sort((a,b)=>a-b), spread=(dv[1]+dv[2])/2;
+  if(spread>.06) return vsEnd('Those strums were pretty spread out. Press Start to sync again.');
+  if(Math.abs(mid)>.25) return vsEnd(`That came out ${Math.round(Math.abs(mid)*1000)} ms ${mid>0?'late':'early'}. Press Start to sync again.`);
+  CAL=Math.max(0,mid); vsEnd(null);
+}
+function vsEnd(msg){
+  if(VS) cancelAnimationFrame(VS.raf); VS=null; lock(false); $('heard').hidden=true; $('vfl').style.width='0%'; $('vtw').classList.remove('hit');
+  if(msg){ $('vsn').className='vsn bad'; $('vsn').textContent=msg; return; }
+  $('vtw').hidden=true; $('prog').textContent=''; $('stage').textContent='Sync timing';
+  $('pname').textContent='Synced ✓'; $('vsn').className='vsn'; $('vsn').textContent=`Your mic delay is ${Math.round(CAL*1000)} ms. Record will allow for it when it scores you.`;
+  $('tip').textContent='Press Start to record.';
+}
 
 // ---------- get ready (CJ Nov 18) ----------
 function prep(host,done){ let o=host.querySelector(':scope > .prep'); if(!o){ o=document.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
@@ -413,7 +467,7 @@ function coach(el,text,below){
 function demoX(){ clearTimeout(demoT); demoT=null; cancelAnimationFrame(demoRaf); }
 function demoStop(){ demoX(); $('session').classList.remove('demo'); coach(null); }
 function idle(){
-  demoStop(); $('session').classList.remove('done'); $('res').hidden=true; $('gw').hidden=false; $('cin').hidden=true; $('next').classList.remove('on');
+  demoStop(); $('session').classList.remove('done'); $('sync').hidden=true; $('res').hidden=true; $('gw').hidden=false; $('cin').hidden=true; $('next').classList.remove('on');
   $('session').classList.add('demo'); $('prog').innerHTML='<span class="tag">Example</span>';
   coach($('sets'),'First pick your settings');
   demoT=setTimeout(()=>runDemo(0),4000);
