@@ -307,6 +307,12 @@ function windowLo(c){
   if(!c) return 1;
   const g=c.fret; return Math.max(1, c.dr==='up' ? g : g-2);
 }
+// the note between the two notes of a whole step, spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction)
+function midNote(c){
+  if(!c||c.st!=='whole') return null;
+  const pc=(c.pc+(c.dr==='up'?1:11))%12, s=c.from+c.to;
+  return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:c.dr==='up'?SHARP:FLAT)[pc];
+}
 function drawBoard(c,revealed,popAns){
   const svg=$('board'), lo=windowLo(c), nut=lo===1;
   const W=560, X0=60, X1=W-30, FW=(X1-X0)/3, SP=38, Y0=40, H=Y0+SP*5+58;
@@ -346,10 +352,12 @@ function drawBoard(c,revealed,popAns){
       h+=`<path d="M${x1+L*Math.cos(a1)} ${y1+L*Math.sin(a1)}L${x1} ${y1}L${x1+L*Math.cos(a2)} ${y1+L*Math.sin(a2)}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`; }
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
+    // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
+    if(revealed&&midNote(c)) h+=`<g opacity=".55">${dot((c.fret+c.to2)/2,midNote(c),'#4a4038','#d9cfc1',popAns?'dot':'')}</g>`;
   }
   if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
-  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`:''):'Guitar neck');
+  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(midNote(c)?`, with ${midNote(c)} in between`:''):''):'Guitar neck');
 }
 const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
 const DEGS=['1','2m','3m','4','5','6m','7°'];
@@ -446,8 +454,8 @@ function idle(over){
 }
 // start screen (CJ, Nov 17): two worked examples loop until Start, drawn in DGU blue (no sound), each step with a blue box + arrow
 let demoT=null, DEMO=false;
-let DEMOS=[{mode:'steps',st:'whole',dr:'up',str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
-  {mode:'steps',st:'half',dr:'down',str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
+let DEMOS=[{mode:'steps',st:'whole',dr:'up',pc:0,str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
+  {mode:'steps',st:'half',dr:'down',pc:5,str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
 let DEMO_TIPS=[['Learning half or whole step note intervals','Identify which note is a whole step up from C',''],
   ['Learning half or whole step note intervals','Identify which note is a half step down from F','']]; // CJ's script, Nov 17
 const SET_TIP='First pick your settings', DEMO_END='Press Start when ready';
