@@ -701,7 +701,7 @@ settings.tone='acoustic';
 renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); syncMute(); setMode(R.mode);
 
 ;(function(){ /* Scored Workout (CJ Nov 18) */
-  settings.perLevel=15;
+  settings.perLevel=Math.max(3,Math.round((window.KWWO&&KWWO.n)||+new URLSearchParams(location.search).get('n')||15));
   const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}'; root.appendChild(css);
   try{ demoStop(); }catch(e){} drawExample=function(){};
   setMode('rec');
