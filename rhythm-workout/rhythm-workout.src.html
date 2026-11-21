@@ -91,6 +91,18 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .vtr{position:relative;height:clamp(64px,10vw,96px);border-radius:12px 0 0 12px;border:2px solid var(--line);background:#000;overflow:hidden}
 .vfl{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--accent)}
 .vsn{color:var(--muted);font-size:16px;margin:14px 0 0;min-height:24px}.vsn.bad{color:var(--bad)}
+/* live score in Record (CJ Nov 21): updates on every strum */
+.lv{display:grid;grid-template-columns:auto auto 1fr;align-items:end;gap:clamp(18px,4vw,44px);margin:20px 0 0}
+.lv-n{display:flex;flex-direction:column;gap:4px}
+.lv-n b{font-size:clamp(48px,9vw,76px);font-weight:700;line-height:.9;font-variant-numeric:tabular-nums;color:var(--fg);transition:color .15s}
+.lv-n b small{font-size:.42em;font-weight:600;color:var(--muted);margin-left:3px}
+.lv-n.st b{font-size:clamp(32px,5.5vw,46px)}
+.lv-n span{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lv-n b.hi{color:var(--good)}.lv-n b.mid{color:var(--close)}.lv-n b.lo{color:var(--bad)}
+.lv-n b.bump{animation:bump .18s ease-out}
+@keyframes bump{from{transform:scale(1.08)}to{transform:none}}
+.lv-last{justify-self:end;font-size:clamp(20px,3.4vw,28px);font-weight:700;min-width:5.5em;text-align:right;line-height:1}
+.lv-last.good{color:var(--good)}.lv-last.close{color:var(--close)}.lv-last.miss{color:var(--bad)}
 /* results */
 .res{padding:6px 0 2px}
 .res .big{font-size:clamp(56px,10vw,88px);font-weight:700;line-height:1}
@@ -172,6 +184,11 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     </div>
     <div class="sync" id="sync" hidden><div class="vtw" id="vtw"><div class="vcue">STRUM</div><div class="vtr"><div class="vfl" id="vfl"></div></div></div><p class="vsn" id="vsn"></p></div>
     <div class="res" id="res" hidden></div>
+    <div class="lv" id="lv" hidden>
+      <div class="lv-n"><b id="lvPc">--<small>%</small></b><span>On time now</span></div>
+      <div class="lv-n st"><b id="lvSt">0</b><span>Streak</span></div>
+      <div class="lv-last" id="lvLast"></div>
+    </div>
     <div class="tbar"><div class="tfill" id="tfill"></div></div>
     <div class="foot"><p class="tip" id="tip"></p><div class="next" id="next"></div></div>
   </section>
@@ -314,10 +331,21 @@ function judge(p){ // grade each expected strum once it has passed
     const e=E[S.ei++]; let best=-1,bd=1;
     for(let j=0;j<S.on.length;j++){ const dd=S.on[j]-e.t; if(Math.abs(dd)<Math.abs(bd)&&!S.used[j]){ bd=dd; best=j; } }
     if(best>=0&&Math.abs(bd)<=0.12){ S.used[best]=1; e.d=bd; e.r=Math.abs(bd)<=0.05?'good':'close'; } else e.r='miss';
-    flash(e.pi,e.s,e.r);
+    flash(e.pi,e.s,e.r); live(e);
   }
-  const done=E.slice(0,S.ei); if(done.length){ const sc=score(done); $('stage').innerHTML=`<span class="live">On time <b>${sc.pc}%</b></span>`; }
+  const done=E.slice(0,S.ei); if(done.length){ const sc=score(done); $('stage').innerHTML=`<span class="live">Total <b>${sc.pc}%</b></span>`; }
 }
+const LV_WIN=12; // the big number = your last 12 strums, so it moves fast
+function live(e){
+  S.streak=e.r==='miss'?0:(S.streak||0)+1;
+  const done=S.exp.slice(0,S.ei).filter(x=>x.r), sc=score(done.slice(-LV_WIN));
+  const b=$('lvPc'); b.innerHTML=`${sc.pc}<small>%</small>`; b.className=sc.pc>=85?'hi':sc.pc>=60?'mid':'lo';
+  void b.offsetWidth; b.classList.add('bump');
+  $('lvSt').textContent=S.streak;
+  const l=$('lvLast'); l.className='lv-last '+e.r;
+  l.textContent=e.r==='miss'?'Missed':e.r==='good'?'On time':e.d<0?'Early':'Late';
+}
+function liveReset(){ $('lvPc').innerHTML='--<small>%</small>'; $('lvPc').className=''; $('lvSt').textContent='0'; $('lvLast').textContent=''; $('lvLast').className='lv-last'; }
 function score(list){
   const g=list.filter(e=>e.r==='good').length, c=list.filter(e=>e.r==='close').length, m=list.filter(e=>e.r==='miss').length;
   const ds=list.filter(e=>e.d!=null).map(e=>e.d); const mean=ds.length?ds.reduce((a,b)=>a+b,0)/ds.length:0;
@@ -343,6 +371,7 @@ async function start(){
      runFrom:T.t0+(PATS[first].bar-1)*T.bar,on:[],used:[],exp:[],ei:0};
   if(rec){ for(let pi=first;pi<=last;pi++){ const p=PATS[pi]; for(let b=p.bar;b<endBarOf(pi);b++) for(let s=0;s<16;s++) if(p.g[s]==='X') S.exp.push({t:T.t0+(b-1)*T.bar+s*T.s16,pi,s}); }
     if(last===PATS.length-1) S.exp.push({t:T.t0+(LAST_BAR-1)*T.bar,pi:last,s:0}); }
+  $('lv').hidden=!rec; if(rec) liveReset();
   launch(S.startBar); $('cinM').textContent=`4/4 · ${ST.tempo} BPM`;
   requestAnimationFrame(tick);
 }
@@ -377,7 +406,7 @@ function pause(){
 }
 function finish(done){
   if(!S) return; const R=S; S=null; try{R.src.stop();}catch(e){}
-  lock(false); $('cin').hidden=true; setNow(-1); $('next').classList.remove('on'); $('heard').hidden=true;
+  lock(false); $('cin').hidden=true; setNow(-1); $('next').classList.remove('on'); $('heard').hidden=true; $('lv').hidden=true;
   if(!done&&!R.rec){ idle(); return; }
   $('session').classList.add('done');
   $('gw').hidden=true; $('res').hidden=false; $('tfill').style.width=done?'100%':$('tfill').style.width;
@@ -467,7 +496,7 @@ function coach(el,text,below){
 function demoX(){ clearTimeout(demoT); demoT=null; cancelAnimationFrame(demoRaf); }
 function demoStop(){ demoX(); $('session').classList.remove('demo'); coach(null); }
 function idle(){
-  demoStop(); $('session').classList.remove('done'); $('sync').hidden=true; $('res').hidden=true; $('gw').hidden=false; $('cin').hidden=true; $('next').classList.remove('on');
+  demoStop(); $('lv').hidden=true; $('session').classList.remove('done'); $('sync').hidden=true; $('res').hidden=true; $('gw').hidden=false; $('cin').hidden=true; $('next').classList.remove('on');
   $('session').classList.add('demo'); $('prog').innerHTML='<span class="tag">Example</span>';
   coach($('sets'),'First pick your settings');
   demoT=setTimeout(()=>runDemo(0),4000);
