@@ -41,8 +41,16 @@ function dguNoFooter(host,wrap,on){
   if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
   const sr=host.shadowRoot; let was=null;
   const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  const fit=()=>{ const t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+8;
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); window.scrollTo(0,0); };
   const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
     if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
-    if(r) requestAnimationFrame(()=>{ const t=wrap.getBoundingClientRect().top, hb=headerBottom(); if(Math.abs(t-hb-8)>4) window.scrollBy(0,t-hb-8); }); };
+    if(r) requestAnimationFrame(fit); else { lifted=0; lift.style.removeProperty('margin-top'); } };
+  window.addEventListener('resize',()=>{ if(was) requestAnimationFrame(fit); });
   new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
 }
