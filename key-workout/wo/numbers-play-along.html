@@ -730,7 +730,7 @@ renderSetup(); syncMute(); idleView();
   settings.drill=true; settings.mode='both'; settings.names=true; settings.sound=true; settings.prog=-1; syncMute();
   const css=document.createElement('style');
   css.textContent=`.prow:has(#key),.prow:has(#drill),#rowProg,#backBtn,#pauseBtn,#muteBtn{display:none!important}
-.wo-note{font-size:14px;line-height:1.45;color:var(--muted);padding:2px 0 12px}
+.wo-note{font-size:14px;line-height:1.45;color:var(--muted);padding:2px 0 4px}.mainarea{margin-top:10px!important}.countin{height:88px!important}#card{min-height:400px!important}   /* fits a desktop screen in full screen (CJ Nov 22) */
 .wo-note b{color:var(--ink,#f1ebe2);font-weight:600}
 .wo-mic{display:flex;align-items:center;gap:10px;margin:10px 2px 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .wo-mic i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;max-width:220px}

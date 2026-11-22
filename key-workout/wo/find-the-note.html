@@ -844,7 +844,7 @@ syncMute(); setMode(R.mode);
 
 ;(function(){ /* Scored Workout (CJ Nov 18) */
   settings.perLevel=Math.max(3,Math.round((window.KWWO&&KWWO.n)||+new URLSearchParams(location.search).get('n')||15));
-  const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}'; root.appendChild(css);
+  const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}.dgu-recnote{display:none!important}.board-wrap>svg,#board{max-height:290px}';   /* Record is the only mode here; fits a desktop screen (CJ Nov 22) */ root.appendChild(css);
   try{ demoStop(); }catch(e){} drawExample=function(){};
   setMode('rec');
   // Tap instead of the mic (CJ Nov 22): Record scoring stays (it already takes taps), but the mic is never opened
