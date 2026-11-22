@@ -298,7 +298,7 @@ const spoken=n=>n.replace('♭',' flat').replace('♯',' sharp');
 function svgLabel(x,y,lab,size,fill,weight){
   const acc=lab.slice(1), base=lab[0], F='font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif"';
   let t=`<text x="${x}" y="${y}" text-anchor="middle" ${F} font-weight="${weight||700}" font-size="${size}" fill="${fill}">${base}</text>`;
-  if(acc) t+=`<text x="${x+size*.32}" y="${y-size*.38}" text-anchor="start" ${F} font-weight="400" font-size="${size*.72}" fill="${fill}">${acc}</text>`;
+  if(acc) t+=`<text x="${x+size*.32}" y="${y-size*(acc==='♭'?.32:.38)}" text-anchor="start" ${F} font-weight="400" font-size="${size*(acc==='♭'?.92:.72)}" fill="${fill}">${acc}</text>`;   // flat a bit bigger (CJ Nov 22: it read too small)
   return t;
 }
 // Horizontal neck, high E on top (like tab), zoomed in on 3 frets: a step up starts on the left fret and moves right,
@@ -681,7 +681,8 @@ function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false;
 function dguNoFooter(host,wrap,on){
   const d=document, de=d.documentElement;
   if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
-    s.textContent='html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
       'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
       'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
     d.head.appendChild(s); }
