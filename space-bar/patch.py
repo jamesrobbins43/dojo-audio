@@ -146,6 +146,8 @@ def build(name):
     src, f = TOOLS[name]
     p = Patch(open(src, encoding='utf-8').read())
     f(p)
+    # Back button: simple clean arrow instead of the circular undo arrow (CJ Nov 22)
+    p.s = p.s.replace('<path d=\\"M3 12a9 9 0 1 0 3-6.7\\"/><path d=\\"M3 4v5h5\\"/>', '<path d=\\"M19 12H5\\"/><path d=\\"M11 18l-6-6 6-6\\"/>')
     os.makedirs(os.path.join(here, 'out'), exist_ok=True)
     open(os.path.join(here, 'out', name + '-codeblock.html'), 'w', encoding='utf-8').write(p.s)
     prev = ('<!doctype html><meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>' + name + '</title>\n'

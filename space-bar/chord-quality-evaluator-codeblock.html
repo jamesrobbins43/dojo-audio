@@ -776,7 +776,7 @@ function demo(i, step) {
   hold.style.transition = 'none'; hold.style.width = '0';
   if (step < 3) { clearScores(); $('exTag').hidden = true; }
   if (step === 0) { cur = -1; drawBoard(); renderStrings(); status('Ready', 'Strum once, then pick each string');
-    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings', true); return next(4000); }
+    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings', true); demoT = setTimeout(() => { coach(H, $('input'), 'Choose Input Source', true); demoT = setTimeout(() => demo(i, 1), 4000); }, 4000); return; }
   if (step === 1) { status('Strum once', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
     coach(H, $('board'), 'Press Start and strum the chord once. Let it ring until the blue bar fills.'); return next(11000); }
   if (step === 2) { cur = 2; drawBoard(); renderStrings(); status('Pick the D string', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
@@ -985,6 +985,8 @@ function dguNoFooter(host,wrap,on){
   const sec=host.closest('section,.page-section');
   if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
   const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
   const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
   // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
   // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
