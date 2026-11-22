@@ -353,7 +353,7 @@ function drawBoard(c,revealed,popAns){
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
     // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
-    if(revealed&&midNote(c)) h+=`<g opacity=".55">${dot((c.fret+c.to2)/2,midNote(c),'#4a4038','#d9cfc1',popAns?'dot':'')}</g>`;
+    if(revealed&&midNote(c)) h+=dot((c.fret+c.to2)/2,midNote(c),'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
   }
   if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
@@ -486,8 +486,8 @@ function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').c
 function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
   const at=(pc,lo,hi)=>{ for(const s0 of [1,2,3,0,4,5]){ const f=((pc-OPEN[s0])%12+12)%12; if(f>=lo&&f<=hi) return [s0,f]; } return [1,lo]; };
   const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
-  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
-    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
+  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,pc:sc[0].pc,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
+    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,pc:sc[3].pc,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
   DEMO_TIPS=[['Learning half or whole step note intervals',`Identify which note is a whole step up from ${sc[0].name}`,''],
     ['Learning half or whole step note intervals',`Identify which note is a half step down from ${sc[3].name}`,'']]; }   // CJ's script, Nov 17, with the page key's notes
 function drawExample(i=0,step=-1){
@@ -677,10 +677,12 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
   let W={res:[]};
   const acc=n=>n[0]+(n[1]?`<span class="wacc">${n[1]}</span>`:'');
   
+  const woNow=true;
   function woQ(c){
     const sc=keyScale(c.key), nm=pc=>{ const t=sc.find(x=>x.pc===pc); return t?t.name:(FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; };
     const apc=(c.pc+DIRS[c.dr].s*STEPS[c.st].n+12)%12;
-    const opts=[-2,-1,1,2].map(s=>{ const pc=(c.pc+s+12)%12; return {k:String(pc), h:acc(pc===apc?c.to:nm(pc))}; });
+    // five choices (CJ Nov 22): one extra note a half step further out on a random side, so the start note isn't always in the middle
+    const opts=[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y).map(s=>{ const pc=(c.pc+s+12)%12; return {k:String(pc), h:acc(pc===apc?c.to:nm(pc))}; });
     return [{opts, ans:String(apc)}];
   }
   function woMark(){} function woFill(){} function woDone(){}
@@ -718,7 +720,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
     const bs=[...$('woCh').querySelectorAll('button')];
     bs[i].classList.add(ok?'ok':'no'); if(!ok) sl.opts.forEach((x,j)=>{ if(left.includes(x.k)) bs[j].classList.add('ans'); });
     bs.forEach(b=>b.disabled=true);
-    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },ok?500:1100); }
+    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },typeof woNow!=='undefined'&&woNow?0:ok?500:1100); }   // Steps Drill: the answer shows on the diagram at once (CJ Nov 22)
     else setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') draw(); },ok?350:900);
   }
   const _enter=enter; enter=function(){ const v=_enter.apply(this,arguments); draw(); return v; };

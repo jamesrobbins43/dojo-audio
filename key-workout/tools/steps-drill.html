@@ -353,7 +353,7 @@ function drawBoard(c,revealed,popAns){
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
     // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
-    if(revealed&&midNote(c)) h+=`<g opacity=".55">${dot((c.fret+c.to2)/2,midNote(c),'#4a4038','#d9cfc1',popAns?'dot':'')}</g>`;
+    if(revealed&&midNote(c)) h+=dot((c.fret+c.to2)/2,midNote(c),'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
   }
   if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
@@ -486,8 +486,8 @@ function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').c
 function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
   const at=(pc,lo,hi)=>{ for(const s0 of [1,2,3,0,4,5]){ const f=((pc-OPEN[s0])%12+12)%12; if(f>=lo&&f<=hi) return [s0,f]; } return [1,lo]; };
   const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
-  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
-    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
+  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,pc:sc[0].pc,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
+    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,pc:sc[3].pc,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
   DEMO_TIPS=[['Learning half or whole step note intervals',`Identify which note is a whole step up from ${sc[0].name}`,''],
     ['Learning half or whole step note intervals',`Identify which note is a half step down from ${sc[3].name}`,'']]; }   // CJ's script, Nov 17, with the page key's notes
 function drawExample(i=0,step=-1){

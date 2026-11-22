@@ -740,7 +740,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
     const bs=[...$('woCh').querySelectorAll('button')];
     bs[i].classList.add(ok?'ok':'no'); if(!ok) sl.opts.forEach((x,j)=>{ if(left.includes(x.k)) bs[j].classList.add('ans'); });
     bs.forEach(b=>b.disabled=true);
-    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },ok?500:1100); }
+    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },typeof woNow!=='undefined'&&woNow?0:ok?500:1100); }   // Steps Drill: the answer shows on the diagram at once (CJ Nov 22)
     else setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') draw(); },ok?350:900);
   }
   const _enter=enter; enter=function(){ const v=_enter.apply(this,arguments); draw(); return v; };
