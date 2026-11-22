@@ -757,6 +757,12 @@ syncMute(); setMode(R.mode);
   const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}'; root.appendChild(css);
   try{ demoStop(); }catch(e){} drawExample=function(){};
   setMode('rec');
+  // Tap instead of the mic (CJ Nov 22): Record scoring stays (it already takes taps), but the mic is never opened
+  if((window.KWWO&&KWWO.tap)||new URLSearchParams(location.search).get('input')==='tap'){
+    R.stream=R.stream||{getTracks:()=>[],getAudioTracks:()=>[]}; listen=function(){};
+    css.textContent+='.rmon,#rp,#lis,#heard{display:none!important}';
+    const _ri=rinfo; rinfo=function(t){ _ri(t!==undefined?t:'Press Start, then tap each note on the fretboard as soon as you find it.'); }; rinfo();
+  }
   // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH over the note (CJ Nov 18)
   const _bs=buildSequence; buildSequence=function(L,n){ return _bs(L,n).map(c=>c.frets.includes(0)&&c.frets.includes(12)?Object.assign({},c,{frets:[12],high:true}):c); };
   css.textContent+='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}';
