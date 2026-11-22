@@ -23,3 +23,14 @@ function dguSpace(o){
 }
 // press a button only when it's on screen and enabled; true if pressed
 function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer while a tool is running (CJ, Nov 22 2026): the site footer and any page sections below the tool are hidden,
+   so the page can't scroll past the bottom of the tool. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  if(!document.getElementById('dgu-nofoot')){ const s=document.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html.dgu-run footer,html.dgu-run #footer-sections,html.dgu-run .dgu-below{display:none!important}'; document.head.appendChild(s); }
+  const sec=host.closest('section,.page-section'), sync=()=>{ const r=!!on();
+    if(sec){ let n=sec.nextElementSibling; while(n){ n.classList.toggle('dgu-below',r); n=n.nextElementSibling; } }
+    document.documentElement.classList.toggle('dgu-run',r||!!document.querySelector('.dgu-run-host')); };
+  const mo=new MutationObserver(()=>{ host.classList.toggle('dgu-run-host',!!on()); sync(); });
+  mo.observe(wrap,{attributes:true,attributeFilter:['class']}); host.classList.toggle('dgu-run-host',!!on()); sync();
+}
