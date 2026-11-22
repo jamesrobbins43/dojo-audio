@@ -307,11 +307,15 @@ function windowLo(c){
   if(!c) return 1;
   const g=c.fret; return Math.max(1, c.dr==='up' ? g : g-2);
 }
-// the note between the two notes of a whole step, spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction)
-function midNote(c){
-  if(!c||c.st!=='whole') return null;
-  const pc=(c.pc+(c.dr==='up'?1:11))%12, s=c.from+c.to;
-  return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:c.dr==='up'?SHARP:FLAT)[pc];
+// the extra grey note (CJ Nov 21/22): on a whole step, the note in between; on a half step, the note a whole step from the prompt note
+// in the same direction. Spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction). Returns {f,n} or null.
+function extraNote(c){
+  if(!c) return null;
+  const w=c.st==='whole', up=c.dr==='up', d=up?1:-1;
+  const f=w?(c.fret+c.to2)/2:c.fret+2*d;
+  if(f<0||f>MAXF+2) return null;
+  const pc=(c.pc+(w?d:2*d)+12)%12, s=c.from+c.to;
+  return {f, w, n:(s.includes('♭')?FLAT:s.includes('♯')?SHARP:up?SHARP:FLAT)[pc]};
 }
 function drawBoard(c,revealed,popAns){
   const svg=$('board'), lo=windowLo(c), nut=lo===1;
@@ -353,11 +357,13 @@ function drawBoard(c,revealed,popAns){
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
     // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
-    if(revealed&&midNote(c)) h+=dot((c.fret+c.to2)/2,midNote(c),'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
+    // half step: the note a whole step from the prompt note shows the same way (CJ Nov 22)
+    const ex=revealed&&extraNote(c);
+    if(ex) h+=dot(ex.f,ex.n,ex.f===0?'#6e655b':'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
   }
   if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
-  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(midNote(c)?`, with ${midNote(c)} in between`:''):''):'Guitar neck');
+  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(extraNote(c)?(extraNote(c).w?`, with ${extraNote(c).n} in between`:`, and ${extraNote(c).n} a whole step away`):''):''):'Guitar neck');
 }
 const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
 const DEGS=['1','2m','3m','4','5','6m','7°'];
