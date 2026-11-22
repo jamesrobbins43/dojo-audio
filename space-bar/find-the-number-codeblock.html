@@ -407,16 +407,25 @@ function dguSpace(o){
 }
 // press a button only when it's on screen and enabled; true if pressed
 function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
-/* No footer while a tool is running (CJ, Nov 22 2026): the site footer and any page sections below the tool are hidden,
-   so the page can't scroll past the bottom of the tool. dguNoFooter(host, wrap, isRunning) */
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
 function dguNoFooter(host,wrap,on){
-  if(!document.getElementById('dgu-nofoot')){ const s=document.createElement('style'); s.id='dgu-nofoot';
-    s.textContent='html.dgu-run footer,html.dgu-run #footer-sections,html.dgu-run .dgu-below{display:none!important}'; document.head.appendChild(s); }
-  const sec=host.closest('section,.page-section'), sync=()=>{ const r=!!on();
-    if(sec){ let n=sec.nextElementSibling; while(n){ n.classList.toggle('dgu-below',r); n=n.nextElementSibling; } }
-    document.documentElement.classList.toggle('dgu-run',r||!!document.querySelector('.dgu-run-host')); };
-  const mo=new MutationObserver(()=>{ host.classList.toggle('dgu-run-host',!!on()); sync(); });
-  mo.observe(wrap,{attributes:true,attributeFilter:['class']}); host.classList.toggle('dgu-run-host',!!on()); sync();
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html.dgu-tool footer,html.dgu-tool #footer-sections,html.dgu-tool .dgu-below{display:none!important}'+
+      'html.dgu-tool .dgu-sec{min-height:0!important}html.dgu-tool .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html.dgu-tool .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.classList.add('dgu-tool'); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    if(r) requestAnimationFrame(()=>{ const t=wrap.getBoundingClientRect().top, hb=headerBottom(); if(Math.abs(t-hb-8)>4) window.scrollBy(0,t-hb-8); }); };
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
 }
 /* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
    "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.

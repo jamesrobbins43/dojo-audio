@@ -476,7 +476,7 @@ function coach(host,el,text,below){
   if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
     c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
     c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
-  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); // no orphan last word (CJ) c.classList.toggle('below',!!below);
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); c.classList.toggle('below',!!below); // no orphan last word (CJ)
   const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
   const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
   c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
@@ -884,16 +884,25 @@ function dguSpace(o){
 }
 // press a button only when it's on screen and enabled; true if pressed
 function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
-/* No footer while a tool is running (CJ, Nov 22 2026): the site footer and any page sections below the tool are hidden,
-   so the page can't scroll past the bottom of the tool. dguNoFooter(host, wrap, isRunning) */
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
 function dguNoFooter(host,wrap,on){
-  if(!document.getElementById('dgu-nofoot')){ const s=document.createElement('style'); s.id='dgu-nofoot';
-    s.textContent='html.dgu-run footer,html.dgu-run #footer-sections,html.dgu-run .dgu-below{display:none!important}'; document.head.appendChild(s); }
-  const sec=host.closest('section,.page-section'), sync=()=>{ const r=!!on();
-    if(sec){ let n=sec.nextElementSibling; while(n){ n.classList.toggle('dgu-below',r); n=n.nextElementSibling; } }
-    document.documentElement.classList.toggle('dgu-run',r||!!document.querySelector('.dgu-run-host')); };
-  const mo=new MutationObserver(()=>{ host.classList.toggle('dgu-run-host',!!on()); sync(); });
-  mo.observe(wrap,{attributes:true,attributeFilter:['class']}); host.classList.toggle('dgu-run-host',!!on()); sync();
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html.dgu-tool footer,html.dgu-tool #footer-sections,html.dgu-tool .dgu-below{display:none!important}'+
+      'html.dgu-tool .dgu-sec{min-height:0!important}html.dgu-tool .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html.dgu-tool .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.classList.add('dgu-tool'); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    if(r) requestAnimationFrame(()=>{ const t=wrap.getBoundingClientRect().top, hb=headerBottom(); if(Math.abs(t-hb-8)>4) window.scrollBy(0,t-hb-8); }); };
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
 }
 /* Record note (CJ, Nov 22 2026): with Record picked, a small line beside the Practice | Record switch:
    "*Play your answer to get a score."  dguRecNote(modeEl, belowEl?) - modeEl holds buttons data-m="prac" / data-m="rec", the picked one has class "on".
@@ -906,6 +915,20 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
     const cs=getComputedStyle(m); row.style.marginTop=cs.marginTop; row.style.marginBottom=cs.marginBottom; m.style.margin='0'; }
   const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
   new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
+/* Find the Note, compact run screen (CJ, Nov 22 2026): hint box first, then ONE row with the small buttons and Show answer */
+{ const st=document.createElement('style'); st.textContent=`
+.w-play .fb{min-height:0;padding:7px 14px;font-size:16px;margin-top:10px;gap:10px;border-radius:12px}
+.w-play .fb .ic{width:28px;height:28px;font-size:15px}.w-play .fb .tx small{font-size:14px}
+.ftn-row{display:block}
+.w-play .ftn-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:10px}
+.w-play .ftn-row .controls{margin:0!important;flex:0 1 auto}
+.w-play .ftn-row .controls .btn{padding:8px 13px;font-size:15px}
+.w-play .ftn-row .bigrow{margin:0;flex:1 1 180px}
+.w-play .ftn-row .bigrow #nextBtn{padding:9px 14px;font-size:16px;border-radius:10px}
+.w-play .stage{padding-bottom:10px}
+@media (max-width:560px){.w-play .ftn-row{gap:6px}.w-play .ftn-row .controls,.w-play .ftn-row .controls .toolbar{gap:6px!important}.w-play .ftn-row .controls .btn{padding:7px 10px;font-size:13px}.w-play .ftn-row .controls .icon-btn svg{width:14px;height:14px}.w-play .ftn-row .bigrow{flex-basis:100%}}`; root.appendChild(st);
+  const ctl=root.querySelector('.controls'), big=$('bigrow'), fb=$('fb'), row=document.createElement('div'); row.className='ftn-row';
+  ctl.before(fb); fb.after(row); row.append(ctl,big); }
 dguRecNote($('mode'));
 // Space bar (CJ Nov 22): Start on the settings screen, pause / resume while running, Play again at the end; never scrolls the page
 dguNoFooter(root.host, root.querySelector('.wrap'), ()=>/w-play|w-done/.test(root.querySelector('.wrap').className));
