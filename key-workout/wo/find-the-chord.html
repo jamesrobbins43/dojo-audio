@@ -669,6 +669,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
 .wo-ch button.ans{border-color:#3ccf6e;box-shadow:inset 0 0 0 2px #3ccf6e;opacity:1}
 .wo-ch .wacc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
 .wo-ch .nm,.wo-ch .deg{font-size:inherit!important}
+.wo-ch .deg{justify-content:center}   /* numbers centered in their boxes (CJ Nov 22) */
 .wo-ch .acc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
 .wo-ch .m{font-size:.78em;font-weight:600}
 .wo-ch .dim{display:inline-block;width:.32em;height:.32em;vertical-align:.9em;margin-left:.05em;opacity:.8}.wo-ch .dim svg{display:block;width:100%;height:100%}   /* small, thin diminished circle (CJ Nov 22) */
@@ -700,6 +701,10 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
     return miss.map(()=>({opts:pool, pool:keys}));
   }
   const woCells=()=>$('scale').querySelectorAll('.cell');
+  // on the reveal, a chord they already got right stays in its box as they picked it, green (CJ Nov 22)
+  const _ds=drawScale; drawScale=function(c,revealed){ const v=_ds.apply(this,arguments);
+    try{ const r=revealed&&c&&S&&W.res[S.i]; if(r) r.got.forEach(g=>{ if(!g.ok||g.d==null) return; const b=woCells()[g.d]&&woCells()[g.d].querySelector('.ch'); if(b) b.outerHTML=`<div class="ch wo-pick-ok">${chordHTML(c.chords[g.d])}</div>`; }); }catch(e){}
+    return v; };
   function woMark(k,r){ const cs=woCells(); cs.forEach(x=>{ const b=x.querySelector('.ch'); if(b) b.classList.remove('wo-cur'); }); if(k==null||!r) return;
     [].concat(card().miss).forEach(d=>{ if(!r.got.some(g=>g.d===d)){ const b=cs[d]&&cs[d].querySelector('.ch'); if(b) b.classList.add('wo-cur'); } }); }
   function woDone(r){ const c=card(); [].concat(c.miss).forEach(d=>{ const b=woCells()[d]&&woCells()[d].querySelector('.ch'); if(b) b.classList.add(r.got.some(g=>g.ok&&g.d===d)?'wo-pick-ok':'wo-pick-no'); }); }
