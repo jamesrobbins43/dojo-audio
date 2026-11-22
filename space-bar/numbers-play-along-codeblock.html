@@ -525,6 +525,7 @@ function prep(host,done){ if(getComputedStyle(host).position==='static') host.st
   o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
 const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
 dguNoFooter(root.host, root.querySelector('.wrap'), ()=>root.querySelector('.wrap').classList.contains('ss-play'));
+{ const st=document.createElement('style'); st.textContent='.ss-play .coach{display:none!important}'; root.appendChild(st); } // the hidden demo box made the page taller while running
 dguSpace({host:root.host, act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
 ssInit({root, wrap:root.querySelector('.wrap'), play:['header','#setup'], setup:['.controls'],
   placeTop:t=>root.querySelector('.session').prepend(t), startBtn:$('nextBtn'), placeGo:g=>root.querySelector('.session').appendChild(g),
