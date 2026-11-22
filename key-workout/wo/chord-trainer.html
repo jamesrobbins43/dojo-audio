@@ -1810,7 +1810,7 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
   (function () {
     var W = root.querySelector('.w'), isRec = function () { return W.classList.contains('m-rec'); };
     ssInit({ root: root, wrap: W, play: ['.top', '.stage > .side', '#tuner'], setup: ['.stage > .btns'],
-      css: '.ss-top{margin:22px 0 22px}.stage > .ss-go{grid-column:1 / -1;background:var(--blue);color:#000}.w.m-rec .stage > .ss-go{order:4}.w.gate .ss-go,.w.res-on .ss-go{display:none!important}.w.ss-wrap:not(.ss-play):not(.gate) .stage > .rp .rrow > #go{display:none!important}.w.ss-wrap:not(.ss-play) .stage > .rp .rinfo{display:none}',
+      css: '.w.ss-play .ss-top{margin:6px 0 10px!important}.w.ss-play #cur svg{height:230px!important;width:auto!important}.w.ss-play .card svg{height:62px!important;width:auto!important}.w.ss-play .gh{margin-top:10px!important}.ss-top{margin:22px 0 22px}.stage > .ss-go{grid-column:1 / -1;background:var(--blue);color:#000}.w.m-rec .stage > .ss-go{order:4}.w.gate .ss-go,.w.res-on .ss-go{display:none!important}.w.ss-wrap:not(.ss-play):not(.gate) .stage > .rp .rrow > #go{display:none!important}.w.ss-wrap:not(.ss-play) .stage > .rp .rinfo{display:none}',
       placeTop: function (t) { root.querySelector('.stage').before(t); },
       startBtn: $('play'), watch: [W, $('rp')], placeGo: function (g) { root.querySelector('.stage').appendChild(g); },
       goLabel: function () { return isRec() ? ($('go') ? $('go').textContent : 'Record') : $('play').textContent.trim() || 'Start'; },
