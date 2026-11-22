@@ -140,11 +140,15 @@ function windowLo(c){
   if(!c) return 1;
   const g=c.fret; return Math.max(1, c.dr==='up' ? g : g-2);
 }
-// the note between the two notes of a whole step, spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction)
-function midNote(c){
-  if(!c||c.st!=='whole') return null;
-  const pc=(c.pc+(c.dr==='up'?1:11))%12, s=c.from+c.to;
-  return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:c.dr==='up'?SHARP:FLAT)[pc];
+// the extra grey note (CJ Nov 21/22): on a whole step, the note in between; on a half step, the note a whole step from the prompt note
+// in the same direction. Spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction). Returns {f,n} or null.
+function extraNote(c){
+  if(!c) return null;
+  const w=c.st==='whole', up=c.dr==='up', d=up?1:-1;
+  const f=w?(c.fret+c.to2)/2:c.fret+2*d;
+  if(f<0||f>MAXF+2) return null;
+  const pc=(c.pc+(w?d:2*d)+12)%12, s=c.from+c.to;
+  return {f, w, n:(s.includes('♭')?FLAT:s.includes('♯')?SHARP:up?SHARP:FLAT)[pc]};
 }
 function drawBoard(c,revealed,popAns){
   const svg=$('board'), lo=windowLo(c), nut=lo===1;
@@ -186,11 +190,13 @@ function drawBoard(c,revealed,popAns){
     h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
     if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
     // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
-    if(revealed&&midNote(c)) h+=dot((c.fret+c.to2)/2,midNote(c),'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
+    // half step: the note a whole step from the prompt note shows the same way (CJ Nov 22)
+    const ex=revealed&&extraNote(c);
+    if(ex) h+=dot(ex.f,ex.n,ex.f===0?'#6e655b':'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
   }
   if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
-  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(midNote(c)?`, with ${midNote(c)} in between`:''):''):'Guitar neck');
+  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(extraNote(c)?(extraNote(c).w?`, with ${extraNote(c).n} in between`:`, and ${extraNote(c).n} a whole step away`):''):''):'Guitar neck');
 }
 const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
 const DEGS=['1','2m','3m','4','5','6m','7°'];
@@ -505,6 +511,20 @@ function dguNoFooter(host,wrap,on){
   const mo=new MutationObserver(()=>{ host.classList.toggle('dgu-run-host',!!on()); sync(); });
   mo.observe(wrap,{attributes:true,attributeFilter:['class']}); host.classList.toggle('dgu-run-host',!!on()); sync();
 }
+/* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
+   "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.
+   Overrides the older prep(host,done) (a later function declaration wins); prepCancel(host) still works. */
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var rt=host.getRootNode(), d=host.ownerDocument;
+  if(!(rt.querySelector?rt:d).querySelector('#dgu-cin-css')){ var st=d.createElement('style'); st.id='dgu-cin-css';
+    st.textContent='div.prep{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(0,0,0,.96);color:#fff;font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1;transition:opacity .2s}'+
+      'div.prep.go{color:#fff}div.prep .cin{display:flex;gap:12px;justify-content:center}div.prep .cin i{width:12px;height:12px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}'+
+      'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
+    (rt.host?rt:d.head).appendChild(st); }
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
+  var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
+  o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
 const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
 dguNoFooter(root.host, root.querySelector('.wrap'), ()=>root.querySelector('.wrap').classList.contains('ss-play'));
 dguSpace({host:root.host, act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
