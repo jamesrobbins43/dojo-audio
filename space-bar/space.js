@@ -31,11 +31,11 @@ function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false;
 function dguNoFooter(host,wrap,on){
   const d=document, de=d.documentElement;
   if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
-    s.textContent='html.dgu-tool footer,html.dgu-tool #footer-sections,html.dgu-tool .dgu-below{display:none!important}'+
-      'html.dgu-tool .dgu-sec{min-height:0!important}html.dgu-tool .dgu-sec .content-wrapper{padding-bottom:0!important}'+
-      'html.dgu-tool .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    s.textContent='html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
     d.head.appendChild(s); }
-  de.classList.add('dgu-tool'); host.style.setProperty('padding-bottom','12px','important');
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
   const sec=host.closest('section,.page-section');
   if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
   const sr=host.shadowRoot; let was=null;

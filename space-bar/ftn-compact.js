@@ -8,7 +8,9 @@
 .w-play .ftn-row .controls .btn{padding:8px 13px;font-size:15px}
 .w-play .ftn-row .bigrow{margin:0;flex:1 1 180px}
 .w-play .ftn-row .bigrow #nextBtn{padding:9px 14px;font-size:16px;border-radius:10px}
-.w-play .stage{padding-bottom:10px}
+.w-play .stage{padding-bottom:10px;padding-top:10px;gap:6px}
+.w-play .stage-top{min-height:0}.w-play .q .note{font-size:clamp(56px,6vw,76px)}
+.w-play .board-wrap{margin-top:2px}.w-play .board-wrap>svg,.w-play #board{max-width:960px;margin-left:auto;margin-right:auto;display:block}
 @media (max-width:560px){.w-play .ftn-row{gap:6px}.w-play .ftn-row .controls,.w-play .ftn-row .controls .toolbar{gap:6px!important}.w-play .ftn-row .controls .btn{padding:7px 10px;font-size:13px}.w-play .ftn-row .controls .icon-btn svg{width:14px;height:14px}.w-play .ftn-row .bigrow{flex-basis:100%}}`; root.appendChild(st);
   const ctl=root.querySelector('.controls'), big=$('bigrow'), fb=$('fb'), row=document.createElement('div'); row.className='ftn-row';
   ctl.before(fb); fb.after(row); row.append(ctl,big); }
