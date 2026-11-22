@@ -160,7 +160,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     <div class="controls">
       <div class="toolbar">
         <button class="btn icon-btn" id="undoBtn" aria-label="Undo, go back one step">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Back
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>Back
         </button>
         <button class="btn" id="pauseBtn">Pause</button>
         <button class="btn primary" id="nextBtn">Start</button>
@@ -691,6 +691,8 @@ function dguNoFooter(host,wrap,on){
   const sec=host.closest('section,.page-section');
   if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
   const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
   const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
   // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
   // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
