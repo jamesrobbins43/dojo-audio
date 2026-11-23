@@ -345,8 +345,8 @@ select option { background: #141414; color: #fff; }\
   <div class="bar">\
     <div class="f" id="lenf"><span>Take length</span><b id="len"></b></div>\
     <label class="f" id="prf"><span>Practice round</span><select id="pr"><option value="0">Off</option><option value="1">On</option></select></label>\
-    <label class="f" id="kwcapof" style="display:none"><span>Capo</span><select id="kwcapo"></select></label><label class="f" style="display:none"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
     <label class="f"><span>Chord type</span><select id="type"><option value="anchor">Open - Anchored</option><option value="open">Open - Standard</option><option value="ts">Triads</option></select></label>\
+    <label class="f" id="kwcapof" style="display:none"><span>Capo</span><select id="kwcapo"></select></label><label class="f" style="display:none"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
     <div class="f tsf" id="setf"><span>Strings</span><div class="pills" id="tsets"><button type="button" data-ts="EAD">E-A-D</button><button type="button" data-ts="ADG">A-D-G</button><button type="button" data-ts="DGB">D-G-B</button><button type="button" data-ts="GBE">G-B-E</button></div></div><div class="f tsf"><span>Inversions</span><div class="pills" id="tinv"><button type="button" data-ti="0">Root</button><button type="button" data-ti="1">1st</button><button type="button" data-ti="2">2nd</button></div></div><div class="f tsf"><span>Chords</span><div class="pills" id="tq"><button type="button" data-tq="maj">Major</button><button type="button" data-tq="min">Minor</button><button type="button" data-tq="dim">Dim</button></div></div>\
     <div class="f chf"><span>Test these chords</span><div class="pills" id="chp"></div></div>\
     <label class="f"><span>Order</span><select id="order"><option value="inorder">In order</option><option value="shuffle">Shuffle</option></select></label>\
@@ -782,9 +782,6 @@ select option { background: #141414; color: #fff; }\
     // Diamond: say how to strum for a few seconds before the click starts (before Ready, CJ Nov 23)
     if (st.strum === 0 && !start.dm && !start.lk && !start.rd && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
       tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.dm = true; start(); start.dm = false; }, 4000)); return; }
-    // Practice: 4 s Ready / Begin first (CJ Nov 18)
-    if (!start.rd && !start.lk && !start.go && !root.querySelector('.w').classList.contains('m-rec')) { run = true; $('play').textContent = 'Stop';
-      prep(root.querySelector('.stage .now'), function () { if (!run) return; run = false; start.rd = true; start(); start.rd = false; }); return; }
     // 2 s to look at the chords before the count-in (CJ Nov 23)
     if (!start.lk && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; $('play').textContent = 'Stop'; dmShow(false);
       tos.push(setTimeout(function () { if (!run) return; run = false; start.lk = true; start(); start.lk = false; }, 2000)); return; }

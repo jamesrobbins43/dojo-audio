@@ -49,7 +49,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .speed .sp{display:flex;align-items:center;gap:10px}
 .speed .sp span{font-size:14px;font-weight:600}
 .speed input[type=range]{width:140px;accent-color:var(--accent)}
-.speed output{font-weight:700;min-width:34px;font-size:15px}
+.speed output{font-weight:700;min-width:4.6em;font-size:15px;white-space:nowrap}  /* room for "No timer" so nothing shifts */
 .speed output .u{margin-left:.2em}
 /* dropdowns: see-through black, soft border, drawn chevron; the opened list stays solid black (matches the other Dojo tools) */
 .sets select{-webkit-appearance:none;-moz-appearance:none;appearance:none;font:inherit;background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center/12px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg)}
@@ -137,7 +137,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   <section id="setup" class="sets">
     <div id="sets"></div>
     <div class="prow"><div class="lab">Speed</div><div class="speed">
-      <label class="sp" for="pace"><span>Seconds before answer</span><input id="pace" type="range" min="1" max="10" step="1" value="5"><output id="paceOut">5<span class="u">s</span></output></label>
+      <label class="sp" for="pace"><span>Seconds before answer</span><input id="pace" type="range" min="1" max="11" step="1" value="5"><output id="paceOut">5<span class="u">s</span></output></label>
     </div></div>
     <div class="prow"><div class="lab">Round</div><div class="speed"><label class="sp" for="perRound"><select id="perRound"></select><span id="roundUnit" style="font-weight:500;color:var(--muted)">notes</span></label></div></div>
   </section>
@@ -210,7 +210,9 @@ settings.dirs=['up','down']; // no Direction option (CJ, Nov 6): up or down at r
 settings.notes='all'; // no Notes option (CJ, Nov 6): all 12 notes at random
 settings.str='mix'; // no String option (CJ, Nov 6): every note goes on a random string
 if(!COUNTS.includes(settings.perRound)) settings.perRound=20;
-settings.pace=Math.min(10,Math.max(1,+settings.pace||5));
+settings.pace=Math.min(11,Math.max(1,+settings.pace||5));
+const NT=()=>settings.pace>10; // Speed slider all the way right = No timer, like Find the Note (CJ Nov 23)
+const paceLab=()=>NT()?'No timer':settings.pace+'<span class="u">s</span>';
 if(!['all','pick'].includes(settings.keyMode)) settings.keyMode='all';
 if(!Array.isArray(settings.keys)||!settings.keys.filter(k=>KEYS[k]).length) settings.keys=[7]; // key of G
 settings.mode='steps'; // Major Scale Mode moved to its own tool, Key Workout (CJ, Nov 16)
@@ -241,8 +243,8 @@ $('sets').addEventListener('click', e=>{
 });
 $('perRound').innerHTML=COUNTS.map(n=>`<option value="${n}"${n===settings.perRound?' selected':''}>${n}</option>`).join('');
 $('perRound').addEventListener('change',e=>{ settings.perRound=+e.target.value; save(); idle(); });
-$('pace').value=settings.pace; $('paceOut').innerHTML=settings.pace+'<span class="u">s</span>';
-$('pace').addEventListener('input',e=>{ settings.pace=+e.target.value; $('paceOut').innerHTML=settings.pace+'<span class="u">s</span>'; save(); });
+$('pace').value=settings.pace; $('paceOut').innerHTML=paceLab();
+$('pace').addEventListener('input',e=>{ settings.pace=+e.target.value; $('paceOut').innerHTML=paceLab(); save(); });
 
 /* ---------- Drill items ---------- */
 // every start note x step x direction, shuffled; no item repeats until the pool is used up, never the same note twice in a row
@@ -536,8 +538,8 @@ function enter(sound){
     $('said').textContent=`${STEPS[c.st].name} ${c.dr} from ${spoken(c.from)}`;
     $('nextBtn').textContent='Show answer';
     const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
-    setBar(0,S.paused?0:ms);
-    if(!S.paused) S.timer=setTimeout(reveal,ms);
+    setBar(0,S.paused||NT()?0:ms);
+    if(!S.paused&&!NT()) S.timer=setTimeout(reveal,ms);   // No timer: waits for Show answer
     if(sound) playGiven(c);
   }else{
     $('said').textContent=`${spoken(c.from)} ${STEPS[c.st].name.toLowerCase()} ${c.dr} is ${spoken(c.to)}`;
@@ -557,8 +559,8 @@ function enterScale(c,rev,sound){
     $('said').textContent=`Key of ${KEYS[c.key][0]}: which chord is missing?`;
     $('nextBtn').textContent='Show answer';
     const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
-    setBar(0,S.paused?0:ms);
-    if(!S.paused) S.timer=setTimeout(reveal,ms);
+    setBar(0,S.paused||NT()?0:ms);
+    if(!S.paused&&!NT()) S.timer=setTimeout(reveal,ms);   // No timer: waits for Show answer
   }else{
     $('said').textContent=`The missing chord is ${said}, chord ${DEGS[c.miss].replace('°',' diminished')}`;
     $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next scale';
@@ -584,7 +586,7 @@ function togglePause(){
     const bar=$('timerBar'); const w=getComputedStyle(bar).width; bar.style.transition='none'; bar.style.width=w;
   }else{
     S.t0=performance.now();
-    if(S.phase==='ask'){ const bar=$('timerBar'); void bar.offsetWidth; bar.style.transition=`width ${S.remaining}ms linear`; bar.style.width='100%'; S.timer=setTimeout(reveal,Math.max(0,S.remaining)); }
+    if(S.phase==='ask'){ const bar=$('timerBar'); void bar.offsetWidth; if(!NT()){ bar.style.transition=`width ${S.remaining}ms linear`; bar.style.width='100%'; S.timer=setTimeout(reveal,Math.max(0,S.remaining)); } }
     else S.timer=setTimeout(advance,Math.max(0,S.remaining));
   }
 }
