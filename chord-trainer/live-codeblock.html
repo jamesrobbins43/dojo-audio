@@ -295,6 +295,22 @@ select option { background: #141414; color: #fff; }\
   .sc strong { font-size: 30px; }\
 }\
 .pills { display: flex; flex-wrap: wrap; gap: 6px; }\
+.stage > .now { grid-column: 2 / -1; align-self: start; }\
+.stage > .nxt, .stage > .timer { display: none !important; }\
+.w.ss-play .stage > .now { grid-column: 1 / -1; }\
+.pl { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 14px; width: 100%; max-width: 920px; margin: 0 auto; transition: opacity .2s; }\
+.pslot { position: relative; display: grid; justify-items: center; align-content: start; gap: 4px; min-width: 0; padding: 8px 4px 0; border-top: 3px solid var(--line); }\
+.pslot.on { border-top-color: var(--blue); }\
+.pslot svg { width: 100%; max-width: 160px; height: auto; display: block; }\
+.pslot .nm { font-size: 40px !important; font-weight: 600; line-height: 1; }\
+.pslot .fn { font-size: 12px; color: var(--mute); text-align: center; min-height: 1.3em; }\
+.pslot.rep > .pdg, .pslot.rep > .nm, .pslot.rep > .fn { opacity: .28; }\
+.pslot .pc { position: relative; width: 100%; height: 30px; }\
+.pslot .pc span { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }\
+.now.cin #cur .pl { opacity: .15; }\
+.now .cnt.pcin { left: 50% !important; top: 42% !important; transform: translate(-50%,-50%) !important; z-index: 3; }\
+@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .pslot svg { max-width: 108px; } .pslot { padding-top: 6px; gap: 2px; } .pslot .nm { font-size: 30px !important; } .pslot .pc { height: 26px; } .pslot .pc span { font-size: 19px; } }\
+.f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\
 .pills button { border: 1px solid var(--line); background: transparent; color: var(--mute); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }\
 .pills button:hover { color: var(--ink); }\
 .pills button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: #141414; }\
@@ -321,6 +337,7 @@ select option { background: #141414; color: #fff; }\
     <label class="f"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
     <label class="f"><span>Chord type</span><select id="type"><option value="anchor">Open - Anchored</option><option value="open">Open - Standard</option><option value="ts">Triads</option></select></label>\
     <div class="f tsf" id="setf"><span>Strings</span><div class="pills" id="tsets"><button type="button" data-ts="EAD">E-A-D</button><button type="button" data-ts="ADG">A-D-G</button><button type="button" data-ts="DGB">D-G-B</button><button type="button" data-ts="GBE">G-B-E</button></div></div><div class="f tsf"><span>Inversions</span><div class="pills" id="tinv"><button type="button" data-ti="0">Root</button><button type="button" data-ti="1">1st</button><button type="button" data-ti="2">2nd</button></div></div><div class="f tsf"><span>Chords</span><div class="pills" id="tq"><button type="button" data-tq="maj">Major</button><button type="button" data-tq="min">Minor</button><button type="button" data-tq="dim">Dim</button></div></div>\
+    <div class="f chf"><span>Test these chords</span><div class="pills" id="chp"></div></div>\
     <label class="f"><span>Order</span><select id="order"><option value="inorder">In order</option><option value="shuffle">Shuffle</option></select></label>\
     <label class="f"><span>Bars per chord</span><select id="bars"><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label>\
     <label class="f"><span>Strum</span><select id="strum"><option value="0">Diamond</option><option value="1">Quarter</option><option value="2">Eighth</option></select></label>\
@@ -467,6 +484,16 @@ select option { background: #141414; color: #fff; }\
       if (sv.off && typeof sv.off === 'object') st.off = sv.off;
     }
   } catch (e) {}
+  if (!st.dev) st.dev = (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id();
   MEAS = st.bars; BPC = BEATS * MEAS;
   function save() { try { localStorage.setItem('dgu-chord-learner', JSON.stringify(st)); } catch (e) {} }
 
@@ -524,7 +551,19 @@ select option { background: #141414; color: #fff; }\
 
   function vis() { return ALL.filter(function (c) { return (st.key === 'all' || c.key === st.key) && c.type === st.type && (c.type !== 'ts' || (st.sets.indexOf(c.set) > -1 && st.invs.indexOf(INV.indexOf(c.inv)) > -1 && st.qs.indexOf(/°$/.test(c.name) ? 'dim' : /m$/.test(c.name) ? 'min' : 'maj') > -1)); }); }
 
+  // "Test these chords" pills (CJ Nov 23): one per chord name; same on/off as the round check on each card
+  function chPills() {
+    var el = $('chp'); if (!el) return;
+    var v = vis(), names = [], by = {};
+    v.forEach(function (c) { var k = c.name + '|' + (st.key === 'all' ? c.key : ''); if (!by[k]) { by[k] = []; names.push(k); } by[k].push(c); });
+    el.closest('.f').hidden = names.length < 2;
+    el.innerHTML = names.map(function (k) { var cs = by[k], on = cs.some(function (c) { return !st.off[c.id]; });
+      return '<button type="button" data-ch="' + esc(k) + '" aria-pressed="' + on + '">' + nm(cs[0].name, cs[0].type === 'tw') + (st.key === 'all' ? ' <small style="font-weight:500;opacity:.7">in ' + cs[0].key + '</small>' : '') + '</button>'; }).join('');
+    el.onclick = function (e) { var b = e.target.closest('[data-ch]'); if (!b) return; var cs = by[b.dataset.ch] || [], on = b.getAttribute('aria-pressed') === 'true';
+      cs.forEach(function (c) { if (on) st.off[c.id] = 1; else delete st.off[c.id]; }); refresh(); };
+  }
   function board() {
+    chPills();
     var b = $('board'), v = vis();
     $('gt').textContent = st.key === 'all' ? 'All keys' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; root.querySelector('.w').classList.toggle('t-ts', st.type === 'ts'); tsPills();
     b.innerHTML = '';
@@ -585,6 +624,29 @@ select option { background: #141414; color: #fff; }\
       : '<div class="fn" style="padding:48px 0">Every chord is skipped. Tap a chord below to add it.</div>';
     $('nx').innerHTML = n ? '<div class="nxt" style="opacity:1"><span class="nm">' + nm(n.name, n.type === 'tw') + '</span>' + diagram(n) + '</div>' : '';
     root.querySelectorAll('.card').forEach(function (el) { el.classList.toggle('cur', !!c && el.dataset.id === c.id); });
+    if (c) { PL.key = ''; plBeat(-1); }
+  }
+  // 4-measure play-along line (CJ Nov 23): like Numbers Play Along, diagram above each chord, a blue 1 2 3 4 walks across the bar being played
+  var PL = { key: '', ls: 0 };
+  function plAt(x) { return seq[Math.floor(x / MEAS) % seq.length]; }
+  function plDraw(g) {
+    var ls = Math.floor(g / 4) * 4, key = ls + '|' + MEAS + '|' + seq.map(function (c) { return c.id; }).join(',');
+    if (key === PL.key && root.querySelector('#cur .pl')) return;
+    PL.key = key; PL.ls = ls;
+    var h = '<div class="pl">';
+    for (var i = 0; i < 4; i++) { var c = plAt(ls + i), rp = i > 0 && plAt(ls + i - 1) === c;
+      h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span><span class="fn">' + (rp ? '' : esc(fnText(c))) + '</span><div class="pc"></div></div>'; }
+    $('cur').innerHTML = h + '</div>';
+  }
+  function plBeat(on) {
+    if (!seq.length || !seq[pos]) return;
+    var g = pos * MEAS + (on >= 0 ? Math.floor(on / BEATS) : 0), bib = on >= 0 ? on % BEATS : -1;
+    plDraw(g);
+    var si = g - PL.ls;
+    root.querySelectorAll('#cur .pslot').forEach(function (el, i) {
+      el.classList.toggle('on', i === si);
+      el.querySelector('.pc').innerHTML = i === si && bib >= 0 ? '<span style="left:' + ((bib + .5) / BEATS * 100).toFixed(1) + '%">' + (bib + 1) + '</span>' : '';
+    });
   }
   function move(d) {
     if (!seq.length) return;
@@ -608,6 +670,8 @@ select option { background: #141414; color: #fff; }\
       h += '</div>';
     }
     t.innerHTML = h;
+    plBeat(on);
+    if (on >= 0) cntShow(null);
   }
 
   // Count-in: four big boxes in the timer row, then the sync boxes when syncing.
@@ -621,12 +685,12 @@ select option { background: #141414; color: #fff; }\
     c.hidden = false; if (nw) nw.classList.add('cin'); c.classList.toggle('wait', k < 0);
     c.querySelector('.cbig').textContent = k >= 0 ? String(k + 1) : ''; c.querySelector('.cmeter i').textContent = st.bpm;
     // to the right of the chord diagram (CJ Nov 17); the Next chord steps aside if there's no room
-    var sv = nw && nw.querySelector('svg'), nx = root.querySelector('.stage > .nxt');
+    c.classList.add('pcin'); var sv = null, nx = null;
     if (sv) { var a = sv.getBoundingClientRect(), r = nw.getBoundingClientRect(); c.style.left = (a.right - r.left + 14) + 'px'; c.style.top = (a.top - r.top + a.height / 2) + 'px';
       if (nx) { var cr = c.getBoundingClientRect(), xr = nx.getBoundingClientRect(); nx.style.visibility = cr.right > xr.left + 4 ? 'hidden' : ''; } }
   }
   function tick(k) {
-    if (k < BEATS && rec.state === 'rec' && rec.mode === 'take') { cntShow(k); return; }
+    if (k < BEATS && !(rec.state === 'rec' && rec.mode === 'cal')) { cntShow(k); return; }
     if (k < BEATS) {
       var h = '<div class="ms cin">';
       for (var q = 0; q < BEATS; q++) h += '<span class="bt' + (q === k ? ' on' : q < k ? ' done' : '') + '">' + (q + 1) + '</span>';
@@ -1131,7 +1195,16 @@ select option { background: #141414; color: #fff; }\
       rec.stream = s;
       var tr = s.getAudioTracks()[0], set = tr && tr.getSettings ? tr.getSettings() : {};
       rec.inLat = typeof set.latency === 'number' ? set.latency : 0;
-      rec.dev = set.deviceId || '';
+      rec.dev = set.deviceId || ''; if (rec.dev) { st.dev = rec.dev; save(); (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).save(tr); }
       rec.src = ctx.createMediaStreamSource(s);
       rec.an = ctx.createAnalyser(); rec.an.fftSize = 1024; rec.src.connect(rec.an);
       return capNode().then(function (n) { rec.src.connect(n); });
@@ -1271,6 +1344,7 @@ select option { background: #141414; color: #fff; }\
     }
     rec.raf = requestAnimationFrame(meter);
   }
+  function cname() { var sel = $('dev'), c = $('cname'); if (sel && c) { var o = sel.options[sel.selectedIndex]; c.textContent = o && o.value ? o.text : ''; } }
   function devList() {
     if (!navigator.mediaDevices.enumerateDevices) return;
     navigator.mediaDevices.enumerateDevices().then(function (ds) {
@@ -1279,15 +1353,16 @@ select option { background: #141414; color: #fff; }\
       // Browsers only reveal input names after the site is allowed to use them once.
       if (!ins.some(function (d) { return d.label; })) { sel.innerHTML = '<option value="">Press Connect to list your inputs</option>'; return; }
       sel.innerHTML = ins.map(function (d, i) { return '<option value="' + esc(d.deviceId) + '">' + esc(d.label || 'Input ' + (i + 1)) + '</option>'; }).join('');
-      if (rec.dev || st.dev) sel.value = rec.dev || st.dev; if (sel.selectedIndex < 0) sel.selectedIndex = 0;
+      if (rec.dev || st.dev) sel.value = rec.dev || st.dev; if (sel.selectedIndex < 0) sel.selectedIndex = 0; cname();
     });
   }
   // The record panel sits above Previous / Start / Next. The first press of Record asks for the audio input; the next one records.
   function panel() {
     var p = $('rp');
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { p.innerHTML = '<div class="rinfo">This browser can’t record. Try Chrome, Edge or Safari on a computer.</div>'; return; }
-    p.innerHTML = '<div class="rrow"><label class="f"><span>Input</span><select id="dev"><option value="">Press Connect to list your inputs</option></select></label><div class="meter" id="meter" title="Input level"><b></b></div><button class="btn recgo" id="go" type="button">Connect</button></div><div class="rinfo" id="rinfo"></div>';
-    $('dev').addEventListener('change', function () { var v = this.value; st.dev = v; save(); if (rec.stream) openStream(v).then(function () { recInfo(); }); });
+    p.innerHTML = '<div class="rrow"><label class="f"><span>Input</span><select id="dev"><option value="">Press Connect to list your inputs</option></select></label><div class="meter" id="meter" title="Input level"><b></b></div><span class="cline"><b>&#10003;</b><span>Guitar connected</span><em id="cname"></em><button class="lnk" id="chgin" type="button">Change</button></span><button class="btn recgo" id="go" type="button">Connect</button></div><div class="rinfo" id="rinfo"></div>';
+    $('chgin').addEventListener('click', function () { var r = $('rp'); r.classList.toggle('chg'); this.textContent = r.classList.contains('chg') ? 'Done' : 'Change'; });
+    $('dev').addEventListener('change', function () { var v = this.value; st.dev = v; save(); $('rp').classList.remove('chg'); $('chgin').textContent = 'Change'; cname(); if (rec.stream) openStream(v).then(function () { recInfo(); }); });
     $('go').addEventListener('click', function () { if (!rec.stream) connect(); else doRec(rec.synced ? 'take' : 'cal'); });
     devList();
   }
@@ -1304,7 +1379,16 @@ select option { background: #141414; color: #fff; }\
     if (!ctx) return;
     rec.state = 'arm'; $('go').disabled = true;
     recInfo('Allow access to your audio input…');
-    openStream(st.dev).then(function () {
+    (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).pick(st.dev).then(function (id) { st.dev = id; return openStream(id); }).then(function () {
       $('go').disabled = false; $('rp').classList.add('conn'); devList(); cancelAnimationFrame(rec.raf); meter(); bpLoad();
       recInfo(); lockUI(false);
     }).catch(function () {
@@ -1314,6 +1398,7 @@ select option { background: #141414; color: #fff; }\
   }
   function lockUI(on) { root.querySelector('.w').classList.toggle('recording', on); var g = $('go'); if (g) g.textContent = on ? (rec.mode === 'cal' ? 'Syncing…' : 'Recording…') : !rec.stream ? 'Connect' : rec.synced ? 'Record' : 'Sync timing'; }
   function doRec(mode) {
+    demoStop(true);
     if (mode === 'cal' || (mode === 'take' && !rec.synced)) { vsync(); return; } // visual sync (CJ Nov 19)
     if (!rec.stream || rec.state === 'rec' || rec.state === 'end' || rec.state === 'proc') return;
     if (mode === 'take' && !seq.length) return;
@@ -1499,7 +1584,7 @@ select option { background: #141414; color: #fff; }\
     var w = root.querySelector('.w'), p = $('rp'), stg = root.querySelector('.stage');
     if (!p || w.classList.contains('gate') === on) return;
     w.classList.toggle('gate', on);
-    if (on) $('setup').appendChild(p); else stg.insertBefore(p, stg.querySelector('.btns'));
+    if (on) { demoStop(true); $('setup').appendChild(p); } else { stg.insertBefore(p, stg.querySelector('.btns')); if (DMok && !run && !w.classList.contains('ss-play')) setTimeout(function () { if (!w.classList.contains('gate') && !w.classList.contains('ss-play') && !run && !busy()) demoGo(); }, 0); }
   }
   // Tuner: standard tuning, nearest string, cents off. Uses the same input as recording.
   var TS = [40, 45, 50, 55, 59, 64], TN = ['E', 'A', 'D', 'G', 'B', 'E'], tun = { on: false, raf: 0, hist: [], miss: 0 };
@@ -1580,6 +1665,7 @@ select option { background: #141414; color: #fff; }\
   // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
   var DM = null, DMok = false;
   function coach(el, text, side) {
+    if (el && el.classList && el.classList.contains('nxt')) { var ps = root.querySelectorAll('#cur .pslot'); el = null; for (var q = 1; q < ps.length; q++) if (!ps[q].classList.contains('rep')) { el = ps[q].querySelector('.pdg'); break; } el = el || (ps[1] && ps[1].querySelector('.pdg')) || $('cur'); }
     var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
     if (!el) { if (c) c.classList.remove('on'); return; }
     if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
@@ -1622,9 +1708,10 @@ select option { background: #141414; color: #fff; }\
     if (k >= 2) { demoBeats(false); timer(-1); coach(ssGo($('play')), 'Press Start when ready', 'below'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays once, then stops (CJ Nov 17: Chord Trainer only)
     if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
       coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
-    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), root.querySelector('.w').classList.contains('m-rec') ? 'Press Record and play this chord along with the click.' : 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
     if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
     if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    else if (root.querySelector('.w').classList.contains('m-rec')) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
     else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
     nx(11000, k + 1, k % 2 ? -1 : 0);
   }
@@ -1721,10 +1808,20 @@ function dguNoFooter(host,wrap,on){
   const sec=host.closest('section,.page-section');
   if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
   const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
   const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  const fit=()=>{ const t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+8;
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); window.scrollTo(0,0); };
   const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
     if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
-    if(r) requestAnimationFrame(()=>{ const t=wrap.getBoundingClientRect().top, hb=headerBottom(); if(Math.abs(t-hb-8)>4) window.scrollBy(0,t-hb-8); }); };
+    if(r) requestAnimationFrame(fit); else { lifted=0; lift.style.removeProperty('margin-top'); } };
+  window.addEventListener('resize',()=>{ if(was) requestAnimationFrame(fit); });
   new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
 }
 /* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
@@ -1738,6 +1835,19 @@ function prep(host,done){ if(getComputedStyle(host).position==='static') host.st
       'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
     (rt.host?rt:d.head).appendChild(st); }
   var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
+  var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  var t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
   prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
   var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
   o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
@@ -1753,6 +1863,7 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
   const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
   new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
   dguRecNote($('mode'), root.querySelector('.hd'));
+  (function () { var st = document.createElement('style'); st.textContent = '.rp .cline{display:none;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#3ccf6e;min-width:0}.rp .cline em{font-style:normal;font-weight:400;font-size:14px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}.rp.conn .cline{display:inline-flex}.rp .cline > span{white-space:nowrap}.rp .cline{max-width:100%;flex:0 1 auto}.rp .rrow{min-width:0}.rp .cline > b,.rp .cline > span,.rp .cline > .lnk{flex:none}.rp .cline em{min-width:0;flex:0 1 auto}.rp.chg .cline > :not(.lnk){display:none}.rp.conn:not(.chg) .rrow > label.f,.rp.conn:not(.chg) .rrow > .meter{display:none}.w.gate .rp.conn:not(.chg) .rrow{order:5}.w.m-rec.ss-wrap:not(.ss-play) .stage > .rp{grid-row:1;margin-bottom:6px}.w.m-rec.ss-wrap:not(.ss-play) .stage > .side{grid-row:2}'; root.appendChild(st); })();
   (function () { var st = document.createElement('style'); st.textContent = '.w.ss-play .bt{height:28px!important;font-size:15px!important}.w.ss-play .btns{gap:6px}.w.ss-play .btns .btn{padding-top:7px!important;padding-bottom:7px!important}'; root.appendChild(st); })(); // compact under the diagram (CJ Nov 22)
 
   (function () {

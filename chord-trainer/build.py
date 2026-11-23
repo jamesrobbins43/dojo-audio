@@ -277,7 +277,9 @@ rep(a, r"""  function syncGuide(el) {
 rep("  function doRec(mode) {\n", "  function doRec(mode) {\n    if (mode === 'cal' || (mode === 'take' && !rec.synced)) { vsync(); return; } // visual sync (CJ Nov 19)\n")
 rep("  function stop() { run = false; prepCancel(", "  function stop() { if (VS) { cancelAnimationFrame(VS.raf); VS = null; } run = false; prepCancel(")
 # tap a chord card to hear it; skip moves to the round check in the corner (CJ Nov 22): see card_sound.py
-import sys as _sys; _sys.path.insert(0, H); import card_sound; s = card_sound.apply(s)
+# play-along like Numbers Play Along + 'Test these chords' pills (CJ Nov 23): see playalong_line.py
+import sys as _sys; _sys.path.insert(0, H); import playalong_line; s = playalong_line.apply(s)
+import card_sound; s = card_sound.apply(s)
 os.makedirs(os.path.join(H, 'preview'), exist_ok=True)
 open(os.path.join(H, 'chord-trainer-codeblock.html'), 'w', encoding='utf-8').write(s)
 open(os.path.join(H, 'preview', 'index.html'), 'w', encoding='utf-8').write(
