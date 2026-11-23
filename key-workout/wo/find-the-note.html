@@ -482,7 +482,7 @@ function enter(){
   $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
   if(c.high) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>');
   $('qString').textContent=strName(c.s);
-  $('qNote').nextElementSibling.hidden = settings.strings.length===1; // one string picked: just the note (CJ, Nov 6)
+  $('qNote').nextElementSibling.hidden = false; // always "on A-string", even with one string picked (CJ Nov 23)
   drawBoard(c);
   renderChroma(-1);
   if(S.phase==='ask'){
