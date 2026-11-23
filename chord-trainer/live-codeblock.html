@@ -300,7 +300,8 @@ select option { background: #141414; color: #fff; }\
 .w.ss-play .stage > .now { grid-column: 1 / -1; }\
 .w.ss-play .stage > .now > .tag { display: none; }\
 .w.ss-play > .gh, .w.ss-play > #board { display: none !important; }\
-.w.ss-play .btns { display: flex; gap: 10px; justify-content: flex-start; flex-wrap: wrap; }\
+.w.ss-play .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; background: #000; border-radius: 14px; padding: 14px 16px; margin-top: 44px; }\
+.w.light.ss-play .btns { background: #e6e2da; }\
 .w.ss-play .btns .btn { flex: 0 0 auto; width: auto; padding-left: 22px; padding-right: 22px; }\
 .pkc { display: flex; flex-wrap: wrap; justify-content: center; align-items: start; column-gap: clamp(10px,2.6vw,30px); row-gap: 8px; text-align: center; line-height: 1.05; margin: 4px auto 30px; }\
 .pkc button { all: unset; cursor: pointer; display: grid; justify-items: center; gap: 4px; min-width: 44px; padding: 2px; border-radius: 8px; }\
@@ -309,23 +310,23 @@ select option { background: #141414; color: #fff; }\
 .pkc .kc { font-size: 30px; font-weight: 700; white-space: nowrap; }\
 .pkc .km { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); opacity: 0; transition: opacity .15s; margin-top: 3px; }\
 .pkc button.on .km { opacity: 1; }\
-.plw { display: grid; grid-template-columns: minmax(0,760px) 104px; justify-content: center; gap: 0 34px; width: 100%; margin: 0 auto; align-items: start; transition: opacity .2s; }\
-.pl { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 24px; min-width: 0; }\
+.plw { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,760px) minmax(0,1fr); gap: 0 30px; width: 100%; margin: 0 auto; align-items: start; transition: opacity .2s; }\
+.pl { grid-column: 2; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 24px; min-width: 0; }\
 .pslot { position: relative; display: grid; justify-items: start; align-content: end; min-width: 0; }\
-.ptop { display: grid; justify-items: start; gap: 8px; min-width: 0; }\
-.pdg { width: 112px; max-width: 100%; }\
+.ptop { position: relative; display: grid; justify-items: start; min-width: 0; }\
+.pdg { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 96px; }\
 .pslot.rep .pdg { display: none; }\
 .pslot svg, .pnx svg { width: 100%; height: auto; display: block; }\
 .pslot .nm { font-size: 48px !important; font-weight: 700; line-height: 1; white-space: nowrap; }\
 .pslot .pc { position: relative; width: 100%; height: 32px; margin-top: 10px; }\
 .pslot .pc span { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; font-weight: 600; color: var(--blue); font-variant-numeric: tabular-nums; line-height: 1; }\
-.pnx { display: grid; justify-items: start; align-content: start; gap: 5px; min-width: 0; opacity: .7; }\
+.pnx { grid-column: 3; justify-self: start; display: grid; justify-items: start; align-content: start; gap: 4px; min-width: 0; opacity: .7; }\
 .pnx .tag { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }\
-.pnx .nm { font-size: 22px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
-.pnx .pnd { width: 78px; }\
+.pnx .nm { font-size: 18px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
+.pnx .pnd { width: 58px; }\
 .now.cin #cur .plw { opacity: .3; }\
 .now .cnt.pcin { left: 50% !important; top: 55% !important; transform: translate(-50%,-50%) !important; z-index: 3; }\
-@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .pkc { column-gap: 6px; margin-bottom: 22px; } .pkc button { min-width: 0; } .pkc .kn { font-size: 13px; } .pkc .kc { font-size: 19px; } .plw { grid-template-columns: minmax(0,1fr); gap: 14px; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 18px; } .pdg { width: 84px; } .pslot .nm { font-size: 36px !important; } .pslot .pc { height: 26px; margin-top: 8px; } .pslot .pc span { font-size: 20px; } .pnx { grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px; } .pnx .pnd { width: 44px; } .pnx .nm { font-size: 20px !important; } }\
+@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .pkc { column-gap: 6px; margin-bottom: 22px; } .pkc button { min-width: 0; } .pkc .kn { font-size: 13px; } .pkc .kc { font-size: 19px; } .plw { grid-template-columns: minmax(0,1fr); gap: 14px; } .pl { grid-column: 1; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 18px; } .pdg { width: 72px; } .pslot .nm { font-size: 36px !important; } .pslot .pc { height: 26px; margin-top: 8px; } .pslot .pc span { font-size: 20px; } .pnx { grid-column: 1; grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px; } .pnx .pnd { width: 36px; } .pnx .nm { font-size: 17px !important; } }\
 .f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\
 .pills button { border: 1px solid var(--line); background: transparent; color: var(--mute); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }\
 .pills button:hover { color: var(--ink); }\
@@ -654,12 +655,16 @@ select option { background: #141414; color: #fff; }\
     // the chords of the key across the top, like Numbers Play Along; a small marker under the one being played (CJ Nov 23); tap one to hear it
     var h = '', ks = [], kb = {};
     if (st.key !== 'all') vis().forEach(function (c) { if (!kb[c.name]) { kb[c.name] = c; ks.push(c); } });
+    // always show the 7 (diminished) chord too, even when the exercise skips it (CJ Nov 23)
+    if (ks.length > 1 && typeof DIA !== 'undefined' && DIA[st.key] && !ks.some(function (c) { return /°$/.test(c.fn || ''); })) ks.push({ name: DIA[st.key][6], fn: '7°', type: 'x' });
     if (ks.length > 1) h += '<div class="pkc">' + ks.map(function (c) { return '<button type="button" data-kn="' + esc(c.name) + '" aria-label="Hear ' + esc(c.name) + '"><span class="kn">' + esc(c.fn || '') + '</span><span class="kc">' + nm(c.name, c.type === 'tw') + '</span><i class="km"></i></button>'; }).join('') + '</div>';
     h += '<div class="plw"><div class="pl">';
     // chord name + diagram sit over beat 1 at the start of the measure; a chord held for more than one measure gets one diagram (CJ Nov 23)
     for (var i = 0; i < 4; i++) { var c = plAt(ls + i), rp = i > 0 && plAt(ls + i - 1) === c;
       h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="ptop"><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span></div><div class="pc"><span></span></div></div>'; }
     $('cur').innerHTML = h + '</div><div class="pnx"></div></div>'; PL.np = -1;
+    // the diagram sits centred right above its chord name, which stays at the start of the measure (CJ Nov 23)
+    root.querySelectorAll('#cur .pslot .ptop').forEach(function (t) { var d = t.querySelector('.pdg'); t.style.paddingTop = d && d.offsetHeight && getComputedStyle(d).display !== 'none' ? (d.offsetHeight + 8) + 'px' : ''; });
     var kc = root.querySelector('#cur .pkc');
     if (kc) kc.onclick = function (e) { var b = e.target.closest('[data-kn]'), c = b && kb[b.dataset.kn]; if (c && typeof hearChord === 'function') hearChord(c, null); };
   }
@@ -1904,7 +1909,7 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
   if(below){ n.style.display='block'; n.style.margin='8px 0 0'; below.after(n); }
   else { const row=d.createElement('div'); row.style.cssText='display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px'; m.before(row); row.append(m,n);
     const cs=getComputedStyle(m); row.style.marginTop=cs.marginTop; row.style.marginBottom=cs.marginBottom; m.style.margin='0'; }
-  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
+  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; n.style.display=on?(below?'block':''):'none'; }; // inline display would override hidden (bug: note showed in Practice)
   new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
   dguRecNote($('mode')); // Record only, beside the Practice | Record switch (CJ Nov 23)
   (function () { var st = document.createElement('style'); st.textContent = '.rp .cline{display:none;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#3ccf6e;min-width:0}.rp .cline em{font-style:normal;font-weight:400;font-size:14px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}.rp.conn .cline{display:inline-flex}.rp .cline > span{white-space:nowrap}.rp .cline{max-width:100%;flex:0 1 auto}.rp .rrow{min-width:0}.rp .cline > b,.rp .cline > span,.rp .cline > .lnk{flex:none}.rp .cline em{min-width:0;flex:0 1 auto}.rp.chg .cline > :not(.lnk){display:none}.rp.conn:not(.chg) .rrow > label.f,.rp.conn:not(.chg) .rrow > .meter{display:none}.w.gate .rp.conn:not(.chg) .rrow{order:5}.w.m-rec.ss-wrap:not(.ss-play) .stage > .rp{grid-row:1;margin-bottom:6px}.w.m-rec.ss-wrap:not(.ss-play) .stage > .side{grid-row:2}'; root.appendChild(st); })();
