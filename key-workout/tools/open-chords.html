@@ -1153,7 +1153,8 @@ select option { background: #141414; color: #fff; }\
     }
     rec.raf = requestAnimationFrame(meter);
   }
-  function devList() {
+  if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange',function(){ try{ devList(); }catch(e){} });
+function devList() {
     if (!navigator.mediaDevices.enumerateDevices) return;
     navigator.mediaDevices.enumerateDevices().then(function (ds) {
       var sel = $('dev'); if (!sel) return;

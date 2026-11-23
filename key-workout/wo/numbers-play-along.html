@@ -786,7 +786,10 @@ renderSetup(); syncMute(); idleView();
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return false;
     try{
       // echo cancellation on: if the band plays through speakers, the mic shouldn't score the band's chords
-      const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:false, autoGainControl:false}});
+      // the input picked in the earlier parts (saved as dgu-mic), so the interface is used, not the laptop mic (CJ Nov 23)
+      let mid=''; try{ const v=localStorage.getItem('dgu-mic'); mid=v?(v[0]==='{'?(JSON.parse(v).id||''):v):''; }catch(e){}
+      const ac={echoCancellation:true, noiseSuppression:false, autoGainControl:false}; if(mid) ac.deviceId={ideal:mid};
+      const s=await navigator.mediaDevices.getUserMedia({audio:ac});
       W.stream=s; W.src=ctx.createMediaStreamSource(s);
       W.an=ctx.createAnalyser(); W.an.fftSize=1024; W.src.connect(W.an);
       const n=await capNode(); W.src.connect(n);

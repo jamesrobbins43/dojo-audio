@@ -576,6 +576,7 @@ function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in yo
     $('dev').addEventListener('change',()=>{ rp.classList.remove('chg'); $('chgin').textContent='Change'; setTimeout(rinfo,0); }); }
   { const sel=$('dev'), o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
   if(rp.parentElement!==$('optbar').parentElement) $('optbar').before(rp); }
+if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange',function(){ try{ devList(); }catch(e){} });
 function devList(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
   navigator.mediaDevices.enumerateDevices().then(ds=>{
