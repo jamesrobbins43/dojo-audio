@@ -700,12 +700,14 @@ function dguNoFooter(host,wrap,on){
   const lift=sec||host; let lifted=0;
   const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
     return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
-  const fit=()=>{ const t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+8;
-    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); window.scrollTo(0,0); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
   const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
     if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
-    if(r) requestAnimationFrame(fit); else { lifted=0; lift.style.removeProperty('margin-top'); } };
-  window.addEventListener('resize',()=>{ if(was) requestAnimationFrame(fit); });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
   new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
 }
 /* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.

@@ -23,7 +23,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.45;margin:0;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
 .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
 h1{font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
 .sub{color:var(--muted);font-size:17px;margin-top:8px}
@@ -53,11 +53,13 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:900px){.main{grid-template-columns:1fr}}
 .stage{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:8px 0}
-.cname{font-weight:700;font-size:clamp(56px,7vw,84px);line-height:1;letter-spacing:-.01em;min-height:1em}
+.cname{font-weight:700;font-size:clamp(48px,5vw,64px);line-height:1;letter-spacing:-.01em;min-height:1em}
 .capo{font-size:16px;color:var(--muted);min-height:22px}
+.capo:empty{display:none}
 .acc{font-size:.55em;font-weight:300;position:relative;top:-.62em;margin-left:.03em}
 .suf{font-size:.62em;margin-left:.03em}
-.board{width:100%;max-width:270px;margin:0 auto}
+/* CJ Nov 23: the exercise must fit the screen height, so the diagram shrinks on short screens */
+.board{width:100%;max-width:min(270px,max(150px,calc((100vh - 480px) / 1.154)));margin:0 auto}
 .board svg{display:block;width:100%;height:auto}
 .hold{width:100%;max-width:520px;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
 .hold i{display:block;height:100%;width:0;background:var(--brand);border-radius:99px}
@@ -70,7 +72,7 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .sc .ov{padding-right:28px;border-right:1px solid var(--line)}
 .sc strong{font-size:36px;font-weight:600;line-height:1.1;color:#5d554b}
 .sc .ov strong{font-size:60px;line-height:1}
-.status{min-height:96px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.status{min-height:76px;display:flex;flex-direction:column;justify-content:center;gap:4px}
 .status .big{font-weight:700;font-size:clamp(30px,3.4vw,40px);line-height:1.1}
 .status .big.blue{color:var(--brand)}
 .status .small{font-size:17px;color:var(--muted);min-height:25px}
