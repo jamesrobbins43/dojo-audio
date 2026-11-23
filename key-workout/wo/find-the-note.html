@@ -578,7 +578,10 @@ function closeStream(){ if(R.src){ try{R.src.disconnect();}catch(e){} R.src=null
 function openStream(id){
   closeStream();
   const c={echoCancellation:false,noiseSuppression:false,autoGainControl:false}, c2=Object.assign({},c); if(id) c2.deviceId={exact:id};
-  return navigator.mediaDevices.getUserMedia({audio:c2}).catch(e=>{ if(id) return navigator.mediaDevices.getUserMedia({audio:c}); throw e; }).then(s=>{
+  // never hang on "Allow access…" (CJ Nov 23): if the browser doesn't answer in 6 s, ask again plainly (any input), then give up with a clear message
+  const gum=(cn,ms)=>new Promise((ok,no)=>{ let done=false; const t=setTimeout(()=>{ if(!done){ done=true; no(new Error('timeout')); } },ms);
+    navigator.mediaDevices.getUserMedia(cn).then(st=>{ if(done){ st.getTracks().forEach(x=>x.stop()); return; } done=true; clearTimeout(t); ok(st); }, e=>{ if(done) return; done=true; clearTimeout(t); no(e); }); });
+  return gum({audio:c2},6000).catch(e=>{ if(id||(e&&e.message==='timeout')) return gum({audio:id?c:true},8000); throw e; }).then(s=>{
     R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); window.dguMic.save(tr); }
     R.src=ctx.createMediaStreamSource(s); R.an=ctx.createAnalyser(); R.an.fftSize=4096; R.src.connect(R.an);
     R.buf=new Float32Array(R.an.fftSize);
@@ -590,7 +593,7 @@ function connect(){
   audio(); if(!ctx) return;
   R.state='arm'; $('go').disabled=true; rinfo('Allow access to your audio input…');
   window.dguMic.pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); })
-  .catch(()=>{ R.state='idle'; $('go').disabled=false; rinfo('Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
+  .catch(e=>{ R.state='idle'; $('go').disabled=false; rinfo(e&&e.message==='timeout'?'Your browser didn’t open the input. Click the microphone icon in the address bar, allow it, then press Connect again (or reload the page).':'Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
 }
 $('go').addEventListener('click',connect);
 $('dev').addEventListener('change',function(){ R.dev=this.value; store.set('dev',R.dev); if(R.stream) openStream(R.dev).then(()=>{ cancelAnimationFrame(R.raf); loop(); }); });

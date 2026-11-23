@@ -513,12 +513,12 @@ function idle(over){
 }
 function start(){
   ssPlay();
-  if(!start.go){ audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   demoStop();
   audio(); preloadSamples();
-  S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
+  S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
   $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
-  enter(true);
+  start.seq=null; enter(true);
 }
 const card=()=>S.seq[S.i];
 // right = step up, left = step down (same as moving along the neck)

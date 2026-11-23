@@ -513,12 +513,12 @@ function idle(over){
 }
 function start(){
   ssPlay();
-  if(!start.go){ audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   demoStop();
   audio(); preloadSamples();
-  S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
+  S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
   $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
-  enter(true);
+  start.seq=null; enter(true);
 }
 const card=()=>S.seq[S.i];
 // right = step up, left = step down (same as moving along the neck)
@@ -845,8 +845,10 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
       let right=0,total=0; W.res.forEach(r=>{ if(!r) return; total+=r.slots.length; right+=r.got.filter(x=>x.ok).length; });
       const n=S&&S.seq?S.seq.reduce((a,c,i)=>a+(W.res[i]?0:woQ(c).length),0):0; total+=n;
       const score=total?Math.round(100*right/total):0;
-      $('ask').innerHTML='Done'; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
-      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`Score ${score}<small>${right} of ${total} right</small>`; $('woCh').before(el);
+      // the score replaces "Done", colored by how high it is (CJ Nov 23)
+      const sc=score>=90?'#18CEFB':score>=70?'#3ccf6e':score>=50?'#f0b429':'#ff5c5c';
+      $('ask').className='ask'; $('ask').innerHTML=`<span style="color:${sc}">Score ${score}</span>`; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
+      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('woCh').before(el);
       try{ window.parent.postMessage({kwwo:'done',tool:'find-the-chord',score,right,total},'*'); }catch(e){}
     } else if(!over&&!document.querySelector('.demo')){ $('ask').textContent='Ready'; }
     return v;
