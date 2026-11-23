@@ -1,0 +1,774 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find the Number</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.coach{padding-right:34px!important}.prow:has([data-kmode]),.prow:has([data-key]){display:none!important}</style>
+<script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var K=k,n="dgkp-dgcn:settings",s={};try{s=JSON.parse(localStorage.getItem(n))||{}}catch(e){}s.keyMode='pick';s.keys=[K];try{localStorage.setItem(n,JSON.stringify(s))}catch(e){}})();</script>
+<style>
+/* closed 4 (CJ, Nov 17): Outfit's 4 is open at the top, so the 4 alone comes from Figtree (OFL), digits subset inlined */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}
+
+/* Find the Number (Dojo tool, CJ Nov 16): up to 5 chords from a major key, shuffled, always 1 4 5; name each chord's number before the numbers appear above them */
+:root{
+  color-scheme:dark;
+  --bg:#000000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;
+  --brand:#18CEFB; /* Don't Give Up blue (dontgiveup.pro buttons) */
+  --accent:#e09a3e; --accent-ink:#1a120a; --num:#f2b25c;
+  --body:"DGU Digits","Outfit","Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 16px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:disabled:hover{border-color:var(--line)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.icon-btn svg{width:20px;height:20px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* Setup */
+.sets{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 18px;max-width:780px;width:100%;margin:0 auto}
+.prow{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;padding:12px 0}
+.prow .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.seg{display:grid;grid-auto-columns:minmax(0,1fr);grid-auto-flow:column;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--bg)}
+.seg button{border:0;border-left:1px solid var(--line);background:transparent;color:var(--muted);padding:9px 6px;font-weight:600;font-size:15px;white-space:nowrap}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--fg)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button:disabled{opacity:.35;cursor:default}
+.seg button.lock{cursor:default}
+.seg button.lock:hover{color:var(--accent-ink)}
+.seg.degs button{font-size:17px}
+.seg .m{font-size:.8em;font-weight:500}
+.seg .dim{display:inline-block;vertical-align:top}
+.seg .dim svg{display:block;height:.42em;width:auto;margin:.2em 0 0 .06em}
+.speed{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center}
+.speed .sp{display:flex;align-items:center;gap:10px}
+.speed .sp span{font-size:14px;font-weight:600}
+.speed input[type=range]{width:140px;accent-color:var(--accent)}
+.speed output{font-weight:700;min-width:34px;font-size:15px}
+.speed output .u{margin-left:.2em}
+/* dropdowns: see-through black, soft border, drawn chevron; the opened list stays solid black (matches the other Dojo tools) */
+.sets select{-webkit-appearance:none;-moz-appearance:none;appearance:none;font:inherit;background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center/12px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg)}
+.sets select option{background:#000;color:var(--fg)}
+.seg.keys{grid-auto-flow:row;grid-template-columns:repeat(12,minmax(0,1fr));gap:1px;background:var(--line)}
+.seg.keys button{border-left:0;background:var(--bg);position:relative;padding:9px 0;min-width:0}
+.seg.keys button[aria-pressed="true"]{background:var(--accent)}
+.seg.keys .kl{position:relative}
+.seg.keys .kacc{position:absolute;left:100%;top:-.4em;font-size:.82em;font-weight:400;margin-left:.08em}
+@media (max-width:520px){.prow .lab:empty{display:none}.prow{grid-template-columns:1fr;gap:8px}.seg.degs button{font-size:15px;padding:9px 1px}}
+
+/* Session */
+.session-col{display:flex;flex-direction:column;gap:16px;max-width:780px;width:100%;margin:0 auto}
+.stage{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.progress{font-size:16px;color:var(--muted);align-self:flex-start;font-weight:500}
+.progress b{font-size:24px;font-weight:700;color:var(--fg)}
+.progress .of{font-size:21px;font-weight:400;color:var(--muted)}
+.ask{font-weight:700;font-size:clamp(30px,5vw,50px);line-height:1;letter-spacing:-.01em;min-height:1em}
+.ask.brand{color:var(--brand)}
+.ask .dir{color:var(--num)}
+.ask .kacc{font-size:.8em;font-weight:400;vertical-align:.48em;margin-left:.03em}
+/* the blank in "Key of ____": same size empty or filled, so nothing moves at the reveal */
+.ask .kb{display:inline-block;min-width:1.7em;text-align:center;border-bottom:.06em solid var(--muted);line-height:1;padding:0 .08em}
+.ask .kb.on{border-bottom-color:transparent;text-align:left}
+.ask .kb .ph{visibility:hidden}
+.ask .kb .dir{display:inline-block}
+.ask .kb .pop{animation:pop .24s ease-out both}
+/* Key chart (Show Key): the 7 numbers over the key's 7 chords */
+#ask{display:none!important}
+.row{grid-auto-columns:minmax(0,170px)!important;column-gap:clamp(10px,4.5vw,52px)!important}
+.chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:100%;max-width:640px;margin:4px auto 0;row-gap:6px}
+.chart .kc{display:flex;justify-content:center;align-items:flex-end}
+.chart .kn{height:clamp(20px,3.2vw,26px)}
+.chart .kch{height:clamp(28px,4.8vw,40px)}
+.chart .deg{font-size:clamp(17px,2.9vw,22px);color:var(--num);justify-content:center}
+.chart .nm{font-size:clamp(19px,3.6vw,29px);font-weight:700;line-height:1}
+.chart .used .deg{font-size:clamp(17px,2.9vw,22px)}
+.chart .used .nm{font-size:clamp(23px,4.4vw,35px)}
+.chart .out .deg,.chart .out .nm{color:#5c534a}
+.chart .bass .m,.chart .bass .dim{color:#5c534a}
+.chart{max-width:780px}.chart .kch{height:clamp(36px,6.6vw,58px)}.chart .nm{font-size:clamp(23px,5vw,42px)}.chart .used .nm{font-size:clamp(27px,6vw,50px)}
+/* The problem: the chords in a row, numbers appear above them */
+.row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,150px);justify-content:center;width:100%;margin:clamp(48px,8vw,70px) auto 52px;column-gap:clamp(4px,2vw,18px)}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+.slot{height:clamp(30px,5.4vw,50px);display:flex;align-items:flex-end;justify-content:center}
+.slot .q{font-size:clamp(24px,4.4vw,40px);font-weight:600;color:#3a322b;line-height:1}
+.deg{font-weight:600;color:var(--num);line-height:1;display:flex;align-items:baseline}  /* the m sits on the number's baseline (CJ, Nov 16) */
+.deg .dim{align-self:flex-start}
+.slot .deg{font-size:clamp(26px,4.8vw,44px);font-weight:700}
+.slot .deg.pop{animation:pop .24s ease-out both}
+.deg .m{font-weight:500;font-size:.82em}
+.deg .dim svg{display:block;height:.42em;width:auto;margin:.04em 0 0 .06em}
+.ch{width:100%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(34px,9vw,84px);line-height:1;letter-spacing:-.01em;height:1.2em} /* bigger chords, same column spacing (CJ, Nov 16) */
+.nm{display:inline;white-space:nowrap}
+.nm .acc{font-size:.8em;font-weight:400;vertical-align:.5em;margin-left:.02em}
+.nm .m{font-size:.66em;font-weight:500;margin-left:.02em}
+.nm .dim{display:inline-block;vertical-align:top}
+.nm .dim svg{display:block;height:.26em;width:auto;margin:.14em 0 0 .05em}
+/* slash chords: the bass part after the slash is a little smaller and hugs its letters (like Numbers Play Along) */
+.nm .sl{font-size:.78em;margin-left:-.04em}
+.nm .sl .acc{font-size:.82em}
+.deg .sl{font-size:.82em;margin-left:-.02em}
+.seg .sl{font-size:.85em}
+.ch.on{color:var(--fg)}
+.ch.blank{color:transparent}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.timer{height:12px;width:100%;border-radius:99px;background:var(--line);overflow:hidden}
+.timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+#keyBtn{min-width:112px}
+#nextBtn{min-width:150px}
+.stage.demo{--num:var(--brand);--accent:var(--brand)} /* the start-screen demo is blue so it reads as different from the real drill (CJ, Nov 17) */
+.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.stage{position:relative}
+/* start-screen callouts (CJ, Nov 17): one-sentence steps in black boxes with arrows pointing at each part of the demo */
+.tip{position:absolute;z-index:3;width:max-content;max-width:min(94%,560px);text-wrap:balance;background:#000;color:var(--fg);border:2px solid var(--brand);border-radius:12px;padding:10px 16px;font-size:clamp(17px,2.9vw,21px);font-weight:600;line-height:1.3;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.7);animation:tipIn .25s ease-out both;pointer-events:auto;padding-right:36px;padding-left:36px}.tip .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.tip .cx:hover{opacity:1}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}
+/* blue stem + arrowhead, same as the other tools' demo callouts */
+.tip::before{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + 2px);width:3px;height:var(--stem,22px);background:var(--brand);transform:translateX(-50%)}
+.tip::after{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + var(--stem,22px));transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid var(--brand)}
+.tip.up::before{top:auto;bottom:calc(100% + 2px)}
+.tip.up::after{top:auto;bottom:calc(100% + var(--stem,22px));border-top:0;border-bottom:11px solid var(--brand)}
+@keyframes tipIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.credit{font-size:12px;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:reduce){.slot .deg.pop{animation:none}.timer i{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header><h1>Find the Number</h1></header>
+
+  <!-- SETUP -->
+  <section id="setup" class="sets">
+    <div id="sets"></div>
+    <div class="prow"><div class="lab">Speed</div><div class="speed">
+      <label class="sp" for="pace"><span>Seconds before numbers</span><input id="pace" type="range" min="2" max="20" step="1" value="8"><output id="paceOut">8<span class="u">s</span></output></label>
+    </div></div>
+    <div class="prow"><div class="lab">Round</div><div class="speed"><label class="sp" for="perRound"><select id="perRound"></select><span style="font-weight:500;color:var(--muted)">problems</span></label></div></div>
+  </section>
+
+  <!-- SESSION -->
+  <section id="session" class="session-col">
+    <div class="stage" id="stage">
+      <div class="progress" id="progress"></div>
+      <div class="ask" id="ask">Ready</div>
+      <div class="chart" id="chart" hidden aria-label="Key chart"></div>
+      <div class="row" id="row"></div>
+      <div class="sr" id="said" aria-live="polite"></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
+    </div>
+    <div class="controls">
+      <div class="toolbar">
+        <button class="btn icon-btn" id="undoBtn" aria-label="Undo, go back one step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>Back
+        </button>
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn primary" id="nextBtn">Start</button>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="keyBtn" aria-pressed="false">Show Key</button>
+        <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
+</div>
+
+<script>
+/* Acoustic guitar recordings (CC BY 3.0, nbrosowsky/tonejs-instruments) from jsDelivr, pinned */
+window.GUITAR_TONES={"acoustic": {"38": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D2.mp3", "39": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds2.mp3", "40": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E2.mp3", "41": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F2.mp3", "42": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs2.mp3", "43": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G2.mp3", "44": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs2.mp3", "45": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A2.mp3", "46": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As2.mp3", "47": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B2.mp3", "48": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C3.mp3", "49": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs3.mp3", "50": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D3.mp3", "51": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds3.mp3", "52": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E3.mp3", "53": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F3.mp3", "54": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs3.mp3", "55": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G3.mp3", "56": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs3.mp3", "57": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A3.mp3", "58": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As3.mp3", "59": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B3.mp3", "60": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C4.mp3", "61": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs4.mp3", "62": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D4.mp3", "63": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds4.mp3", "64": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E4.mp3", "65": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F4.mp3", "66": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs4.mp3", "67": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G4.mp3", "68": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs4.mp3", "69": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A4.mp3", "70": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As4.mp3", "71": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B4.mp3", "72": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C5.mp3", "73": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs5.mp3", "74": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D5.mp3"}};
+</script>
+<script>
+(() => {
+/* ---------- Music data ---------- */
+// The 12 major keys: [name, tonic pitch class, letter index]; each key's 7 chords are spelled in that key
+const LETTERS=['C','D','E','F','G','A','B'], LETTER_PC=[0,2,4,5,7,9,11], ACC={'-1':'♭','0':'','1':'♯'};
+const KEYS=[['C',0,0],['D♭',1,1],['D',2,1],['E♭',3,2],['E',4,2],['F',5,3],['G♭',6,4],['G',7,4],['A♭',8,5],['A',9,5],['B♭',10,6],['B',11,6]];
+const ALL12=[0,1,2,3,4,5,6,7,8,9,10,11];
+function keyScale(k){ const [,t,li]=KEYS[k]; return [0,2,4,5,7,9,11].map((iv,d)=>{ const l=(li+d)%7, pc=(t+iv)%12; return {pc, name:LETTERS[l]+ACC[((pc-LETTER_PC[l]+18)%12)-6]}; }); }
+const DEG_Q=['maj','min','min','maj','maj','min','dim','maj','maj'];  // 1 2m 3m 4 5 6m 7°, then 1/3 and 5/7
+const SLASH={7:[0,2],8:[4,6]};                                // slash chords (CJ, Nov 16): [chord degree, bass degree], 1/3 = G/B and 5/7 = D/F♯ in G
+const DEG_IV={maj:[0,4,7],min:[0,3,7],dim:[0,3,6]};
+const DEGS=['1','2m','3m','4','5','6m','7°','1/3','5/7'];
+const ALWAYS=[0,3,4];                                          // the three major chords are in every problem (CJ)
+const EXTRAS=[1,2,5,6,7,8];                                    // 2m 3m 6m 7° 1/3 5/7: the student picks which ones to add
+const COUNTS=[10,20,30,50];
+const SIZES=[['3','3'],['4','4'],['5','5'],['mix','Mix']];     // chords per problem, never more than 5 (CJ)
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(k,d){ try{ const v = localStorage.getItem('dgkp-dgcn:'+k); return v==null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem('dgkp-dgcn:'+k, JSON.stringify(v)); }catch(e){} }
+};
+const settings = Object.assign({keyMode:'all', keys:[7], extras:[1,2,5], size:'mix', pace:8, perRound:20, showKey:false, sound:true}, store.get('settings', {}));
+if(!['all','pick'].includes(settings.keyMode)) settings.keyMode='all';
+if(!Array.isArray(settings.keys)||!settings.keys.filter(k=>KEYS[k]).length) settings.keys=[7]; // key of G
+if(!Array.isArray(settings.extras)) settings.extras=[1,2,5];
+settings.extras=settings.extras.filter(d=>EXTRAS.includes(d));
+if(!settings.extras.length) settings.extras=[1,2,5]; // at least one extra chord, so every problem has 4
+settings.size='mix'; // no Size option (CJ, Nov 16): each problem has 3 to 5 chords at random
+if(!COUNTS.includes(settings.perRound)) settings.perRound=20;
+settings.pace=Math.min(20,Math.max(2,+settings.pace||8));
+const save=()=>store.set('settings',settings);
+const maxSize=()=>window.KWLV==='p'?5:4; // always 4 chords: 1, 4, 5 and one of the extras (CJ, Nov 16)
+
+/* ---------- Labels ---------- */
+const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
+const spokenDeg=d=>d.replace('m',' minor').replace('°',' diminished').replace('/',' over ');
+function degInner(d){ if(d.includes('/')) return `${d[0]}<span class="sl">/${d[2]}</span>`; return `${d[0]}${d.includes('m')?'<span class="m">m</span>':''}${d.includes('°')?DIMSVG:''}`; }
+function degHTML(d,cls){ return `<span class="deg${cls?' '+cls:''}" aria-label="${spokenDeg(d)}">${degInner(d)}</span>`; }
+const accd=n=>`${n[0]}${n[1]?`<span class="acc">${n[1]}</span>`:''}`;
+function chordHTML(ch){ const n=ch.name; return `<span class="nm">${accd(n)}${ch.q==='min'?'<span class="m">m</span>':''}${ch.q==='dim'?DIMSVG:''}${ch.ext?`<span class="m">${ch.ext}</span>`:''}${ch.bass?`<span class="sl">/${accd(ch.bass)}</span>`:''}</span>`; }
+const spokenNote=n=>n.replace('♭',' flat').replace('♯',' sharp');
+const spokenChord=ch=>spokenNote(ch.name)+(ch.q==='min'?' minor':ch.q==='dim'?' diminished':'')+(ch.bass?' over '+spokenNote(ch.bass):'');
+
+/* ---------- Setup ---------- */
+function renderSets(){
+  const row=(l,cls,items)=>`<div class="prow"><div class="lab">${l}</div><div class="seg ${cls}" role="group" aria-label="${l}">${items}</div></div>`;
+  const mx=maxSize();
+  $('sets').innerHTML =
+    row('Keys','', `<button type="button" data-kmode="pick" aria-pressed="${settings.keyMode==='pick'}">Choose keys</button><button type="button" data-kmode="all" aria-pressed="${settings.keyMode==='all'}">All keys</button>`) +
+    (settings.keyMode==='pick' ? `<div class="prow"><div class="lab"></div><div class="seg keys" role="group" aria-label="Major keys">${KEYS.map(([n],k)=>`<button type="button" data-key="${k}" aria-pressed="${settings.keys.includes(k)}" aria-label="${n.replace('♭',' flat').replace('♯',' sharp')} major"><span class="kl">${n[0]}${n.length>1?`<span class="kacc">${n[1]}</span>`:''}</span></button>`).join('')}</div></div>` : '') +
+    // 1, 4 and 5 are always in (CJ): shown pressed and locked
+    row('Chords','degs', DEGS.map((d,i)=>{ const lock=ALWAYS.includes(i), on=lock||settings.extras.includes(i);
+      return `<button type="button" ${lock?'class="lock" aria-disabled="true"':`data-deg="${i}"`} aria-pressed="${on}" aria-label="${spokenDeg(d)}${lock?', always included':''}">${degInner(d)}</button>`; }).join(''));
+}
+$('sets').addEventListener('click', e=>{
+  const km=e.target.closest('[data-kmode]'), kb=e.target.closest('[data-key]'), dg=e.target.closest('[data-deg]'), sz=e.target.closest('[data-size]');
+  if(km) settings.keyMode=km.dataset.kmode;
+  else if(kb){ const k=+kb.dataset.key, has=settings.keys.includes(k); if(has&&settings.keys.length===1) return; settings.keys=has?settings.keys.filter(x=>x!==k):[...settings.keys,k].sort((a,b)=>a-b); }
+  else if(dg){ const d=+dg.dataset.deg, has=settings.extras.includes(d); if(has&&settings.extras.length===1) return; settings.extras=has?settings.extras.filter(x=>x!==d):[...settings.extras,d].sort((a,b)=>a-b); }
+  else if(sz&&!sz.disabled) settings.size=sz.dataset.size;
+  else return;
+  save(); renderSets(); idle();
+});
+$('perRound').innerHTML=COUNTS.map(n=>`<option value="${n}"${n===settings.perRound?' selected':''}>${n}</option>`).join('');
+$('perRound').addEventListener('change',e=>{ settings.perRound=+e.target.value; save(); idle(); });
+$('pace').value=settings.pace; $('paceOut').innerHTML=settings.pace+'<span class="u">s</span>';
+$('pace').addEventListener('input',e=>{ settings.pace=+e.target.value; $('paceOut').innerHTML=settings.pace+'<span class="u">s</span>'; save(); });
+
+/* ---------- Problems ---------- */
+const shuffle=a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+// how often each extra chord is the 4th chord (CJ, Nov 16): 6m most often, then 2m, then 1/3 and 5/7, 3m rarest (7° as rare as 3m, my choice)
+const WEIGHT={5:8,1:4,7:2,8:2,2:1,6:1};
+function pickExtras(n){
+  const pool=settings.extras.slice(), out=[];
+  while(out.length<n&&pool.length){
+    let r=Math.random()*pool.reduce((t,d)=>t+WEIGHT[d],0), i=0;
+    while(i<pool.length-1&&(r-=WEIGHT[pool[i]])>0) i++;
+    out.push(pool.splice(i,1)[0]);
+  }
+  return out;
+}
+// each problem: one key, 1 4 5 plus extra chords up to the size, in a shuffled order; never the same key twice in a row
+function buildSequence(n,fixKey,fixDegs){
+  const keys=fixKey!=null?[fixKey]:settings.keyMode==='all'?ALL12:settings.keys, mx=maxSize();
+  const seq=[]; let bag=[];
+  while(seq.length<n){
+    if(!bag.length) bag=shuffle(keys.slice());
+    let k=bag.pop(); const prev=seq[seq.length-1];
+    if(prev&&prev.key===k&&bag.length){ bag.unshift(k); k=bag.pop(); }
+    const size=mx;
+    let degs=fixDegs?fixDegs.slice():shuffle([...ALWAYS,...pickExtras(size-3)]);
+    if(prev&&prev.degs.join()===degs.join()&&degs.length>1) degs.push(degs.shift()); // never the exact same row twice in a row
+    const sc=keyScale(k);
+    const chords=degs.map(d=>{ const [cd,bd]=SLASH[d]||[d,d], r=sc[cd], b=sc[bd]; let m=48; while(m%12!==r.pc) m++; let lo=40; while(lo%12!==b.pc) lo++; const q=DEG_Q[d];
+      return {d, name:r.name, bass:SLASH[d]?b.name:null, q, midis:[lo,...DEG_IV[q].map(iv=>m+iv)]}; });  // bass note (E2-D♯3) + root-position triad, root between C3 and B3
+    seq.push({key:k, degs, chords});
+  }
+  return seq;
+}
+
+/* ---------- Drawing ---------- */
+const STAGGER=.75;   // seconds between chords as the numbers appear left to right (each chord strums with its number)
+const gap=()=>settings.sound?STAGGER:.12; // sound off: the numbers come in quickly, no strums to wait for (CJ, Nov 16)
+function drawRow(c,revealed,pop,g){
+  const el=$('row');
+  if(!c){ el.innerHTML=Array.from({length:4},()=>'<div class="cell"><div class="slot"></div><div class="ch blank">C</div></div>').join(''); return; }
+  el.innerHTML=c.chords.map((ch,i)=>{
+    const slot=revealed?`<span class="deg${pop?' pop':''}" style="${pop?`animation-delay:${(i*(g??gap())).toFixed(2)}s`:''}" aria-label="${spokenDeg(DEGS[ch.d])}">${degInner(DEGS[ch.d])}${ch.ext?`<span class="m">${ch.ext}</span>`:''}</span>`:''; // empty slot until the numbers show (no question marks, CJ Nov 16)
+    return `<div class="cell"><div class="slot">${slot}</div><div class="ch on">${chordHTML(ch)}</div></div>`;
+  }).join('');
+}
+// Key chart (CJ, Nov 16): during the question only the numbers 1-7 show; with Show Key on, the chord under 1 shows too;
+// at the reveal the whole key shows, the problem's chords (and their numbers) a little bigger, the rest gray
+function drawChart(k,mode,used,bass){
+  const el=$('chart');
+  if(k==null){ el.innerHTML=''; return; }
+  const sc=keyScale(k), u=used||[];
+  const b=bass||[], cls=d=>mode==='full'?(u.includes(d)?' used':b.includes(d)?' used bass':' out'):'';
+  el.innerHTML=DEGS.slice(0,7).map((d,i)=>`<div class="kc kn${cls(i)}">${degHTML(d)}</div>`).join('')+
+    sc.map((t,d)=>`<div class="kc kch${cls(d)}">${mode==='full'||mode==='ref'||(mode==='one'&&d===0)?chordHTML({name:t.name,q:DEG_Q[d]}):''}</div>`).join('');
+}
+// one key chosen (CJ, Nov 16): the key isn't a puzzle, so the chord under 1 always shows and there is no Show/Hide Key button
+const oneKey=()=>settings.keyMode==='pick'&&settings.keys.length===1;
+const keyShown=()=>false;
+function syncKey(){
+  const b=$('keyBtn'); b.hidden=oneKey(); b.textContent=settings.showKey?'Hide Key':'Show Key'; b.setAttribute('aria-pressed',String(!!settings.showKey));
+  $('chart').hidden=!$('chart').innerHTML;
+}
+// the key is part of the puzzle (CJ, Nov 16): "Key of ____" until the numbers show, then the key fills the blank.
+// Show Key is a hint: while it's on, the key and its chart show right away (CJ expects it to work during the question)
+function drawKey(pop){
+  if(!S||S.over){ drawChart(null); syncKey(); return; }
+  const c=card(), kn=KEYS[c.key][0], known=S.phase==='reveal'||keyShown();
+  const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
+  $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${pop?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
+  const rev=S.phase==='reveal', used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))]; // 1/3 counts as 1, 5/7 as 5
+  const bass=c.degs.filter(d=>SLASH[d]).map(d=>SLASH[d][1]);  // ...and their bass notes (3, 7) light up too, without the m / ° (CJ, Nov 16)
+  drawChart(c.key, rev?'full':keyShown()?'one':'nums', used, bass); syncKey();
+}
+$('keyBtn').onclick=()=>{ settings.showKey=!settings.showKey; save(); if(S&&!S.over) drawKey(settings.showKey); else if(!S) idle(); else syncKey(); };
+
+/* ---------- Sound: recorded acoustic guitar (window.GUITAR_TONES.acoustic, MIDI 38-74) ---------- */
+let ctx=null; const bufCache={};
+function audio(){ if(!ctx){ try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(ctx&&ctx.state==='suspended') ctx.resume(); return ctx; }
+function pluckBuffer(midi){
+  if(bufCache[midi]) return bufCache[midi];
+  const a=ctx, sr=a.sampleRate, freq=440*Math.pow(2,(midi-69)/12), N=Math.round(sr/freq), len=Math.floor(sr*2.6);
+  const buf=a.createBuffer(1,len,sr), d=buf.getChannelData(0), ring=new Float32Array(N);
+  for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+  for(let k=0;k<2;k++) for(let i=1;i<N;i++) ring[i]=(ring[i]+ring[i-1])/2;
+  let p=0; const decay=.996;
+  for(let i=0;i<len;i++){ const n=(p+1)%N; const v=decay*0.5*(ring[p]+ring[n]); d[i]=ring[p]; ring[p]=v; p=n; }
+  let m=0; for(let i=0;i<len;i++) m=Math.max(m,Math.abs(d[i])); for(let i=0;i<len;i++) d[i]/=m||1;
+  return bufCache[midi]=buf;
+}
+const TONE='acoustic', sampleCache={};
+function nearestKey(tone,midi){
+  const keys=Object.keys((window.GUITAR_TONES||{})[tone]||{}).map(Number);
+  if(!keys.length) return null;
+  return keys.reduce((a,b)=>Math.abs(b-midi)<Math.abs(a-midi)?b:a);
+}
+function sampleBuffer(tone,key){
+  const id=tone+key; if(sampleCache[id]) return sampleCache[id];
+  const uri=window.GUITAR_TONES[tone][key];
+  if(!uri.startsWith('data:')) return sampleCache[id]=fetch(uri).then(r=>{ if(!r.ok) throw r.status; return r.arrayBuffer(); }).then(ab=>new Promise((res,rej)=>ctx.decodeAudioData(ab,res,rej))); // Dojo build streams the recordings from a CDN
+  const bin=atob(uri.split(',')[1]), bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return sampleCache[id]=new Promise((res,rej)=>ctx.decodeAudioData(bytes.buffer,res,rej));
+}
+let voices=[];
+function stopAll(){ if(!ctx) return; const t=ctx.currentTime; voices.forEach(v=>{ try{ v.g.gain.cancelScheduledValues(t); v.g.gain.setValueAtTime(v.g.gain.value,t); v.g.gain.linearRampToValueAtTime(0,t+.08); v.src.stop(t+.1); }catch(e){} }); voices=[]; }
+function startBuffer(buf,vol,rate,at,len){
+  const a=ctx, src=a.createBufferSource(), g=a.createGain(), t=Math.max(a.currentTime,at), L=len||2.4;
+  src.buffer=buf; src.playbackRate.value=rate||1;
+  g.gain.setValueAtTime(vol,t); g.gain.setValueAtTime(vol,t+L-.3); g.gain.linearRampToValueAtTime(0,t+L);
+  src.connect(g).connect(a.destination); src.start(t); src.stop(t+L+.05);
+  const v={src,g}; voices.push(v); src.onended=()=>{ voices=voices.filter(x=>x!==v); };
+}
+// "at" is an absolute AudioContext time, so a sample that loads late still lands on its beat
+function playMidi(midi,at,len,vol){
+  const key=nearestKey(TONE,midi); vol=vol||.5;
+  if(key==null) return startBuffer(pluckBuffer(midi),vol*.5,1,at,len);
+  sampleBuffer(TONE,key).then(b=>startBuffer(b,vol,Math.pow(2,(midi-key)/12),at,len)).catch(()=>startBuffer(pluckBuffer(midi),vol*.5,1,at,len));
+}
+// at the reveal each chord strums (low to high) as its number appears, left to right
+function playRow(c){
+  if(!settings.sound||!c||!audio()) return; stopAll();
+  const t0=ctx.currentTime+.05;
+  c.chords.forEach((ch,i)=>ch.midis.forEach((m,s)=>playMidi(m,t0+i*STAGGER+s*.035,i===c.chords.length-1?2.2:STAGGER+.15,s===0?.42:.5)));
+}
+function preloadSamples(){ if(!ctx) return; for(let m=36;m<=67;m++){ const key=nearestKey(TONE,m); if(key!=null) sampleBuffer(TONE,key).catch(()=>{}); } }
+
+/* ---------- Session ---------- */
+let S=null;
+function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
+function setBar(fromPct,ms){
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
+  if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
+}
+function idle(over){
+  if(!over) ssSetup();
+  if(S) clearT(); stopDemo(); prepCancel($('stage')); $('nextBtn').disabled=false; S=over?S:null; if(S) S.over=true;
+  stopAll();
+  $('progress').innerHTML='<b>&nbsp;</b>'; // keeps the line's height so nothing shifts
+  $('ask').className='ask'+(over?' brand':''); $('ask').textContent=over?'Round complete':'Ready';
+  $('said').textContent='';
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
+  $('nextBtn').textContent=over?'Go again':'Start'; $('nextBtn').style.visibility=''; $('pauseBtn').textContent='Pause';
+  $('pauseBtn').disabled=true; $('undoBtn').disabled=true;
+  drawRow(null); drawChart(null); syncKey();
+  if(!over) drawExample();
+}
+// start screen (CJ, Nov 17): a looping demo in DGU blue instead of a blank stage. Two example problems, each shown as the
+// question (timer bar filling) then the answer (key fills in, numbers pop up), repeating until Start. No sound.
+let demoT=null;
+// get-ready moment before a run (CJ Nov 18): 'Ready', then 'Begin' for the last 1.5 s, fading out; done() after 4 s
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=host.ownerDocument.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.textContent='Ready'; void o.offsetWidth; o.classList.add('on');
+  o._t=[setTimeout(function(){ o.textContent='Begin'; o.classList.add('go'); },2500), setTimeout(function(){ o.classList.add('out'); },3300), setTimeout(function(){ o.className='prep'; if(done) done(); },4000)]; }
+function prepCancel(host){ var o=host.querySelector(':scope > .prep'); if(!o) return; (o._t||[]).forEach(clearTimeout); o._t=[]; o.className='prep'; }
+function stopDemo(){ clearTimeout(demoT); demoT=null; $('stage').classList.remove('demo'); $('tip').hidden=true; }
+// a black callout box with an arrow, above ('down' arrow) or below ('up' arrow) the target, kept inside the stage
+function tip(text,target,below,stem=22){
+  const t=$('tip'), st=$('stage').getBoundingClientRect(), r=target.getBoundingClientRect?target.getBoundingClientRect():target;
+  t.hidden=false; const words=text.split(' '); if(words.length>1) text=words.slice(0,-1).join(' ')+'\u00a0'+words[words.length-1]; /* no orphan last word (CJ Nov 17) */
+  t.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>'; t.querySelector('.ct').textContent=text;
+  t.querySelector('.cx').onclick=()=>{ clearTimeout(demoT); demoT=null; t.hidden=true; }; /* X stops the demo (CJ Nov 17) */
+  t.className='tip '+(below?'up':'down'); t.style.animation='none'; void t.offsetWidth; t.style.animation='';
+  const w=t.offsetWidth, h=t.offsetHeight, cx=r.left+r.width/2-st.left, left=Math.max(0,Math.min(st.width-w,cx-w/2));
+  t.style.left=left+'px'; t.style.top=(below?r.bottom-st.top+stem+26:r.top-st.top-h-stem-26)+'px';
+  t.style.setProperty('--stem',stem+'px'); t.style.setProperty('--ax',Math.max(18,Math.min(w-18,cx-left))+'px');
+}
+function demoCards(){
+  const ks=settings.keyMode==='pick'&&settings.keys.length?settings.keys:[7,2], k1=ks[0], k2=ks.length>1?ks[1]:ks===settings.keys?k1:2;
+  return [buildSequence(1,k1,[4,3,0,5])[0], buildSequence(1,k2,[0,1,4,3])[0]];
+}
+function drawExample(){
+  stopDemo(); $('stage').classList.add('demo');
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  const cards=demoCards(); let step=0;
+  // each example: chords (callout on the chords) -> timer (callout on the bar) -> answer (callout under the row)
+  // CJ, Nov 17: one instruction box after settings, then just the reveal (no box)
+  const SAY=[
+    ['Identify which position each chord belongs to', ()=>{ const ns=[...$('chart').querySelectorAll('.kn')].map(e=>e.getBoundingClientRect()); return {left:ns[0].left, width:ns[6].right-ns[0].left, top:ns[0].top, bottom:ns[0].bottom}; }, true, 11000, 8],  // points UP at the 1-7 positions (CJ, Nov 17)
+    [null, null, false, 3500, 0]];
+  // first step of every loop explains the settings (CJ, Nov 17), then example 1 and example 2 (question with its box, then the reveal)
+  const SET=['First pick your settings', ()=>$('setup'), true, 4000, 12];
+  const tick=()=>{
+    // plays through twice, then stops on the last answer with one box on Start, which fades after 6 s (CJ, Nov 17)
+    if(step===10){ tip('Press Start when ready',ssGo($('nextBtn')),false,12); step++; demoT=setTimeout(tick,12000); return; }
+    if(step>10){ $('tip').hidden=true; demoT=null; return; }
+    if(step<10&&step%5===0) step++; const k=step%5, setStep=k===0, c=cards[setStep?0:Math.floor((k-1)/2)], part=setStep?0:(k-1)%2, ans=part===1, kn=KEYS[c.key][0], known=ans||keyShown();  // the demo shows exactly what the drill would: the 1 chord only when the drill shows it
+    {
+      const kh=`${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}`;
+      $('ask').innerHTML=`Key of <span class="kb${known?' on':''}">${known?`<span class="dir${ans&&!keyShown()?' pop':''}">${kh}</span>`:'<span class="ph">G</span>'}</span>`;
+      const used=[...new Set(c.degs.map(d=>(SLASH[d]||[d])[0]))];
+      drawRow(c,ans,ans,.35); drawChart(c.key,ans?'full':keyShown()?'one':'nums',used,[]); syncKey();
+      if(ans){ const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='100%'; }
+      else setBar(0,setStep?0:SAY[0][3]);
+      $('said').textContent=ans?`Example. Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', '):'';
+    }
+    const [txt,tg,below,ms,stem]=setStep?SET:SAY[part]; if(txt) tip(txt,tg(),below,stem); else $('tip').hidden=true;
+    step++; demoT=setTimeout(tick,ms);
+  };
+  tick();
+}
+function start(){
+  ssPlay();
+  if(!start.go){ stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } $('stage').dataset.cinAt='#row'; $('nextBtn').disabled=true; prep($('stage'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  stopDemo(); audio(); preloadSamples();
+  S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
+  $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  enter(true);
+}
+const card=()=>S.seq[S.i];
+function enter(fresh){
+  clearT();
+  const c=card(), rev=S.phase==='reveal', kn=KEYS[c.key][0];
+  $('progress').innerHTML=`<b>${S.i+1} <span class="of">of</span> ${S.seq.length}</b>`;
+  drawRow(c,rev,fresh); drawKey(rev&&fresh);
+  if(!rev){
+    stopAll();
+    $('said').textContent=`${c.chords.map(spokenChord).join(', ')}. What key is it, and what number is each chord?`;
+    $('nextBtn').textContent='Show numbers'; $('nextBtn').style.visibility='hidden';
+    const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
+    setBar(0,S.paused?0:ms);
+    if(!S.paused) S.timer=setTimeout(reveal,ms);
+  }else{
+    $('said').textContent=`Key of ${spokenChord({name:kn,q:'maj'})}: `+c.chords.map(ch=>`${spokenChord(ch)} is ${spokenDeg(DEGS[ch.d])}`).join(', ');
+    $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next problem'; $('nextBtn').style.visibility='';
+    $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
+    const ms=Math.round(((c.chords.length-1)*gap()+3)*1000); S.remaining=ms; S.t0=performance.now();
+    if(!S.paused) S.timer=setTimeout(advance,ms);
+    if(fresh) playRow(c);
+  }
+}
+function reveal(){ S.phase='reveal'; enter(true); }
+function advance(){ if(S.i>=S.seq.length-1) return idle(true); S.i++; S.phase='ask'; enter(true); }
+function next(){ if(!S||S.over) return start(); if(S.phase==='ask') reveal(); else advance(); }
+function undo(){
+  if(!S||S.over) return;
+  if(S.phase==='reveal') S.phase='ask'; else if(S.i>0){ S.i--; S.phase='ask'; }
+  enter(true);
+}
+function togglePause(){
+  if(!S||S.over) return;
+  S.paused=!S.paused; $('pauseBtn').textContent=S.paused?'Resume':'Pause';
+  if(S.paused){
+    clearT(); S.remaining-=performance.now()-S.t0;
+    const bar=$('timerBar'); const w=getComputedStyle(bar).width; bar.style.transition='none'; bar.style.width=w;
+  }else{
+    S.t0=performance.now();
+    if(S.phase==='ask'){ const bar=$('timerBar'); void bar.offsetWidth; bar.style.transition=`width ${S.remaining}ms linear`; bar.style.width='100%'; S.timer=setTimeout(reveal,Math.max(0,S.remaining)); }
+    else S.timer=setTimeout(advance,Math.max(0,S.remaining));
+  }
+}
+function syncMute(){ const b=$('muteBtn'); b.textContent=settings.sound?'Sound off':'Sound on'; b.setAttribute('aria-pressed',String(!settings.sound)); }
+
+$('nextBtn').onclick=next; $('undoBtn').onclick=undo; $('pauseBtn').onclick=togglePause;
+$('muteBtn').onclick=()=>{ settings.sound=!settings.sound; save(); syncMute(); if(!settings.sound) stopAll(); };
+
+/* ===== Settings screen (CJ, Nov 21 2026): settings + Start on their own screen; the exercise on its own screen,
+   with a "Settings" button at the top to go back. Same pattern as Find the Note. Added by settings-screen/patch.py. ===== */
+function ssInit(o){ return;
+  const wrap=o.wrap, hid=(l,pre)=>l&&l.length?l.map(s=>pre+' '+s).join(',')+'{display:none!important}':'';
+  const st=document.createElement('style');
+  st.textContent=`
+.ss-top{display:none;align-items:center;gap:14px;width:100%}
+.ss-play .ss-top{display:flex}
+.ss-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line,#2e2822);background:transparent;color:var(--fg,#f1ebe2);border-radius:999px;padding:8px 18px 8px 12px;font:inherit;font-size:16px;font-weight:600;line-height:1.2;cursor:pointer;flex:none}
+.ss-back svg{width:18px;height:18px;flex:none}
+.ss-back:hover{border-color:var(--muted,#a69b8d)}
+.ss-back:focus-visible,.ss-go:focus-visible{outline:3px solid var(--accent,#e09a3e);outline-offset:2px}
+.ss-go{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-size:19px;font-weight:600;cursor:pointer;background:var(--accent,#e09a3e);color:var(--accent-ink,#1a120a)}
+.ss-go:disabled{opacity:.45;cursor:default}
+.ss-play .ss-go{display:none!important}
+${hid(o.play,'.ss-play')}
+${hid(o.setup,'.ss-wrap:not(.ss-play)')}
+${o.css||''}`;
+  (o.root.host?o.root:document.head).appendChild(st);
+  wrap.classList.add('ss-wrap');
+  const top=document.createElement('div'); top.className='ss-top';
+  top.innerHTML='<button type="button" class="ss-back" aria-label="Stop and go back to Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Settings</button>';
+  o.placeTop(top);
+  top.firstChild.onclick=()=>{ o.stop(); ssSetup(); };
+  let go=null;
+  if(o.startBtn){
+    go=document.createElement('button'); go.type='button'; go.className='ss-go';
+    o.placeGo(go);
+    const mirror=()=>{ const t=o.goLabel?o.goLabel():o.startBtn.textContent.trim()||'Start', d=!!(o.goDisabled?o.goDisabled():o.startBtn.disabled); if(go.textContent!==t) go.textContent=t; if(go.disabled!==d) go.disabled=d; }; // only touch it when something changed (no observer loop)
+    const mo=new MutationObserver(mirror); [o.startBtn].concat(o.watch||[]).forEach(el=>el&&mo.observe(el,{childList:true,characterData:true,subtree:true,attributes:true}));
+    mirror();
+    go.onclick=()=>{ if(o.onGo) o.onGo(); else o.startBtn.click(); };
+  }
+  o.go=go; ssInit.o=o;
+}
+// the big Start on the Settings screen (the demo's last box points at it)
+function ssGo(fallback){ const g=ssInit.o&&ssInit.o.go; return g&&g.offsetParent?g:fallback; }
+function ssScreen(play){
+  const o=ssInit.o; if(!o) return; const w=o.wrap, was=w.classList.contains('ss-play');
+  if(was===play) return;
+  w.classList.toggle('ss-play',play);
+  if(o.after) o.after(play);
+  const r=w.getBoundingClientRect(); if(r.top<0||(play&&r.top>80)) window.scrollBy(0,r.top-12);
+}
+function ssPlay(){ ssScreen(true); }
+function ssSetup(){ ssScreen(false); }
+
+/* ===== Space bar (CJ, Nov 22 2026): space starts / pauses / resumes the tool and NEVER scrolls the page.
+   dguSpace({host, act, visible?})  host = the tool's outer element (code block div or iframe), act = what space does.
+   One shared listener per window: with several tools on one page, space goes to the one last touched,
+   else the one most on screen. Typing in a text box keeps a normal space. Shared file: /mnt/project-files/space-bar/space.js ===== */
+function dguSpace(o){
+  const W=window, R=W.__dguSpace||(W.__dguSpace={v:1,list:[],last:null});
+  const me={host:o.host,act:o.act,vis:o.visible};
+  R.list.push(me);
+  o.host.addEventListener('pointerdown',()=>{ R.last=me; },true);
+  if(R.on) return; R.on=1;
+  const isSp=e=>(e.code==='Space'||e.key===' '||e.key==='Spacebar')&&!e.metaKey&&!e.ctrlKey&&!e.altKey;
+  const typing=e=>{ const t=(e.composedPath&&e.composedPath()[0])||e.target; if(!t) return false;
+    if(t.isContentEditable||t.tagName==='TEXTAREA') return true;
+    return t.tagName==='INPUT'&&!/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(t.type||''); };
+  const box=m=>{ const h=m.host; if(h.getBoundingClientRect().height) return h; // the code block's div can be display:contents on the site
+    const sr=h.shadowRoot; return (sr&&(sr.querySelector('.wrap,.w')||sr.firstElementChild&&[...sr.children].find(e=>e.getBoundingClientRect().height)))||h; };
+  const shown=m=>{ if(!m.host.isConnected||(m.vis&&!m.vis())) return 0; const r=box(m).getBoundingClientRect();
+    const h=Math.min(r.bottom,W.innerHeight)-Math.max(r.top,0); return r.width>0&&r.height>0&&h>0?h:0; };
+  R.pick=()=>{ if(R.last&&shown(R.last)) return R.last; let b=null,bh=0; R.list.forEach(m=>{ const h=shown(m); if(h>bh){ bh=h; b=m; } }); return b; };
+  R.press=()=>{ const m=R.pick(); if(m) try{ m.act(); }catch(err){ console.warn('space',err); } };
+  // capture on window: runs first, stops the page scroll, the focused button's own click and any older space handlers
+  W.addEventListener('keydown',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); if(!e.repeat) R.press(); },true);
+  W.addEventListener('keyup',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+  W.addEventListener('keypress',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+}
+// press a button only when it's on screen and enabled; true if pressed
+function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
+}
+/* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
+   "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.
+   Overrides the older prep(host,done) (a later function declaration wins); prepCancel(host) still works. */
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var rt=host.getRootNode(), d=host.ownerDocument;
+  if(!(rt.querySelector?rt:d).querySelector('#dgu-cin-css')){ var st=d.createElement('style'); st.id='dgu-cin-css';
+    st.textContent='div.prep{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(0,0,0,.96);color:#fff;font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1;transition:opacity .2s}'+
+      'div.prep.go{color:#fff}div.prep .cin{display:flex;gap:12px;justify-content:center}div.prep .cin i{width:12px;height:12px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}'+
+      'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
+    (rt.host?rt:d.head).appendChild(st); }
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
+  var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  // CJ Nov 23: where the tool has room, Ready sits ON the diagram / game area itself (host.dataset.cinAt = its selector)
+  var at=host.dataset&&host.dataset.cinAt&&host.querySelector(host.dataset.cinAt), t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(at&&at.getBoundingClientRect().height){ var ra=at.getBoundingClientRect();
+    o.style.cssText+=';inset:auto;left:'+(ra.left-hr.left+ra.width/2)+'px;top:'+(ra.top-hr.top+ra.height/2)+'px;transform:translate(-50%,-50%);height:auto;padding:14px 28px;border-radius:16px;white-space:nowrap;flex-direction:row;gap:18px;font-size:clamp(34px,5vw,52px);background:'+bg; }
+  else if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
+  prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
+  var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
+  o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
+{ const st=document.createElement('style'); st.textContent='.ss-play .coach,.ss-play .dgu-recnote{display:none!important}'; (typeof root!=='undefined'?root:document.head).appendChild(st); }
+const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
+dguSpace({host:document.querySelector('.wrap'), act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
+ssInit({root:document, wrap:document.querySelector('.wrap'), play:['header','#setup'], setup:['.controls'],
+  placeTop:t=>$('session').prepend(t), startBtn:$('nextBtn'), placeGo:g=>$('session').appendChild(g),
+  stop:()=>idle()});
+renderSets(); syncMute(); idle();
+/* ---------- Scored Workout mode (CJ Nov 18): fixed settings, answer choices instead of saying it out loud, a score at the end ---------- */
+(function(){
+  const QS=new URLSearchParams(location.search), num=(k,d)=>{ const v=parseFloat(QS.get(k)); return isFinite(v)&&v>0?v:d; };
+  const CFG=Object.assign({n:Math.round(num('n',8)), pace:num('pace',20), lvl:QS.get('lvl')||'i', str:+(QS.get('str')||0)}, window.KWWO||{});
+  const LVNAME={b:'Beginner',i:'Intermediate',p:'Pro'}[CFG.lvl]||'Intermediate';   // level (CJ Nov 23): Beginner / Intermediate / Pro
+  try{ store.set=function(){}; }catch(e){}   // the workout never changes the member's own tool settings // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
+  window.KWLV=CFG.lvl; settings.extras=CFG.lvl==='b'?[5]:CFG.lvl==='p'?[1,2,5,6,7,8]:[1,2,5,7,8]; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.showKey=false;
+  const css=document.createElement('style');
+  css.textContent=`#setup,#undoBtn,#stepsBtn,#chromaBtn,#keyBtn,#tip{display:none!important}
+.wo-ch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 12px;max-width:640px;min-height:58px}
+.wo-ch button{flex:0 1 auto;min-width:76px;padding:10px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,.45);background:#14110e;color:#f1ebe2;font:inherit;font-weight:700;font-size:26px;line-height:1.15;cursor:pointer}
+.wo-ch button:hover:not(:disabled){border-color:#18CEFB}
+.wo-ch button:disabled{cursor:default;opacity:.55}
+.wo-ch button.ok{background:#3ccf6e;border-color:#3ccf6e;color:#06210f;opacity:1}
+.wo-ch button.no{background:#ff5c5c;border-color:#ff5c5c;color:#2a0606;opacity:1}
+.wo-ch button.ans{border-color:#3ccf6e;box-shadow:inset 0 0 0 2px #3ccf6e;opacity:1}
+.wo-ch .wacc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
+.wo-ch .nm,.wo-ch .deg{font-size:inherit!important}
+.wo-ch .deg{justify-content:center}   /* numbers centered in their boxes (CJ Nov 22) */
+.wo-ch .acc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
+.wo-ch .m{font-size:.78em;font-weight:600}
+.wo-ch .dim{display:inline-block;width:.32em;height:.32em;vertical-align:.9em;margin-left:.05em;opacity:.8}.wo-ch .dim svg{display:block;width:100%;height:100%}   /* small, thin diminished circle (CJ Nov 22) */
+.wo-hint{text-align:center;color:#a69b8d;font-size:15px;margin-top:4px;min-height:20px}
+.wo-cur{outline:2px solid #18CEFB;outline-offset:4px;border-radius:10px}
+.wo-pick-ok{color:#3ccf6e!important}.wo-pick-no{color:#ff5c5c!important}
+.wo-score{text-align:center;margin:10px 0 4px;font-weight:700;font-size:clamp(30px,4vw,44px)}
+.wo-score .kwlv{display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;margin-bottom:4px}
+.wo-score small{display:block;font-size:16px;font-weight:500;color:#a69b8d;margin-top:2px}`;
+  document.head.appendChild(css);
+  const panel=document.createElement('div'); panel.innerHTML='<div class="wo-ch" id="woCh"></div><div class="wo-hint" id="woHint"></div>';
+  $('timerBar').parentNode.before(panel);
+  let W={res:[]};
+  const acc=n=>n[0]+(n[1]?`<span class="wacc">${n[1]}</span>`:'');
+  
+  function woQ(c){
+    const IDX=KWLV==='b'?[0,3,4,5]:KWLV==='p'?[0,1,2,3,4,5,6,7,8]:[0,1,2,3,4,5,7,8];   // Beginner: fewer choices; inversions 1/3 and 5/7 at I and P (CJ Nov 23)
+    const opts=IDX.map(i=>({k:DEGS[i], h:degHTML(DEGS[i]), lbl:DEGS[i]}));
+    return c.chords.map(ch=>({opts, ans:DEGS[ch.d]}));
+  }
+  const woCells=()=>$('row').querySelectorAll('.cell');
+  function woMark(k){ woCells().forEach((x,i)=>x.classList.toggle('wo-cur',k!=null&&i===k)); }
+  function woDone(r){ woCells().forEach((cl,i)=>{ const d=cl.querySelector('.slot .deg'); if(d) d.classList.add(r.got[i]&&r.got[i].ok?'wo-pick-ok':'wo-pick-no'); }); }
+  function woFill(i,r,o,ok){ const cl=woCells()[i]; if(!cl) return; cl.classList.remove('wo-cur'); cl.querySelector('.slot').innerHTML=`<span class="deg ${ok?'wo-pick-ok':'wo-pick-no'}">${degInner(o.lbl)}</span>`; }
+
+  if(window.KWLV==='p') for(const k in WEIGHT) WEIGHT[k]=1;   // Pro: the 4th chord is any of 2m 3m 6m 7° 1/3 5/7 equally often, not mostly the 6m (CJ Nov 23)
+  { const _dc=drawChart; drawChart=function(k,mode,u,b){ if(window.KWLV==='b'&&k!=null&&mode!=='full') mode='ref'; return _dc(k,mode,u,b); };
+    // Pro: now and then a chord gets an extension (CJ Nov 23): 1 -> 15 (power chord), 4 -> 4sus2, 5 -> 5sus4, 2m and 6m -> m7. The answer is still the number.
+    { const EXT={0:'5',3:'sus2',4:'sus4',1:'7',5:'7'}, _bp=buildSequence; buildSequence=function(n,fk,fd){ const q=_bp(n,fk,fd); if(window.KWLV!=='p'||fd) return q;
+      q.forEach(c=>c.chords.forEach(ch=>{ const e=EXT[ch.d]; if(e==null||Math.random()>=.5) return; ch.ext=e; const [lo,r]=ch.midis;
+        ch.midis=e==='5'?[lo,r,r+7]:e==='sus2'?[lo,r,r+2,r+7]:e==='sus4'?[lo,r,r+5,r+7]:[lo,r,r+3,r+7,r+10]; })); return q; }; }
+    const _bq=buildSequence; buildSequence=function(n,fk,fd){ if(window.KWLV!=='b'||fd) return _bq(n,fk,fd);
+      const out=[], cut=Math.round(n*.6); let prev='';
+      for(let i=0;i<n;i++){ let d=shuffle(i<cut?[0,3,4]:[0,3,4,5]); if(d.join()===prev) d.push(d.shift()); prev=d.join(); out.push(_bq(1,fk!=null?fk:settings.keys[0],d)[0]); }
+      return out; }; }
+
+  function rec(){ return W.res[S.i]||(W.res[S.i]={slots:woQ(card()),got:[],done:false}); }
+  function draw(){
+    const ch=$('woCh'), hint=$('woHint');
+    if(!S||S.over){ ch.innerHTML=''; hint.textContent=''; woMark(null); return; }
+    const r=rec(), rev=S.phase==='reveal';
+    if(rev&&!r.done){ r.done=true; }
+    const k=r.done?r.slots.length-1:r.got.length, sl=r.slots[Math.min(k,r.slots.length-1)];
+    ch.innerHTML=sl.opts.map((o,i)=>`<button type="button" data-i="${i}">${o.h}</button>`).join('');
+    const bs=[...ch.querySelectorAll('button')];
+    if(r.done){
+      bs.forEach(b=>b.disabled=true);
+      // show every slot's result on the last slot's buttons only when there is one slot; otherwise mark the answer
+      const ans=sl.pool||[sl.ans], gs=sl.pool?r.got:[r.got[r.slots.indexOf(sl)]].filter(Boolean);
+      if(sl.pool||r.slots.length===1) sl.opts.forEach((o,i)=>{ const g=gs.find(x=>x.k===o.k); if(g) bs[i].classList.add(g.ok?'ok':'no'); else if(ans.includes(o.k)) bs[i].classList.add('ans'); });
+      try{ woDone(r); }catch(e){}
+      const right=r.got.filter(x=>x.ok).length;
+      hint.textContent=r.slots.length>1?`${right} of ${r.slots.length} right`:(r.got[0]?(r.got[0].ok?'Right':'Not quite'):'Time is up');
+      woMark(null,r);
+    }else{
+      hint.textContent=`Tap the number for the chord in the blue box (${k+1} of ${r.slots.length})`;
+      bs.forEach((b,i)=>b.onclick=()=>pick(i));
+      woMark(k,r);
+    }
+  }
+  function pick(i){
+    if(!S||S.over||S.paused||S.phase!=='ask') return;
+    const r=rec(); if(r.done) return;
+    const sl=r.slots[r.got.length], o=sl.opts[i], left=sl.pool?sl.pool.filter(x=>!r.got.some(g=>g.ok&&g.k===x)):[sl.ans], ok=left.includes(o.k);
+    r.got.push({k:o.k,ok,i});
+    woFill(r.got.length-1,r,o,ok);
+    const bs=[...$('woCh').querySelectorAll('button')];
+    bs[i].classList.add(ok?'ok':'no'); if(!ok) sl.opts.forEach((x,j)=>{ if(left.includes(x.k)) bs[j].classList.add('ans'); });
+    bs.forEach(b=>b.disabled=true);
+    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },typeof woNow!=='undefined'&&woNow?0:ok?500:1100); }   // Steps Drill: the answer shows on the diagram at once (CJ Nov 22)
+    else setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') draw(); },ok?350:900);
+  }
+  const _enter=enter; enter=function(){ const v=_enter.apply(this,arguments); draw(); return v; };
+  const _start=start; start=function(){ W={res:[]}; $('woScore')&&$('woScore').remove(); const v=_start.apply(this,arguments); return v; };
+  const _idle=idle; idle=function(over){
+    const v=_idle.apply(this,arguments); draw();
+    if(over&&W.res.length){
+      let right=0,total=0; W.res.forEach(r=>{ if(!r) return; total+=r.slots.length; right+=r.got.filter(x=>x.ok).length; });
+      const n=S&&S.seq?S.seq.reduce((a,c,i)=>a+(W.res[i]?0:woQ(c).length),0):0; total+=n;
+      const score=total?Math.round(100*right/total):0;
+      // the score replaces "Done", colored by how high it is (CJ Nov 23)
+      const sc=score>=90?'#18CEFB':score>=70?'#3ccf6e':score>=50?'#f0b429':'#ff5c5c';
+      $('ask').className='ask'; $('ask').innerHTML=`<span style="color:${sc}">Score ${score}</span>`; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
+      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('ask').insertAdjacentHTML('afterbegin',`<span class="kwlv" style="display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;line-height:1.2">${LVNAME.toUpperCase()}</span>`); $('woCh').before(el);
+      try{ window.parent.postMessage({kwwo:'done',tool:'find-the-key',score,right,total},'*'); }catch(e){}
+    } else if(!over&&!document.querySelector('.demo')){ $('ask').textContent='Ready'; }
+    return v;
+  };
+  /* the blue how-to demo still plays before each part (CJ Nov 23), without the 'pick your settings' box: the Test sets them */
+  { const st=document.createElement('style'); st.textContent='#tip.tip:not([hidden]){display:block!important}'; document.head.appendChild(st); }
+  idle();
+  try{ window.parent.postMessage({kwwo:'ready',tool:'find-the-key'},'*'); }catch(e){}
+})();
+
+})();
+</script>

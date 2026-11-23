@@ -3,7 +3,7 @@
 <title>Find the Note (live copy)</title>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");k=(k>=0&&k<12)?k:7;window.KW_KEY=k;var LI=[0,1,1,2,2,3,4,4,5,5,6,6][k],IV=[0,2,4,5,7,9,11],SC=IV.map(function(i){return (k+i)%12});window.kwIn=function(pc){return SC.indexOf(pc)>=0};window.kwName=function(pc){var d=SC.indexOf(pc);if(d<0)return ["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"][pc];var l=(LI+d)%7,a=((pc-IV[l]+18)%12)-6;return "CDEFGAB"[l]+(a<0?"♭":a>0?"♯":"")};})();</script>
 <style>html,body{margin:0;background:#000}</style>
-<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026 (Record-mode input moved to top).
+<!-- Copy of the LIVE Squarespace code block from dontgiveup.pro/find-the-note, pulled Nov 17 2026.
      The live block is the source of truth; note-identifier.html is older. Samples are inlined below
      so this works offline; the block itself would otherwise stream them from jsDelivr. -->
 <script>
@@ -92,7 +92,7 @@ window.GUITAR_TONES={"acoustic": {"38": "https://cdn.jsdelivr.net/gh/nbrosowsky/
 .cd .mini i{flex:1;height:4px;border-radius:99px}
 @media (max-width:520px){.rmon{position:static;width:100%;order:9}.res{padding:16px}.cards{grid-template-columns:1fr 1fr}}
 `;
-  root.innerHTML = '<style>' + "\n/* Layout: setlist-style level picker; in session, one black stage with prompt, optional chromatic strip and fretboard stacked tight */\n:host{\n  color-scheme:dark;\n  --bg:#000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;\n  --brand:#18cefb; /* Don't Give Up blue: the site's primary button color */\n  --accent:#e09a3e; --accent-ink:#1a120a; --accent-soft:#3a2a16; --good:#5cbf80;\n  --wood:#000000; --wood-2:#000000; --fret:#c9c3b8; --string:#e9e2d4; --inlay:#e8dcc4;\n  --notes:\"Poppins\",Helvetica,Arial,sans-serif;\n  --display:\"Barlow Condensed\",\"Arial Narrow\",Arial,sans-serif;\n  --body:\"Figtree\",system-ui,-apple-system,\"Segoe UI\",sans-serif;\n  --mono:\"JetBrains Mono\",ui-monospace,Menlo,monospace;\n}\n*,*::before,*::after{box-sizing:border-box}\n[hidden]{display:none!important}\n:host{display:block;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;\n  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}\n.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}\nheader{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}\n.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}\nh1{font-family:var(--notes);font-weight:700;font-size:clamp(40px,5.2vw,62px);line-height:1;margin:0;text-wrap:balance;letter-spacing:-.01em}\nh2{font-family:var(--display);font-weight:600;font-size:26px;margin:0;line-height:1.1}\np{margin:0}\n.muted{color:var(--muted)}\nbutton{font:inherit;cursor:pointer}\nbutton:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}\n.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 16px;font-weight:600}\n.btn:hover{border-color:var(--accent)}\n#nextBtn{min-width:140px}\n#pauseBtn{min-width:92px}\n#chromaBtn{min-width:200px}\n#notesBtn{min-width:130px}\n#muteBtn{min-width:136px}\n.stage-top{min-height:110px}\n.q .note.msg{font-size:clamp(40px,5.2vw,62px);padding:18px 0 14px}\n.q .note.msg.brand{color:var(--brand)}\n.opt.rng input{width:120px;accent-color:var(--accent)}\n.opt.rng output{font-family:var(--notes);font-weight:700;min-width:34px;font-size:15px}\n.subtitle{margin:6px 0 0;font-size:18px}\nheader{margin-bottom:16px}\n.optbreak{flex-basis:100%;height:0}\nbutton:disabled{opacity:.4;pointer-events:none}\n.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}\n.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}\n.icon-btn svg{width:20px;height:20px}\n.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}\n.optbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:18px 16px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}\n.opt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}\n.opt-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}\n.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}\n.pill{font:600 15px/1 var(--body);padding:8px 13px;background:transparent;color:var(--muted);border:0;border-left:1px solid var(--line)}\n.seg .pill:first-child{border-left:0}\n.pill.str{font-family:var(--notes);font-weight:700;min-width:36px;font-size:16px}\n.pill:hover{color:var(--fg)}\n.pill[aria-pressed=\"true\"],.pill[aria-checked=\"true\"]{background:var(--accent);color:var(--accent-ink)}\n\n/* Setup */\n.setup{display:block}\n.setup .panel{max-width:560px;gap:20px;padding:24px}\n.start-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}\n.start-row .btn{min-width:140px;padding:12px 22px;font-size:17px}\n.levels{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}\n.level{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}\n.level:first-child{border-top:0}\n.level .num{font-family:var(--display);font-size:34px;font-weight:700;color:var(--muted);line-height:1;font-variant-numeric:tabular-nums}\n.level.done .num{color:var(--good)}\n.level .name{font-weight:600}\n.level .desc{font-size:14px;color:var(--muted)}\n.count{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}\n.sel{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;align-self:flex-start}\n/* Dropdowns (CJ, Nov 4, all tools): see-through black, soft border; the opened list stays solid black */\nselect{-webkit-appearance:none;appearance:none;background:rgba(0,0,0,.45) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") no-repeat right 10px center/11px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg);cursor:pointer}\nselect option{background:#000;color:var(--fg)}\n.count select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 6px}\n.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:16px}\n.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px}\n.field{display:flex;flex-direction:column;gap:6px}\n.field label{font-weight:600;font-size:14px}\n.range-row{display:flex;align-items:center;gap:12px}\n.range-row input{flex:1;accent-color:var(--accent)}\n.range-row output{font-family:var(--mono);min-width:44px;text-align:right}\n.check{display:flex;gap:10px;align-items:center;font-size:15px}\n.check input{accent-color:var(--accent);width:18px;height:18px}\nkbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:var(--bg)}\n.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;font-size:14px;align-items:center}\n\n/* Session */\n.stage{position:relative;background:#000;border:1px solid var(--line);border-radius:14px;padding:18px 24px 16px;display:flex;flex-direction:column;gap:14px}\n.stage-top{display:flex;justify-content:center;align-items:flex-end;gap:16px;flex-wrap:wrap}\n.q{font-family:var(--notes);font-weight:700;line-height:1;display:flex;align-items:baseline;justify-content:center;gap:30px;flex-wrap:wrap;text-align:center}\n.q .note{font-size:clamp(72px,8vw,104px);letter-spacing:-.01em;color:var(--fg)}\n.q .note .acc{font-weight:400;font-size:.55em;vertical-align:.7em;margin-left:.04em}\n.q .note .acc.flat{margin-left:-.08em;vertical-align:.55em}\n.q .on{font-size:clamp(34px,3.6vw,48px);color:var(--muted)}\n.q .on b{color:var(--fg);font-weight:700;font-size:1.3em;margin-left:.22em}\n.timer{margin:0 1.25% 0 10%;height:6px;border-radius:99px;background:#2a2520;overflow:hidden}\n.timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}\n.answer{min-height:64px;font-size:16px;text-align:right;display:flex;flex-direction:column;justify-content:flex-end}\n.answer:empty{display:none}\n.answer strong{font-family:var(--notes);font-size:36px;color:var(--accent);display:block;line-height:1.1}\n.progress{position:absolute;top:18px;left:24px;font-family:var(--notes);font-weight:700;font-size:18px;color:var(--fg);display:flex;align-items:baseline;gap:.3em}\n.progress .of{font-weight:400;color:var(--muted)}\n.chroma{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:880px;width:100%;margin:0 auto}\n.chroma span{font-family:var(--notes);font-weight:700;font-size:20px;text-align:center;padding:7px 2px;border-radius:6px;background:#15120f;color:#d9cfc1;line-height:1.15}\n.chroma span small{display:block;font-size:15px;color:#8f8476;font-weight:700}\n.chroma span.on{background:var(--accent);color:#1a120a}\n.chroma span.on small{color:#3a2410}\n.board-wrap{overflow-x:auto;margin-top:8px}\n.board-wrap svg{width:100%;min-width:620px;height:auto;display:block}\n.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}\n.done-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:560px}\n.done-card .big{font-family:var(--notes);font-size:clamp(40px,5.2vw,62px);font-weight:700;line-height:1;letter-spacing:-.01em;color:var(--brand)}\n\n@media (max-width:860px){.setup,.session{grid-template-columns:1fr}.side{position:static}}\n@media (max-width:520px){.level{grid-template-columns:40px minmax(0,1fr);row-gap:8px}.level .count,.level .btn{grid-column:2}}\n@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}\n.dot{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}\n@media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}\n.credit{margin:28px 0 0;text-align:center;font-size:11px;color:var(--muted);opacity:.6}\n\nbutton,input,select{font:inherit}\nh1,h2,p{margin:0}\n" + FTNCSS + '</style>' + "<div class=\"wrap\">\n  <header>\n    <div>\n      <h1>Find the Note <button class=\"dgu-play\" type=\"button\" aria-label=\"Play the demo video\" title=\"Watch the demo\" style=\"display:inline-flex;flex-direction:column;align-items:center;gap:4px;margin-left:12px;vertical-align:middle;border:0;background:transparent;color:var(--accent);cursor:pointer;padding:0;position:relative;top:6px\"><span style=\"display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink)\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" aria-hidden=\"true\" style=\"margin-left:2px\"><path d=\"M7 4.5v15l12.5-7.5z\" fill=\"currentColor\"/></svg></span><span style=\"font-size:9px;font-weight:700;letter-spacing:.14em;line-height:1\">DEMO</span></button></h1>\n      <p class=\"muted subtitle\">A simple way to learn guitar notes</p>\n    </div>\n  </header>\n  <div class=\"dgu-demo-panel\" style=\"display:none;margin:0 0 24px\"><div style=\"display:flex;justify-content:flex-end;margin:0 0 8px\"><button class=\"dgu-close\" type=\"button\" aria-label=\"Close the demo video\" style=\"display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:20px;border:0;background:var(--accent);color:var(--accent-ink);font-size:14px;font-weight:700;cursor:pointer\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>Close</button></div><div class=\"dgu-demo\" style=\"position:relative;padding-top:59.69%;border-radius:12px;overflow:hidden;background:#000\"><iframe data-src=\"https://player.vimeo.com/video/1244690470?h=aa4a1bf00f&title=0&byline=0&portrait=0&dnt=1\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Find the Note demo\"></iframe></div></div>\n\n  <!-- SETUP -->\n  <div class=\"optbar\" id=\"optbar\">\n    <div class=\"opt\"><span class=\"opt-label\">Instrument</span><div class=\"seg\" id=\"instPick\" role=\"radiogroup\" aria-label=\"Instrument\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt\"><span class=\"opt-label\">Strings</span><div class=\"seg\" id=\"strPick\"></div></div>\n    <div class=\"opt\"><span class=\"opt-label\">Notes</span><div class=\"seg\" id=\"notePick\" role=\"radiogroup\" aria-label=\"Notes to practice\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt rng\"><label class=\"opt-label\" for=\"base\">Speed</label><input id=\"base\" type=\"range\" min=\"1\" max=\"20\" step=\"0.5\" value=\"10\"><output id=\"baseOut\">10s</output></div>\n    <div class=\"opt\"><label class=\"opt-label\" for=\"perLevel\">Notes per round</label><select id=\"perLevel\" class=\"sel\"></select></div>\n  </div>\n  <!-- SESSION -->\n  <section id=\"session\">\n    <div class=\"stage\">\n      <div class=\"progress\" id=\"progress\">1 of 20</div>\n      <div class=\"stage-top\">\n        <div class=\"q\"><span class=\"note\" id=\"qNote\">D</span><span class=\"on\">on <b id=\"qString\">B</b>-string</span></div>\n        <div class=\"answer\" id=\"answer\" aria-live=\"polite\"></div>\n      </div>\n      <div class=\"chroma\" id=\"chroma\" hidden aria-label=\"The 12 notes of the chromatic scale\"></div>\n      <div class=\"timer\" aria-hidden=\"true\"><i id=\"timerBar\"></i></div>\n      <div class=\"board-wrap\"><svg id=\"board\" viewBox=\"0 26 960 292\" role=\"img\" aria-label=\"Guitar fretboard, all six strings, frets 0 to 12\"></svg></div>\n    </div>\n    <div class=\"controls\" style=\"margin-top:16px\">\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"undoBtn\" aria-label=\"Restart the round\">Restart</button>\n        <button class=\"btn\" id=\"pauseBtn\">Pause</button>\n        <button class=\"btn primary\" id=\"nextBtn\">Start</button>\n      </div>\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"notesBtn\" aria-pressed=\"false\">Show Notes</button>\n        <button class=\"btn\" id=\"chromaBtn\" aria-pressed=\"false\">Show Chromatic Scale</button>\n        <button class=\"btn icon-btn\" id=\"muteBtn\" aria-pressed=\"false\">Sound off</button>\n      </div>\n    </div>\n  </section>\n\n  <p class=\"credit\">Guitar samples by Nicholaus Brosowsky, CC BY 3.0</p>\n</div>";
+  root.innerHTML = '<style>' + "\n/* Layout: setlist-style level picker; in session, one black stage with prompt, optional chromatic strip and fretboard stacked tight */\n:host{\n  color-scheme:dark;\n  --bg:#000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;\n  --brand:#18cefb; /* Don't Give Up blue: the site's primary button color */\n  --accent:#e09a3e; --accent-ink:#1a120a; --accent-soft:#3a2a16; --good:#5cbf80;\n  --wood:#000000; --wood-2:#000000; --fret:#c9c3b8; --string:#e9e2d4; --inlay:#e8dcc4;\n  --notes:\"Poppins\",Helvetica,Arial,sans-serif;\n  --display:\"Barlow Condensed\",\"Arial Narrow\",Arial,sans-serif;\n  --body:\"Figtree\",system-ui,-apple-system,\"Segoe UI\",sans-serif;\n  --mono:\"JetBrains Mono\",ui-monospace,Menlo,monospace;\n}\n*,*::before,*::after{box-sizing:border-box}\n[hidden]{display:none!important}\n:host{display:block;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;\n  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}\n.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}\nheader{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}\n.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}\nh1{font-family:var(--notes);font-weight:700;font-size:clamp(40px,5.2vw,62px);line-height:1;margin:0;text-wrap:balance;letter-spacing:-.01em}\nh2{font-family:var(--display);font-weight:600;font-size:26px;margin:0;line-height:1.1}\np{margin:0}\n.muted{color:var(--muted)}\nbutton{font:inherit;cursor:pointer}\nbutton:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}\n.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 16px;font-weight:600}\n.btn:hover{border-color:var(--accent)}\n#nextBtn{min-width:140px}\n#pauseBtn{min-width:92px}\n#chromaBtn{min-width:200px}\n#notesBtn{min-width:130px}\n#muteBtn{min-width:136px}\n.stage-top{min-height:110px}\n.q .note.msg{font-size:clamp(40px,5.2vw,62px);padding:18px 0 14px}\n.q .note.msg.brand{color:var(--brand)}\n.opt.rng input{width:120px;accent-color:var(--accent)}\n.opt.rng output{font-family:var(--notes);font-weight:700;min-width:34px;font-size:15px}\n.subtitle{margin:6px 0 0;font-size:18px}\nheader{margin-bottom:16px}\n.optbreak{flex-basis:100%;height:0}\nbutton:disabled{opacity:.4;pointer-events:none}\n.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}\n.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}\n.icon-btn svg{width:20px;height:20px}\n.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}\n.optbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:18px 16px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}\n.opt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}\n.opt-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}\n.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}\n.pill{font:600 15px/1 var(--body);padding:8px 13px;background:transparent;color:var(--muted);border:0;border-left:1px solid var(--line)}\n.seg .pill:first-child{border-left:0}\n.pill.str{font-family:var(--notes);font-weight:700;min-width:36px;font-size:16px}\n.pill:hover{color:var(--fg)}\n.pill[aria-pressed=\"true\"],.pill[aria-checked=\"true\"]{background:var(--accent);color:var(--accent-ink)}\n\n/* Setup */\n.setup{display:block}\n.setup .panel{max-width:560px;gap:20px;padding:24px}\n.start-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}\n.start-row .btn{min-width:140px;padding:12px 22px;font-size:17px}\n.levels{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}\n.level{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}\n.level:first-child{border-top:0}\n.level .num{font-family:var(--display);font-size:34px;font-weight:700;color:var(--muted);line-height:1;font-variant-numeric:tabular-nums}\n.level.done .num{color:var(--good)}\n.level .name{font-weight:600}\n.level .desc{font-size:14px;color:var(--muted)}\n.count{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}\n.sel{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;align-self:flex-start}\n/* Dropdowns (CJ, Nov 4, all tools): see-through black, soft border; the opened list stays solid black */\nselect{-webkit-appearance:none;appearance:none;background:rgba(0,0,0,.45) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") no-repeat right 10px center/11px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg);cursor:pointer}\nselect option{background:#000;color:var(--fg)}\n.count select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 6px}\n.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:16px}\n.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px}\n.field{display:flex;flex-direction:column;gap:6px}\n.field label{font-weight:600;font-size:14px}\n.range-row{display:flex;align-items:center;gap:12px}\n.range-row input{flex:1;accent-color:var(--accent)}\n.range-row output{font-family:var(--mono);min-width:44px;text-align:right}\n.check{display:flex;gap:10px;align-items:center;font-size:15px}\n.check input{accent-color:var(--accent);width:18px;height:18px}\nkbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:var(--bg)}\n.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;font-size:14px;align-items:center}\n\n/* Session */\n.stage{position:relative;background:#000;border:1px solid var(--line);border-radius:14px;padding:18px 24px 16px;display:flex;flex-direction:column;gap:14px}\n.stage-top{display:flex;justify-content:center;align-items:flex-end;gap:16px;flex-wrap:wrap}\n.q{font-family:var(--notes);font-weight:700;line-height:1;display:flex;align-items:baseline;justify-content:center;gap:30px;flex-wrap:wrap;text-align:center}\n.q .note{font-size:clamp(72px,8vw,104px);letter-spacing:-.01em;color:var(--fg)}\n.q .note .acc{font-weight:400;font-size:.55em;vertical-align:.7em;margin-left:.04em}\n.q .note .acc.flat{margin-left:-.08em;vertical-align:.55em}\n.q .on{font-size:clamp(34px,3.6vw,48px);color:var(--muted)}\n.q .on b{color:var(--fg);font-weight:700;font-size:1.3em;margin-left:.22em}\n.timer{margin:0 1.25% 0 10%;height:6px;border-radius:99px;background:#2a2520;overflow:hidden}\n.timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}\n.answer{min-height:64px;font-size:16px;text-align:right;display:flex;flex-direction:column;justify-content:flex-end}\n.answer:empty{display:none}\n.answer strong{font-family:var(--notes);font-size:36px;color:var(--accent);display:block;line-height:1.1}\n.progress{position:absolute;top:18px;left:24px;font-family:var(--notes);font-weight:700;font-size:18px;color:var(--fg);display:flex;align-items:baseline;gap:.3em}\n.progress .of{font-weight:400;color:var(--muted)}\n.chroma{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:880px;width:100%;margin:0 auto}\n.chroma span{font-family:var(--notes);font-weight:700;font-size:20px;text-align:center;padding:7px 2px;border-radius:6px;background:#15120f;color:#d9cfc1;line-height:1.15}\n.chroma span small{display:block;font-size:15px;color:#8f8476;font-weight:700}\n.chroma span.on{background:var(--accent);color:#1a120a}\n.chroma span.on small{color:#3a2410}\n.board-wrap{overflow-x:auto;margin-top:8px}\n.board-wrap svg{width:100%;min-width:620px;height:auto;display:block}\n.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}\n.done-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:560px}\n.done-card .big{font-family:var(--notes);font-size:clamp(40px,5.2vw,62px);font-weight:700;line-height:1;letter-spacing:-.01em;color:var(--brand)}\n\n@media (max-width:860px){.setup,.session{grid-template-columns:1fr}.side{position:static}}\n@media (max-width:520px){.level{grid-template-columns:40px minmax(0,1fr);row-gap:8px}.level .count,.level .btn{grid-column:2}}\n@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}\n.dot{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}\n@media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}\n.credit{margin:28px 0 0;text-align:center;font-size:11px;color:var(--muted);opacity:.6}\n/* start screen (CJ, Nov 17): two examples loop before Start in DGU blue, with black instruction boxes + arrows */\n.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}\n.demo .timer i{background:var(--brand)}\n.wrap{position:relative}\n/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */\n.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}\n.coach.on{opacity:1;transform:none;pointer-events:auto}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px!important}.coach .ct{text-wrap:balance}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}\n.coach::before{content:\"\";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}\n.coach::after{content:\"\";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}\n@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}\n.coach.below::before{top:auto;bottom:calc(100% + 2px)}\n.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}\n\nbutton,input,select{font:inherit}\nh1,h2,p{margin:0}\n" + FTNCSS + '</style>' + "<div class=\"wrap\">\n  <header>\n    <div>\n      <h1>Find the Note <button class=\"dgu-play\" type=\"button\" aria-label=\"Play the demo video\" title=\"Watch the demo\" style=\"display:inline-flex;flex-direction:column;align-items:center;gap:4px;margin-left:12px;vertical-align:middle;border:0;background:transparent;color:var(--accent);cursor:pointer;padding:0;position:relative;top:6px\"><span style=\"display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink)\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" aria-hidden=\"true\" style=\"margin-left:2px\"><path d=\"M7 4.5v15l12.5-7.5z\" fill=\"currentColor\"/></svg></span><span style=\"font-size:9px;font-weight:700;letter-spacing:.14em;line-height:1\">DEMO</span></button></h1>\n      <p class=\"muted subtitle\">A simple way to learn guitar notes</p>\n    </div>\n  </header>\n  <div class=\"dgu-demo-panel\" style=\"display:none;margin:0 0 24px\"><div style=\"display:flex;justify-content:flex-end;margin:0 0 8px\"><button class=\"dgu-close\" type=\"button\" aria-label=\"Close the demo video\" style=\"display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:20px;border:0;background:var(--accent);color:var(--accent-ink);font-size:14px;font-weight:700;cursor:pointer\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>Close</button></div><div class=\"dgu-demo\" style=\"position:relative;padding-top:59.69%;border-radius:12px;overflow:hidden;background:#000\"><iframe data-src=\"https://player.vimeo.com/video/1244690470?h=aa4a1bf00f&title=0&byline=0&portrait=0&dnt=1\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Find the Note demo\"></iframe></div></div>\n\n  <!-- SETUP -->\n  <div class=\"optbar\" id=\"optbar\">\n    <div class=\"opt\"><span class=\"opt-label\">Instrument</span><div class=\"seg\" id=\"instPick\" role=\"radiogroup\" aria-label=\"Instrument\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt\"><span class=\"opt-label\">Strings</span><div class=\"seg\" id=\"strPick\"></div></div>\n    <div class=\"opt\"><span class=\"opt-label\">Notes</span><div class=\"seg\" id=\"notePick\" role=\"radiogroup\" aria-label=\"Notes to practice\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt rng\"><label class=\"opt-label\" for=\"base\">Speed</label><input id=\"base\" type=\"range\" min=\"1\" max=\"20\" step=\"0.5\" value=\"10\"><output id=\"baseOut\">10s</output></div>\n    <div class=\"opt\"><label class=\"opt-label\" for=\"perLevel\">Notes per round</label><select id=\"perLevel\" class=\"sel\"></select></div>\n  </div>\n  <!-- SESSION -->\n  <section id=\"session\">\n    <div class=\"stage\">\n      <div class=\"progress\" id=\"progress\">1 of 20</div>\n      <div class=\"stage-top\">\n        <div class=\"q\"><span class=\"note\" id=\"qNote\">D</span><span class=\"on\">on <b id=\"qString\">B</b>-string</span></div>\n        <div class=\"answer\" id=\"answer\" aria-live=\"polite\"></div>\n      </div>\n      <div class=\"chroma\" id=\"chroma\" hidden aria-label=\"The 12 notes of the chromatic scale\"></div>\n      <div class=\"timer\" aria-hidden=\"true\"><i id=\"timerBar\"></i></div>\n      <div class=\"board-wrap\"><svg id=\"board\" viewBox=\"0 26 960 292\" role=\"img\" aria-label=\"Guitar fretboard, all six strings, frets 0 to 12\"></svg></div>\n    </div>\n    <div class=\"controls\" style=\"margin-top:16px\">\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"undoBtn\" aria-label=\"Restart the round\">Restart</button>\n        <button class=\"btn\" id=\"pauseBtn\">Pause</button>\n        <button class=\"btn primary\" id=\"nextBtn\">Start</button>\n      </div>\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"notesBtn\" aria-pressed=\"false\">Show Notes</button>\n        <button class=\"btn\" id=\"chromaBtn\" aria-pressed=\"false\">Show Chromatic Scale</button>\n        <button class=\"btn icon-btn\" id=\"muteBtn\" aria-pressed=\"false\">Sound off</button>\n      </div>\n    </div>\n  </section>\n\n  <p class=\"credit\">Guitar samples by Nicholaus Brosowsky, CC BY 3.0</p>\n</div>";
   /* Acoustic guitar recordings (CC BY 3.0, nbrosowsky/tonejs-instruments), served by the jsDelivr CDN, pinned to one commit. */
   if (!window.GUITAR_TONES) window.GUITAR_TONES = {"acoustic": {"38": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D2.mp3", "39": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds2.mp3", "40": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E2.mp3", "41": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F2.mp3", "42": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs2.mp3", "43": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G2.mp3", "44": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs2.mp3", "45": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A2.mp3", "46": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As2.mp3", "47": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B2.mp3", "48": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C3.mp3", "49": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs3.mp3", "50": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D3.mp3", "51": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds3.mp3", "52": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E3.mp3", "53": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F3.mp3", "54": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs3.mp3", "55": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G3.mp3", "56": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs3.mp3", "57": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A3.mp3", "58": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As3.mp3", "59": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B3.mp3", "60": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C4.mp3", "61": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs4.mp3", "62": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D4.mp3", "63": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds4.mp3", "64": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E4.mp3", "65": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F4.mp3", "66": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs4.mp3", "67": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G4.mp3", "68": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs4.mp3", "69": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A4.mp3", "70": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As4.mp3", "71": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B4.mp3", "72": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C5.mp3", "73": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs5.mp3", "74": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D5.mp3"}};
   (() => {
@@ -230,13 +230,14 @@ function buildSequence(L,n){
   while(seq.length<n){
     if(!bag.length){
       // Open-string notes (G on the G string, E on the E string...) come up only about a quarter as often
-      bag=pool.filter(it=>!it.frets.includes(0)||Math.random()<.25).sort(()=>Math.random()-.5);
+      bag=pool.flatMap(it=>it.pc===window.KW_KEY?[it,it,it]:[it]).filter(it=>!it.frets.includes(0)||Math.random()<.25).sort(()=>Math.random()-.5);
       if(!bag.length) bag=pool.slice();
     }
     let item=bag.pop();
     const prev=seq[seq.length-1];
-    if(prev&&prev.s===item.s&&prev.pc===item.pc&&pool.length>1){ bag.unshift(item); item=bag.pop(); }
-    seq.push({...item, name:spell(item.pc)});
+    if(prev&&prev.pc===item.pc){ const j=bag.findIndex(x=>x.pc!==prev.pc); if(j>=0){ const t=bag[j]; bag[j]=item; item=t; } else { const ok=pool.filter(x=>x.pc!==prev.pc); if(ok.length) item=ok[Math.floor(Math.random()*ok.length)]; } }
+    // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH (CJ, Nov 18)
+    seq.push(item.frets.includes(0)&&item.frets.includes(12) ? {...item, frets:[12], high:true, name:spell(item.pc)} : {...item, name:spell(item.pc)});
   }
   return seq;
 }
@@ -258,7 +259,7 @@ function drawBoard(card){
     const hl=card&&card.s===k;
     const bright = card ? hl : settings.strings.includes(k);
     h+=`<line x1="${NUT}" x2="${END+8}" y1="${S.y}" y2="${S.y}" stroke="var(--string)" stroke-width="${S.w}" opacity="${bright?1:.28}"/>`;
-    h+=`<text x="${NUT-18}" y="${S.y+(bright?11:8)}" text-anchor="end" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="700" font-size="${bright?32:24}" fill="${hl?'#f2b25c':bright?'#e6dccd':'#5a524a'}">${S.short||S.label}</text>`;
+    h+=`<text x="${NUT-31}" y="${S.y+(bright?11:8)}" text-anchor="middle" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="700" font-size="${bright?32:24}" fill="${hl?'#f2b25c':bright?'#e6dccd':'#5a524a'}">${S.short||S.label}</text>`;
   }
   for(let f=1;f<=12;f++) h+=`<text x="${spotX(f)}" y="${BOTY+42}" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="600" font-size="16" fill="#a8998a">${f}</text>`;
   if(settings.warmup){
@@ -286,8 +287,55 @@ function drawBoard(card){
          (card.name.length>1?`<text x="${spotX(f)+(card.name.endsWith('♭')?4:6)}" y="${y+(card.name.endsWith('♭')?1:-1)}" font-family="Poppins, Helvetica, Arial, sans-serif" font-weight="400" font-size="13" fill="#1a120a">${card.name.slice(1)}</text>`:'')+`</g>`;
     }
   }
+  if(card&&card.miss){
+    // wrong taps (CJ, Nov 17): a red X on each spot tried
+    const y=STRINGS[card.s].y;
+    for(const f of card.miss){ if(card.revealed&&card.frets.includes(f)) continue; const x=spotX(f);
+      h+=`<g class="dot"><path d="M${x-11} ${y-11}L${x+11} ${y+11}M${x+11} ${y-11}L${x-11} ${y+11}" stroke="#ff5c5c" stroke-width="5" stroke-linecap="round"/></g>`; }
+  }
+  if(card&&!card.revealed&&S&&!S.over&&!S.lead&&S.phase==='ask'){
+    // tap the note's spot between the frets to answer (CJ, Nov 17)
+    const j=ORDER.indexOf(card.s), y=STRINGS[card.s].y;
+    const yU=j>0?(STRINGS[ORDER[j-1]].y+y)/2:y-30, yD=j<ORDER.length-1?(STRINGS[ORDER[j+1]].y+y)/2:y+30;
+    for(let f=0;f<=12;f++){ const x0=f?fretX(f-1)+2:NUT-58, x1=f?fretX(f)-2:NUT-9;
+      h+=`<rect class="tap" data-f="${f}" x="${x0}" y="${yU}" width="${x1-x0}" height="${yD-yU}" fill="#fff" fill-opacity="0" style="cursor:pointer"/>`; }
+  }
+  if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
   svg.innerHTML=h;
 }
+$('board').addEventListener('click',e=>{ const t=e.target.closest('.tap'); if(t) tapAnswer(+t.dataset.f); });
+// Tap to answer (CJ, Nov 17): the tapped note sounds at once; a wrong spot gets a red X and they can keep trying until time runs out; the right spot shows the normal answer
+function tapAnswer(f){
+  if(!S||S.over||S.lead||S.phase!=='ask') return;
+  const c=card(), ok=c.frets.includes(f);
+  if(settings.sound&&audio()){ hush(); ringFor=S.d<=2.5?1.1:2.2; playMidi(STRINGS[c.s].midi+f); }
+  if(S.rec){
+    // Record mode: once they tap, taps decide this note (the mic would hear the tapped sound)
+    const L=R.L; if(L){ L.done=true; R.L=null; $('lis').hidden=true; $('heard').innerHTML=''; }
+    if(!c.tapT0) c.tapT0=L?L.t0:S.t0;
+    const prev=R.res[S.i];
+    if(!prev||prev.tap){
+      const t=Math.max(0,(performance.now()-c.tapT0)/1000), miss=(c.miss||[]).length+(ok?0:1);
+      const n=ok?(miss?50:100):0, ts=ok?tScore(t,S.d):SP_MIN;
+      R.res[S.i]={name:c.name,s:c.s,frets:c.frets,played:null,tap:true,n,t:ts,u:null,sc:Math.round((n+ts)/2),
+        why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
+    }
+  }
+  S.tapped=1;
+  if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); c.mark='no'; setMark('no'); drawBoard(c); return; }
+  if(!S.tapped) S.tapped=1; S.found=(S.found||0)+1; if(!c.miss) S.first=(S.first||0)+1;
+  c.mark='ok'; S.quiet=true; reveal();
+}
+// Right/wrong mark next to the prompt (CJ, Nov 17): green check or red X; sits outside the title so the title never shifts
+{ const st=document.createElement('style'); st.textContent='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
+  $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>');
+  // simple end-of-round score when they answered by tapping (CJ, Nov 17)
+  const s2=document.createElement('style'); s2.textContent='.tscore{text-align:center;font-family:var(--notes);font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.2;margin-top:-4px}.tscore b{color:#3ccf6e}.tscore small{display:block;font-family:var(--body);font-weight:500;font-size:16px;color:var(--muted);margin-top:4px}'; root.appendChild(s2);
+  root.querySelector('.stage-top').insertAdjacentHTML('afterend','<div class="tscore" id="tscore" hidden></div>'); }
+function setMark(v){ const m=$('qmark'); if(!m) return; const was=m.dataset.v||''; v=v||''; m.dataset.v=v;
+  m.innerHTML = v==='ok' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Correct"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#3ccf6e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    : v==='no' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Wrong"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#ff5c5c" stroke-width="3.4" stroke-linecap="round"/></svg>' : '';
+  if(v&&v!==was){ m.classList.remove('pop'); void m.offsetWidth; m.classList.add('pop'); } }
 
 /* ---------- Sound (plucked string synth) ---------- */
 let ctx=null; const bufCache={};
@@ -347,30 +395,81 @@ function preloadSamples(){ if(!ctx) return; const t=settings.tone; for(const k o
 /* ---------- Session ---------- */
 let S=null; // {level, seq, i, phase:'ask'|'reveal', paused, t0, remaining, timer}
 function idle(over){
-  if(S) clearT(); if(R.L){ R.L=null; $('lis').hidden=true; } $('heard').innerHTML=''; S=over?S:null; if(S) S.over=true;
+  if(!over) ssSetup();
+  demoStop(); if(S) clearT(); if(R.L){ R.L=null; $('lis').hidden=true; } $('heard').innerHTML=''; S=over?S:null; if(S) S.over=true;
   const n=settings.perLevel, a=delayAt(0,n), b=delayAt(n-1,n);
   $('progress').innerHTML='';
   $('qNote').className='note msg'+(over?' brand':''); $('qNote').textContent= over?'Round complete':'Ready';
-  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML='';
+  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
   $('nextBtn').textContent= over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('nextBtn').disabled=false;
   drawBoard(null); renderChroma(-1);
+  if(!over) drawExample();
+}
+// start screen (CJ, Nov 17): two examples loop until Start, in DGU blue, no sound; each step gets a black box with an arrow
+let demoT=null, DEMO=false;
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+// the X on a demo box stops the demo (CJ Nov 17)
+// get-ready moment before a run (CJ Nov 18): 'Ready', then 'Begin' for the last 1.5 s, fading out; done() after 4 s
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=host.ownerDocument.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.textContent='Ready'; void o.offsetWidth; o.classList.add('on');
+  o._t=[setTimeout(function(){ o.textContent='Begin'; o.classList.add('go'); },2500), setTimeout(function(){ o.classList.add('out'); },3300), setTimeout(function(){ o.className='prep'; if(done) done(); },4000)]; }
+function prepCancel(host){ var o=host.querySelector(':scope > .prep'); if(!o) return; (o._t||[]).forEach(clearTimeout); o._t=[]; o.className='prep'; }
+function demoX(){ clearTimeout(demoT); demoT=null; }
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
+    c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
+    c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); c.classList.toggle('below',!!below); // no orphan last word (CJ)
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('qNote').closest('.wrap'),null); }
+function demoCard(i){
+  const ss=settings.strings.length?settings.strings:[ORDER[0]], k=ss[i%2&&ss.length>1?1:0], st=STRINGS[k];
+  const pc=(window.KW_KEY+(i%2?7:0))%12, f=(i%2?[5,7,8,9,4,10,3,2,1,11,6,0]:[2,3,1,4,5,7,8,9,6,10,11,0]).find(x=>(st.midi+x)%12===pc);
+  return {s:k,frets:[f],name:kwName(pc),revealed:false};
+}
+function drawExample(i=0,step=-1){
+  clearTimeout(demoT);
+  if(root.querySelector('.wrap.w-conn')){ try{ demoStop(); }catch(e){} return; }   // no how-to while connecting; it starts once connected (CJ Nov 23)
+  const H=$('qNote').closest('.wrap');
+  if(i>=4){ coach(H,ssGo($('nextBtn')),'Press Start when ready'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
+  DEMO=true; $('session').classList.add('demo');
+  const ex=demoCard(i%2), host=H;
+  ex.revealed=step===2;
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  $('qNote').className='note'; $('qNote').innerHTML=ex.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
+  $('qString').textContent=strName(ex.s); $('qNote').nextElementSibling.hidden=false;
+  drawBoard(ex);
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
+  const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the note is revealed.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
+  if(step===0){ setBar(0,4000); if($('qNote').offsetParent) coach(host,$('qNote'),tips[0],true); else coach(host,null); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
+  else if(step===1){ demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[1]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),9000); }
 }
 function start(){
   audio(); preloadSamples();
-  if(recOn()&&!R.stream){ connect(); return; } // Record mode: connect the input first
-  R.res=[]; $('heard').innerHTML='';
+  if(recOn()&&!R.stream){ connect(true); return; } // Record mode: connect the input first
+  ssPlay();
+  R.res=[]; $('heard').innerHTML=''; demoStop();
   S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
   // 2.5 s to get ready after Start or Restart (CJ)
   S.lead=true; $('pauseBtn').textContent='Pause'; $('pauseBtn').disabled=true; $('undoBtn').disabled=false; $('nextBtn').disabled=true; $('nextBtn').textContent='Starting…';
-  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent='Get ready'; $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML='';
+  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent=S.rec?'Get ready':''; if(!S.rec){ $('session').dataset.cinAt='#board'; prep($('session')); } $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
   { const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%'; } drawBoard(null);
-  S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },2500);
+  S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },S.rec?2500:4000);
 }
 function card(){ return S.seq[S.i]; }
 // "High E"/"Low E" only when both E strings are in play; otherwise just "E"
-function strName(k){ return (k==='e'||k==='E') && !(settings.strings.includes('e')&&settings.strings.includes('E')) ? 'E' : STRINGS[k].label; }
+function strName(k){ return STRINGS[k].label; }   // always High E-string / Low E-string (CJ Nov 22)
 function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
 function setBar(fromPct,ms){
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
@@ -378,12 +477,13 @@ function setBar(fromPct,ms){
 }
 function enter(){
   clearT();
-  const c=card(); c.revealed = S.phase==='reveal';
+  const c=card(); c.revealed = S.phase==='reveal'; if(S.phase==='ask'){ c.miss=null; c.tapT0=0; c.mark=null; } setMark(c.mark);
   S.d=delayAt(S.i,S.seq.length);
   $('progress').innerHTML=`${S.i+1}<span class="of">of</span>${S.seq.length}`;
   $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
+  if(c.high) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>');
   $('qString').textContent=strName(c.s);
-  $('qNote').nextElementSibling.hidden = settings.strings.length===1; // one string picked: just the note (CJ, Nov 6)
+  $('qNote').nextElementSibling.hidden = false; // always "on A-string", even with one string picked (CJ Nov 23)
   drawBoard(c);
   renderChroma(-1);
   if(S.phase==='ask'){
@@ -399,7 +499,7 @@ function enter(){
     $('answer').innerHTML='';
     $('nextBtn').textContent= S.i===S.seq.length-1 ? 'Finish' : 'Next note';
     $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
-    const rr=S.rec&&R.res[S.i], ms=rr&&rr.n===100?1500:(S.d>=10?5:S.d>=5?4:S.d>2.5?3.5:3)*1000; S.remaining=ms; S.t0=performance.now(); // answer stays up longer while the pace is slow
+    const rr=S.rec&&R.res[S.i], ms=rr&&rr.n===100&&!rr.tap?1500:Math.max(1500,(S.d>=10?5:S.d>=5?4:S.d>2.5?3.5:3)*1000-(c.mark==='ok'?1500:0)); // right answer: 1.5 s shorter (CJ, Nov 17) S.remaining=ms; S.t0=performance.now(); // answer stays up longer while the pace is slow
     if(!S.paused) S.timer=setTimeout(advance, ms);
   }
 }
@@ -428,7 +528,7 @@ function togglePause(){
     else S.timer=setTimeout(advance,Math.max(0,S.remaining));
   }
 }
-function finish(){ const rec=S&&S.rec; idle(true); if(rec) results(); }
+function finish(){ const rec=S&&S.rec; idle(true); if(rec) results(); else if(S&&S.tapped){ const n=S.seq.length, f=S.found||0, ft=S.first||0; $('tscore').innerHTML=`Score <b>${f}</b> / ${n}<small>${ft} right on the first tap</small>`; $('tscore').hidden=false; } }
 function syncMute(){ const b=$('muteBtn'); b.innerHTML=settings.sound?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>Sound off':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>Sound on'; b.setAttribute('aria-pressed',String(!settings.sound));  }
 
 $('nextBtn').onclick=next; $('undoBtn').onclick=restart; $('pauseBtn').onclick=()=>S&&!S.over&&togglePause();
@@ -441,9 +541,18 @@ $('muteBtn').onclick=()=>{ settings.sound=!settings.sound; store.set('settings',
 const PCN=SHARP;
 const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
 const esc=s=>String(s).replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'})[c]);
-const R={mode:store.get('mode','rec'), stream:null, src:null, an:null, raf:0, dev:store.get('dev',''), state:'idle', L:null, res:[]};
+const R={mode:store.get('mode','prac'), stream:null, src:null, an:null, raf:0, dev:store.get('dev','')||(window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id(), state:'idle', L:null, res:[]};
 const wrap=root.querySelector('.wrap');
-root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="rec">Record</button><button type="button" data-m="prac">Practice</button></div>');
+root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div>');
 root.querySelector('.stage').insertAdjacentHTML('beforeend','<div class="rmon"><div class="tmt"><b id="tmNote">–</b><span class="tmc" id="tmC"></span></div><div class="tm"><i class="tmz"></i><i class="tmn idle" id="tmN"></i></div><div class="lis" id="lis" hidden><i></i>Listening</div><div class="heard" id="heard" aria-live="polite"></div></div>');
 root.querySelector('.stage').insertAdjacentHTML('afterend','<div class="res" id="res" hidden></div>');
 root.querySelector('#optbar').insertAdjacentHTML('beforebegin','<div class="rp" id="rp"><span class="rstep" id="rstep"><b>1</b>Connect your guitar first</span><select id="dev" aria-label="Audio input"><option value="">Press Connect to list your inputs</option></select><div class="meter" title="Input level"><b id="mtr"></b></div><button class="btn recgo" id="go" type="button">Connect</button><div class="rinfo" id="rinfo"></div></div>');
@@ -456,7 +565,18 @@ function setMode(m){
   if(m==='rec'&&!R.stream) devList(); rinfo(); idle();
 }
 root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
-function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it and let it ring.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first'; }
+function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first';
+  // Connect sits above the settings; until the guitar is connected the settings, title and tuner stay folded away (CJ Nov 23).
+  // Once connected it folds to one line: "Guitar connected", the input name, and a Change link that reopens the input list.
+  const cn=R.mode==='rec'&&!ok, pq=$('qNote').parentElement, rp=$('rp'), was=wrap.classList.contains('w-conn'); wrap.classList.toggle('w-conn',cn);
+  if(cn&&!was){ try{ demoStop(); }catch(e){} } else if(!cn&&was&&!S){ setTimeout(()=>{ if(!S&&!wrap.classList.contains('w-conn')) drawExample(); },0); }
+  if(!pq.classList.contains('cq')){ pq.classList.add('cq'); const st=document.createElement('style'); st.textContent='.w-conn .cq,.w-conn .rmon,.w-conn #optbar{display:none!important}.rp #cname{font-style:normal;font-weight:400;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}.rp #chgin{background:none;border:0;padding:0;font:inherit;font-size:14px;font-weight:600;color:var(--brand);cursor:pointer}.rp:not(.ok) #cname,.rp:not(.ok) #chgin,.rp.ok:not(.chg) #dev,.rp.ok:not(.chg) .meter,.rp.ok #rinfo{display:none!important}.rp.ok{padding:6px 12px}'; root.appendChild(st);
+    $('rstep').insertAdjacentHTML('afterend','<em id="cname"></em><button type="button" id="chgin">Change</button>');
+    $('chgin').addEventListener('click',()=>{ rp.classList.toggle('chg'); $('chgin').textContent=rp.classList.contains('chg')?'Done':'Change'; });
+    $('dev').addEventListener('change',()=>{ rp.classList.remove('chg'); $('chgin').textContent='Change'; setTimeout(rinfo,0); }); }
+  { const sel=$('dev'), o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
+  if(rp.parentElement!==$('optbar').parentElement) $('optbar').before(rp); }
+if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange',function(){ try{ devList(); }catch(e){} });
 function devList(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
   navigator.mediaDevices.enumerateDevices().then(ds=>{
@@ -464,25 +584,47 @@ function devList(){
     if(!ins.some(d=>d.label)){ sel.innerHTML='<option value="">Press Connect to list your inputs</option>'; return; }
     sel.innerHTML=ins.map((d,i)=>`<option value="${esc(d.deviceId)}">${esc(d.label||'Input '+(i+1))}</option>`).join('');
     if(R.dev) sel.value=R.dev; if(sel.selectedIndex<0) sel.selectedIndex=0;
+    if($('cname')){ const o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
   });
 }
 function closeStream(){ if(R.src){ try{R.src.disconnect();}catch(e){} R.src=null; } if(R.stream){ R.stream.getTracks().forEach(t=>t.stop()); R.stream=null; } }
 function openStream(id){
   closeStream();
   const c={echoCancellation:false,noiseSuppression:false,autoGainControl:false}, c2=Object.assign({},c); if(id) c2.deviceId={exact:id};
-  return navigator.mediaDevices.getUserMedia({audio:c2}).catch(e=>{ if(id) return navigator.mediaDevices.getUserMedia({audio:c}); throw e; }).then(s=>{
-    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev;
+  // never hang on "Allow access…" (CJ Nov 23): if the browser doesn't answer in 6 s, ask again plainly (any input), then give up with a clear message
+  const gum=(cn,ms)=>new Promise((ok,no)=>{ let done=false; const t=setTimeout(()=>{ if(!done){ done=true; no(new Error('timeout')); } },ms);
+    navigator.mediaDevices.getUserMedia(cn).then(st=>{ if(done){ st.getTracks().forEach(x=>x.stop()); return; } done=true; clearTimeout(t); ok(st); }, e=>{ if(done) return; done=true; clearTimeout(t); no(e); }); });
+  return gum({audio:c2},6000).catch(e=>{ if(id||(e&&e.message==='timeout')) return gum({audio:id?c:true},8000); throw e; }).then(s=>{
+    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).save(tr); }
     R.src=ctx.createMediaStreamSource(s); R.an=ctx.createAnalyser(); R.an.fftSize=4096; R.src.connect(R.an);
     R.buf=new Float32Array(R.an.fftSize);
   });
 }
-function connect(){
+function connect(go){
   if(R.state==='arm') return;
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ rinfo('This browser can’t listen to an input. Try Chrome, Edge or Safari.'); return; }
   audio(); if(!ctx) return;
   R.state='arm'; $('go').disabled=true; rinfo('Allow access to your audio input…');
-  openStream(R.dev).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); })
-  .catch(()=>{ R.state='idle'; $('go').disabled=false; rinfo('Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
+  (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); if(go===true) start(); })   /* Start in Record connects, then starts the round (Nov 23) */
+  .catch(e=>{ R.state='idle'; $('go').disabled=false; rinfo(e&&e.message==='timeout'?'Your browser didn’t open the input. Click the microphone icon in the address bar, allow it, then press Connect again (or reload the page).':'Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
 }
 $('go').addEventListener('click',connect);
 $('dev').addEventListener('change',function(){ R.dev=this.value; store.set('dev',R.dev); if(R.stream) openStream(R.dev).then(()=>{ cancelAnimationFrame(R.raf); loop(); }); });
@@ -546,14 +688,16 @@ function heard(L,midi,t){
   const pc=((midi%12)+12)%12;
   const ok=targets.includes(midi), oct=!ok&&pc===c.pc;
   L.hit={midi, t, cs:[], peak:L.arm.peak, ok, oct}; L.arm=null;
+  c.mark=ok?'ok':'no'; if(S&&S.i===L.i) setMark(c.mark);
   const nm= (c.name.length>1&&pc===c.pc) ? c.name : NATURAL.includes(pc)?SHARP[pc]:SHARP[pc]+'/'+FLAT[pc];
   $('lis').hidden=true;
   $('heard').innerHTML=`<small>You played</small><span style="color:${ok?'#18CEFB':oct?'#f0b429':'#ff5c5c'}">${nm}${ok?' ✓':''}</span>`;
   if(!ok&&!oct){ L.done=true; settle(L); } // a wrong note is final: the timer runs on to the answer
 }
-// Speed: how fast the note was found, on one fixed scale whatever the Speed setting (CJ): 1.5 s or less = 100, down to 0 at 8 s
-const SP_FULL=1.5, SP_ZERO=8;
-function tScore(t){ return t<=SP_FULL?100:Math.max(0,Math.round(100*(SP_ZERO-t)/(SP_ZERO-SP_FULL))); }
+// Speed (CJ Nov 23): relative to the chosen time: 100 within the first 15% (at least 0.75 s), down to 20 right at the limit; only no note scores 0.
+// No timer (over 20 s): 1.5 s = 100, down to 20 at 8 s
+const SP_FULL=1.5, SP_ZERO=8, SP_MIN=20;
+function tScore(t,D){ const timed=D&&D<=20, z=timed?D:SP_ZERO, f=timed?Math.max(.75,D*.15):SP_FULL; return t<=f?100:Math.max(SP_MIN,Math.round(SP_MIN+(100-SP_MIN)*(z-t)/(z-f))); }
 // Pitch: within 5 cents = 100, down to 0 at 40 cents off
 const PI_FULL=5, PI_ZERO=40;
 function pScore(c){ c=Math.abs(c); return c<=PI_FULL?100:Math.max(0,Math.round(100*(PI_ZERO-c)/(PI_ZERO-PI_FULL))); }
@@ -563,7 +707,7 @@ function settle(L){
   if(!H){ r.n=0; r.t=0; r.u=0; r.why='No note heard' }
   else{
     r.n=H.ok?100:H.oct?50:0;
-    r.t=r.n?tScore(H.t):0;
+    r.t=r.n?tScore(H.t,S&&S.d):SP_MIN;   // a wrong note still counts as a note played (CJ Nov 23)
     const q=H.cs.slice().sort((x,y)=>x-y), cents=q.length?Math.round(q[q.length>>1]):null;
     r.u=r.n&&cents!==null?pScore(cents):0;
     const pn=SHARP[((H.midi%12)+12)%12];
@@ -589,18 +733,173 @@ function stopListen(){
 function results(){
   const rs=R.res.filter(Boolean), n=rs.length||1;
   const avg=k=>Math.round(rs.reduce((a,r)=>a+r[k],0)/n);
-  const N=avg('n'), T=avg('t'), U=avg('u'), ov=Math.round((N+T+U)/3);
+  const N=avg('n'), T=avg('t'), pu=rs.filter(r=>r.u!=null), U=pu.length?Math.round(pu.reduce((a,r)=>a+r.u,0)/pu.length):null, ov=U===null?Math.round((N+T)/2):Math.round((N+T+U)/3);
   const bar=(l,v)=>`<div class="bar"><span>${l}</span><div class="tr"><i style="width:${v}%;background:${col(v)}"></i></div><b style="color:${col(v)}">${v}</b></div>`;
-  $('res').innerHTML=`<div class="res-top"><div class="ov" style="color:${col(ov)}"><small>Overall</small>${ov}</div><div class="bars">${bar('Notes',N)}${bar('Speed',T)}${bar('Pitch',U)}</div></div>`+
+  $('res').innerHTML=`<div class="res-top"><div class="ov" style="color:${col(ov)}"><small>Overall</small>${ov}</div><div class="bars">${bar('Notes',N)}${bar('Speed',T)}${U===null?'':bar('Pitch',U)}</div></div>`+
     `<div class="res-btns"><button class="btn recgo" id="again" type="button">Record again</button><button class="btn" id="toPrac" type="button">Practice</button></div>`+
-    `<div class="cards">${rs.map((r,i)=>`<div class="cd"><div class="t"><span class="nm">${r.name}<span>${strName(r.s)}${settings.strings.length>1?' string':''}</span></span><span class="sc" style="color:${col(r.sc)}">${r.sc}</span></div><div class="mini"><i title="Notes ${r.n}" style="background:${col(r.n)}"></i><i title="Speed ${r.t}" style="background:${col(r.t)}"></i><i title="Pitch ${r.u}" style="background:${col(r.u)}"></i></div><div class="why">${r.why}</div></div>`).join('')}</div>`;
+    `<div class="cards">${rs.map((r,i)=>`<div class="cd"><div class="t"><span class="nm">${r.name}<span>${strName(r.s)}${settings.strings.length>1?' string':''}</span></span><span class="sc" style="color:${col(r.sc)}">${r.sc}</span></div><div class="mini"><i title="Notes ${r.n}" style="background:${col(r.n)}"></i><i title="Speed ${r.t}" style="background:${col(r.t)}"></i>${r.u==null?'':`<i title="Pitch ${r.u}" style="background:${col(r.u)}"></i>`}</div><div class="why">${r.why}</div></div>`).join('')}</div>`;
   root.querySelector('.stage').hidden=true; root.querySelector('.controls').hidden=true; $('res').hidden=false;
   $('again').onclick=()=>{ $('res').hidden=true; root.querySelector('.stage').hidden=false; root.querySelector('.controls').hidden=false; start(); };
   $('toPrac').onclick=()=>{ root.querySelector('.controls').hidden=false; setMode('prac'); };
 }
 
 settings.tone='acoustic';
-renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); syncMute(); setMode(R.mode);
+renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); /* ===== Settings screen (CJ, Nov 21 2026): settings + Start on their own screen; the exercise on its own screen,
+   with a "Settings" button at the top to go back. Same pattern as Find the Note. Added by settings-screen/patch.py. ===== */
+function ssInit(o){
+  const wrap=o.wrap, hid=(l,pre)=>l&&l.length?l.map(s=>pre+' '+s).join(',')+'{display:none!important}':'';
+  const st=document.createElement('style');
+  st.textContent=`
+.ss-top{display:none;align-items:center;gap:14px;width:100%}
+.ss-play .ss-top{display:flex}
+.ss-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line,#2e2822);background:transparent;color:var(--fg,#f1ebe2);border-radius:999px;padding:8px 18px 8px 12px;font:inherit;font-size:16px;font-weight:600;line-height:1.2;cursor:pointer;flex:none}
+.ss-back svg{width:18px;height:18px;flex:none}
+.ss-back:hover{border-color:var(--muted,#a69b8d)}
+.ss-back:focus-visible,.ss-go:focus-visible{outline:3px solid var(--accent,#e09a3e);outline-offset:2px}
+.ss-go{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-size:19px;font-weight:600;cursor:pointer;background:var(--accent,#e09a3e);color:var(--accent-ink,#1a120a)}
+.ss-go:disabled{opacity:.45;cursor:default}
+.ss-play .ss-go{display:none!important}
+${hid(o.play,'.ss-play')}
+${hid(o.setup,'.ss-wrap:not(.ss-play)')}
+${o.css||''}`;
+  (o.root.host?o.root:document.head).appendChild(st);
+  wrap.classList.add('ss-wrap');
+  const top=document.createElement('div'); top.className='ss-top';
+  top.innerHTML='<button type="button" class="ss-back" aria-label="Stop and go back to Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Settings</button>';
+  o.placeTop(top);
+  top.firstChild.onclick=()=>{ o.stop(); ssSetup(); };
+  let go=null;
+  if(o.startBtn){
+    go=document.createElement('button'); go.type='button'; go.className='ss-go';
+    o.placeGo(go);
+    const mirror=()=>{ const t=o.goLabel?o.goLabel():o.startBtn.textContent.trim()||'Start', d=!!(o.goDisabled?o.goDisabled():o.startBtn.disabled); if(go.textContent!==t) go.textContent=t; if(go.disabled!==d) go.disabled=d; }; // only touch it when something changed (no observer loop)
+    const mo=new MutationObserver(mirror); [o.startBtn].concat(o.watch||[]).forEach(el=>el&&mo.observe(el,{childList:true,characterData:true,subtree:true,attributes:true}));
+    mirror();
+    go.onclick=()=>{ if(o.onGo) o.onGo(); else o.startBtn.click(); };
+  }
+  o.go=go; ssInit.o=o;
+}
+// the big Start on the Settings screen (the demo's last box points at it)
+function ssGo(fallback){ const g=ssInit.o&&ssInit.o.go; return g&&g.offsetParent?g:fallback; }
+function ssScreen(play){
+  const o=ssInit.o; if(!o) return; const w=o.wrap, was=w.classList.contains('ss-play');
+  if(was===play) return;
+  w.classList.toggle('ss-play',play);
+  if(o.after) o.after(play);
+  const r=w.getBoundingClientRect(); if(r.top<0||(play&&r.top>80)) window.scrollBy(0,r.top-12);
+}
+function ssPlay(){ ssScreen(true); }
+function ssSetup(){ ssScreen(false); }
+
+/* ===== Space bar (CJ, Nov 22 2026): space starts / pauses / resumes the tool and NEVER scrolls the page.
+   dguSpace({host, act, visible?})  host = the tool's outer element (code block div or iframe), act = what space does.
+   One shared listener per window: with several tools on one page, space goes to the one last touched,
+   else the one most on screen. Typing in a text box keeps a normal space. Shared file: /mnt/project-files/space-bar/space.js ===== */
+function dguSpace(o){
+  const W=window, R=W.__dguSpace||(W.__dguSpace={v:1,list:[],last:null});
+  const me={host:o.host,act:o.act,vis:o.visible};
+  R.list.push(me);
+  o.host.addEventListener('pointerdown',()=>{ R.last=me; },true);
+  if(R.on) return; R.on=1;
+  const isSp=e=>(e.code==='Space'||e.key===' '||e.key==='Spacebar')&&!e.metaKey&&!e.ctrlKey&&!e.altKey;
+  const typing=e=>{ const t=(e.composedPath&&e.composedPath()[0])||e.target; if(!t) return false;
+    if(t.isContentEditable||t.tagName==='TEXTAREA') return true;
+    return t.tagName==='INPUT'&&!/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(t.type||''); };
+  const box=m=>{ const h=m.host; if(h.getBoundingClientRect().height) return h; // the code block's div can be display:contents on the site
+    const sr=h.shadowRoot; return (sr&&(sr.querySelector('.wrap,.w')||sr.firstElementChild&&[...sr.children].find(e=>e.getBoundingClientRect().height)))||h; };
+  const shown=m=>{ if(!m.host.isConnected||(m.vis&&!m.vis())) return 0; const r=box(m).getBoundingClientRect();
+    const h=Math.min(r.bottom,W.innerHeight)-Math.max(r.top,0); return r.width>0&&r.height>0&&h>0?h:0; };
+  R.pick=()=>{ if(R.last&&shown(R.last)) return R.last; let b=null,bh=0; R.list.forEach(m=>{ const h=shown(m); if(h>bh){ bh=h; b=m; } }); return b; };
+  R.press=()=>{ const m=R.pick(); if(m) try{ m.act(); }catch(err){ console.warn('space',err); } };
+  // capture on window: runs first, stops the page scroll, the focused button's own click and any older space handlers
+  W.addEventListener('keydown',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); if(!e.repeat) R.press(); },true);
+  W.addEventListener('keyup',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+  W.addEventListener('keypress',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+}
+// press a button only when it's on screen and enabled; true if pressed
+function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
+}
+/* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
+   "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.
+   Overrides the older prep(host,done) (a later function declaration wins); prepCancel(host) still works. */
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var rt=host.getRootNode(), d=host.ownerDocument;
+  if(!(rt.querySelector?rt:d).querySelector('#dgu-cin-css')){ var st=d.createElement('style'); st.id='dgu-cin-css';
+    st.textContent='div.prep{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(0,0,0,.96);color:#fff;font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1;transition:opacity .2s}'+
+      'div.prep.go{color:#fff}div.prep .cin{display:flex;gap:12px;justify-content:center}div.prep .cin i{width:12px;height:12px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}'+
+      'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
+    (rt.host?rt:d.head).appendChild(st); }
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
+  var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  // CJ Nov 23: where the tool has room, Ready sits ON the diagram / game area itself (host.dataset.cinAt = its selector)
+  var at=host.dataset&&host.dataset.cinAt&&host.querySelector(host.dataset.cinAt), t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(at&&at.getBoundingClientRect().height){ var ra=at.getBoundingClientRect();
+    o.style.cssText+=';inset:auto;left:'+(ra.left-hr.left+ra.width/2)+'px;top:'+(ra.top-hr.top+ra.height/2)+'px;transform:translate(-50%,-50%);height:auto;padding:14px 28px;border-radius:16px;white-space:nowrap;flex-direction:row;gap:18px;font-size:clamp(34px,5vw,52px);background:'+bg; }
+  else if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
+  prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
+  var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
+  o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
+{ const st=document.createElement('style'); st.textContent='.ss-play .coach,.ss-play .dgu-recnote{display:none!important}'; (typeof root!=='undefined'?root:document.head).appendChild(st); }
+/* Record note (CJ, Nov 22 2026): with Record picked, a small line beside the Practice | Record switch:
+   "*Play your answer to get a score."  dguRecNote(modeEl, belowEl?) - modeEl holds buttons data-m="prac" / data-m="rec", the picked one has class "on".
+   Without belowEl the switch and the note share a wrapping row (note to the right, drops under it on a phone); with belowEl the note goes on its own line after belowEl. */
+function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.createElement('span'); n.className='dgu-recnote';
+  n.textContent=text||'*Play your answer to get a score.';
+  n.style.cssText='font-size:14px;font-weight:400;line-height:1.35;color:var(--muted,#a69b8d)';
+  if(below){ n.style.display='block'; n.style.margin='8px 0 0'; below.after(n); }
+  else { const row=d.createElement('div'); row.style.cssText='display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px'; m.before(row); row.append(m,n);
+    const cs=getComputedStyle(m); row.style.marginTop=cs.marginTop; row.style.marginBottom=cs.marginBottom; m.style.margin='0'; }
+  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
+  new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
+dguRecNote($('mode'), $('mode'));
+const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
+dguSpace({host:root.host, act:()=>{ if(S&&S.lead) return; if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
+ssInit({root, wrap:root.querySelector('.wrap'), play:['header','#optbar','#mode','#rp'], setup:['.controls'],
+  placeTop:t=>$('session').prepend(t), startBtn:$('nextBtn'), placeGo:g=>$('session').appendChild(g),
+  stop:()=>{ prepCancel($('session')); try{ if(R.L) stopListen(); }catch(e){} idle(); $('nextBtn').disabled=false; $('pauseBtn').disabled=false; }});
+syncMute(); setMode(R.mode);
 })();
 })();
 </script>
@@ -627,5 +926,4 @@ renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); sync
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && p.style.display !== 'none') close(); });
   });
 })();
-</script>
-</body></html>
+</script></body></html>
