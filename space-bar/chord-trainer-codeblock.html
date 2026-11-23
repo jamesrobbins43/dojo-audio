@@ -1344,6 +1344,7 @@ select option { background: #141414; color: #fff; }\
   }
   function lockUI(on) { root.querySelector('.w').classList.toggle('recording', on); var g = $('go'); if (g) g.textContent = on ? (rec.mode === 'cal' ? 'Syncing…' : 'Recording…') : !rec.stream ? 'Connect' : rec.synced ? 'Record' : 'Sync timing'; }
   function doRec(mode) {
+    demoStop(true);
     if (mode === 'cal' || (mode === 'take' && !rec.synced)) { vsync(); return; } // visual sync (CJ Nov 19)
     if (!rec.stream || rec.state === 'rec' || rec.state === 'end' || rec.state === 'proc') return;
     if (mode === 'take' && !seq.length) return;
@@ -1529,7 +1530,7 @@ select option { background: #141414; color: #fff; }\
     var w = root.querySelector('.w'), p = $('rp'), stg = root.querySelector('.stage');
     if (!p || w.classList.contains('gate') === on) return;
     w.classList.toggle('gate', on);
-    if (on) $('setup').appendChild(p); else stg.insertBefore(p, stg.querySelector('.btns'));
+    if (on) { demoStop(true); $('setup').appendChild(p); } else { stg.insertBefore(p, stg.querySelector('.btns')); if (DMok && !run && !w.classList.contains('ss-play')) setTimeout(function () { if (!w.classList.contains('gate') && !w.classList.contains('ss-play') && !run && !busy()) demoGo(); }, 0); }
   }
   // Tuner: standard tuning, nearest string, cents off. Uses the same input as recording.
   var TS = [40, 45, 50, 55, 59, 64], TN = ['E', 'A', 'D', 'G', 'B', 'E'], tun = { on: false, raf: 0, hist: [], miss: 0 };
@@ -1652,9 +1653,10 @@ select option { background: #141414; color: #fff; }\
     if (k >= 2) { demoBeats(false); timer(-1); coach(ssGo($('play')), 'Press Start when ready', 'below'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays once, then stops (CJ Nov 17: Chord Trainer only)
     if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
       coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
-    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), root.querySelector('.w').classList.contains('m-rec') ? 'Press Record and play this chord along with the click.' : 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
     if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
     if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    else if (root.querySelector('.w').classList.contains('m-rec')) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
     else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
     nx(11000, k + 1, k % 2 ? -1 : 0);
   }
