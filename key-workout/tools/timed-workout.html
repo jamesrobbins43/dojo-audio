@@ -63,6 +63,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .len .seg button:first-child{border-left:0}
 .len .seg button[aria-pressed="true"]{background:#e09a3e;color:#000}
 #goBtn{width:100%}
+.parts .lvl{display:block;color:var(--fg);opacity:.8;font-size:14px;margin-top:2px}
+.kwlv{display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:var(--muted);text-transform:uppercase;line-height:1.2}
 .parts .rec{color:#ff8a8a;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
 /* running */
 /* "< Settings" pill (CJ Nov 21, same as every Dojo tool): stops the workout and goes back to the length / speed screen */
@@ -89,6 +91,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ov{display:flex;align-items:baseline;gap:16px}
 .ov b{font-size:clamp(64px,10vw,96px);line-height:1}
 .ov span{color:var(--muted)}
+.ov{flex-wrap:wrap}.ov .kwlv{flex-basis:100%;margin-bottom:-6px}
 .rows{border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(80px,2fr) 48px;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
@@ -128,6 +131,7 @@ body{padding-top:4px!important}
   <section class="plan" id="plan" hidden>
     <div class="len"><span class="lab">Workout length</span><span class="seg" id="lenSeg" role="group" aria-label="Workout length"><button type="button" data-len="10">10 min</button><button type="button" data-len="20">20 min</button><button type="button" data-len="30">30 min</button></span></div>
     <div class="len"><span class="lab">Answer using</span><span class="seg" id="inSeg" role="group" aria-label="Answer using"><button type="button" data-in="mic">Instrument</button><button type="button" data-in="tap">Tap</button></span></div>
+    <div class="len"><span class="lab">Level</span><span class="seg" id="lvSeg" role="group" aria-label="Level"><button type="button" data-lv="b">Beginner</button><button type="button" data-lv="i">Intermediate</button><button type="button" data-lv="p">Pro</button></span></div>
     <p>Six parts in a row, about <span id="lenTxt">30</span> minutes. Each part gives a score, and you get one overall score at the end. Have your guitar plugged in (or a mic ready) for the <span id="recN">three</span> Record parts.</p>
     <ol class="parts" id="parts"></ol>
     <div><button class="go" id="goBtn" type="button">Start the workout</button></div>
@@ -147,7 +151,6 @@ body{padding-top:4px!important}
   </section>
 
   <section class="final" id="final" hidden>
-    <div class="lab">Your score</div>
     <div class="ov" id="ov"></div>
     <div class="rows" id="rows"></div>
     <div class="acts"><button class="go" id="againBtn" type="button">Do it again</button><button class="btn" id="otherBtn" type="button">Pick another key</button></div>
@@ -231,22 +234,34 @@ const PARTS=[
   ['find-the-chord','Find the Chord','Tap the missing chord. {n} scales.',3,false],
   ['find-the-key','Find the Number','Tap the number of each chord. {n} problems.',4,false],
   ['chord-trainer','Chord Trainer','Play the key’s chords along with the click. One take.',5,true],
-  ['numbers-play-along','Numbers Play Along','Pick your chords, warm up with the Number drill (not scored), then play along with one song. One take.',4,true],
+  ['numbers-play-along','Numbers Play Along','Warm up with the Number drill (not scored), then play along with one song. One take.',4,true],
 ];
-// question speed (CJ Nov 18): Slow / Medium / Fast; the number of questions is sized to fit the part's minutes.
-// opts = seconds per question for Slow, Medium, Fast; rev = seconds the answer stays up after each question
-const SPEEDS=['Slow','Medium','Fast'];
+// levels (CJ Nov 23): Beginner / Intermediate / Pro replace Slow / Medium / Fast. One level sets every part: the seconds per
+// question and what the questions cover. The number of questions is sized to fit the part's minutes.
+// b/i/p = seconds per question at each level; rev = seconds the answer stays up after each question
+const LEVELS={b:'Beginner',i:'Intermediate',p:'Pro'};
 const PACE={
-  'steps-drill':   {opts:[10,6,3],  def:6,  rev:p=>p>=8?2.5:2},
-  'find-the-chord':{opts:[12,9,6],  def:9,  rev:p=>(p>=8?3.5:3)+1},
-  'find-the-key':  {opts:[20,14,8], def:14, rev:()=>5.5},
+  'steps-drill':   {b:10, i:6, p:4,  rev:p=>p>=8?2.5:2},
+  'find-the-chord':{b:12, i:9, p:6,  rev:p=>(p>=8?3.5:3)+1},
+  'find-the-key':  {b:20, i:14, p:8, rev:()=>5.5},
 };
+const LVDESC={
+  'steps-drill':{b:'Half and whole steps going up, on the string you pick. 10 s each.',i:'Half and whole steps up and down, mixed strings. 6 s each.',p:'Up and down on all 6 strings, up to fret 12. 4 s each.'},
+  'find-the-note':{b:'Low E and A strings, frets 0 to 5, natural notes, with a hint.',i:'E, A and D strings, frets 0 to 12.',p:'All 6 strings, frets 0 to 12, no hints.'},
+  'find-the-chord':{b:'One chord missing, with the scale steps shown. 12 s each.',i:'One chord missing, then two for the last third. 9 s each.',p:'Two chords missing every time. 6 s each.'},
+  'find-the-key':{b:'1, 4 and 5, then the 6m joins, with the key chart. 20 s each.',i:'1 through 6m plus 1/3 and 5/7. 14 s each.',p:'All 7 chords plus 1/3 and 5/7. 8 s each.'},
+  'chord-trainer':{b:'You pick the chord type. 1, 4, 5 and 6m, 4 bars each, tempo 60.',i:'You pick the chord type. Every chord, 2 bars each, tempo 70.',p:'You pick the chord type. Every chord, 1 bar each, tempo 90. Triads in every inversion and string group.'},
+  'numbers-play-along':{b:'A song with 1, 4 and 5.',i:'A song with 1, 2m, 4, 5 and 6m.',p:'Any song, including 3m and inversions. No warm-up.'},
+};
+const STRS=['Low E','A','D','G','B','High E'];
 const $=id=>document.getElementById(id);
 // workout length (CJ Nov 21): 10, 20 or 30 minutes; minutes for each part, in PARTS order. Chord Trainer and Numbers Play Along stay one take.
 const LENGTHS={10:[1,1,1,2,2,3],20:[3,2,3,4,4,4],30:[5,4,5,6,5,5]};
 const NOTES_PER_MIN=5; // Find the Note, Record mode
 let len=30;
-let input='mic';   // Find the Note: play it (mic) or tap it (CJ Nov 22)
+let input='mic';
+let lvl='i';      // level (CJ Nov 23)
+let sdStr=0;      // Beginner Steps Drill: the string they pick (0 = Low E ... 5 = High E)   // Find the Note: play it (mic) or tap it (CJ Nov 22)
 const mins=i=>LENGTHS[len][i];
 function nFor(id,i){ return PACE[id]?count(id,mins(i)):id==='find-the-note'?Math.max(6,Math.round(mins(i)*NOTES_PER_MIN)):0; }
 const store={ get(k,d){ try{ const v=localStorage.getItem('dgwo:'+k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
@@ -254,24 +269,27 @@ const store={ get(k,d){ try{ const v=localStorage.getItem('dgwo:'+k); return v==
 const keyHTML=n=>n[0]+(n[1]?`<span class="kacc">${n[1]}</span>`:'');
 const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
 let key=null, part=0, scores=[], t0=0, clockT=null;
-const pace={}; PARTS.forEach(([id])=>{ if(PACE[id]) pace[id]=PACE[id].def; });
-function count(id,m){ const c=PACE[id], p=pace[id]; return Math.max(6,Math.min(40,Math.floor(m*60/(p+c.rev(p))))); }
+const paceOf=id=>PACE[id][lvl];
+function count(id,m){ const c=PACE[id], p=paceOf(id); return Math.max(6,Math.min(40,Math.floor(m*60/(p+c.rev(p))))); }
 
 $('keys').innerHTML=KEYS.map((n,k)=>`<button type="button" data-key="${k}" aria-label="${n.replace('♭',' flat')} major">${keyHTML(n)}</button>`).join('');
 function drawParts(){ $('lenTxt').textContent=len; [...$('lenSeg').children].forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.len===len)));
   [...$('inSeg').children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.in===input)));
   $('recN').textContent=input==='tap'?'two':'three';
-  $('parts').innerHTML=PARTS.map(([id,t,d,,r],i)=>{ const m=mins(i); if(id==='find-the-note'&&input==='tap'){ d='Tap each note on the fretboard. {n} notes.'; r=false; } return `<li><span class="n">${i+1}</span><span class="t"><b>${t}${r?'<span class="rec">Record</span>':''}</b><span>${d.replace('{n}',nFor(id,i))}</span>`+
-  (PACE[id]?`<span class="pace"><span class="pl">Speed</span><span class="seg" role="group" aria-label="Question speed, ${t}">${PACE[id].opts.map((o,k)=>`<button type="button" data-id="${id}" data-p="${o}" aria-pressed="${o===pace[id]}">${SPEEDS[k]}</button>`).join('')}</span></span>`:'')+
+  [...$('lvSeg').children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lv===lvl)));
+  $('parts').innerHTML=PARTS.map(([id,t,d,,r],i)=>{ const m=mins(i); if(id==='find-the-note'&&input==='tap'){ d='Tap each note on the fretboard. {n} notes.'; r=false; } if(id==='numbers-play-along'&&lvl==='p') d='Play along with one song, picked at random. One take.'; return `<li><span class="n">${i+1}</span><span class="t"><b>${t}${r?'<span class="rec">Record</span>':''}</b><span>${d.replace('{n}',nFor(id,i))}</span><span class="lvl">${LVDESC[id][lvl]}</span>`+
+  (id==='steps-drill'&&lvl==='b'?`<span class="pace"><span class="pl">String</span><span class="seg" role="group" aria-label="String for the Steps Drill">${STRS.map((x,k)=>`<button type="button" data-str="${k}" aria-pressed="${k===sdStr}">${x}</button>`).join('')}</span></span>`:'')+
   `</span><span class="m">~${m} min</span></li>`; }).join(''); }
 drawParts();
-$('parts').addEventListener('click',e=>{ const b=e.target.closest('[data-p]'); if(!b) return; pace[b.dataset.id]=+b.dataset.p; store.set('speed',pace); drawParts(); });
+$('parts').addEventListener('click',e=>{ const b=e.target.closest('[data-str]'); if(!b) return; sdStr=+b.dataset.str; store.set('sdStr',sdStr); drawParts(); });
+$('lvSeg').addEventListener('click',e=>{ const b=e.target.closest('[data-lv]'); if(!b) return; lvl=b.dataset.lv; store.set('level',lvl); drawParts(); if(key!=null) showLast(); });
+{ const sv=store.get('level','i'); if(LEVELS[sv]) lvl=sv; const ss=store.get('sdStr',0); if(ss>=0&&ss<=5) sdStr=ss|0; }
 // Find the Note answer: play it (mic) or tap it on the fretboard (CJ Nov 22: so the mic doesn't pick up stray sound)
 $('inSeg').addEventListener('click',e=>{ const b=e.target.closest('[data-in]'); if(!b) return; input=b.dataset.in; store.set('input',input); drawParts(); });
 { const si=store.get('input','mic'); if(si==='tap'||si==='mic') input=si; }
 $('lenSeg').addEventListener('click',e=>{ const b=e.target.closest('[data-len]'); if(!b) return; len=+b.dataset.len; store.set('len',len); drawParts(); });
 { const sl=store.get('len',30); if(LENGTHS[sl]) len=sl; }
-{ const sv=store.get('speed',{}); for(const k in sv) if(PACE[k]&&PACE[k].opts.includes(sv[k])) pace[k]=sv[k]; } drawParts();
+drawParts();
 $('steps').innerHTML=PARTS.map(()=>'<i></i>').join('');
 
 function show(id){ document.documentElement.classList.toggle('kwt-run',id==='run'); ['pick','lenpick','plan','run','final'].forEach(x=>$(x).hidden=x!==id); $('keyName').hidden=$('changeBtn').hidden=(id==='pick'); if(id!=='run'){ clearInterval(clockT); ticket++; $('frame').removeAttribute('srcdoc'); $('frame').src='about:blank'; } }
@@ -280,9 +298,9 @@ $('lens').addEventListener('click',e=>{ const b=e.target.closest('[data-len]'); 
 function showPick(){ show('pick'); }
 function showPlan(){
   show('plan'); $('keyName').innerHTML=keyHTML(KEYS[key]);
-  const l=store.get('last:'+key,null);
-  $('last').textContent=l?`Last time in ${KEYS[key]}: ${l.ov} overall.`:'';
+  showLast();
 }
+function showLast(){ const l=store.get('last:'+key+':'+lvl,null); $('last').textContent=l?`Last time in ${KEYS[key]} at ${LEVELS[lvl]}: ${l.ov} overall.`:''; }
 function begin(){ part=0; scores=[]; t0=Date.now(); show('run'); clearInterval(clockT); clockT=setInterval(tick,1000); tick(); load(); }
 function tick(){ const s=Math.floor((Date.now()-t0)/1000); $('clock').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
 function load(){
@@ -293,10 +311,10 @@ function load(){
   $('frame').title=t+', key of '+KEYS[key].replace('♭',' flat');
   const n=nFor(id,part);
   const tap=id==='find-the-note'&&input==='tap';
-  if(SHA.length<40){ $('frame').removeAttribute('srcdoc'); $('frame').src=`../wo/${id}.html?key=${key}`+(n?`&n=${n}`:'')+(PACE[id]?`&pace=${pace[id]}`:'')+(tap?'&input=tap':''); return; }   // local test copy
+  if(SHA.length<40){ $('frame').removeAttribute('srcdoc'); $('frame').src=`../wo/${id}.html?key=${key}`+(n?`&n=${n}`:'')+(PACE[id]?`&pace=${paceOf(id)}`:'')+(tap?'&input=tap':'')+`&lvl=${lvl}&str=${sdStr}`; return; }   // local test copy
   // fetch the part (pinned on jsDelivr, GitHub raw as a fallback), write the key and the pace in, show it in a same-origin frame
   const my=++ticket, f=$('frame'); f.srcdoc='<body style="background:#000"></body>';
-  const cfg=n?`<script>window.KWWO={n:${n}`+(PACE[id]?`,pace:${pace[id]}`:'')+(tap?',tap:1':'')+`};<\/script>`:'';
+  const cfg=`<script>window.KWWO={lvl:'${lvl}',str:${sdStr}`+(n?`,n:${n}`:'')+(PACE[id]?`,pace:${paceOf(id)}`:'')+(tap?',tap:1':'')+`};<\/script>`;
   const get=u=>fetch(u).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); });
   (CACHE[id]||(CACHE[id]=get(BASE+id+'.html').catch(()=>get(RAW+id+'.html'))))
     .then(t=>{ if(my===ticket) f.srcdoc=cfg+t.split(KQ).join(String(key)); })
@@ -304,7 +322,7 @@ function load(){
 }
 function partDone(score){
   scores[part]=score; $('skipBtn').hidden=true;
-  $('afterSc').innerHTML=`${PARTS[part][1]} score<b style="color:${col(score)}">${score}</b>`;
+  $('afterSc').innerHTML=`<span><span class="kwlv">${LEVELS[lvl]}</span>${PARTS[part][1]} score</span><b style="color:${col(score)}">${score}</b>`;
   $('nextBtn').textContent=part<PARTS.length-1?`Next: ${PARTS[part+1][1]}`:'See my score';
   $('after').hidden=false; $('after').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -312,9 +330,9 @@ function next(){ if(part<PARTS.length-1){ part++; load(); window.scrollTo({top:0
 function finish(){
   const ov=Math.round(scores.reduce((a,s)=>a+(s||0),0)/PARTS.length), mins=Math.round((Date.now()-t0)/60000);
   show('final');
-  $('ov').innerHTML=`<b style="color:${col(ov)}">${ov}</b><span>overall in ${KEYS[key]}, ${mins} min</span>`;
+  $('ov').innerHTML=`<span class="kwlv">${LEVELS[lvl]}</span><b style="color:${col(ov)}">${ov}</b><span>overall in ${KEYS[key]}, ${mins} min</span>`;
   $('rows').innerHTML=PARTS.map(([,t],i)=>{ const s=scores[i]; return `<div class="row"><span>${t}</span><span class="tr"><i style="width:${s||0}%;background:${col(s||0)}"></i></span><b style="color:${s==null?'var(--muted)':col(s)}">${s==null?'–':s}</b></div>`; }).join('');
-  store.set('last:'+key,{ov,scores,at:Date.now()});
+  store.set('last:'+key+':'+lvl,{ov,scores,at:Date.now()});
 }
 window.addEventListener('message',e=>{ const d=e.data; if(!d||d.kwwo!=='done'||$('run').hidden) return; if(d.tool!==PARTS[part][0]) return; partDone(Math.max(0,Math.min(100,Math.round(+d.score||0)))); });
 $('keys').addEventListener('click',e=>{ const b=e.target.closest('[data-key]'); if(!b) return; key=+b.dataset.key; showPlan(); });

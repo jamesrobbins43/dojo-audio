@@ -740,9 +740,13 @@ renderSetup(); syncMute(); idleView();
   play along, picked at random from that chord set, is recorded and scored: right chord (notes heard) and on time
   (a strum at each chord change). Score = average over every chord of the take. */
   store.set=function(){};                     // never touch the member's own Numbers Play Along settings
-  settings.drill=true; settings.mode='both'; settings.names=true; settings.sound=true; settings.prog=-1; syncMute();
+  // levels (CJ Nov 23): B songs with 1 4 5; I songs with 1 2m 4 5 6m; P any song incl. 2m, 3m and inversions, no warm-up
+  const LV=(window.KWWO&&KWWO.lvl)||new URLSearchParams(location.search).get('lvl')||'i', LVN={b:'Beginner',i:'Intermediate',p:'Pro'}[LV]||'Intermediate';
+  const LVP={b:[0],i:[1,2],p:[2,3,4,5]}[LV]||[1,2];
+  settings.part=LVP[0];
+  settings.drill=LV!=='p'; settings.mode=settings.drill?'both':'play'; settings.names=true; settings.sound=true; settings.prog=-1; syncMute();
   const css=document.createElement('style');
-  css.textContent=`.prow:has(#key),.prow:has(#drill),#rowProg,#backBtn,#pauseBtn,#muteBtn{display:none!important}
+  css.textContent=`.prow:has(#parts),.prow:has(#key),.prow:has(#drill),#rowProg,#backBtn,#pauseBtn,#muteBtn{display:none!important}
 .wo-note{font-size:14px;line-height:1.45;color:var(--muted);padding:2px 0 4px}.mainarea{margin-top:10px!important}.countin{height:88px!important}#card{min-height:400px!important}   /* fits a desktop screen in full screen (CJ Nov 22) */
 .wo-note b{color:var(--ink,#f1ebe2);font-weight:600}
 .wo-mic{display:flex;align-items:center;gap:10px;margin:10px 2px 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -758,7 +762,7 @@ renderSetup(); syncMute(); idleView();
   // the setup: only the chord choice, plus what will happen
   const row=$('parts').closest('.prow'); row.querySelector('.lab').textContent='Chords';
   const note=document.createElement('div'); note.className='wo-note';
-  note.innerHTML='Pick the chords to include. You warm up with the Number drill first (<b>not scored</b>), then play along with one song, picked at random. <b>That play along is recorded and scored.</b> Wear headphones so the mic hears only your guitar.';
+  note.innerHTML=(LV==='p'?'No warm-up at Pro. You play along with one song, picked at random from every chord set. ':'You warm up with the Number drill first (<b>not scored</b>), then play along with one song, picked at random'+(LV==='b'?' from the 1 4 5 songs. ':' from the 1, 2m, 4, 5 and 6m songs. '))+'<b>That play along is recorded and scored.</b> Wear headphones so the mic hears only your guitar.';
   row.after(note);
   const mic=document.createElement('div'); mic.className='wo-mic'; mic.innerHTML='<span>Mic</span><i><b></b></i><span class="wo-lv"></span>'; mic.style.display='none';
   document.querySelector('.timer').after(mic);
@@ -804,6 +808,7 @@ renderSetup(); syncMute(); idleView();
 
   // ---- Start: mic first, one random play along from the chosen chords ----
   const _build=build; build=function(){
+    settings.part=LVP[Math.floor(Math.random()*LVP.length)];
     const P=PARTS[settings.part]; settings.prog=Math.floor(Math.random()*P.progs.length);
     const T=_build(); settings.prog=-1; return T;
   };
@@ -825,7 +830,7 @@ renderSetup(); syncMute(); idleView();
     $('main').innerHTML='<div class="msg">Scoring</div>';
     setTimeout(()=>{ let r=null; try{ r=woScore(); }catch(e){ console.error(e); }
       const sc=r?r.score:0;
-      $('main').innerHTML=`<div class="wo-res"><div class="big">${sc}<small> / 100</small></div>`+
+      $('main').innerHTML=`<div class="wo-res"><div style="font-size:12px;letter-spacing:.14em;color:var(--muted);font-weight:600">${LVN.toUpperCase()}</div><div class="big">${sc}<small> / 100</small></div>`+
         (r&&!r.silent?`<div class="sub"><span>Right chords <b>${r.notes}%</b></span><span>On time <b>${r.time}%</b></span></div>`:'')+
         `<p>${!r?'Nothing was recorded.':r.silent?'We couldn’t hear your guitar. Check the mic level next time.':r.tip}</p></div>`;
       post('done',{score:sc});

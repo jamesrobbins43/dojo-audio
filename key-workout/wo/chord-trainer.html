@@ -816,7 +816,7 @@ select option { background: #141414; color: #fff; }\
   }
   function resync() { if (run && beat > 0) beat = Math.ceil(beat / BPC) * BPC; }
 
-  function setBpm(v) { st.bpm = Math.max(40, Math.min(160, v)); $('bpm').textContent = st.bpm; save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); }
+  function setBpm(v) { st.bpm = Math.max(60, Math.min(100, Math.round(v / 10) * 10)); $('bpm').textContent = st.bpm; save(); summary(); if (rec.state === 'arm' || rec.state === 'idle') recInfo(); }
   var hold = null;
   function holdBtn(id, d) {
     var el = $(id);
@@ -824,7 +824,7 @@ select option { background: #141414; color: #fff; }\
     el.addEventListener('pointerdown', function () { hold = setTimeout(function rep() { setBpm(st.bpm + d); hold = setTimeout(rep, 70); }, 400); });
     ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { el.addEventListener(ev, function () { clearTimeout(hold); }); });
   }
-  holdBtn('dn', -1); holdBtn('up', 1);
+  holdBtn('dn', -10); holdBtn('up', 10);
 
   var BGS = { dark: '#141414', light: '#f5f3ee' };
   function theme() {
@@ -1790,9 +1790,17 @@ select option { background: #141414; color: #fff; }\
   setBpm(st.bpm); refresh(); timer(-1);
 
   (function () { /* Scored Workout (CJ Nov 18) */
-    var css = document.createElement('style'); css.textContent = '#mode,#rprac,#rrec{display:none!important}'; root.appendChild(css);
+    var css = document.createElement('style'); css.textContent = '#mode,#rprac,#rrec{display:none!important}.f:has(#bars),.f:has(#tsets),.f:has(#tinv),.f:has(#tq),.f:has(#order),.chf{display:none!important}'; root.appendChild(css);
+    // levels (CJ Nov 23): they pick the chord type; B 1 4 5 6m, 4 bars, 60; I every chord, 2 bars, 70; P 1 bar, 90, triads in every inversion and string group. Tempo 60-100 in 10s.
+    var LV = (window.KWWO && KWWO.lvl) || new URLSearchParams(location.search).get('lvl') || 'i', LVN = { b: 'Beginner', i: 'Intermediate', p: 'Pro' }[LV] || 'Intermediate';
+    save = function () {};   // never change the member's own Chord Trainer settings
+    st.bars = { b: 4, i: 2, p: 1 }[LV] || 2; MEAS = st.bars; BPC = BEATS * MEAS; $('bars').value = String(st.bars);
+    st.qs = ['maj', 'min', 'dim']; st.sets = LV === 'p' ? ['EAD', 'ADG', 'DGB', 'GBE'] : ['DGB']; st.invs = LV === 'p' ? [0, 1, 2] : [0];
+    st.order = LV === 'p' ? 'shuffle' : 'inorder'; $('order').value = st.order;
+    st.off = {}; if (LV === 'b') ALL.forEach(function (c) { if (['1', '4', '5', '6m'].indexOf(c.fn) < 0) st.off[c.id] = 1; });
+    setBpm({ b: 60, i: 70, p: 90 }[LV] || 70); refresh(); timer(-1);
     var b = root.querySelector('#mode [data-m="rec"]'); if (b) b.click();
-    var _res = results; results = function (r, tk) { _res(r, tk); var cs = r.chords, ov = cs.length ? Math.round(cs.reduce(function (a, c) { return a + c.tot; }, 0) / cs.length) : 0;
+    var _res = results; results = function (r, tk) { _res(r, tk); var rh = root.querySelector('#res .rh'); if (rh) rh.insertAdjacentHTML('afterbegin', '<small style="display:block;font-size:12px;letter-spacing:.14em;color:#a69b8d;font-weight:600">' + LVN.toUpperCase() + '</small>'); var cs = r.chords, ov = cs.length ? Math.round(cs.reduce(function (a, c) { return a + c.tot; }, 0) / cs.length) : 0;
       try { window.parent.postMessage({ kwwo: 'done', tool: 'chord-trainer', score: ov }, '*'); } catch (e) {} };
     try { window.parent.postMessage({ kwwo: 'ready', tool: 'chord-trainer' }, '*'); } catch (e) {}
   })();

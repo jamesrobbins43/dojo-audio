@@ -899,6 +899,12 @@ syncMute(); setMode(R.mode);
 
 ;(function(){ /* Scored Workout (CJ Nov 18) */
   settings.perLevel=Math.max(3,Math.round((window.KWWO&&KWWO.n)||+new URLSearchParams(location.search).get('n')||15));
+  // levels (CJ Nov 23): B Low E + A, frets 0-5, natural notes, a hint after 5 s; I E A D, frets 0-12; P all 6 strings, no hints
+  const LV=(window.KWWO&&KWWO.lvl)||new URLSearchParams(location.search).get('lvl')||'i', LVN={b:'Beginner',i:'Intermediate',p:'Pro'}[LV]||'Intermediate';
+  try{ store.set=function(){}; }catch(e){}   // never change the member's own Find the Note settings
+  { const want={b:['E','A'],i:['E','A','D'],p:['e','B','G','D','A','E']}[LV]||['E','A','D'], ok=want.filter(k=>STRINGS[k]); if(ok.length) settings.strings=ok; }
+  if(LV==='b') settings.base=Math.max(10,settings.base||10);
+  const _pf=poolFor; poolFor=function(L){ const p=_pf(L); if(LV!=='b') return p; const q=p.filter(it=>!/[♯♭]/.test(kwName(it.pc))); return new Set(q.map(x=>x.pc)).size>=3?q:p; };
   const css=document.createElement('style'); css.textContent='#mode,#optbar,.res-btns{display:none!important}.dgu-recnote{display:none!important}.board-wrap>svg,#board{max-height:290px}';   /* Record is the only mode here; fits a desktop screen (CJ Nov 22) */ root.appendChild(css);
   setMode('rec');
   { const _de=drawExample; drawExample=function(i=0,step=-1){ return _de(i,step===-1?0:step); }; try{ idle(); }catch(e){} }   /* how-to demo still plays (CJ Nov 23), minus the settings box */
@@ -909,11 +915,14 @@ syncMute(); setMode(R.mode);
     const _ri=rinfo; rinfo=function(t){ _ri(t!==undefined?t:'Press Start, then tap each note on the fretboard as soon as you find it.'); }; rinfo();
   }
   // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH over the note (CJ Nov 18)
-  const _bs=buildSequence; buildSequence=function(L,n){ return _bs(L,n).map(c=>c.frets.includes(0)&&c.frets.includes(12)?Object.assign({},c,{frets:[12],high:true}):c); };
+  const _bs=buildSequence; buildSequence=function(L,n){ return _bs(LV==='b'?{lo:0,hi:5}:L,n).map(c=>c.frets.includes(0)&&c.frets.includes(12)?Object.assign({},c,{frets:[12],high:true}):c); };
   css.textContent+='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}';
-  const _en=enter; enter=function(){ _en.apply(this,arguments); const c=card(); if(c&&c.high&&!$('qNote').querySelector('.hi')) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>'); };
+  const _en=enter; enter=function(){ _en.apply(this,arguments); const c=card(); if(c&&c.high&&!$('qNote').querySelector('.hi')) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>');
+    // Beginner hint: after 5 s a dashed blue ring shows where the note is
+    clearTimeout(window.kwHT); if(LV==='b'&&S&&S.phase==='ask'&&c){ const at=S.i; window.kwHT=setTimeout(()=>{ if(!S||S.over||S.phase!=='ask'||S.i!==at) return; const f=c.frets[0], y=STRINGS[c.s].y; $('board').insertAdjacentHTML('beforeend',`<circle cx="${spotX(f)}" cy="${y}" r="16" fill="none" stroke="#18CEFB" stroke-width="2.5" stroke-dasharray="5 4"/>`); },5000); } };
   const _r=results; results=function(){ _r.apply(this,arguments);
     const t=root.querySelector('#res .ov'), m=t&&t.textContent.match(/(\d+)\s*$/), score=m?+m[1]:0;
+    if(t) t.insertAdjacentHTML('afterbegin',`<small style="display:block;font-size:12px;letter-spacing:.14em;color:#a69b8d">${LVN.toUpperCase()}</small>`);
     try{ window.parent.postMessage({kwwo:'done',tool:'find-the-note',score},'*'); }catch(e){} };
   try{ window.parent.postMessage({kwwo:'ready',tool:'find-the-note'},'*'); }catch(e){}
 })();

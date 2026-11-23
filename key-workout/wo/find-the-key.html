@@ -310,7 +310,7 @@ function drawChart(k,mode,used,bass){
   const sc=keyScale(k), u=used||[];
   const b=bass||[], cls=d=>mode==='full'?(u.includes(d)?' used':b.includes(d)?' used bass':' out'):'';
   el.innerHTML=DEGS.slice(0,7).map((d,i)=>`<div class="kc kn${cls(i)}">${degHTML(d)}</div>`).join('')+
-    sc.map((t,d)=>`<div class="kc kch${cls(d)}">${mode==='full'||(mode==='one'&&d===0)?chordHTML({name:t.name,q:DEG_Q[d]}):''}</div>`).join('');
+    sc.map((t,d)=>`<div class="kc kch${cls(d)}">${mode==='full'||mode==='ref'||(mode==='one'&&d===0)?chordHTML({name:t.name,q:DEG_Q[d]}):''}</div>`).join('');
 }
 // one key chosen (CJ, Nov 16): the key isn't a puzzle, so the chord under 1 always shows and there is no Show/Hide Key button
 const oneKey=()=>settings.keyMode==='pick'&&settings.keys.length===1;
@@ -657,8 +657,10 @@ renderSets(); syncMute(); idle();
 /* ---------- Scored Workout mode (CJ Nov 18): fixed settings, answer choices instead of saying it out loud, a score at the end ---------- */
 (function(){
   const QS=new URLSearchParams(location.search), num=(k,d)=>{ const v=parseFloat(QS.get(k)); return isFinite(v)&&v>0?v:d; };
-  const CFG=Object.assign({n:Math.round(num('n',8)), pace:num('pace',20)}, window.KWWO||{}); // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
-  settings.extras=[1,2,5]; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.showKey=false;
+  const CFG=Object.assign({n:Math.round(num('n',8)), pace:num('pace',20), lvl:QS.get('lvl')||'i', str:+(QS.get('str')||0)}, window.KWWO||{});
+  const LVNAME={b:'Beginner',i:'Intermediate',p:'Pro'}[CFG.lvl]||'Intermediate';   // level (CJ Nov 23): Beginner / Intermediate / Pro
+  try{ store.set=function(){}; }catch(e){}   // the workout never changes the member's own tool settings // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
+  window.KWLV=CFG.lvl; settings.extras=CFG.lvl==='b'?[5]:CFG.lvl==='p'?[1,2,5,6,7,8]:[1,2,5,7,8]; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.showKey=false;
   const css=document.createElement('style');
   css.textContent=`#setup,#undoBtn,#stepsBtn,#chromaBtn,#keyBtn,#tip{display:none!important}
 .wo-ch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 12px;max-width:640px;min-height:58px}
@@ -678,6 +680,7 @@ renderSets(); syncMute(); idle();
 .wo-cur{outline:2px solid #18CEFB;outline-offset:4px;border-radius:10px}
 .wo-pick-ok{color:#3ccf6e!important}.wo-pick-no{color:#ff5c5c!important}
 .wo-score{text-align:center;margin:10px 0 4px;font-weight:700;font-size:clamp(30px,4vw,44px)}
+.wo-score .kwlv{display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;margin-bottom:4px}
 .wo-score small{display:block;font-size:16px;font-weight:500;color:#a69b8d;margin-top:2px}`;
   document.head.appendChild(css);
   const panel=document.createElement('div'); panel.innerHTML='<div class="wo-ch" id="woCh"></div><div class="wo-hint" id="woHint"></div>';
@@ -686,13 +689,20 @@ renderSets(); syncMute(); idle();
   const acc=n=>n[0]+(n[1]?`<span class="wacc">${n[1]}</span>`:'');
   
   function woQ(c){
-    const opts=DEGS.slice(0,7).map(d=>({k:d, h:degHTML(d), lbl:d}));
+    const IDX=KWLV==='b'?[0,3,4,5]:KWLV==='p'?[0,1,2,3,4,5,6,7,8]:[0,1,2,3,4,5,7,8];   // Beginner: fewer choices; inversions 1/3 and 5/7 at I and P (CJ Nov 23)
+    const opts=IDX.map(i=>({k:DEGS[i], h:degHTML(DEGS[i]), lbl:DEGS[i]}));
     return c.chords.map(ch=>({opts, ans:DEGS[ch.d]}));
   }
   const woCells=()=>$('row').querySelectorAll('.cell');
   function woMark(k){ woCells().forEach((x,i)=>x.classList.toggle('wo-cur',k!=null&&i===k)); }
   function woDone(r){ woCells().forEach((cl,i)=>{ const d=cl.querySelector('.slot .deg'); if(d) d.classList.add(r.got[i]&&r.got[i].ok?'wo-pick-ok':'wo-pick-no'); }); }
   function woFill(i,r,o,ok){ const cl=woCells()[i]; if(!cl) return; cl.classList.remove('wo-cur'); cl.querySelector('.slot').innerHTML=`<span class="deg ${ok?'wo-pick-ok':'wo-pick-no'}">${degInner(o.lbl)}</span>`; }
+
+  { const _dc=drawChart; drawChart=function(k,mode,u,b){ if(window.KWLV==='b'&&k!=null&&mode!=='full') mode='ref'; return _dc(k,mode,u,b); };
+    const _bq=buildSequence; buildSequence=function(n,fk,fd){ if(window.KWLV!=='b'||fd) return _bq(n,fk,fd);
+      const out=[], cut=Math.round(n*.6); let prev='';
+      for(let i=0;i<n;i++){ let d=shuffle(i<cut?[0,3,4]:[0,3,4,5]); if(d.join()===prev) d.push(d.shift()); prev=d.join(); out.push(_bq(1,fk!=null?fk:settings.keys[0],d)[0]); }
+      return out; }; }
 
   function rec(){ return W.res[S.i]||(W.res[S.i]={slots:woQ(card()),got:[],done:false}); }
   function draw(){
@@ -741,7 +751,7 @@ renderSets(); syncMute(); idle();
       // the score replaces "Done", colored by how high it is (CJ Nov 23)
       const sc=score>=90?'#18CEFB':score>=70?'#3ccf6e':score>=50?'#f0b429':'#ff5c5c';
       $('ask').className='ask'; $('ask').innerHTML=`<span style="color:${sc}">Score ${score}</span>`; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
-      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('woCh').before(el);
+      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('ask').insertAdjacentHTML('afterbegin',`<span class="kwlv" style="display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;line-height:1.2">${LVNAME.toUpperCase()}</span>`); $('woCh').before(el);
       try{ window.parent.postMessage({kwwo:'done',tool:'find-the-key',score,right,total},'*'); }catch(e){}
     } else if(!over&&!document.querySelector('.demo')){ $('ask').textContent='Ready'; }
     return v;

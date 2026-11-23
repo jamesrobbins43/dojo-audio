@@ -290,9 +290,9 @@ function buildSequence(n){
     if(prev&&prev.pc===it.pc&&bag.length){ bag.unshift(it); it=bag.pop(); }
     const s=DIRS[it.dr].s*STEPS[it.st].n, names=Math.random()<.5?SHARP:FLAT, apc=(it.pc+s+12)%12;
     // a string (the chosen one, or a random one with Mix) and a fret where the start note and the answer both fit on frets 0-14
-    const strs=settings.str==='mix'?[0,1,2,3,4,5].sort(()=>Math.random()-.5):[+settings.str];
+    const strs=settings.str==='mix'?(settings.strs||[0,1,2,3,4,5]).slice().sort(()=>Math.random()-.5):[+settings.str];
     let str=strs[0], fret=null;
-    for(const sx of strs){ const fs=[]; for(let f=0;f<=MAXF;f++) if((OPEN[sx]+f)%12===it.pc&&f+s>=0&&f+s<=MAXF) fs.push(f); if(fs.length){ str=sx; fret=fs[Math.floor(Math.random()*fs.length)]; break; } }
+    for(const sx of strs){ const fs=[]; for(let f=0;f<=MAXF;f++) if((OPEN[sx]+f)%12===it.pc&&f+s>=0&&f+s<=MAXF&&f<=(settings.maxStart??MAXF)) fs.push(f); if(fs.length){ str=sx; fret=fs[Math.floor(Math.random()*fs.length)]; break; } }
     if(prev&&prev.str===str&&prev.fret===fret&&bag.length){ /* fine: different step or direction */ }
     let from=names[it.pc], to=names[apc];
     if(it.key>=0){ const sc=keyScale(it.key), inKey=sc.find(t=>t.pc===apc); from=it.name; to=inKey?inKey.name:(FLAT_KEYS.includes(it.key)?FLAT:it.key===0?(it.dr==='up'?SHARP:FLAT):SHARP)[apc]; }
@@ -792,8 +792,10 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
 /* ---------- Scored Workout mode (CJ Nov 18): fixed settings, answer choices instead of saying it out loud, a score at the end ---------- */
 (function(){
   const QS=new URLSearchParams(location.search), num=(k,d)=>{ const v=parseFloat(QS.get(k)); return isFinite(v)&&v>0?v:d; };
-  const CFG=Object.assign({n:Math.round(num('n',20)), pace:num('pace',8)}, window.KWWO||{}); // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
-  settings.steps=['half','whole']; settings.dirs=['up','down']; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.chroma=false; settings.str='mix'; try{syncChroma();}catch(e){}
+  const CFG=Object.assign({n:Math.round(num('n',20)), pace:num('pace',8), lvl:QS.get('lvl')||'i', str:+(QS.get('str')||0)}, window.KWWO||{});
+  const LVNAME={b:'Beginner',i:'Intermediate',p:'Pro'}[CFG.lvl]||'Intermediate';   // level (CJ Nov 23): Beginner / Intermediate / Pro
+  try{ store.set=function(){}; }catch(e){}   // the workout never changes the member's own tool settings // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
+  settings.steps=['half','whole']; settings.dirs=CFG.lvl==='b'?['up']:['up','down']; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.chroma=false; settings.str=CFG.lvl==='b'?String(Math.max(0,Math.min(5,CFG.str|0))):'mix'; settings.strs=CFG.lvl==='i'?[0,1,2,3]:null; settings.maxStart=CFG.lvl==='b'?11:CFG.lvl==='i'?7:12; try{syncChroma();}catch(e){}
   const css=document.createElement('style');
   css.textContent=`#setup,#undoBtn,#stepsBtn,#chromaBtn,#keyBtn,#tip{display:none!important}
 .wo-ch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 12px;max-width:640px;min-height:58px}
@@ -813,6 +815,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
 .wo-cur{outline:2px solid #18CEFB;outline-offset:4px;border-radius:10px}
 .wo-pick-ok{color:#3ccf6e!important}.wo-pick-no{color:#ff5c5c!important}
 .wo-score{text-align:center;margin:10px 0 4px;font-weight:700;font-size:clamp(30px,4vw,44px)}
+.wo-score .kwlv{display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;margin-bottom:4px}
 .wo-score small{display:block;font-size:16px;font-weight:500;color:#a69b8d;margin-top:2px}`;
   document.head.appendChild(css);
   const panel=document.createElement('div'); panel.innerHTML='<div class="wo-ch" id="woCh"></div><div class="wo-hint" id="woHint"></div>';
@@ -877,7 +880,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
       // the score replaces "Done", colored by how high it is (CJ Nov 23)
       const sc=score>=90?'#18CEFB':score>=70?'#3ccf6e':score>=50?'#f0b429':'#ff5c5c';
       $('ask').className='ask'; $('ask').innerHTML=`<span style="color:${sc}">Score ${score}</span>`; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
-      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('woCh').before(el);
+      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('ask').insertAdjacentHTML('afterbegin',`<span class="kwlv" style="display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;line-height:1.2">${LVNAME.toUpperCase()}</span>`); $('woCh').before(el);
       try{ window.parent.postMessage({kwwo:'done',tool:'steps-drill',score,right,total},'*'); }catch(e){}
     } else if(!over&&!document.querySelector('.demo')){ $('ask').textContent='Ready'; }
     return v;
