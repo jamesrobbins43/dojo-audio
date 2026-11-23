@@ -5,7 +5,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap">
-<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.coach{padding-right:34px!important}.prow:has([data-mode]),.prow:has([data-kmode]),.prow:has([data-key]),#keyTag{display:none!important}</style>
+<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.coach{padding-right:34px!important}.prow:has([data-mode]),.prow:has([data-kmode]),.prow:has([data-key]),#keyTag{display:none!important}.cinb #board g,.cinb #board path{visibility:hidden}
+</style>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var K=k,n="dgkp-dgsd:settings",s={};try{s=JSON.parse(localStorage.getItem(n))||{}}catch(e){}s.keyMode='pick';s.keys=[K];s.mode='steps';try{localStorage.setItem(n,JSON.stringify(s))}catch(e){}})();</script>
 <style>
 /* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
@@ -461,7 +462,7 @@ function setBar(fromPct,ms){
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
   if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
 }
-function idle(over){
+function idle(over){ $('session').classList.remove('cinb');
   if(!over) ssSetup();
   demoStop(); if(S) clearT(); S=over?S:null; if(S) S.over=true;
   $('progress').innerHTML='<b>&nbsp;</b>'; // keeps the line's height so nothing shifts
@@ -528,7 +529,7 @@ function drawExample(i=0,step=-1){
 }
 function start(){
   ssPlay();
-  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); try{ coach($('ask').closest('.wrap'),null); }catch(e){} $('session').classList.remove('demo'); drawPair(null); setArrow(null); drawScale(null); $('said').textContent=''; $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); try{ coach($('ask').closest('.wrap'),null); }catch(e){} $('session').classList.remove('demo'); setArrow(null); drawScale(null); $('said').textContent=''; drawPair(start.seq[0],false); $('session').classList.add('cinb'); $('session').dataset.cinAt='#board'; $('nextBtn').disabled=true; prep($('session'),()=>{ $('session').classList.remove('cinb'); $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   audio(); preloadSamples();
   S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false}; TAP={right:0,total:0};
   demoStop(); $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';

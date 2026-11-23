@@ -463,7 +463,7 @@ function start(){
   S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
   // 2.5 s to get ready after Start or Restart (CJ)
   S.lead=true; $('pauseBtn').textContent='Pause'; $('pauseBtn').disabled=true; $('undoBtn').disabled=false; $('nextBtn').disabled=true; $('nextBtn').textContent='Starting…';
-  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent=S.rec?'Get ready':''; if(!S.rec) prep($('session')); $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
+  $('progress').innerHTML=''; $('qNote').className='note msg'; $('qNote').textContent=S.rec?'Get ready':''; if(!S.rec){ $('session').dataset.cinAt='#board'; prep($('session')); } $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
   { const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%'; } drawBoard(null);
   S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },S.rec?2500:4000);
 }

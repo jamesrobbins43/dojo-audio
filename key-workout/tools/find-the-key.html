@@ -460,7 +460,7 @@ function drawExample(){
 }
 function start(){
   ssPlay();
-  if(!start.go){ stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } $('nextBtn').disabled=true; prep($('stage'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } $('stage').dataset.cinAt='#row'; $('nextBtn').disabled=true; prep($('stage'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   stopDemo(); audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
   $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';

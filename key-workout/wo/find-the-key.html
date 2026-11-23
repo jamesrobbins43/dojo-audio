@@ -460,7 +460,7 @@ function drawExample(){
 }
 function start(){
   ssPlay();
-  if(!start.go){ stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } $('nextBtn').disabled=true; prep($('stage'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } $('stage').dataset.cinAt='#row'; $('nextBtn').disabled=true; prep($('stage'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   stopDemo(); audio(); preloadSamples();
   S={seq:buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
   $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
@@ -701,6 +701,7 @@ renderSets(); syncMute(); idle();
   function woDone(r){ woCells().forEach((cl,i)=>{ const d=cl.querySelector('.slot .deg'); if(d) d.classList.add(r.got[i]&&r.got[i].ok?'wo-pick-ok':'wo-pick-no'); }); }
   function woFill(i,r,o,ok){ const cl=woCells()[i]; if(!cl) return; cl.classList.remove('wo-cur'); cl.querySelector('.slot').innerHTML=`<span class="deg ${ok?'wo-pick-ok':'wo-pick-no'}">${degInner(o.lbl)}</span>`; }
 
+  if(window.KWLV==='p') for(const k in WEIGHT) WEIGHT[k]=1;   // Pro: the 4th chord is any of 2m 3m 6m 7° 1/3 5/7 equally often, not mostly the 6m (CJ Nov 23)
   { const _dc=drawChart; drawChart=function(k,mode,u,b){ if(window.KWLV==='b'&&k!=null&&mode!=='full') mode='ref'; return _dc(k,mode,u,b); };
     const _bq=buildSequence; buildSequence=function(n,fk,fd){ if(window.KWLV!=='b'||fd) return _bq(n,fk,fd);
       const out=[], cut=Math.round(n*.6); let prev='';
