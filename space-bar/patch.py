@@ -28,7 +28,7 @@ def tool(name, src):
 @tool('steps-drill', P + 'steps-drill/dojo/steps-drill-codeblock.html')
 def steps(p):
     # CJ Nov 22: no separate Ready screen. During the count-in the drill stays on screen with its first note drawn; "Ready" covers only the prompt line
-    p.rep("audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),", "audio(); demoStop(); $('progress').innerHTML=''; start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('nextBtn').disabled=true; prep($('session'),")
+    p.rep("audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),()=>{", "audio(); demoStop(); $('progress').innerHTML=''; start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('session').classList.add('cinb'); $('nextBtn').disabled=true; prep($('session'),()=>{ $('session').classList.remove('cinb');")
     p.rep("S={seq:buildSequence(settings.perRound), i:0", "S={seq:start.seq||buildSequence(settings.perRound), i:0"); p.rep("$('pauseBtn').textContent='Pause';\n  enter(true);\n}", "$('pauseBtn').textContent='Pause';\n  start.seq=null; enter(true);\n}")
     p.rep("coach($('ask').closest('.wrap'),$('nextBtn'),DEMO_END)", "coach($('ask').closest('.wrap'),ssGo($('nextBtn')),DEMO_END)")
     p.rep("function start(){\n  if(!start.go){", "function start(){\n  ssPlay();\n  if(!start.go){")
@@ -37,7 +37,7 @@ def steps(p):
     p.rep("renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();\n})();",
       SS + SP + CIN + SSON + """dguNoFooter(root.host, root.querySelector('.wrap'), ()=>root.querySelector('.wrap').classList.contains('ss-play'));
 dguSpace({host:root.host, act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
-{ const st=document.createElement('style'); st.textContent='.wrap.ss-play .ss-top{margin-bottom:-53px;position:relative;z-index:2;pointer-events:none}.wrap.ss-play .ss-top>*{pointer-events:auto}.wrap.ss-play #progress{padding-left:132px;min-height:37px;display:flex;align-items:center}'; root.appendChild(st); } // counter on the Settings button's row (CJ Nov 22: fit under the header)
+{ const st=document.createElement('style'); st.textContent='.cinb #board g,.cinb #board path{visibility:hidden}.wrap.ss-play .ss-top{margin-bottom:-53px;position:relative;z-index:2;pointer-events:none}.wrap.ss-play .ss-top>*{pointer-events:auto}.wrap.ss-play #progress{padding-left:132px;min-height:37px;display:flex;align-items:center}'; root.appendChild(st); } // counter on the Settings button's row (CJ Nov 22: fit under the header)
 ssInit({root, wrap:root.querySelector('.wrap'), play:['header','#setup'], setup:['.controls'],
   placeTop:t=>$('session').prepend(t), startBtn:$('nextBtn'), placeGo:g=>$('session').appendChild(g),
   stop:()=>{ prepCancel($('session')); $('nextBtn').disabled=false; idle(); }});
