@@ -434,7 +434,7 @@ select option { background: #141414; color: #fff; }\
       if ([1, 2, 4].indexOf(sv.bars) > -1) st.bars = sv.bars;
       if ([0, 1, 2].indexOf(sv.strum) > -1) st.strum = sv.strum;
       if (sv.pr === 1) st.pr = 1;
-      if (typeof sv.dev === 'string') st.dev = sv.dev;
+      if (typeof sv.dev === 'string') st.dev = sv.dev; try { var _m = localStorage.getItem('dgu-mic'); if (_m) st.dev = _m[0] === '{' ? (JSON.parse(_m).id || st.dev) : _m; } catch (e) {}
       if (typeof sv.cal === 'number' && sv.cal >= 0 && sv.cal < .5) st.cal = sv.cal;
       if (sv.off && typeof sv.off === 'object') st.off = sv.off;
     }

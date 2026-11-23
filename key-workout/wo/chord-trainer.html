@@ -506,7 +506,7 @@ select option { background: #141414; color: #fff; }\
       if ([1, 2, 4].indexOf(sv.bars) > -1) st.bars = sv.bars;
       if ([0, 1, 2].indexOf(sv.strum) > -1) st.strum = sv.strum;
       if (sv.pr === 1) st.pr = 1;
-      if (typeof sv.dev === 'string') st.dev = sv.dev;
+      if (typeof sv.dev === 'string') st.dev = sv.dev; try { var _m = localStorage.getItem('dgu-mic'); if (_m) st.dev = _m[0] === '{' ? (JSON.parse(_m).id || st.dev) : _m; } catch (e) {}
       if (typeof sv.cal === 'number' && sv.cal >= 0 && sv.cal < .5) st.cal = sv.cal;
       if (sv.off && typeof sv.off === 'object') st.off = sv.off;
     }
@@ -1803,6 +1803,18 @@ function devList() {
     var b = root.querySelector('#mode [data-m="rec"]'); if (b) b.click();
     var _res = results; results = function (r, tk) { _res(r, tk); var rh = root.querySelector('#res .rh'); if (rh) rh.insertAdjacentHTML('afterbegin', '<small style="display:block;font-size:12px;letter-spacing:.14em;color:#a69b8d;font-weight:600">' + LVN.toUpperCase() + '</small>'); var cs = r.chords, ov = cs.length ? Math.round(cs.reduce(function (a, c) { return a + c.tot; }, 0) / cs.length) : 0;
       try { window.parent.postMessage({ kwwo: 'done', tool: 'chord-trainer', score: ov }, '*'); } catch (e) {} };
+    // already connected in an earlier part (CJ Nov 23): use the same input, connect on its own, and skip Sync once it has been done before
+    try { var _m = localStorage.getItem('dgu-mic'); if (_m) st.dev = _m[0] === '{' ? (JSON.parse(_m).id || st.dev) : _m; } catch (e) {}
+    try { var _c = localStorage.getItem('dgu-ct-cal'); if (_c != null && +_c >= 0 && +_c < .5) st.cal = +_c; } catch (e) {}
+    save = function () { try { if (typeof st.cal === 'number') localStorage.setItem('dgu-ct-cal', String(st.cal)); } catch (e) {} };
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) navigator.mediaDevices.enumerateDevices().then(function (ds) {
+      if (!ds.some(function (d) { return d.kind === 'audioinput' && d.label; }) || rec.stream || rec.state !== 'idle') return;
+      connect();
+      var t = setInterval(function () {
+        if (rec.stream && rec.state === 'arm' && !$('go').disabled) { clearInterval(t); if (typeof st.cal === 'number' && !rec.synced) { rec.synced = true; rec.calOK = false; rec.mode = 'take'; rec.intro = false; pos = 0; stage(); recInfo(); lockUI(false); } }
+        else if (rec.state === 'idle') clearInterval(t);
+      }, 100);
+    }).catch(function () {});
     try { window.parent.postMessage({ kwwo: 'ready', tool: 'chord-trainer' }, '*'); } catch (e) {}
   })();
   DMok = true; demoGo();
