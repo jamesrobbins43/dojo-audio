@@ -187,7 +187,7 @@ async function start(){
     if(CAL==null){ vsync(); return; } } // sync timing first, once per visit (CJ Nov 19)
   $('prog').textContent='Loading\u2026';
   const [first,last]=PARTS[ST.part];
-  const ready=new Promise(r=>prep($('session'),r));   // 4 s Ready / Begin (CJ Nov 18)
+  const ready=Promise.resolve(); // no Ready step: the track's own 1-2-3-4 count-in is the only count-in (CJ Nov 23)
   let T; try{ T=await loadTrack(ST.tempo); }catch(e){ prepCancel($('session')); lock(false); $('prog').textContent='Couldn\u2019t load the track. Check your connection and try again.'; return; }
   drawGrid(first); setNow(-1); $('tfill').style.width='0%'; $('prog').innerHTML=progText(first,first,last,PATS[first].bar); $('next').classList.remove('on');
   await ready; if(!$('startBtn').disabled) return; // stopped while getting ready
