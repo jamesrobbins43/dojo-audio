@@ -1799,6 +1799,9 @@ function devList() {
     st.qs = ['maj', 'min', 'dim']; st.sets = LV === 'p' ? ['EAD', 'ADG', 'DGB', 'GBE'] : ['DGB']; st.invs = LV === 'p' ? [0, 1, 2] : [0];
     st.order = LV === 'p' ? 'shuffle' : 'inorder'; $('order').value = st.order;
     st.off = {}; if (LV === 'b') ALL.forEach(function (c) { if (['1', '4', '5', '6m'].indexOf(c.fn) < 0) st.off[c.id] = 1; });
+    // no Triads in the Timed Workout for now (CJ Nov 23: Triads needs the string-group settings, or the list is too big)
+    var _ts = root.querySelector('#type option[value="ts"]'); if (_ts) _ts.remove();
+    if (st.type === 'ts') { st.type = 'anchor'; $('type').value = 'anchor'; if (window.kwMode) window.kwMode(); }
     setBpm({ b: 60, i: 70, p: 90 }[LV] || 70); refresh(); timer(-1);
     var b = root.querySelector('#mode [data-m="rec"]'); if (b) b.click();
     var _res = results; results = function (r, tk) { _res(r, tk); var rh = root.querySelector('#res .rh'); if (rh) rh.insertAdjacentHTML('afterbegin', '<small style="display:block;font-size:12px;letter-spacing:.14em;color:#a69b8d;font-weight:600">' + LVN.toUpperCase() + '</small>'); var cs = r.chords, ov = cs.length ? Math.round(cs.reduce(function (a, c) { return a + c.tot; }, 0) / cs.length) : 0;
