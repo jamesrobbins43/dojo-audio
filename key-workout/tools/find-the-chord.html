@@ -513,7 +513,7 @@ function idle(over){
 }
 function start(){
   ssPlay();
-  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); try{ coach($('ask').closest('.wrap'),null); }catch(e){} $('session').classList.remove('demo'); drawPair(null); setArrow(null); drawScale(null); $('said').textContent=''; $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   demoStop();
   audio(); preloadSamples();
   S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
