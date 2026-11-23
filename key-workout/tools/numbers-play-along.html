@@ -220,7 +220,7 @@ function setKey(k){ LETTER=Object.fromEntries(NUMS.map((n,i)=>[n,KEYS[k][i]])); 
    Each clip = count-in bar + 16 bars (4 times through) + one diamond bar. keyOff = bar where the key goes away (0 = count-in).
    Flash: the card order and the strum times (seconds into the clip) from the video. */
 const PARTS = [
-  {label:'1 4 5', flash:{clip:'flash-1', dur:66.49, keyOff:5,
+  {label:'1 4 5', flash:{clip:'flash-1', dur:63.65, keyOff:5, // the clip runs on into the next count-in from the video (starts 63.72 s); cut it off before that (CJ Nov 23)
      cards:['1','1','4','5','4','5','1','5','4','5','1','4','1','5'],
      hits:[3.2,9.0,13.89,19.63,24.48,29.18,33.61,38.23,42.55,46.86,50.95,54.75,58.89,62.89]},
    progs:[
@@ -371,9 +371,10 @@ function tick(){
       if(p>=it.start){ S.pos0=it.start; S.c0=clock(); S.waiting=true; loadClip(it.clip).then(()=>{ if(S&&S.waiting){ S.waiting=false; S.c0=clock(); } }).catch(()=>failed()); }
       return;
     }
-    const src=ctx.createBufferSource(); src.buffer=buf; src.connect(master);
-    if(it.start>p){ src.start(S.c0+(it.start-S.pos0)); }
-    else { src.start(ctx.currentTime, p-it.start); }
+    const src=ctx.createBufferSource(); src.buffer=buf; const g=ctx.createGain(); src.connect(g); g.connect(master);
+    const t0= it.start>p ? S.c0+(it.start-S.pos0) : ctx.currentTime, end=t0+(it.start+it.dur-Math.max(p,it.start)); // never play past the item's end
+    if(it.start>p){ src.start(t0); } else { src.start(t0, p-it.start); }
+    if(buf.duration>it.dur+.02){ const f=Math.max(t0,end-.12); g.gain.setValueAtTime(1,f); g.gain.linearRampToValueAtTime(0,end); src.stop(end+.01); }
     S.srcs[idx]=src;
   });
 }

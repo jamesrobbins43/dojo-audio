@@ -108,6 +108,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .board-wrap svg{width:100%;height:auto;display:block}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 .dot{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}
+/* tap to answer (CJ Nov 23): five note choices, same look as the Key Workout Test */
+.tap{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:4px auto 12px;max-width:640px;min-height:58px}
+.tap button{flex:0 1 auto;min-width:72px;padding:9px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.45);background:#14110e;color:#f1ebe2;font:inherit;font-weight:700;font-size:26px;line-height:1.15;cursor:pointer}
+.tap button:hover:not(:disabled){border-color:#18CEFB}
+.tap button:disabled{cursor:default;opacity:.55}
+.tap button.ok{background:#3ccf6e;border-color:#3ccf6e;color:#06210f;opacity:1}
+.tap button.no{background:#ff5c5c;border-color:#ff5c5c;color:#2a0606;opacity:1}
+.tap button.ans{border-color:#3ccf6e;box-shadow:inset 0 0 0 2px #3ccf6e;opacity:1}
+.tap .acc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}.tap .acc.fl{font-size:.78em;vertical-align:.32em}
+.tap-score{font-weight:700;font-size:22px;color:#18CEFB}
+@media (max-width:520px){.tap{gap:7px}.tap button{min-width:54px;padding:8px 10px;font-size:22px}}
 .timer{height:12px;width:100%;border-radius:99px;background:var(--line);overflow:hidden}
 .timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -153,6 +164,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       <div class="scale" id="scale" hidden></div>
       <div class="board-wrap" id="boardWrap"><svg id="board" viewBox="0 0 1000 250" role="img" aria-label="Guitar neck"></svg></div>
       <div class="sr" id="said" aria-live="polite"></div>
+      <div class="tap" id="tapCh" aria-label="Tap the answer"></div>   <!-- note choices to tap (CJ Nov 23) -->
       <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
     </div>
     <div class="controls">
@@ -460,6 +472,7 @@ function idle(over){
   $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('replayBtn').disabled=true;
   drawPair(null); setArrow(null); $('keyTag').textContent=''; syncMode(); drawScale(null);
   if(!over) drawExample();
+  drawTap();
 }
 // start screen (CJ, Nov 17): two worked examples loop until Start, drawn in DGU blue (no sound), each step with a blue box + arrow
 let demoT=null, DEMO=false;
@@ -517,7 +530,7 @@ function start(){
   ssPlay();
   if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); try{ coach($('ask').closest('.wrap'),null); }catch(e){} $('session').classList.remove('demo'); drawPair(null); setArrow(null); drawScale(null); $('said').textContent=''; $('nextBtn').disabled=true; prep($('session'),()=>{ $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
   audio(); preloadSamples();
-  S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false};
+  S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false}; TAP={right:0,total:0};
   demoStop(); $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
   start.seq=null; enter(true);
 }
@@ -528,6 +541,7 @@ function setArrow(dr){ const a=$('askArrow'); a.innerHTML=UPARROW; a.style.visib
 function enter(sound){
   clearT();
   const c=card(), rev=S.phase==='reveal';
+  if(!rev&&c.mode!=='scale') tapUndo(c); drawTap();
   $('progress').innerHTML=`<b>${S.i+1} <span class="of">of</span> ${S.seq.length}</b>`;
   if(c.mode==='scale') return enterScale(c,rev,sound);
   $('ask').innerHTML=`${STEPS[c.st].name} <span class="dir">${c.dr}</span>`;
@@ -572,6 +586,37 @@ function enterScale(c,rev,sound){
 }
 function reveal(){ S.phase='reveal'; enter(true); }
 function advance(){ if(S.i>=S.seq.length-1) return idle(true); S.i++; S.phase='ask'; enter(true); }
+/* Tap to answer (CJ Nov 23): five note choices under the diagram (the answer, the notes a half and whole step either side of
+   the given note, and one more a half step further out on a random side, like the Key Workout Test). A tap shows the answer at once;
+   the round ends with how many taps were right. Saying it out loud still works: the timer and Show answer are unchanged. */
+let TAP={right:0,total:0};
+function tapQ(c){
+  if(c._tap) return c._tap;
+  const d=c.dr==='up'?1:-1, apc=(c.pc+d*(c.st==='whole'?2:1)+12)%12, s=c.from+c.to;
+  const nm=pc=>{ if(c.key>=0){ const t=keyScale(c.key).find(x=>x.pc===pc); if(t) return t.name; return (FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; }
+    return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:d>0?SHARP:FLAT)[pc]; };
+  const opts=[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y).map(k=>{ const pc=(c.pc+k+12)%12; return {pc, n:pc===apc?c.to:nm(pc)}; });
+  return c._tap={opts, apc, pick:null};
+}
+function tapUndo(c){ const q=c._tap; if(!q||q.pick==null) return; TAP.total--; if(q.opts[q.pick].pc===q.apc) TAP.right--; q.pick=null; }
+const tapLab=n=>n[0]+(n[1]?`<span class="acc${n[1]==='♭'?' fl':''}">${n[1]}</span>`:'');
+function drawTap(){
+  const el=$('tapCh'); if(!el) return;
+  if(!S||DEMO){ el.innerHTML=''; return; }
+  if(S.over){ el.innerHTML=TAP.total?`<div class="tap-score">You tapped ${TAP.right} of ${TAP.total} right</div>`:''; return; }
+  const c=card(); if(c.mode==='scale'){ el.innerHTML=''; return; }
+  const q=tapQ(c), rev=S.phase==='reveal';
+  el.innerHTML=q.opts.map((o,i)=>`<button type="button" data-i="${i}">${tapLab(o.n)}</button>`).join('');
+  const bs=[...el.querySelectorAll('button')];
+  if(rev) bs.forEach((b,i)=>{ b.disabled=true; const o=q.opts[i]; if(i===q.pick) b.classList.add(o.pc===q.apc?'ok':'no'); else if(o.pc===q.apc) b.classList.add('ans'); });
+  else bs.forEach((b,i)=>b.onclick=()=>tapPick(i));
+}
+function tapPick(i){
+  if(!S||S.over||S.paused||S.phase!=='ask') return;
+  const q=tapQ(card()); if(q.pick!=null) return;
+  q.pick=i; TAP.total++; if(q.opts[i].pc===q.apc) TAP.right++;
+  reveal();   // the answer shows on the diagram at once
+}
 function next(){ if(!S||S.over) return start(); if(S.phase==='ask') reveal(); else advance(); }
 function undo(){
   if(!S||S.over) return;
