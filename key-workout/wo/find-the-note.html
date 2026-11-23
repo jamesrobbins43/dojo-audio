@@ -235,7 +235,7 @@ function buildSequence(L,n){
     }
     let item=bag.pop();
     const prev=seq[seq.length-1];
-    if(prev&&prev.s===item.s&&prev.pc===item.pc&&pool.length>1){ bag.unshift(item); item=bag.pop(); }
+    if(prev&&prev.pc===item.pc){ const j=bag.findIndex(x=>x.pc!==prev.pc); if(j>=0){ const t=bag[j]; bag[j]=item; item=t; } else { const ok=pool.filter(x=>x.pc!==prev.pc); if(ok.length) item=ok[Math.floor(Math.random()*ok.length)]; } }
     // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH (CJ, Nov 18)
     seq.push(item.frets.includes(0)&&item.frets.includes(12) ? {...item, frets:[12], high:true, name:spell(item.pc)} : {...item, name:spell(item.pc)});
   }
@@ -468,7 +468,7 @@ function start(){
 }
 function card(){ return S.seq[S.i]; }
 // "High E"/"Low E" only when both E strings are in play; otherwise just "E"
-function strName(k){ return (k==='e'||k==='E') && !(settings.strings.includes('e')&&settings.strings.includes('E')) ? 'E' : STRINGS[k].label; }
+function strName(k){ return STRINGS[k].label; }   // always High E-string / Low E-string (CJ Nov 22)
 function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
 function setBar(fromPct,ms){
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
@@ -889,5 +889,4 @@ syncMute(); setMode(R.mode);
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && p.style.display !== 'none') close(); });
   });
 })();
-</script>
-</body></html>
+</script></body></html>
