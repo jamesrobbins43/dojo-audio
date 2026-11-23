@@ -46,6 +46,12 @@ def apply(s):
         '@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .plw { grid-template-columns: minmax(0,1fr); gap: 12px; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .ptop { width: 86%; } .pslot { gap: 2px; } .pslot .nm { font-size: 28px !important; } .pslot .pc { height: 26px; } .pslot .pc span { font-size: 20px; } .pnx { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; border-left: 0; border-top: 1px solid var(--line); padding: 8px 0 0; } .pnx .pnd { width: 56px; } .pnx .nm { font-size: 24px !important; } }\\\n'
         '.f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\\\n')
 
+    # ---- Settings: Chord type above Key (CJ Nov 23) ----
+    import re
+    mk = re.search(r'    <label class="f"><span>Key</span>.*?\n', s); mt = re.search(r'    <label class="f"><span>Chord type</span>.*?\n', s)
+    assert mk and mt and mt.start() == mk.end(), 'key/type rows'
+    s = s[:mk.start()] + mt.group(0) + mk.group(0) + s[mt.end():]
+
     # ---- Settings: "Test these chords" ----
     rep('    <label class="f"><span>Order</span>',
         '    <div class="f chf"><span>Test these chords</span><div class="pills" id="chp"></div></div>\\\n    <label class="f"><span>Order</span>')
