@@ -305,18 +305,24 @@ select option { background: #141414; color: #fff; }\
 .stage > .now { grid-column: 2 / -1; align-self: start; }\
 .stage > .nxt, .stage > .timer { display: none !important; }\
 .w.ss-play .stage > .now { grid-column: 1 / -1; }\
-.pl { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 14px; width: 100%; max-width: 920px; margin: 0 auto; transition: opacity .2s; }\
-.pslot { position: relative; display: grid; justify-items: center; align-content: start; gap: 4px; min-width: 0; padding: 8px 4px 0; border-top: 3px solid var(--line); }\
-.pslot.on { border-top-color: var(--blue); }\
-.pslot svg { width: 100%; max-width: 160px; height: auto; display: block; }\
-.pslot .nm { font-size: 40px !important; font-weight: 600; line-height: 1; }\
-.pslot .fn { font-size: 12px; color: var(--mute); text-align: center; min-height: 1.3em; }\
-.pslot.rep > .pdg, .pslot.rep > .nm, .pslot.rep > .fn { opacity: .28; }\
+.plw { display: grid; grid-template-columns: minmax(0,1fr) minmax(110px,170px); gap: 0 24px; width: 100%; max-width: none; margin: 0 auto; align-items: start; transition: opacity .2s; }\
+.pl { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 14px; min-width: 0; }\
+.pslot { position: relative; display: grid; justify-items: start; align-content: start; gap: 4px; min-width: 0; padding: 0; }\
+.ptop { display: grid; justify-items: center; gap: 4px; width: 82%; max-width: 230px; min-width: 0; }\
+.pslot svg, .pnx svg { width: 100%; height: auto; display: block; }\
+.pslot .nm { font-size: 42px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
+.pslot .fn { font-size: 12px; color: var(--mute); text-align: center; min-height: 1.3em; white-space: nowrap; }\
+.pslot.rep .ptop { opacity: .28; }\
 .pslot .pc { position: relative; width: 100%; height: 30px; }\
-.pslot .pc span { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }\
-.now.cin #cur .pl { opacity: .15; }\
+.pslot .pc span { position: absolute; top: 4px; transform: translateX(-50%); font-size: 15px; font-weight: 600; color: #4a4a4a; font-variant-numeric: tabular-nums; line-height: 1; }\
+.pslot .pc span.on { top: 0; font-size: 24px; font-weight: 700; color: var(--blue); }\
+.pnx { display: grid; justify-items: center; align-content: start; gap: 4px; padding: 8px 0 0 18px; border-left: 1px solid var(--line); min-width: 0; opacity: .75; }\
+.pnx .tag { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }\
+.pnx .nm { font-size: 28px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
+.pnx .pnd { width: 100%; max-width: 140px; }\
+.now.cin #cur .plw { opacity: .15; }\
 .now .cnt.pcin { left: 50% !important; top: 42% !important; transform: translate(-50%,-50%) !important; z-index: 3; }\
-@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .pslot svg { max-width: 108px; } .pslot { padding-top: 6px; gap: 2px; } .pslot .nm { font-size: 30px !important; } .pslot .pc { height: 26px; } .pslot .pc span { font-size: 19px; } }\
+@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .plw { grid-template-columns: minmax(0,1fr); gap: 12px; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .ptop { width: 86%; } .pslot { gap: 2px; } .pslot .nm { font-size: 28px !important; } .pslot .pc { height: 26px; } .pslot .pc span.on { font-size: 20px; } .pnx { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; border-left: 0; border-top: 1px solid var(--line); padding: 8px 0 0; } .pnx .pnd { width: 56px; } .pnx .nm { font-size: 24px !important; } }\
 .f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\
 .pills button { border: 1px solid var(--line); background: transparent; color: var(--mute); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }\
 .pills button:hover { color: var(--ink); }\
@@ -644,10 +650,16 @@ select option { background: #141414; color: #fff; }\
     var ls = Math.floor(g / 4) * 4, key = ls + '|' + MEAS + '|' + seq.map(function (c) { return c.id; }).join(',');
     if (key === PL.key && root.querySelector('#cur .pl')) return;
     PL.key = key; PL.ls = ls;
-    var h = '<div class="pl">';
+    var h = '<div class="plw"><div class="pl">';
     for (var i = 0; i < 4; i++) { var c = plAt(ls + i), rp = i > 0 && plAt(ls + i - 1) === c;
-      h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span><span class="fn">' + (rp ? '' : esc(fnText(c))) + '</span><div class="pc"></div></div>'; }
-    $('cur').innerHTML = h + '</div>';
+      h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="ptop"><span class="fn">' + (rp ? '' : esc(fnText(c))) + '</span><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span></div><div class="pc"><span>1</span><span>2</span><span>3</span><span>4</span></div></div>'; }
+    $('cur').innerHTML = h + '</div><div class="pnx"></div></div>'; PL.np = -1;
+  }
+  // the chord name sits over beat 1 (where every chord starts); 2 3 4 follow across the measure (CJ Nov 23)
+  function plPlace(el) {
+    var W = el.clientWidth, t = el.querySelector('.ptop'); if (!W || !t) return;
+    var x0 = t.offsetLeft + t.offsetWidth / 2, x3 = W - 10, sp = el.querySelectorAll('.pc span');
+    for (var b = 0; b < sp.length; b++) sp[b].style.left = (x0 + b * (x3 - x0) / 3).toFixed(1) + 'px';
   }
   function plBeat(on) {
     if (!seq.length || !seq[pos]) return;
@@ -655,9 +667,13 @@ select option { background: #141414; color: #fff; }\
     plDraw(g);
     var si = g - PL.ls;
     root.querySelectorAll('#cur .pslot').forEach(function (el, i) {
-      el.classList.toggle('on', i === si);
-      el.querySelector('.pc').innerHTML = i === si && bib >= 0 ? '<span style="left:' + ((bib + .5) / BEATS * 100).toFixed(1) + '%">' + (bib + 1) + '</span>' : '';
+      el.classList.toggle('on', i === si); plPlace(el);
+      el.querySelectorAll('.pc span').forEach(function (sp, b) { sp.classList.toggle('on', i === si && b === bib); });
     });
+    // Next chord (CJ Nov 23): the chord after the one being played
+    var nx = root.querySelector('#cur .pnx');
+    if (nx && PL.np !== pos) { PL.np = pos; var n = seq.length > 1 ? seq[(pos + 1) % seq.length] : null;
+      nx.innerHTML = n ? '<span class="tag">Next</span><span class="nm">' + nm(n.name, n.type === 'tw') + '</span><div class="pnd">' + diagram(n) + '</div>' : ''; nx.style.visibility = n ? '' : 'hidden'; }
   }
   function move(d) {
     if (!seq.length) return;
@@ -765,12 +781,12 @@ select option { background: #141414; color: #fff; }\
     if (rec.play) stopPlay();
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; }
     if (!ctx) return;
+    // Diamond: say how to strum for a few seconds before the click starts (before Ready, CJ Nov 23)
+    if (st.strum === 0 && !start.dm && !start.rd && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
+      tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.dm = true; start(); start.dm = false; }, 4000)); return; }
     // Practice: 4 s Ready / Begin first (CJ Nov 18)
     if (!start.rd && !start.go && !root.querySelector('.w').classList.contains('m-rec')) { run = true; $('play').textContent = 'Stop';
       prep(root.querySelector('.stage .now'), function () { if (!run) return; run = false; start.rd = true; start(); start.rd = false; }); return; }
-    // Diamond: say how to strum for a few seconds before the click starts
-    if (st.strum === 0 && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
-      tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.go = true; start(); start.go = false; }, 4000)); return; }
     var lead = rec.state === 'rec' && rec.mode === 'take' ? BEATS : 0;
     run = true; beat = -BEATS - lead; nt = ctx.currentTime + .1; rec.T0 = nt + (BEATS + lead) * 60 / st.bpm; sched(); iv = setInterval(sched, 25);
     $('play').textContent = 'Stop'; summary();
@@ -1676,7 +1692,7 @@ select option { background: #141414; color: #fff; }\
   // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
   var DM = null, DMok = false;
   function coach(el, text, side) {
-    if (el && el.classList && el.classList.contains('nxt')) { var ps = root.querySelectorAll('#cur .pslot'); el = null; for (var q = 1; q < ps.length; q++) if (!ps[q].classList.contains('rep')) { el = ps[q].querySelector('.pdg'); break; } el = el || (ps[1] && ps[1].querySelector('.pdg')) || $('cur'); }
+    if (el && el.classList && el.classList.contains('nxt')) el = root.querySelector('#cur .pnx .pnd') || root.querySelector('#cur .pnx') || $('cur');
     var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
     if (!el) { if (c) c.classList.remove('on'); return; }
     if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
