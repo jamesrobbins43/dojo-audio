@@ -230,7 +230,7 @@ const spokenDeg=d=>d.replace('m',' minor').replace('°',' diminished').replace('
 function degInner(d){ if(d.includes('/')) return `${d[0]}<span class="sl">/${d[2]}</span>`; return `${d[0]}${d.includes('m')?'<span class="m">m</span>':''}${d.includes('°')?DIMSVG:''}`; }
 function degHTML(d,cls){ return `<span class="deg${cls?' '+cls:''}" aria-label="${spokenDeg(d)}">${degInner(d)}</span>`; }
 const accd=n=>`${n[0]}${n[1]?`<span class="acc">${n[1]}</span>`:''}`;
-function chordHTML(ch){ const n=ch.name; return `<span class="nm">${accd(n)}${ch.q==='min'?'<span class="m">m</span>':''}${ch.q==='dim'?DIMSVG:''}${ch.bass?`<span class="sl">/${accd(ch.bass)}</span>`:''}</span>`; }
+function chordHTML(ch){ const n=ch.name; return `<span class="nm">${accd(n)}${ch.q==='min'?'<span class="m">m</span>':''}${ch.q==='dim'?DIMSVG:''}${ch.ext?`<span class="m">${ch.ext}</span>`:''}${ch.bass?`<span class="sl">/${accd(ch.bass)}</span>`:''}</span>`; }
 const spokenNote=n=>n.replace('♭',' flat').replace('♯',' sharp');
 const spokenChord=ch=>spokenNote(ch.name)+(ch.q==='min'?' minor':ch.q==='dim'?' diminished':'')+(ch.bass?' over '+spokenNote(ch.bass):'');
 
@@ -298,7 +298,7 @@ function drawRow(c,revealed,pop,g){
   const el=$('row');
   if(!c){ el.innerHTML=Array.from({length:4},()=>'<div class="cell"><div class="slot"></div><div class="ch blank">C</div></div>').join(''); return; }
   el.innerHTML=c.chords.map((ch,i)=>{
-    const slot=revealed?`<span class="deg${pop?' pop':''}" style="${pop?`animation-delay:${(i*(g??gap())).toFixed(2)}s`:''}" aria-label="${spokenDeg(DEGS[ch.d])}">${degInner(DEGS[ch.d])}</span>`:''; // empty slot until the numbers show (no question marks, CJ Nov 16)
+    const slot=revealed?`<span class="deg${pop?' pop':''}" style="${pop?`animation-delay:${(i*(g??gap())).toFixed(2)}s`:''}" aria-label="${spokenDeg(DEGS[ch.d])}">${degInner(DEGS[ch.d])}${ch.ext?`<span class="m">${ch.ext}</span>`:''}</span>`:''; // empty slot until the numbers show (no question marks, CJ Nov 16)
     return `<div class="cell"><div class="slot">${slot}</div><div class="ch on">${chordHTML(ch)}</div></div>`;
   }).join('');
 }
@@ -703,6 +703,10 @@ renderSets(); syncMute(); idle();
 
   if(window.KWLV==='p') for(const k in WEIGHT) WEIGHT[k]=1;   // Pro: the 4th chord is any of 2m 3m 6m 7° 1/3 5/7 equally often, not mostly the 6m (CJ Nov 23)
   { const _dc=drawChart; drawChart=function(k,mode,u,b){ if(window.KWLV==='b'&&k!=null&&mode!=='full') mode='ref'; return _dc(k,mode,u,b); };
+    // Pro: now and then a chord gets an extension (CJ Nov 23): 1 -> 15 (power chord), 4 -> 4sus2, 5 -> 5sus4, 2m and 6m -> m7. The answer is still the number.
+    { const EXT={0:'5',3:'sus2',4:'sus4',1:'7',5:'7'}, _bp=buildSequence; buildSequence=function(n,fk,fd){ const q=_bp(n,fk,fd); if(window.KWLV!=='p'||fd) return q;
+      q.forEach(c=>c.chords.forEach(ch=>{ const e=EXT[ch.d]; if(e==null||Math.random()>=.3) return; ch.ext=e; const [lo,r]=ch.midis;
+        ch.midis=e==='5'?[lo,r,r+7]:e==='sus2'?[lo,r,r+2,r+7]:e==='sus4'?[lo,r,r+5,r+7]:[lo,r,r+3,r+7,r+10]; })); return q; }; }
     const _bq=buildSequence; buildSequence=function(n,fk,fd){ if(window.KWLV!=='b'||fd) return _bq(n,fk,fd);
       const out=[], cut=Math.round(n*.6); let prev='';
       for(let i=0;i<n;i++){ let d=shuffle(i<cut?[0,3,4]:[0,3,4,5]); if(d.join()===prev) d.push(d.shift()); prev=d.join(); out.push(_bq(1,fk!=null?fk:settings.keys[0],d)[0]); }
