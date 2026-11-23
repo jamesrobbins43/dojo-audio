@@ -222,7 +222,7 @@ settings.size='mix'; // no Size option (CJ, Nov 16): each problem has 3 to 5 cho
 if(!COUNTS.includes(settings.perRound)) settings.perRound=20;
 settings.pace=Math.min(20,Math.max(2,+settings.pace||8));
 const save=()=>store.set('settings',settings);
-const maxSize=()=>4; // always 4 chords: 1, 4, 5 and one of the extras (CJ, Nov 16)
+const maxSize=()=>window.KWLV==='p'?5:4; // always 4 chords: 1, 4, 5 and one of the extras (CJ, Nov 16)
 
 /* ---------- Labels ---------- */
 const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
