@@ -305,17 +305,15 @@ select option { background: #141414; color: #fff; }\
 .pslot svg, .pnx svg { width: 100%; height: auto; display: block; }\
 .pslot .nm { font-size: 42px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
 .pslot .fn { font-size: 12px; color: var(--mute); text-align: center; min-height: 1.3em; white-space: nowrap; }\
-.pslot.rep .ptop { opacity: .28; }\
-.pslot .pc { position: relative; width: 100%; height: 30px; }\
-.pslot .pc span { position: absolute; top: 4px; transform: translateX(-50%); font-size: 15px; font-weight: 600; color: #4a4a4a; font-variant-numeric: tabular-nums; line-height: 1; }\
-.pslot .pc span.on { top: 0; font-size: 24px; font-weight: 700; color: var(--blue); }\
+.pslot .pc { position: relative; width: 100%; height: 30px; margin-top: 4px; }\
+.pslot .pc span { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; font-weight: 600; color: var(--blue); font-variant-numeric: tabular-nums; line-height: 1; }\
 .pnx { display: grid; justify-items: center; align-content: start; gap: 4px; padding: 8px 0 0 18px; border-left: 1px solid var(--line); min-width: 0; opacity: .75; }\
 .pnx .tag { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }\
 .pnx .nm { font-size: 28px !important; font-weight: 600; line-height: 1; white-space: nowrap; }\
 .pnx .pnd { width: 100%; max-width: 140px; }\
-.now.cin #cur .plw { opacity: .15; }\
+.now.cin #cur .plw { opacity: .3; }\
 .now .cnt.pcin { left: 50% !important; top: 42% !important; transform: translate(-50%,-50%) !important; z-index: 3; }\
-@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .plw { grid-template-columns: minmax(0,1fr); gap: 12px; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .ptop { width: 86%; } .pslot { gap: 2px; } .pslot .nm { font-size: 28px !important; } .pslot .pc { height: 26px; } .pslot .pc span.on { font-size: 20px; } .pnx { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; border-left: 0; border-top: 1px solid var(--line); padding: 8px 0 0; } .pnx .pnd { width: 56px; } .pnx .nm { font-size: 24px !important; } }\
+@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .plw { grid-template-columns: minmax(0,1fr); gap: 12px; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .ptop { width: 86%; } .pslot { gap: 2px; } .pslot .nm { font-size: 28px !important; } .pslot .pc { height: 26px; } .pslot .pc span { font-size: 20px; } .pnx { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; border-left: 0; border-top: 1px solid var(--line); padding: 8px 0 0; } .pnx .pnd { width: 56px; } .pnx .nm { font-size: 24px !important; } }\
 .f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\
 .pills button { border: 1px solid var(--line); background: transparent; color: var(--mute); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }\
 .pills button:hover { color: var(--ink); }\
@@ -640,15 +638,15 @@ select option { background: #141414; color: #fff; }\
     if (key === PL.key && root.querySelector('#cur .pl')) return;
     PL.key = key; PL.ls = ls;
     var h = '<div class="plw"><div class="pl">';
-    for (var i = 0; i < 4; i++) { var c = plAt(ls + i), rp = i > 0 && plAt(ls + i - 1) === c;
-      h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="ptop"><span class="fn">' + (rp ? '' : esc(fnText(c))) + '</span><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span></div><div class="pc"><span>1</span><span>2</span><span>3</span><span>4</span></div></div>'; }
+    for (var i = 0; i < 4; i++) { var c = plAt(ls + i);
+      h += '<div class="pslot"><div class="ptop"><span class="fn">' + esc(fnText(c)) + '</span><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span></div><div class="pc"><span></span></div></div>'; }
     $('cur').innerHTML = h + '</div><div class="pnx"></div></div>'; PL.np = -1;
   }
-  // the chord name sits over beat 1 (where every chord starts); 2 3 4 follow across the measure (CJ Nov 23)
-  function plPlace(el) {
-    var W = el.clientWidth, t = el.querySelector('.ptop'); if (!W || !t) return;
-    var x0 = t.offsetLeft + t.offsetWidth / 2, x3 = W - 10, sp = el.querySelectorAll('.pc span');
-    for (var b = 0; b < sp.length; b++) sp[b].style.left = (x0 + b * (x3 - x0) / 3).toFixed(1) + 'px';
+  // placed like Numbers Play Along (CJ Nov 23): only the beat being played shows; beat 1 under the chord name, then 2 3 4 walk right
+  function plPlace(el, bib) {
+    var W = el.clientWidth, t = el.querySelector('.ptop'), sp = el.querySelector('.pc span'); if (!W || !t || !sp || bib < 0) return;
+    var x0 = t.offsetLeft + t.offsetWidth / 2, hw = sp.offsetWidth / 2 || 6;
+    sp.style.left = (bib === 0 ? x0 : Math.min(W - hw, Math.max(x0 + bib * hw * 3, (bib + .5) / 4 * W))).toFixed(1) + 'px';
   }
   function plBeat(on) {
     if (!seq.length || !seq[pos]) return;
@@ -656,8 +654,8 @@ select option { background: #141414; color: #fff; }\
     plDraw(g);
     var si = g - PL.ls;
     root.querySelectorAll('#cur .pslot').forEach(function (el, i) {
-      el.classList.toggle('on', i === si); plPlace(el);
-      el.querySelectorAll('.pc span').forEach(function (sp, b) { sp.classList.toggle('on', i === si && b === bib); });
+      var sp = el.querySelector('.pc span'), b = i === si ? bib : -1; el.classList.toggle('on', i === si);
+      if (sp) { sp.textContent = b >= 0 ? b + 1 : ''; plPlace(el, b); }
     });
     // Next chord (CJ Nov 23): the chord after the one being played
     var nx = root.querySelector('#cur .pnx');
@@ -771,11 +769,14 @@ select option { background: #141414; color: #fff; }\
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; }
     if (!ctx) return;
     // Diamond: say how to strum for a few seconds before the click starts (before Ready, CJ Nov 23)
-    if (st.strum === 0 && !start.dm && !start.rd && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
+    if (st.strum === 0 && !start.dm && !start.lk && !start.rd && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
       tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.dm = true; start(); start.dm = false; }, 4000)); return; }
     // Practice: 4 s Ready / Begin first (CJ Nov 18)
-    if (!start.rd && !start.go && !root.querySelector('.w').classList.contains('m-rec')) { run = true; $('play').textContent = 'Stop';
+    if (!start.rd && !start.lk && !start.go && !root.querySelector('.w').classList.contains('m-rec')) { run = true; $('play').textContent = 'Stop';
       prep(root.querySelector('.stage .now'), function () { if (!run) return; run = false; start.rd = true; start(); start.rd = false; }); return; }
+    // 2 s to look at the chords before the count-in (CJ Nov 23)
+    if (!start.lk && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; $('play').textContent = 'Stop'; dmShow(false);
+      tos.push(setTimeout(function () { if (!run) return; run = false; start.lk = true; start(); start.lk = false; }, 2000)); return; }
     var lead = rec.state === 'rec' && rec.mode === 'take' ? BEATS : 0;
     run = true; beat = -BEATS - lead; nt = ctx.currentTime + .1; rec.T0 = nt + (BEATS + lead) * 60 / st.bpm; sched(); iv = setInterval(sched, 25);
     $('play').textContent = 'Stop'; summary();
