@@ -705,7 +705,7 @@ renderSets(); syncMute(); idle();
   { const _dc=drawChart; drawChart=function(k,mode,u,b){ if(window.KWLV==='b'&&k!=null&&mode!=='full') mode='ref'; return _dc(k,mode,u,b); };
     // Pro: now and then a chord gets an extension (CJ Nov 23): 1 -> 15 (power chord), 4 -> 4sus2, 5 -> 5sus4, 2m and 6m -> m7. The answer is still the number.
     { const EXT={0:'5',3:'sus2',4:'sus4',1:'7',5:'7'}, _bp=buildSequence; buildSequence=function(n,fk,fd){ const q=_bp(n,fk,fd); if(window.KWLV!=='p'||fd) return q;
-      q.forEach(c=>c.chords.forEach(ch=>{ const e=EXT[ch.d]; if(e==null||Math.random()>=.3) return; ch.ext=e; const [lo,r]=ch.midis;
+      q.forEach(c=>c.chords.forEach(ch=>{ const e=EXT[ch.d]; if(e==null||Math.random()>=.5) return; ch.ext=e; const [lo,r]=ch.midis;
         ch.midis=e==='5'?[lo,r,r+7]:e==='sus2'?[lo,r,r+2,r+7]:e==='sus4'?[lo,r,r+5,r+7]:[lo,r,r+3,r+7,r+10]; })); return q; }; }
     const _bq=buildSequence; buildSequence=function(n,fk,fd){ if(window.KWLV!=='b'||fd) return _bq(n,fk,fd);
       const out=[], cut=Math.round(n*.6); let prev='';
