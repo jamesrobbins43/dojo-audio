@@ -16,6 +16,10 @@ def apply(s):
     if MARK2 not in s:
         assert s.count(B) == 1, ('B', s.count(B))
         s = s.replace(B, B + ADD2)
+    # "*Play your answer to get a score." only in Record, on the Record button's line (CJ Nov 23)
+    C0 = "  dguRecNote($('mode'), root.querySelector('.hd'));\n"
+    if C0 in s:
+        s = s.replace(C0, "  dguRecNote($('mode')); // Record only, beside the Practice | Record switch (CJ Nov 23)\n")
     return s
 if __name__ == '__main__':
     for p in sys.argv[1:]:
