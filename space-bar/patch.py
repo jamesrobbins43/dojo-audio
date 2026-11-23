@@ -152,9 +152,9 @@ def build(name):
     f(p)
     # Remember the audio input the member used last, shared by every tool (localStorage 'dgu-mic', CJ Nov 22)
     MIC = open(P + 'space-bar/mic.js', encoding='utf-8').read().split('*/', 1)[1].strip()  # self-defining window.dguMic
-    M = 'window.dguMic'
+    M = MIC  # always the self-defining expression: the seed line may be skipped (saved device), so window.dguMic can be undefined otherwise
     if name == 'find-the-note':
-        p.rep("dev:store.get('dev','')", "dev:store.get('dev','')||" + MIC + ".id()")
+        p.rep("dev:store.get('dev','')", "dev:(" + MIC + ", store.get('dev','')||" + M + ".id())")  # define dguMic unconditionally (fix Nov 23: a saved dev skipped it and broke Connect/Start)
         p.rep("R.dev=st.deviceId||R.dev;", "R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); " + M + ".save(tr); }")
         p.rep("openStream(R.dev).then(()=>{ R.state='idle'", M + ".pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'")
     if name == 'chord-trainer':
