@@ -772,6 +772,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
   let W={res:[]};
   const acc=n=>n[0]+(n[1]?`<span class="wacc">${n[1]}</span>`:'');
   
+  { const st=document.createElement('style'); st.textContent='.ch.wo-cur{outline:none!important}'; document.head.appendChild(st); }   // no blue outline on the missing chord: the ? is enough (CJ Nov 23)
   function woQ(c){
     const sc=keyScale(c.key), root=sc[0].pc, fl=FLAT_KEYS.includes(c.key);
     const sp=pc=>{ const t=sc.find(x=>x.pc===pc); return t?t.name:(fl?FLAT:SHARP)[pc]; };
