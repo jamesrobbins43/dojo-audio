@@ -439,6 +439,7 @@ function demoCard(i){
 }
 function drawExample(i=0,step=-1){
   clearTimeout(demoT);
+  if(root.querySelector('.wrap.w-conn')){ try{ demoStop(); }catch(e){} return; }   // no how-to while connecting; it starts once connected (CJ Nov 23)
   const H=$('qNote').closest('.wrap');
   if(i>=4){ coach(H,ssGo($('nextBtn')),'Press Start when ready'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
   DEMO=true; $('session').classList.add('demo');
@@ -567,7 +568,8 @@ root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>
 function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first';
   // Connect sits above the settings; until the guitar is connected the settings, title and tuner stay folded away (CJ Nov 23).
   // Once connected it folds to one line: "Guitar connected", the input name, and a Change link that reopens the input list.
-  const cn=R.mode==='rec'&&!ok, pq=$('qNote').parentElement, rp=$('rp'); wrap.classList.toggle('w-conn',cn);
+  const cn=R.mode==='rec'&&!ok, pq=$('qNote').parentElement, rp=$('rp'), was=wrap.classList.contains('w-conn'); wrap.classList.toggle('w-conn',cn);
+  if(cn&&!was){ try{ demoStop(); }catch(e){} } else if(!cn&&was&&!S){ setTimeout(()=>{ if(!S&&!wrap.classList.contains('w-conn')) drawExample(); },0); }
   if(!pq.classList.contains('cq')){ pq.classList.add('cq'); const st=document.createElement('style'); st.textContent='.w-conn .cq,.w-conn .rmon,.w-conn #optbar{display:none!important}.rp #cname{font-style:normal;font-weight:400;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}.rp #chgin{background:none;border:0;padding:0;font:inherit;font-size:14px;font-weight:600;color:var(--brand);cursor:pointer}.rp:not(.ok) #cname,.rp:not(.ok) #chgin,.rp.ok:not(.chg) #dev,.rp.ok:not(.chg) .meter,.rp.ok #rinfo{display:none!important}.rp.ok{padding:6px 12px}'; root.appendChild(st);
     $('rstep').insertAdjacentHTML('afterend','<em id="cname"></em><button type="button" id="chgin">Change</button>');
     $('chgin').addEventListener('click',()=>{ rp.classList.toggle('chg'); $('chgin').textContent=rp.classList.contains('chg')?'Done':'Change'; });
