@@ -565,10 +565,15 @@ function setMode(m){
 }
 root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
 function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first';
-  // until the guitar is connected, the Connect section sits where the title and tuner go, and they stay hidden (CJ Nov 23)
+  // Connect sits above the settings; until the guitar is connected the settings, title and tuner stay folded away (CJ Nov 23).
+  // Once connected it folds to one line: "Guitar connected", the input name, and a Change link that reopens the input list.
   const cn=R.mode==='rec'&&!ok, pq=$('qNote').parentElement, rp=$('rp'); wrap.classList.toggle('w-conn',cn);
-  if(!pq.classList.contains('cq')){ pq.classList.add('cq'); const st=document.createElement('style'); st.textContent='.w-conn .cq,.w-conn .rmon{display:none!important}.w-conn .stage .rp{margin:6px auto 14px;max-width:760px;width:100%;box-sizing:border-box}.rp.ok #rinfo{display:none}'; root.appendChild(st); }
-  if(cn){ if(rp.nextElementSibling!==pq) pq.before(rp); } else if(rp.parentElement===pq.parentElement){ const ob=$('optbar'); ob.before(rp); } }
+  if(!pq.classList.contains('cq')){ pq.classList.add('cq'); const st=document.createElement('style'); st.textContent='.w-conn .cq,.w-conn .rmon,.w-conn #optbar{display:none!important}.rp #cname{font-style:normal;font-weight:400;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}.rp #chgin{background:none;border:0;padding:0;font:inherit;font-size:14px;font-weight:600;color:var(--brand);cursor:pointer}.rp:not(.ok) #cname,.rp:not(.ok) #chgin,.rp.ok:not(.chg) #dev,.rp.ok:not(.chg) .meter,.rp.ok #rinfo{display:none!important}.rp.ok{padding:6px 12px}'; root.appendChild(st);
+    $('rstep').insertAdjacentHTML('afterend','<em id="cname"></em><button type="button" id="chgin">Change</button>');
+    $('chgin').addEventListener('click',()=>{ rp.classList.toggle('chg'); $('chgin').textContent=rp.classList.contains('chg')?'Done':'Change'; });
+    $('dev').addEventListener('change',()=>{ rp.classList.remove('chg'); $('chgin').textContent='Change'; setTimeout(rinfo,0); }); }
+  { const sel=$('dev'), o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
+  if(rp.parentElement!==$('optbar').parentElement) $('optbar').before(rp); }
 function devList(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
   navigator.mediaDevices.enumerateDevices().then(ds=>{
@@ -576,6 +581,7 @@ function devList(){
     if(!ins.some(d=>d.label)){ sel.innerHTML='<option value="">Press Connect to list your inputs</option>'; return; }
     sel.innerHTML=ins.map((d,i)=>`<option value="${esc(d.deviceId)}">${esc(d.label||'Input '+(i+1))}</option>`).join('');
     if(R.dev) sel.value=R.dev; if(sel.selectedIndex<0) sel.selectedIndex=0;
+    if($('cname')){ const o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
   });
 }
 function closeStream(){ if(R.src){ try{R.src.disconnect();}catch(e){} R.src=null; } if(R.stream){ R.stream.getTracks().forEach(t=>t.stop()); R.stream=null; } }
