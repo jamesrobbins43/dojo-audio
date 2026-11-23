@@ -795,7 +795,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
   const CFG=Object.assign({n:Math.round(num('n',20)), pace:num('pace',8), lvl:QS.get('lvl')||'i', str:+(QS.get('str')||0)}, window.KWWO||{});
   const LVNAME={b:'Beginner',i:'Intermediate',p:'Pro'}[CFG.lvl]||'Intermediate';   // level (CJ Nov 23): Beginner / Intermediate / Pro
   try{ store.set=function(){}; }catch(e){}   // the workout never changes the member's own tool settings // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
-  settings.steps=['half','whole']; settings.dirs=CFG.lvl==='b'?['up']:['up','down']; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.chroma=false; settings.str=CFG.lvl==='b'?String(Math.max(0,Math.min(5,CFG.str|0))):'mix'; settings.strs=CFG.lvl==='i'?[0,1,2,3]:null; settings.maxStart=CFG.lvl==='b'?11:CFG.lvl==='i'?7:12; if(CFG.lvl==='p') settings.keyMode='all'; try{syncChroma();}catch(e){}
+  settings.steps=['half','whole']; settings.dirs=CFG.lvl==='b'?['up']:['up','down']; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.chroma=false; settings.str=CFG.lvl==='b'?String(Math.max(0,Math.min(5,CFG.str|0))):'mix'; settings.strs=CFG.lvl==='i'?[0,1,2,3]:null; settings.maxStart=CFG.lvl==='b'?11:CFG.lvl==='i'?7:12; try{syncChroma();}catch(e){}
   const css=document.createElement('style');
   css.textContent=`#setup,#undoBtn,#stepsBtn,#chromaBtn,#keyBtn,#tip{display:none!important}
 .wo-ch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 12px;max-width:640px;min-height:58px}
