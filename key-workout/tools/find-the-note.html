@@ -450,7 +450,7 @@ function drawExample(i=0,step=-1){
   drawBoard(ex);
   if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
   const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the note is revealed.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
-  if(step===0){ setBar(0,4000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
+  if(step===0){ setBar(0,4000); if($('qNote').offsetParent) coach(host,$('qNote'),tips[0],true); else coach(host,null); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
   else if(step===1){ demoT=setTimeout(()=>drawExample(i,2),11000); }
   else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[1]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),9000); }
 }
@@ -564,7 +564,11 @@ function setMode(m){
   if(m==='rec'&&!R.stream) devList(); rinfo(); idle();
 }
 root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
-function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first'; }
+function rinfo(t){ $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access. Then press Start.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first';
+  // until the guitar is connected, the Connect section sits where the title and tuner go, and they stay hidden (CJ Nov 23)
+  const cn=R.mode==='rec'&&!ok, pq=$('qNote').parentElement, rp=$('rp'); wrap.classList.toggle('w-conn',cn);
+  if(!pq.classList.contains('cq')){ pq.classList.add('cq'); const st=document.createElement('style'); st.textContent='.w-conn .cq,.w-conn .rmon{display:none!important}.w-conn .stage .rp{margin:6px auto 14px;max-width:760px;width:100%;box-sizing:border-box}.rp.ok #rinfo{display:none}'; root.appendChild(st); }
+  if(cn){ if(rp.nextElementSibling!==pq) pq.before(rp); } else if(rp.parentElement===pq.parentElement){ const ob=$('optbar'); ob.before(rp); } }
 function devList(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
   navigator.mediaDevices.enumerateDevices().then(ds=>{
