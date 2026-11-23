@@ -27,6 +27,9 @@ def tool(name, src):
 
 @tool('steps-drill', P + 'steps-drill/dojo/steps-drill-codeblock.html')
 def steps(p):
+    # CJ Nov 22: no separate Ready screen. During the count-in the drill stays on screen with its first note drawn; "Ready" covers only the prompt line
+    p.rep("audio(); demoStop(); $('nextBtn').disabled=true; prep($('session'),", "audio(); demoStop(); $('progress').innerHTML=''; start.seq=buildSequence(settings.perRound); { const c0=start.seq[0]; if(c0.mode==='scale') drawScale(c0,false); else drawPair(c0,false); } $('nextBtn').disabled=true; prep($('session'),")
+    p.rep("S={seq:buildSequence(settings.perRound), i:0", "S={seq:start.seq||buildSequence(settings.perRound), i:0"); p.rep("$('pauseBtn').textContent='Pause';\n  enter(true);\n}", "$('pauseBtn').textContent='Pause';\n  start.seq=null; enter(true);\n}")
     p.rep("coach($('ask').closest('.wrap'),$('nextBtn'),DEMO_END)", "coach($('ask').closest('.wrap'),ssGo($('nextBtn')),DEMO_END)")
     p.rep("function start(){\n  if(!start.go){", "function start(){\n  ssPlay();\n  if(!start.go){")
     p.rep("function idle(over){\n  demoStop();", "function idle(over){\n  if(!over) ssSetup();\n  demoStop();")
@@ -43,6 +46,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
 
 @tool('find-the-number', P + 'chord-numbers/dojo/number-the-chords-codeblock.html')
 def ftnum(p):
+    p.rep("stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('nextBtn').disabled=true;", "stopDemo(); audio(); drawRow(null); drawChart(null); syncKey(); $('progress').innerHTML=''; $('nextBtn').disabled=true;")  # no "Example" tag during the count-in
     p.rep("tip('Press Start when ready',$('nextBtn'),", "tip('Press Start when ready',ssGo($('nextBtn')),")
     p.rep("function start(){\n  if(!start.go){", "function start(){\n  ssPlay();\n  if(!start.go){")
     p.rep("function idle(over){\n  if(S) clearT();", "function idle(over){\n  if(!over) ssSetup();\n  if(S) clearT();")

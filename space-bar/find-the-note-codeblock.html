@@ -369,7 +369,7 @@ function tapAnswer(f){
     const prev=R.res[S.i];
     if(!prev||prev.tap){
       const t=Math.max(0,(performance.now()-c.tapT0)/1000), miss=(c.miss||[]).length+(ok?0:1);
-      const n=ok?(miss?50:100):0, ts=ok?tScore(t):0;
+      const n=ok?(miss?50:100):0, ts=ok?tScore(t,S.d):SP_MIN;
       R.res[S.i]={name:c.name,s:c.s,frets:c.frets,played:null,tap:true,n,t:ts,u:null,sc:Math.round((n+ts)/2),
         why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
     }
@@ -713,9 +713,10 @@ function heard(L,midi,t){
   $('heard').innerHTML=`<small>You played</small><span style="color:${ok?'#18CEFB':'#f0b429'}">${nm}${ok?' ✓':''}</span>`;
   if(!ok&&!oct){ L.done=true; settle(L); micMiss(c,nm,L.i); } // a wrong note is final: the timer runs on to the answer (No timer: the answer shows)
 }
-// Speed: how fast the note was found, on one fixed scale whatever the Speed setting (CJ): 1.5 s or less = 100, down to 0 at 8 s
-const SP_FULL=1.5, SP_ZERO=8;
-function tScore(t){ return t<=SP_FULL?100:Math.max(0,Math.round(100*(SP_ZERO-t)/(SP_ZERO-SP_FULL))); }
+// Speed, relative to the chosen time (CJ, Nov 23): 100 when found in the first 15% of the time (at least 0.75 s), down to 20 right at the limit.
+// Any note played scores at least 20; only 'no note' scores 0. No timer: 100 at 1.5 s or less, down to 20 at 8 s.
+const SP_FULL=1.5, SP_ZERO=8, SP_MIN=20;
+function tScore(t,D){ const timed=D&&D<=20, z=timed?D:SP_ZERO, f=timed?Math.max(.75,D*.15):SP_FULL; return t<=f?100:Math.max(SP_MIN,Math.round(SP_MIN+(100-SP_MIN)*(z-t)/(z-f))); }
 // Pitch: within 5 cents = 100, down to 0 at 40 cents off
 const PI_FULL=5, PI_ZERO=40;
 function pScore(c){ c=Math.abs(c); return c<=PI_FULL?100:Math.max(0,Math.round(100*(PI_ZERO-c)/(PI_ZERO-PI_FULL))); }
@@ -725,7 +726,7 @@ function settle(L){
   if(!H){ r.n=0; r.t=0; r.u=0; r.why='No note heard' }
   else{
     r.n=H.ok?100:H.oct?50:0;
-    r.t=r.n?tScore(H.t):0;
+    r.t=r.n?tScore(H.t,L.D):SP_MIN; // a wrong note still counts as a note played
     const q=H.cs.slice().sort((x,y)=>x-y), cents=q.length?Math.round(q[q.length>>1]):null;
     r.u=r.n&&cents!==null?pScore(cents):0;
     const pn=SHARP[((H.midi%12)+12)%12];
