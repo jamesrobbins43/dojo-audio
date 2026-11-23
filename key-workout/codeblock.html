@@ -144,7 +144,13 @@ function dguNoFooter(host,wrap,on){
     host.classList.toggle('kw-run', r); if (!r) window.scrollTo(0, 0); }
     // keep the tool right at the top while it runs: the site re-lays out after its header hides (its spacer for the header
     // goes away), so the first lift can overshoot and cut the top of the tool off (CJ Nov 22 screenshot)
-    if (r) { var sec = host.closest('section,.page-section') || host, t = host.getBoundingClientRect().top + window.scrollY;
+    // settings view: the title sits just under the site header, not far below it (CJ Nov 22)
+    var sec = host.closest('section,.page-section') || host, t = host.getBoundingClientRect().top + window.scrollY;
+    if (!r) { var hd = document.querySelector('header,#header'), hb = 0;
+      if (hd && getComputedStyle(hd).display !== 'none') hb = hd.getBoundingClientRect().bottom + ((getComputedStyle(hd).position === 'fixed' || getComputedStyle(hd).position === 'sticky') ? 0 : window.scrollY);
+      var want = hb + 4;   // the page's own top padding (28px) then gives the gap
+      if (Math.abs(t - want) > 2) { var c0 = parseFloat(sec.style.marginTop) || 0, nm = Math.min(0, c0 - (t - want)); if (nm !== c0) sec.style.setProperty('margin-top', nm + 'px', 'important'); } }
+    if (r) {
       if (Math.abs(t) > 2) { var cur = parseFloat(sec.style.marginTop) || 0; sec.style.setProperty('margin-top', Math.min(0, cur - t) + 'px', 'important'); if (window.scrollY) window.scrollTo(0, 0); } }
   }, 400);
 
