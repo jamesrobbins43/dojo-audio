@@ -1290,6 +1290,7 @@ select option { background: #141414; color: #fff; }\
     }
     rec.raf = requestAnimationFrame(meter);
   }
+  function cname() { var sel = $('dev'), c = $('cname'); if (sel && c) { var o = sel.options[sel.selectedIndex]; c.textContent = o && o.value ? o.text : ''; } }
   function devList() {
     if (!navigator.mediaDevices.enumerateDevices) return;
     navigator.mediaDevices.enumerateDevices().then(function (ds) {
@@ -1298,15 +1299,16 @@ select option { background: #141414; color: #fff; }\
       // Browsers only reveal input names after the site is allowed to use them once.
       if (!ins.some(function (d) { return d.label; })) { sel.innerHTML = '<option value="">Press Connect to list your inputs</option>'; return; }
       sel.innerHTML = ins.map(function (d, i) { return '<option value="' + esc(d.deviceId) + '">' + esc(d.label || 'Input ' + (i + 1)) + '</option>'; }).join('');
-      if (rec.dev || st.dev) sel.value = rec.dev || st.dev; if (sel.selectedIndex < 0) sel.selectedIndex = 0;
+      if (rec.dev || st.dev) sel.value = rec.dev || st.dev; if (sel.selectedIndex < 0) sel.selectedIndex = 0; cname();
     });
   }
   // The record panel sits above Previous / Start / Next. The first press of Record asks for the audio input; the next one records.
   function panel() {
     var p = $('rp');
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { p.innerHTML = '<div class="rinfo">This browser can’t record. Try Chrome, Edge or Safari on a computer.</div>'; return; }
-    p.innerHTML = '<div class="rrow"><label class="f"><span>Input</span><select id="dev"><option value="">Press Connect to list your inputs</option></select></label><div class="meter" id="meter" title="Input level"><b></b></div><button class="btn recgo" id="go" type="button">Connect</button></div><div class="rinfo" id="rinfo"></div>';
-    $('dev').addEventListener('change', function () { var v = this.value; st.dev = v; save(); if (rec.stream) openStream(v).then(function () { recInfo(); }); });
+    p.innerHTML = '<div class="rrow"><label class="f"><span>Input</span><select id="dev"><option value="">Press Connect to list your inputs</option></select></label><div class="meter" id="meter" title="Input level"><b></b></div><span class="cline"><b>&#10003;</b><span>Guitar connected</span><em id="cname"></em><button class="lnk" id="chgin" type="button">Change</button></span><button class="btn recgo" id="go" type="button">Connect</button></div><div class="rinfo" id="rinfo"></div>';
+    $('chgin').addEventListener('click', function () { var r = $('rp'); r.classList.toggle('chg'); this.textContent = r.classList.contains('chg') ? 'Done' : 'Change'; });
+    $('dev').addEventListener('change', function () { var v = this.value; st.dev = v; save(); $('rp').classList.remove('chg'); $('chgin').textContent = 'Change'; cname(); if (rec.stream) openStream(v).then(function () { recInfo(); }); });
     $('go').addEventListener('click', function () { if (!rec.stream) connect(); else doRec(rec.synced ? 'take' : 'cal'); });
     devList();
   }
@@ -1804,6 +1806,7 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
   const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
   new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
   dguRecNote($('mode'), root.querySelector('.hd'));
+  (function () { var st = document.createElement('style'); st.textContent = '.rp .cline{display:none;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#3ccf6e;min-width:0}.rp .cline em{font-style:normal;font-weight:400;font-size:14px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}.rp.conn .cline{display:inline-flex}.rp .cline > span{white-space:nowrap}.rp .cline{max-width:100%;flex:0 1 auto}.rp .rrow{min-width:0}.rp .cline > b,.rp .cline > span,.rp .cline > .lnk{flex:none}.rp .cline em{min-width:0;flex:0 1 auto}.rp.chg .cline > :not(.lnk){display:none}.rp.conn:not(.chg) .rrow > label.f,.rp.conn:not(.chg) .rrow > .meter{display:none}.w.gate .rp.conn:not(.chg) .rrow{order:5}.w.m-rec.ss-wrap:not(.ss-play) .stage > .rp{grid-row:1;margin-bottom:6px}.w.m-rec.ss-wrap:not(.ss-play) .stage > .side{grid-row:2}'; root.appendChild(st); })();
   (function () { var st = document.createElement('style'); st.textContent = '.w.ss-play .bt{height:28px!important;font-size:15px!important}.w.ss-play .btns{gap:6px}.w.ss-play .btns .btn{padding-top:7px!important;padding-bottom:7px!important}'; root.appendChild(st); })(); // compact under the diagram (CJ Nov 22)
 
   (function () {
