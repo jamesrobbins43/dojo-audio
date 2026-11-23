@@ -551,7 +551,7 @@ async function start(){
   const T=build(); if(!T.items.length) return;
   const run=S=Object.assign(T,{paused:false, over:false, loading:true, waiting:false, pos0:0, c0:0, cur:0, srcs:{}});
   idleView('loading');
-  const ready=new Promise(r=>prep($('card'),r)); // 4 s Ready / Begin (CJ Nov 18)
+  const ready=Promise.resolve(); // no Ready count-in: the play-along has its own 4-count (CJ Nov 23)
   const first=loadClip(T.items[0].clip);
   T.items.slice(1).forEach(it=>loadClip(it.clip).catch(()=>{}));
   try{ await first; }catch(e){ if(S===run){ S=null; prepCancel($('card')); idleView('error'); } return; }
