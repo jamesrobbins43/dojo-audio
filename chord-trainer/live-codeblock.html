@@ -1380,6 +1380,8 @@ select option { background: #141414; color: #fff; }\
     rec.raf = requestAnimationFrame(meter);
   }
   function cname() { var sel = $('dev'), c = $('cname'); if (sel && c) { var o = sel.options[sel.selectedIndex]; c.textContent = o && o.value ? o.text : ''; } }
+  // refresh the input list on plug / unplug (CJ Nov 23)
+  if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange', function () { try { devList(); } catch (e) {} });
   function devList() {
     if (!navigator.mediaDevices.enumerateDevices) return;
     navigator.mediaDevices.enumerateDevices().then(function (ds) {
