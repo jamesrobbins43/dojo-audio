@@ -891,7 +891,7 @@ function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.c
   if(below){ n.style.display='block'; n.style.margin='8px 0 0'; below.after(n); }
   else { const row=d.createElement('div'); row.style.cssText='display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px'; m.before(row); row.append(m,n);
     const cs=getComputedStyle(m); row.style.marginTop=cs.marginTop; row.style.marginBottom=cs.marginBottom; m.style.margin='0'; }
-  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; };
+  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; if(below) n.style.display=on?'block':'none'; n.style.display=on?(below?'block':''):'none'; }; // inline display would override hidden (bug: note showed in Practice)
   new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
 dguRecNote($('mode'), $('mode'));
 const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
