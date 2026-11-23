@@ -117,7 +117,23 @@ let mic=null;
 async function micOn(){
   if(mic) return true;
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    // remember the input used last, shared by every tool (CJ Nov 22: localStorage 'dgu-mic')
+    const DM=(window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+}));
+    const base={echoCancellation:false,noiseSuppression:false,autoGainControl:false};
+    let id=''; try{ id=await DM.pick(''); }catch(e){}
+    let stream;
+    try{ stream=await navigator.mediaDevices.getUserMedia({audio:id?{...base,deviceId:{exact:id}}:base}); }
+    catch(e){ if(!id) throw e; stream=await navigator.mediaDevices.getUserMedia({audio:base}); }
+    DM.save(stream.getAudioTracks()[0]);
     const srcN=audio().createMediaStreamSource(stream);
     await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET],{type:'application/javascript'})));
     const node=new AudioWorkletNode(ctx,'rw-onset'); const sink=ctx.createGain(); sink.gain.value=0;
