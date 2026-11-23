@@ -883,7 +883,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
     return v;
   };
   /* the blue how-to demo still plays before each part (CJ Nov 23), without the 'pick your settings' box: the Test sets them */
-  { const _de=drawExample; drawExample=function(i=0,step=-1){ return _de(i,step===-1?0:step); }; }
+  { const st=document.createElement('style'); st.textContent='#tapCh{display:none!important}'; document.head.appendChild(st); } /* the workout has its own scored tap row (Nov 23) */ { const _de=drawExample; drawExample=function(i=0,step=-1){ return _de(i,step===-1?0:step); }; }
   idle();
   try{ window.parent.postMessage({kwwo:'ready',tool:'steps-drill'},'*'); }catch(e){}
 })();
