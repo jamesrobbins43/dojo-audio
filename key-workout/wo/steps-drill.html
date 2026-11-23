@@ -595,7 +595,7 @@ function tapQ(c){
   const d=c.dr==='up'?1:-1, apc=(c.pc+d*(c.st==='whole'?2:1)+12)%12, s=c.from+c.to;
   const nm=pc=>{ if(c.key>=0){ const t=keyScale(c.key).find(x=>x.pc===pc); if(t) return t.name; return (FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; }
     return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:d>0?SHARP:FLAT)[pc]; };
-  const opts=[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y).map(k=>{ const pc=(c.pc+k+12)%12; return {pc, n:pc===apc?c.to:nm(pc)}; });
+  const opts=(c.key>=0?(()=>{ const rel=keyScale(c.key).map(t=>{ let k=(t.pc-c.pc+12)%12; if(k>6) k-=12; return k; }).filter(k=>k!==0), dn=rel.filter(k=>k<0).sort((a,b)=>b-a), up=rel.filter(k=>k>0).sort((a,b)=>a-b); return [dn[1],dn[0],up[0],up[1],(Math.random()<.5&&dn[2]!=null)||up[2]==null?dn[2]:up[2]].filter(k=>k!=null).sort((x,y)=>x-y); })():[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y)).map(k=>{ const pc=(c.pc+k+12)%12; return {pc, n:pc===apc?c.to:nm(pc)}; });
   return c._tap={opts, apc, pick:null};
 }
 function tapUndo(c){ const q=c._tap; if(!q||q.pick==null) return; TAP.total--; if(q.opts[q.pick].pc===q.apc) TAP.right--; q.pick=null; }
@@ -770,9 +770,12 @@ function prep(host,done){ if(getComputedStyle(host).position==='static') host.st
   var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
   // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
   // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
-  var t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  // CJ Nov 23: where the tool has room, Ready sits ON the diagram / game area itself (host.dataset.cinAt = its selector)
+  var at=host.dataset&&host.dataset.cinAt&&host.querySelector(host.dataset.cinAt), t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
   o.style.cssText='background:'+bg;
-  if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+  if(at&&at.getBoundingClientRect().height){ var ra=at.getBoundingClientRect();
+    o.style.cssText+=';inset:auto;left:'+(ra.left-hr.left+ra.width/2)+'px;top:'+(ra.top-hr.top+ra.height/2)+'px;transform:translate(-50%,-50%);height:auto;padding:14px 28px;border-radius:16px;white-space:nowrap;flex-direction:row;gap:18px;font-size:clamp(34px,5vw,52px);background:'+bg; }
+  else if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
     o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
       'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
       ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
@@ -828,7 +831,7 @@ renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
     const any=c.key<0, sc=any?[]:keyScale(c.key), nm=pc=>{ const t=sc.find(x=>x.pc===pc); return t?t.name:(any?(/♭/.test(c.from+c.to)?FLAT:SHARP):FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; };   // Pro: any of the 12 notes, sharps and flats (CJ Nov 23)
     const apc=(c.pc+DIRS[c.dr].s*STEPS[c.st].n+12)%12;
     // five choices (CJ Nov 22): one extra note a half step further out on a random side, so the start note isn't always in the middle
-    const opts=[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y).map(s=>{ const pc=(c.pc+s+12)%12; return {k:String(pc), h:acc(pc===apc?c.to:nm(pc))}; });
+    const opts=(any?[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y):(()=>{ const rel=keyScale(c.key).map(t=>{ let k=(t.pc-c.pc+12)%12; if(k>6) k-=12; return k; }).filter(k=>k!==0), dn=rel.filter(k=>k<0).sort((a,b)=>b-a), up=rel.filter(k=>k>0).sort((a,b)=>a-b); return [dn[1],dn[0],up[0],up[1],(Math.random()<.5&&dn[2]!=null)||up[2]==null?dn[2]:up[2]].filter(k=>k!=null).sort((x,y)=>x-y); })()).map(s=>{ const pc=(c.pc+s+12)%12; return {k:String(pc), h:acc(pc===apc?c.to:nm(pc))}; });
     return [{opts, ans:String(apc)}];
   }
   function woMark(){} function woFill(){} function woDone(){}
