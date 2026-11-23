@@ -134,7 +134,7 @@ def apply(s):
     LOOK = ("    // 2 s to look at the chords before the count-in (CJ Nov 23)\n"
             "    if (!start.lk && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; $('play').textContent = 'Stop'; dmShow(false);\n"
             "      tos.push(setTimeout(function () { if (!run) return; run = false; start.lk = true; start(); start.lk = false; }, 2000)); return; }\n")
-    rep(RD + DMD, DMD2.replace('!start.dm && ', '!start.dm && !start.lk && ') + RD.replace('!start.rd && ', '!start.rd && !start.lk && ') + LOOK)
+    rep(RD + DMD, DMD2.replace('!start.dm && ', '!start.dm && !start.lk && ') + LOOK)  # Ready dots removed (CJ Nov 23: the 1-2-3-4 count-in is enough)
     return s
 
 

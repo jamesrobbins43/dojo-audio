@@ -771,9 +771,6 @@ select option { background: #141414; color: #fff; }\
     // Diamond: say how to strum for a few seconds before the click starts (before Ready, CJ Nov 23)
     if (st.strum === 0 && !start.dm && !start.lk && !start.rd && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; dmShow(true); $('play').textContent = 'Stop';
       tos.push(setTimeout(function () { if (!run) return; dmShow(false); run = false; start.dm = true; start(); start.dm = false; }, 4000)); return; }
-    // Practice: 4 s Ready / Begin first (CJ Nov 18)
-    if (!start.rd && !start.lk && !start.go && !root.querySelector('.w').classList.contains('m-rec')) { run = true; $('play').textContent = 'Stop';
-      prep(root.querySelector('.stage .now'), function () { if (!run) return; run = false; start.rd = true; start(); start.rd = false; }); return; }
     // 2 s to look at the chords before the count-in (CJ Nov 23)
     if (!start.lk && !start.go && !(rec.state === 'rec' && rec.mode === 'cal')) { run = true; $('play').textContent = 'Stop'; dmShow(false);
       tos.push(setTimeout(function () { if (!run) return; run = false; start.lk = true; start(); start.lk = false; }, 2000)); return; }
