@@ -141,7 +141,12 @@ function dguNoFooter(host,wrap,on){
       document.head.appendChild(g); } })();
   setInterval(function(){ var r = !!((function(){ try { var d = fr.contentDocument; if (!d) return false; if (d.querySelector('.ss-play')) return true; var a = d.querySelectorAll('*'); for (var i = 0; i < a.length; i++) if (a[i].shadowRoot && a[i].shadowRoot.querySelector('.ss-play')) return true; } catch (e) {} return false; })()); if (host.classList.contains('kw-run') !== r) {
     if (r) document.documentElement.setAttribute('data-dgu-full', ''); else document.documentElement.removeAttribute('data-dgu-full');
-    host.classList.toggle('kw-run', r); if (!r) window.scrollTo(0, 0); } }, 400);
+    host.classList.toggle('kw-run', r); if (!r) window.scrollTo(0, 0); }
+    // keep the tool right at the top while it runs: the site re-lays out after its header hides (its spacer for the header
+    // goes away), so the first lift can overshoot and cut the top of the tool off (CJ Nov 22 screenshot)
+    if (r) { var sec = host.closest('section,.page-section') || host, t = host.getBoundingClientRect().top + window.scrollY;
+      if (Math.abs(t) > 2) { var cur = parseFloat(sec.style.marginTop) || 0; sec.style.setProperty('margin-top', Math.min(0, cur - t) + 'px', 'important'); if (window.scrollY) window.scrollTo(0, 0); } }
+  }, 400);
 
 })();
 </script>
