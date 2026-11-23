@@ -146,6 +146,23 @@ def build(name):
     src, f = TOOLS[name]
     p = Patch(open(src, encoding='utf-8').read())
     f(p)
+    # Remember the audio input the member used last, shared by every tool (localStorage 'dgu-mic', CJ Nov 22)
+    MIC = open(P + 'space-bar/mic.js', encoding='utf-8').read().split('*/', 1)[1].strip()  # self-defining window.dguMic
+    M = 'window.dguMic'
+    if name == 'find-the-note':
+        p.rep("dev:store.get('dev','')", "dev:store.get('dev','')||" + MIC + ".id()")
+        p.rep("R.dev=st.deviceId||R.dev;", "R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); " + M + ".save(tr); }")
+        p.rep("openStream(R.dev).then(()=>{ R.state='idle'", M + ".pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'")
+    if name == 'chord-trainer':
+        p.rep("} catch (e) {}\n  MEAS = st.bars; BPC", "} catch (e) {}\n  if (!st.dev) st.dev = " + MIC + ".id();\n  MEAS = st.bars; BPC")
+        p.rep("rec.dev = set.deviceId || '';", "rec.dev = set.deviceId || ''; if (rec.dev) { st.dev = rec.dev; save(); " + M + ".save(tr); }")
+        p.rep("openStream(st.dev).then(function () {", M + ".pick(st.dev).then(function (id) { st.dev = id; return openStream(id); }).then(function () {")
+    if name == 'chord-quality-evaluator':
+        p.rep("const save = () => { try { localStorage.setItem('dgu-nqe', JSON.stringify(st)); } catch (e) {} };",
+              "try { if (!('input' in JSON.parse(localStorage.getItem('dgu-nqe') || '{}'))) st.input = " + MIC + ".id(); } catch (e) {}\n"
+              "const save = () => { try { localStorage.setItem('dgu-nqe', JSON.stringify(st)); } catch (e) {} };")
+        p.rep("stream = await navigator.mediaDevices.getUserMedia({ audio: st.input ?", "st.input = await " + M + ".pick(st.input, true);\n      stream = await navigator.mediaDevices.getUserMedia({ audio: st.input ?")
+        p.rep("    fillInputs();\n  } catch (e) {\n    stream = null;", "    if (st.input) { " + M + ".save(stream.getAudioTracks()[0]); save(); }\n    fillInputs();\n  } catch (e) {\n    stream = null;")
     # Back button: simple clean arrow instead of the circular undo arrow (CJ Nov 22)
     p.s = p.s.replace('<path d=\\"M3 12a9 9 0 1 0 3-6.7\\"/><path d=\\"M3 4v5h5\\"/>', '<path d=\\"M19 12H5\\"/><path d=\\"M11 18l-6-6 6-6\\"/>')
     os.makedirs(os.path.join(here, 'out'), exist_ok=True)

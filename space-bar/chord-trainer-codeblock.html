@@ -467,6 +467,16 @@ select option { background: #141414; color: #fff; }\
       if (sv.off && typeof sv.off === 'object') st.off = sv.off;
     }
   } catch (e) {}
+  if (!st.dev) st.dev = (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id();
   MEAS = st.bars; BPC = BEATS * MEAS;
   function save() { try { localStorage.setItem('dgu-chord-learner', JSON.stringify(st)); } catch (e) {} }
 
@@ -1131,7 +1141,7 @@ select option { background: #141414; color: #fff; }\
       rec.stream = s;
       var tr = s.getAudioTracks()[0], set = tr && tr.getSettings ? tr.getSettings() : {};
       rec.inLat = typeof set.latency === 'number' ? set.latency : 0;
-      rec.dev = set.deviceId || '';
+      rec.dev = set.deviceId || ''; if (rec.dev) { st.dev = rec.dev; save(); window.dguMic.save(tr); }
       rec.src = ctx.createMediaStreamSource(s);
       rec.an = ctx.createAnalyser(); rec.an.fftSize = 1024; rec.src.connect(rec.an);
       return capNode().then(function (n) { rec.src.connect(n); });
@@ -1304,7 +1314,7 @@ select option { background: #141414; color: #fff; }\
     if (!ctx) return;
     rec.state = 'arm'; $('go').disabled = true;
     recInfo('Allow access to your audio input…');
-    openStream(st.dev).then(function () {
+    window.dguMic.pick(st.dev).then(function (id) { st.dev = id; return openStream(id); }).then(function () {
       $('go').disabled = false; $('rp').classList.add('conn'); devList(); cancelAnimationFrame(rec.raf); meter(); bpLoad();
       recInfo(); lockUI(false);
     }).catch(function () {

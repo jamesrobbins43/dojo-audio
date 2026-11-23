@@ -593,7 +593,16 @@ $('muteBtn').onclick=()=>{ settings.sound=!settings.sound; store.set('settings',
 const PCN=SHARP;
 const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
 const esc=s=>String(s).replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'})[c]);
-const R={mode:store.get('mode','prac'), stream:null, src:null, an:null, raf:0, dev:store.get('dev',''), state:'idle', L:null, res:[]};
+const R={mode:store.get('mode','prac'), stream:null, src:null, an:null, raf:0, dev:store.get('dev','')||(window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id(), state:'idle', L:null, res:[]};
 const wrap=root.querySelector('.wrap');
 root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div>');
 root.querySelector('.stage').insertAdjacentHTML('beforeend','<div class="rmon"><div class="tmt"><b id="tmNote">–</b><span class="tmc" id="tmC"></span></div><div class="tm"><i class="tmz"></i><i class="tmn idle" id="tmN"></i></div><div class="lis" id="lis" hidden><i></i>Listening</div><div class="heard" id="heard" aria-live="polite"></div></div>');
@@ -623,7 +632,7 @@ function openStream(id){
   closeStream();
   const c={echoCancellation:false,noiseSuppression:false,autoGainControl:false}, c2=Object.assign({},c); if(id) c2.deviceId={exact:id};
   return navigator.mediaDevices.getUserMedia({audio:c2}).catch(e=>{ if(id) return navigator.mediaDevices.getUserMedia({audio:c}); throw e; }).then(s=>{
-    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev;
+    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); window.dguMic.save(tr); }
     R.src=ctx.createMediaStreamSource(s); R.an=ctx.createAnalyser(); R.an.fftSize=4096; R.src.connect(R.an);
     R.buf=new Float32Array(R.an.fftSize);
   });
@@ -633,7 +642,7 @@ function connect(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ rinfo('This browser can’t listen to an input. Try Chrome, Edge or Safari.'); return; }
   audio(); if(!ctx) return;
   R.state='arm'; $('go').disabled=true; rinfo('Allow access to your audio input…');
-  openStream(R.dev).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); })
+  window.dguMic.pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); })
   .catch(()=>{ R.state='idle'; $('go').disabled=false; rinfo('Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
 }
 $('go').addEventListener('click',connect);
