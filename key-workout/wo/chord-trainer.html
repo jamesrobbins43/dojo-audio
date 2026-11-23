@@ -1635,16 +1635,16 @@ select option { background: #141414; color: #fff; }\
     if (!DM) return; clearTimeout(DM.t); clearInterval(DM.iv); DM = null; coach(null);
     root.querySelector('.w').classList.remove('demo'); tagSet('Play'); timer(-1); if (reset) { pos = 0; stage(); }
   }
-  function demoGo() { demoStop(true); if (!seq.length) return; DM = { i: 0, step: -1, d: 0, iv: null, t: null }; root.querySelector('.w').classList.add('demo'); tagSet('Example'); demoStep(); }
+  function demoGo() { demoStop(true); if (!seq.length) return; DM = { i: 0, step: 0, d: 0, iv: null, t: null }; root.querySelector('.w').classList.add('demo'); tagSet('Example'); demoStep(); }
   function demoStep() {
     var k = DM.i, s = DM.step;
     function nx(ms, i, stp) { DM.t = setTimeout(function () { if (!DM) return; DM.i = i; DM.step = stp; demoStep(); }, ms); }
-    if (k >= 2) { demoBeats(false); timer(-1); coach(ssGo($('play')), 'Press Start when ready', 'below'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays once, then stops (CJ Nov 17: Chord Trainer only)
+    if (k >= 2) { demoBeats(false); timer(-1); coach($('go') && $('go').offsetParent ? $('go') : ssGo($('play')), $('go') && $('go').offsetParent ? 'Press Record when ready' : 'Press Start when ready', 'below'); DM.t = setTimeout(function () { coach(null); }, 6000); return; } // plays once, then stops (CJ Nov 17: Chord Trainer only)
     if (s === -1) { demoBeats(false); timer(-1); pos = 0; stage();
-      coach(root.querySelector('.stage > .bar') || $('key'), 'First pick your settings', 'right'); return nx(4000, k, 0); }
-    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Press Start and play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
+      return nx(0, k, 0); }
+    if (s === 0) { if (!DM.iv) demoBeats(true); coach(root.querySelector('#cur .nm') || $('cur'), 'Play this chord along with the click.'); return nx(11000, k, 2); } // no beat-boxes box (CJ Nov 17)
     if (s === 1) { coach($('timer'), 'The boxes count the beats. Change chords each time it gets back to 1.', 'below'); return nx(11000, k, 2); }
-    if (k % 2 === 0) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
+    if (true) coach(root.querySelector('.stage > .nxt'), 'The next chord shows here, so you can get ready for it.');
     else coach(root.querySelector('#mode [data-m="rec"]'), 'Switch to Record to play it through once and get a score for timing and chord quality.', 'below');
     nx(11000, k + 1, k % 2 ? -1 : 0);
   }
@@ -1683,6 +1683,9 @@ select option { background: #141414; color: #fff; }\
       try { window.parent.postMessage({ kwwo: 'done', tool: 'chord-trainer', score: ov }, '*'); } catch (e) {} };
     try { window.parent.postMessage({ kwwo: 'ready', tool: 'chord-trainer' }, '*'); } catch (e) {}
   })();
+  DMok = true; demoGo();
+  (function () { var _g = gate, shown = false; gate = function (on) { _g(on); if (!on && !shown && !root.querySelector('.w').classList.contains('gate')) { shown = true; demoGo(); } };   /* Record mode: the demo plays once the chords show (CJ Nov 23) */
+    var _d = doRec; doRec = function () { demoStop(true); return _d.apply(this, arguments); }; })();
 /* ===== Settings screen (CJ, Nov 21 2026): settings + Start on their own screen; the exercise on its own screen,
    with a "Settings" button at the top to go back. Same pattern as Find the Note. Added by settings-screen/patch.py. ===== */
 function ssInit(o){ return;
@@ -1800,7 +1803,15 @@ function prep(host,done){ if(getComputedStyle(host).position==='static') host.st
   var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
   // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
   var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
-  o.style.background=bg;
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  var t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
   prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
   var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
   o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
