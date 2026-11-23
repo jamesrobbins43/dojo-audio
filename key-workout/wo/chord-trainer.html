@@ -302,6 +302,22 @@ select option { background: #141414; color: #fff; }\
   .sc strong { font-size: 30px; }\
 }\
 .pills { display: flex; flex-wrap: wrap; gap: 6px; }\
+.stage > .now { grid-column: 2 / -1; align-self: start; }\
+.stage > .nxt, .stage > .timer { display: none !important; }\
+.w.ss-play .stage > .now { grid-column: 1 / -1; }\
+.pl { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px 14px; width: 100%; max-width: 920px; margin: 0 auto; transition: opacity .2s; }\
+.pslot { position: relative; display: grid; justify-items: center; align-content: start; gap: 4px; min-width: 0; padding: 8px 4px 0; border-top: 3px solid var(--line); }\
+.pslot.on { border-top-color: var(--blue); }\
+.pslot svg { width: 100%; max-width: 160px; height: auto; display: block; }\
+.pslot .nm { font-size: 40px !important; font-weight: 600; line-height: 1; }\
+.pslot .fn { font-size: 12px; color: var(--mute); text-align: center; min-height: 1.3em; }\
+.pslot.rep > .pdg, .pslot.rep > .nm, .pslot.rep > .fn { opacity: .28; }\
+.pslot .pc { position: relative; width: 100%; height: 30px; }\
+.pslot .pc span { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }\
+.now.cin #cur .pl { opacity: .15; }\
+.now .cnt.pcin { left: 50% !important; top: 42% !important; transform: translate(-50%,-50%) !important; z-index: 3; }\
+@media (max-width: 560px) { .stage > .now { grid-column: 1 / -1; } .pl { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 12px; } .pslot svg { max-width: 108px; } .pslot { padding-top: 6px; gap: 2px; } .pslot .nm { font-size: 30px !important; } .pslot .pc { height: 26px; } .pslot .pc span { font-size: 19px; } }\
+.f.chf { max-width: 300px; } .f.chf .pills button { padding: 5px 9px; } .f.chf .pills button * { color: inherit !important; opacity: 1 !important; }\
 .pills button { border: 1px solid var(--line); background: transparent; color: var(--mute); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }\
 .pills button:hover { color: var(--ink); }\
 .pills button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: #141414; }\
@@ -328,6 +344,7 @@ select option { background: #141414; color: #fff; }\
     <label class="f" id="kwcapof" style="display:none"><span>Capo</span><select id="kwcapo"></select></label><label class="f" style="display:none"><span>Key</span><select id="key"><option value="G">G</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="all">All keys</option></select></label>\
     <label class="f"><span>Chord type</span><select id="type"><option value="anchor">Open - Anchored</option><option value="open">Open - Standard</option><option value="ts">Triads</option></select></label>\
     <div class="f tsf" id="setf"><span>Strings</span><div class="pills" id="tsets"><button type="button" data-ts="EAD">E-A-D</button><button type="button" data-ts="ADG">A-D-G</button><button type="button" data-ts="DGB">D-G-B</button><button type="button" data-ts="GBE">G-B-E</button></div></div><div class="f tsf"><span>Inversions</span><div class="pills" id="tinv"><button type="button" data-ti="0">Root</button><button type="button" data-ti="1">1st</button><button type="button" data-ti="2">2nd</button></div></div><div class="f tsf"><span>Chords</span><div class="pills" id="tq"><button type="button" data-tq="maj">Major</button><button type="button" data-tq="min">Minor</button><button type="button" data-tq="dim">Dim</button></div></div>\
+    <div class="f chf"><span>Test these chords</span><div class="pills" id="chp"></div></div>\
     <label class="f"><span>Order</span><select id="order"><option value="inorder">In order</option><option value="shuffle">Shuffle</option></select></label>\
     <label class="f"><span>Bars per chord</span><select id="bars"><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label>\
     <label class="f"><span>Strum</span><select id="strum"><option value="0">Diamond</option><option value="1">Quarter</option><option value="2">Eighth</option></select></label>\
@@ -545,7 +562,19 @@ select option { background: #141414; color: #fff; }\
 
   function vis() { return ALL.filter(function (c) { return (st.key === 'all' || c.key === st.key) && c.type === st.type && (c.type !== 'ts' || (st.sets.indexOf(c.set) > -1 && st.invs.indexOf(INV.indexOf(c.inv)) > -1 && st.qs.indexOf(/°$/.test(c.name) ? 'dim' : /m$/.test(c.name) ? 'min' : 'maj') > -1)); }); }
 
+  // "Test these chords" pills (CJ Nov 23): one per chord name; same on/off as the round check on each card
+  function chPills() {
+    var el = $('chp'); if (!el) return;
+    var v = vis(), names = [], by = {};
+    v.forEach(function (c) { var k = c.name + '|' + (st.key === 'all' ? c.key : ''); if (!by[k]) { by[k] = []; names.push(k); } by[k].push(c); });
+    el.closest('.f').hidden = names.length < 2;
+    el.innerHTML = names.map(function (k) { var cs = by[k], on = cs.some(function (c) { return !st.off[c.id]; });
+      return '<button type="button" data-ch="' + esc(k) + '" aria-pressed="' + on + '">' + nm(cs[0].name, cs[0].type === 'tw') + (st.key === 'all' ? ' <small style="font-weight:500;opacity:.7">in ' + cs[0].key + '</small>' : '') + '</button>'; }).join('');
+    el.onclick = function (e) { var b = e.target.closest('[data-ch]'); if (!b) return; var cs = by[b.dataset.ch] || [], on = b.getAttribute('aria-pressed') === 'true';
+      cs.forEach(function (c) { if (on) st.off[c.id] = 1; else delete st.off[c.id]; }); refresh(); };
+  }
   function board() {
+    chPills();
     var b = $('board'), v = vis();
     $('gt').textContent = st.key === 'KWT' ? 'Key of ' + window.KWOC_NAME + ' · Triads' : window.KWOC_CAPO ? 'Key of ' + window.KWOC_NAME + ' · Capo ' + window.KWOC_CAPO + ', ' + st.key + ' shapes' : 'Key of ' + st.key; $('lg').style.visibility = st.type === 'anchor' ? 'visible' : 'hidden'; root.querySelector('.w').classList.toggle('t-ts', st.type === 'ts'); tsPills();
     b.innerHTML = '';
@@ -606,6 +635,29 @@ select option { background: #141414; color: #fff; }\
       : '<div class="fn" style="padding:48px 0">Every chord is skipped. Tap a chord below to add it.</div>';
     $('nx').innerHTML = n ? '<div class="nxt" style="opacity:1"><span class="nm">' + nm(n.name, n.type === 'tw') + '</span>' + diagram(n) + '</div>' : '';
     root.querySelectorAll('.card').forEach(function (el) { el.classList.toggle('cur', !!c && el.dataset.id === c.id); });
+    if (c) { PL.key = ''; plBeat(-1); }
+  }
+  // 4-measure play-along line (CJ Nov 23): like Numbers Play Along, diagram above each chord, a blue 1 2 3 4 walks across the bar being played
+  var PL = { key: '', ls: 0 };
+  function plAt(x) { return seq[Math.floor(x / MEAS) % seq.length]; }
+  function plDraw(g) {
+    var ls = Math.floor(g / 4) * 4, key = ls + '|' + MEAS + '|' + seq.map(function (c) { return c.id; }).join(',');
+    if (key === PL.key && root.querySelector('#cur .pl')) return;
+    PL.key = key; PL.ls = ls;
+    var h = '<div class="pl">';
+    for (var i = 0; i < 4; i++) { var c = plAt(ls + i), rp = i > 0 && plAt(ls + i - 1) === c;
+      h += '<div class="pslot' + (rp ? ' rep' : '') + '"><div class="pdg">' + diagram(c) + '</div><span class="nm">' + nm(c.name, c.type === 'tw') + '</span><span class="fn">' + (rp ? '' : esc(fnText(c))) + '</span><div class="pc"></div></div>'; }
+    $('cur').innerHTML = h + '</div>';
+  }
+  function plBeat(on) {
+    if (!seq.length || !seq[pos]) return;
+    var g = pos * MEAS + (on >= 0 ? Math.floor(on / BEATS) : 0), bib = on >= 0 ? on % BEATS : -1;
+    plDraw(g);
+    var si = g - PL.ls;
+    root.querySelectorAll('#cur .pslot').forEach(function (el, i) {
+      el.classList.toggle('on', i === si);
+      el.querySelector('.pc').innerHTML = i === si && bib >= 0 ? '<span style="left:' + ((bib + .5) / BEATS * 100).toFixed(1) + '%">' + (bib + 1) + '</span>' : '';
+    });
   }
   function move(d) {
     if (!seq.length) return;
@@ -629,6 +681,8 @@ select option { background: #141414; color: #fff; }\
       h += '</div>';
     }
     t.innerHTML = h;
+    plBeat(on);
+    if (on >= 0) cntShow(null);
   }
 
   // Count-in: four big boxes in the timer row, then the sync boxes when syncing.
@@ -642,12 +696,12 @@ select option { background: #141414; color: #fff; }\
     c.hidden = false; if (nw) nw.classList.add('cin'); c.classList.toggle('wait', k < 0);
     c.querySelector('.cbig').textContent = k >= 0 ? String(k + 1) : ''; c.querySelector('.cmeter i').textContent = st.bpm;
     // to the right of the chord diagram (CJ Nov 17); the Next chord steps aside if there's no room
-    var sv = nw && nw.querySelector('svg'), nx = root.querySelector('.stage > .nxt');
+    c.classList.add('pcin'); var sv = null, nx = null;
     if (sv) { var a = sv.getBoundingClientRect(), r = nw.getBoundingClientRect(); c.style.left = (a.right - r.left + 14) + 'px'; c.style.top = (a.top - r.top + a.height / 2) + 'px';
       if (nx) { var cr = c.getBoundingClientRect(), xr = nx.getBoundingClientRect(); nx.style.visibility = cr.right > xr.left + 4 ? 'hidden' : ''; } }
   }
   function tick(k) {
-    if (k < BEATS && rec.state === 'rec' && rec.mode === 'take') { cntShow(k); return; }
+    if (k < BEATS && !(rec.state === 'rec' && rec.mode === 'cal')) { cntShow(k); return; }
     if (k < BEATS) {
       var h = '<div class="ms cin">';
       for (var q = 0; q < BEATS; q++) h += '<span class="bt' + (q === k ? ' on' : q < k ? ' done' : '') + '">' + (q + 1) + '</span>';
@@ -1622,6 +1676,7 @@ select option { background: #141414; color: #fff; }\
   // Start screen (CJ Nov 17): settings, then two examples with a black box + blue arrow per step; twice through, then stops
   var DM = null, DMok = false;
   function coach(el, text, side) {
+    if (el && el.classList && el.classList.contains('nxt')) { var ps = root.querySelectorAll('#cur .pslot'); el = null; for (var q = 1; q < ps.length; q++) if (!ps[q].classList.contains('rep')) { el = ps[q].querySelector('.pdg'); break; } el = el || (ps[1] && ps[1].querySelector('.pdg')) || $('cur'); }
     var w = root.querySelector('.w'), c = w.querySelector(':scope > .coach');
     if (!el) { if (c) c.classList.remove('on'); return; }
     if (getComputedStyle(w).position === 'static') w.style.position = 'relative';
