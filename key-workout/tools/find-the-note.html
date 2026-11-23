@@ -456,7 +456,7 @@ function drawExample(i=0,step=-1){
 }
 function start(){
   audio(); preloadSamples();
-  if(recOn()&&!R.stream){ connect(); return; } // Record mode: connect the input first
+  if(recOn()&&!R.stream){ connect(true); return; } // Record mode: connect the input first
   ssPlay();
   R.res=[]; $('heard').innerHTML=''; demoStop();
   S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
@@ -586,17 +586,35 @@ function openStream(id){
   const gum=(cn,ms)=>new Promise((ok,no)=>{ let done=false; const t=setTimeout(()=>{ if(!done){ done=true; no(new Error('timeout')); } },ms);
     navigator.mediaDevices.getUserMedia(cn).then(st=>{ if(done){ st.getTracks().forEach(x=>x.stop()); return; } done=true; clearTimeout(t); ok(st); }, e=>{ if(done) return; done=true; clearTimeout(t); no(e); }); });
   return gum({audio:c2},6000).catch(e=>{ if(id||(e&&e.message==='timeout')) return gum({audio:id?c:true},8000); throw e; }).then(s=>{
-    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); window.dguMic.save(tr); }
+    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).save(tr); }
     R.src=ctx.createMediaStreamSource(s); R.an=ctx.createAnalyser(); R.an.fftSize=4096; R.src.connect(R.an);
     R.buf=new Float32Array(R.an.fftSize);
   });
 }
-function connect(){
+function connect(go){
   if(R.state==='arm') return;
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ rinfo('This browser can’t listen to an input. Try Chrome, Edge or Safari.'); return; }
   audio(); if(!ctx) return;
   R.state='arm'; $('go').disabled=true; rinfo('Allow access to your audio input…');
-  window.dguMic.pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); })
+  (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); if(go===true) start(); })   /* Start in Record connects, then starts the round (Nov 23) */
   .catch(e=>{ R.state='idle'; $('go').disabled=false; rinfo(e&&e.message==='timeout'?'Your browser didn’t open the input. Click the microphone icon in the address bar, allow it, then press Connect again (or reload the page).':'Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
 }
 $('go').addEventListener('click',connect);
@@ -844,6 +862,8 @@ function prep(host,done){ if(getComputedStyle(host).position==='static') host.st
       'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
       ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
   else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
   prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
   var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
   o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
