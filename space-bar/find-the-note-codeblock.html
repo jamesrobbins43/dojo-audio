@@ -520,7 +520,7 @@ function start(){
 }
 function card(){ return S.seq[S.i]; }
 // "High E"/"Low E" only when both E strings are in play; otherwise just "E"
-function strName(k){ return (k==='e'||k==='E') && !(settings.strings.includes('e')&&settings.strings.includes('E')) ? 'E' : STRINGS[k].label; }
+function strName(k){ return STRINGS[k].label; } // always say High E / Low E on guitar (CJ, Nov 22)
 function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
 function setBar(fromPct,ms){
   const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
