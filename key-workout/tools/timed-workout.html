@@ -129,9 +129,9 @@ body{padding-top:4px!important}
   </section>
 
   <section class="plan" id="plan" hidden>
+    <div class="len"><span class="lab">Level</span><span class="seg" id="lvSeg" role="group" aria-label="Level"><button type="button" data-lv="b">Beginner</button><button type="button" data-lv="i">Intermediate</button><button type="button" data-lv="p">Pro</button></span></div>
     <div class="len"><span class="lab">Workout length</span><span class="seg" id="lenSeg" role="group" aria-label="Workout length"><button type="button" data-len="10">10 min</button><button type="button" data-len="20">20 min</button><button type="button" data-len="30">30 min</button></span></div>
     <div class="len"><span class="lab">Answer using</span><span class="seg" id="inSeg" role="group" aria-label="Answer using"><button type="button" data-in="mic">Instrument</button><button type="button" data-in="tap">Tap</button></span></div>
-    <div class="len"><span class="lab">Level</span><span class="seg" id="lvSeg" role="group" aria-label="Level"><button type="button" data-lv="b">Beginner</button><button type="button" data-lv="i">Intermediate</button><button type="button" data-lv="p">Pro</button></span></div>
     <p>Six parts in a row, about <span id="lenTxt">30</span> minutes. Each part gives a score, and you get one overall score at the end. Have your guitar plugged in (or a mic ready) for the <span id="recN">three</span> Record parts.</p>
     <ol class="parts" id="parts"></ol>
     <div><button class="go" id="goBtn" type="button">Start the workout</button></div>
@@ -250,7 +250,7 @@ const LVDESC={
   'find-the-note':{b:'Low E and A strings, frets 0 to 5, natural notes, with a hint.',i:'E, A and D strings, frets 0 to 12.',p:'All 6 strings, frets 0 to 12, no hints.'},
   'find-the-chord':{b:'One chord missing, with the scale steps shown. 12 s each.',i:'One chord missing, then two for the last third. 9 s each.',p:'Two chords missing every time. 6 s each.'},
   'find-the-key':{b:'1, 4 and 5, then the 6m joins, with the key chart. 20 s each.',i:'1 through 6m plus 1/3 and 5/7. 14 s each.',p:'All 7 chords plus 1/3 and 5/7. 8 s each.'},
-  'chord-quality':{b:'You pick the chords. Strum each one, then pick each string.',i:'You pick the chords. Strum each one, then pick each string.',p:'You pick the chords. Strum each one, then pick each string.'},
+  'chord-quality':{b:'You choose which chords get scored.',i:'You choose which chords get scored.',p:'You choose which chords get scored.'},
   'numbers-play-along':{b:'A song with 1, 4 and 5.',i:'A song with 1, 2m, 4, 5 and 6m.',p:'Any song, including 3m and inversions. No warm-up.'},
 };
 const STRS=['Low E','A','D','G','B','High E'];
