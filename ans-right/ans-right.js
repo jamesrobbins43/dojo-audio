@@ -14,7 +14,7 @@ function dguAnsRight(root, o){
   const st = document.createElement('style');
   st.textContent = '.controls .toolbar #nextBtn.ar-r{min-width:9.3em;text-align:center}'
     + '@media (max-width:560px){.controls .toolbar:has(> #nextBtn.ar-r){gap:6px!important}.controls .toolbar:has(> #nextBtn.ar-r) > .btn{padding:8px 9px!important;font-size:14px!important;min-width:0!important}.controls .toolbar #nextBtn.ar-r{min-width:7.9em!important}}';
-  root.appendChild(st);
+  (root.head || root).appendChild(st);
   const sync = () => {
     const play = o.play ? o.play() : true;
     if (play && nb.parentNode !== right) { right.prepend(nb); nb.classList.add('ar-r'); }

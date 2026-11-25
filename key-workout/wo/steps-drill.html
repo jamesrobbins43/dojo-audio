@@ -1,0 +1,935 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steps Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.coach{padding-right:34px!important}.prow:has([data-mode]),.prow:has([data-kmode]),.prow:has([data-key]),#keyTag{display:none!important}.cinb #board g,.cinb #board path{visibility:hidden}
+</style>
+<script>(function(){var k=+new URLSearchParams(location.search).get("key");if(!(k>=0&&k<12))k=7;var K=k,n="dgkp-dgsd:settings",s={};try{s=JSON.parse(localStorage.getItem(n))||{}}catch(e){}s.keyMode='pick';s.keys=[K];s.mode='steps';try{localStorage.setItem(n,JSON.stringify(s))}catch(e){}})();</script>
+<style>
+/* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,d09GMgABAAAAAAi0ABIAAAAAD0AAAAhOAAIAgwAAAAAAAAAAAAAAAAAAAAAAAAAAGyAcKj9IVkFSSwZgP1NUQVSBHCcqADQvahEICogYhn0whjIBNgIkAywLGAAEIAWHAAcgG1UNIxGmbNST7B+JsTHzpi2xS6UIk8qjYFu0++96/n/v1O6bkWVFkplTZvjaY6VE2S5BidFOgVnD2+mLOIUv8eXSNoAv0JXc/vcoc+3fOHX9UAD8tNa+3kNEmg4qoVMJmVKO2bNhMNvFzAbRCiHiIYkNal/ESwjfH31bMEYEFrJPZee46v9+bhAAGUGEQTVrN2wJCQIA6DoAAJZrbuQF25h5YLeRg+EFAJQq4Bxbcd9SBUlu0KJJVVQFZPVdfoXF5gyGYgUKg0MhLmQYRGaUYITA7FQQBoBNZW0BNOB86ozi3QGG4Qn4PyGfib0oinJ8sy4C/AJu2I70ju182ig4CAQJDIATEoBMsDF9+o4kAF+UuRW5QbAiiIIoi5poio7om4PacgN3YmCUjf2U3hq1oRZ7M2vLWm17O49aOvn4sBwERh4glroZ0l6MAAbyimNdreztoghMyL8id+9SrUqUuA2zARaDOh3wwlJAFAQgWu7eSSiqD2PPdYF2soKB4IQR8g2WFcQTIUgVCCRtO1IGyV6zAVJI7fwOIBOZgYchy0LWG+5ANrLjm+RADnLiuiG5KknXYWFQLAF3FG5ITSpvAUBIYYjDCKNY1uBzMKtVzVVM4fGo1Rg0q40LdJuaTpOWk6NMS6WQvHix9TTxRFo6LU99MiRTKcWw86JM005cKJAvKKRtOFDBvOLABtL2m6V7vaY5pyU0bAmdABO6TU2fzi/4bdcxZdpFkmVa4cL+Dm7NW3nFmeS6x7IdYSKV+ihMgYzuCo9SWFiwK4Vj/155pR1MUFuuCIdNfHWFmlSOu7zAIlv5N4RvNkAlE0IIX8s58vvXNYZVfpypJM3TLbtnH+1RZ5IYIhzXbGwXpIHgXCTJVHu1K3jEGUtQltiWn6+ec0iOR6MT+YJVS1sVm+tQYlus1iRPLDd9ipQ75LimrweUX/q2wH2Ywi3fRn3qPzJ3wkvUdrnEnYODeOvtXcLC+5VkzkE27sMYFlb6L3tW9k5d6x/ujoKUbAWS10c7/j8Wz/bIrSYRxsTJVkkeO885LuC0MsWtg43NB8tvjZCSyj6uE6JrURpQSN8SdpwPnCSWMnVbjIg2BB/2cPbcRn78DiCqdOsqZdDp17ut/bDC5ZAr7A5Zj6rVeqgxngBoxe9neEUbTrIAKRZzAmFWSq8y6mGy3FVLhLNrJ+FyQwAjW5bi/+S+Dmrsbta9syuJUZkkXFgWMADkZjgbkff2yRGkT1aR1zUKAZlGnl5ZitKzvg7eAPd6CqqMUDDfBPiE88wmQ8dgMY1+SCjyQSwji7GdsHlG25wPBKYkPMLWBpV8waSNlqFt+97X+72xGd1OmHEmzywnJJzAY8qSUgxHZO5wEcbvZmvwpGITmfkUNyreILp4hcWrCdA/VxAKAKAwAMCD/GiHbCzEKRLISQ0oqyqSBAkewKSCiHODgQyMM6ZK+suHYv7jm8XaHWK2CWLz6K9ro4PBpw8BMJ06lbp1586zJ7dvVOTCqSWr6pPiuP/mWVRZnAhAq4Tw66FnMVfxS2fO5vCeqcFS7YaO/PD7iyVesn5LenDZIjUwC0uxEn/zZs1QWEvG61at166jVXp//+aJpT+T53nbj1y6+4F2/Pr89rEDR71Drfv2He8MvTYvHhSuHjnXokGpsPPpZg50J4TpegnzXt7Fr+6uMrVbnN5/RXSHC5cjh1LlShTlZPoR1LSIpXyvbr169yKnYuYnh7bIHE4fr55c/c9N5s75dfb2p1my/unF40eP7j/58O5zJpmzYYZEjBibXE+6celgo1CjKjdCOZv98G6GdyqAcOsCSBg/Xjl7vUd1+5fzcyv8s+940crnH/hqa9epWa1OmXwJ2jxohUXTrLYCZUs17UsOpa33ttxg38k7mjJ7tlWVjKLsCjjE8W7Qs04xMtCnF3yx+3c/uRrjud5/+JFRrX+Phg1K5skVj5GnoIU93LPM056HLFSrfd1aIcQ0TYQ3vXf39NlHWQnCovl/sdOTgkMxJ0dhxBm6dm2YS3lzegc1Pf1GydWw67hM4L6dIbDg2bMC/VUxL4kCWpKyszVsDdK1KpCIEzE2UTYULHHitWhB//nxxzfvpHNSV68/+W4JR3MlEj5f0Pb9n3++Bzx1AitXRps0iX7NYlw0TuRGUaAsc+cynqtXPcrO4otlL8QY8PDW8UcD0Xwlhg+qWDmfasC3gv0J763Nu1Pp51++6VkOgyNSvvtY8tS9fES4doR7TUBMK6LrRlsgWKyIRyenH3r7Tr2dXBfO3XzKeff9x7fv+pw5Gy6/MxerSd++mPnd5Q1zxoEAMIz7wrbO6WKp+F7i/BEAXJtRqi8A3AsWV9Bb6x1CQ54NQAQDABDwaSNBGGkY/tDO8wjpogo7iJ7sJxSnv1GN5UGYBVCD9d02ZBU3K4qizI5CrA8qyrEIgwAoaAURvWFs9KlQXpF8VHzVTcgAsBQQRPBjKWIwYz/iKIqzrGAjA/wEIrKu380GmUr6IUClyqykMRloMsl5FIwUhKk+UqFSX2RCkEYiM6yUjSyI0lxkhUR7kQ1eOorssNMt5ECc3iAnZOZELvhZGLmhsrLEY7+9mrdwamx+IhIKT7WgMIq2GMJki9QgUwAlt4lmJVJRoX5YFE0vxDClkclt2uMiTo11OwMICkXM46Z9Q34qAZE5xVhgIpLJOiGFzKtjg9nG780er4hariNDXTHurVeiQ3D0co5KPdEQq4ESO3gmmHDctSJUsqU3RJypgFklA6EDRaLKG0Ui2+MmoP460QskNiqm4gFsQGtoiIoziTllUl5oMJOK4y7kjzmqVDLKxLsFEap7IOVcmEwfRqb/iwIAAAA=) format('woff2');font-weight:100 900;unicode-range:U+0034}
+/* Steps Drill: a note appears in the left box (step up) or the right box (step down); the answer appears in the other box after the chosen time */
+:root{
+  color-scheme:dark;
+  --bg:#000000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;
+  --brand:#18CEFB; /* Don't Give Up blue (dontgiveup.pro buttons) */
+  --accent:#e09a3e; --accent-ink:#1a120a; --good:#5cbf80;
+  --body:"DGU Digits","Outfit","Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1{font-family:"DGU Digits","Outfit",var(--body);font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 16px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:disabled:hover{border-color:var(--line)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.icon-btn svg{width:20px;height:20px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* Setup */
+.sets{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 18px;max-width:780px;width:100%;margin:0 auto}
+.prow{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;padding:12px 0}
+.prow .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.seg{display:grid;grid-auto-columns:minmax(0,1fr);grid-auto-flow:column;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--bg)}
+.seg button{border:0;border-left:1px solid var(--line);background:transparent;color:var(--muted);padding:9px 6px;font-weight:600;font-size:15px;white-space:nowrap}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--fg)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.speed{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center}
+.speed .sp{display:flex;align-items:center;gap:10px}
+.speed .sp span{font-size:14px;font-weight:600}
+.speed input[type=range]{width:140px;accent-color:var(--accent)}
+.speed output{font-weight:700;min-width:4.6em;font-size:15px;white-space:nowrap}  /* room for "No timer" so nothing shifts */
+.speed output .u{margin-left:.2em}
+/* dropdowns: see-through black, soft border, drawn chevron; the opened list stays solid black (matches the other Dojo tools) */
+.sets select{-webkit-appearance:none;-moz-appearance:none;appearance:none;font:inherit;background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center/12px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg)}
+.sets select option{background:#000;color:var(--fg)}
+.seg.keys{grid-auto-flow:row;grid-template-columns:repeat(12,minmax(0,1fr));gap:1px;background:var(--line)}
+.seg.keys button{border-left:0;background:var(--bg);position:relative;padding:9px 0;min-width:0}
+.seg.keys button[aria-pressed="true"]{background:var(--accent)}
+.seg.keys .kl{position:relative}
+.seg.keys .kacc{position:absolute;left:100%;top:-.35em;font-size:.7em;font-weight:400;margin-left:.08em}
+.keytag{font-size:18px;color:var(--muted);font-weight:500;min-height:27px;margin-top:-8px}
+@media (max-width:520px){.prow .lab:empty{display:none}.prow{grid-template-columns:1fr;gap:8px}.seg.str button{font-size:13px;padding:9px 1px}}
+
+/* Session */
+.session-col{display:flex;flex-direction:column;gap:16px;max-width:780px;width:100%;margin:0 auto}
+.stage{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.progress{font-size:16px;color:var(--muted);align-self:flex-start;font-weight:500}
+.progress b{font-size:24px;font-weight:700;color:var(--fg)}
+.progress .of{font-size:21px;font-weight:400;color:var(--muted)}
+.ask{font-weight:700;font-size:clamp(28px,4.4vw,44px);line-height:1;letter-spacing:-.01em;min-height:1em}
+.ask.brand{color:var(--brand)}
+.ask .dir{color:#f2b25c}
+.ask .kacc{font-size:.68em;font-weight:400;vertical-align:.48em;margin-left:.03em}
+.board-wrap{width:100%;max-width:600px}
+/* Major Scale mode: the 7 chords of the key in a row, numbers overhead, one missing; Show Steps puts W / H between them */
+.scale{display:grid;grid-template-columns:repeat(7,minmax(0,1fr) 22px);align-items:stretch;width:100%;max-width:800px;margin:40px auto 60px}
+.scale .cell{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;padding-bottom:30px}
+.scale .deg{font-size:clamp(15px,2.6vw,22px);font-weight:600;color:#f2b25c;line-height:1;display:flex;align-items:flex-start}
+.scale .deg .m{font-weight:500}
+.scale .deg .dim svg{display:block;height:.42em;width:auto;margin:.02em 0 0 .06em}
+.scale .ch .dim{display:inline-block;vertical-align:top}
+.scale .ch .dim svg{display:block;height:.26em;width:auto;margin:.14em 0 0 .05em}
+.scale .ch{width:100%;height:clamp(44px,8vw,80px);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(17px,4vw,38px);line-height:1;letter-spacing:-.01em}
+.scale .ch .nm{display:inline;white-space:nowrap}
+.scale .ch .acc{font-size:.8em;font-weight:400;vertical-align:.4em;margin-left:.02em}
+.scale .ch .m{font-size:.66em;font-weight:500;margin-left:.02em}
+.scale .ch.q{color:#4a4038}
+.scale .ch.ans{color:var(--accent);animation:pop .22s ease-out}
+.scale .ch.ans.still{animation:none}
+.scale .gap{display:flex;align-items:flex-end;line-height:1;padding-bottom:4px;justify-content:center;font-size:clamp(13px,2.2vw,17px);font-weight:700;color:var(--muted);padding-bottom:0}
+.scale .gap.h{color:var(--brand)}
+.scale .gap span{visibility:hidden}
+.scale.steps .gap span{visibility:visible}
+#stepsBtn{min-width:132px}
+@media (max-width:520px){.scale{grid-template-columns:repeat(7,minmax(0,1fr) 14px)}}
+.chroma{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:780px;width:100%;margin:22px auto 0}
+.chroma span{font-weight:700;font-size:20px;text-align:center;padding:7px 2px;border-radius:6px;background:#15120f;color:#d9cfc1;line-height:1.15}
+.chroma span small{display:block;font-size:15px;color:#8f8476;font-weight:700}
+.chroma .a{font-size:.7em;font-weight:400;vertical-align:.4em;margin-left:.03em}
+@media (max-width:520px){.chroma{gap:2px}.chroma span{font-size:15px;padding:6px 0}.chroma span small{font-size:12px}}
+#chromaBtn{min-width:200px}
+.chroma:not([hidden])+.ask{margin-top:20px}
+.ask-arrow{display:none!important}   /* CJ Nov 17: a curved arrow on the diagram points at the note instead */
+#ask+.ask-arrow+.keytag:empty{display:none}
+.stage:has(#boardWrap:not([hidden])) #ask{margin-bottom:-12px}
+.ask-arrow svg{height:100%;width:auto;display:block}
+.board-wrap svg{width:100%;height:auto;display:block}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.dot{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}
+/* tap to answer (CJ Nov 23): five note choices, same look as the Key Workout Test */
+.tap{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:4px auto 12px;max-width:640px;min-height:58px}
+.tap button{flex:0 1 auto;min-width:72px;padding:9px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.45);background:#14110e;color:#f1ebe2;font:inherit;font-weight:700;font-size:26px;line-height:1.15;cursor:pointer}
+.tap button:hover:not(:disabled){border-color:#18CEFB}
+.tap button:disabled{cursor:default;opacity:.55}
+.tap button.ok{background:#3ccf6e;border-color:#3ccf6e;color:#06210f;opacity:1}
+.tap button.no{background:#ff5c5c;border-color:#ff5c5c;color:#2a0606;opacity:1}
+.tap button.ans{border-color:#3ccf6e;box-shadow:inset 0 0 0 2px #3ccf6e;opacity:1}
+.tap .acc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}.tap .acc.fl{font-size:.78em;vertical-align:.32em}
+.tap-score{font-weight:700;font-size:22px;color:#18CEFB}
+@media (max-width:520px){.tap{gap:7px}.tap button{min-width:54px;padding:8px 10px;font-size:22px}}
+.timer{height:12px;width:100%;border-radius:99px;background:var(--line);overflow:hidden}
+.timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.credit{font-size:12px;color:var(--muted);margin:0}
+/* start screen (CJ, Nov 17): two examples loop before Start, with blue instruction boxes pointing at each step */
+.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+/* the looping demo uses DGU blue instead of orange so it reads as different from the real drill (CJ, Nov 17) */
+.demo .ask .dir{color:var(--brand)}
+.demo .timer i{background:var(--brand)}
+.wrap{position:relative}
+/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach.on{opacity:1;transform:none;pointer-events:auto}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}
+.coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
+.coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
+@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
+.coach.below::before{top:auto;bottom:calc(100% + 2px)}
+.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header><h1>Steps Drill</h1></header>
+
+  <!-- SETUP -->
+  <section id="setup" class="sets">
+    <div id="sets"></div>
+    <div class="prow"><div class="lab">Speed</div><div class="speed">
+      <label class="sp" for="pace"><span>Seconds before answer</span><input id="pace" type="range" min="1" max="11" step="1" value="5"><output id="paceOut">5<span class="u">s</span></output></label>
+    </div></div>
+    <div class="prow"><div class="lab">Round</div><div class="speed"><label class="sp" for="perRound"><select id="perRound"></select><span id="roundUnit" style="font-weight:500;color:var(--muted)">notes</span></label></div></div>
+  </section>
+
+  <!-- SESSION -->
+  <section id="session" class="session-col">
+    <div class="stage">
+      <div class="progress" id="progress"></div>
+      <div class="chroma" id="chroma" hidden aria-label="The 12 notes of the chromatic scale"></div>   <!-- above the prompt (CJ Nov 17) -->
+      <div class="ask" id="ask">Ready</div>
+      <div class="ask-arrow" id="askArrow" aria-hidden="true"></div>
+      <div class="keytag" id="keyTag"></div>
+      <div class="scale" id="scale" hidden></div>
+      <div class="board-wrap" id="boardWrap"><svg id="board" viewBox="0 0 1000 250" role="img" aria-label="Guitar neck"></svg></div>
+      <div class="sr" id="said" aria-live="polite"></div>
+      <div class="tap" id="tapCh" aria-label="Tap the answer"></div>   <!-- note choices to tap (CJ Nov 23) -->
+      <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
+    </div>
+    <div class="controls">
+      <div class="toolbar">
+        <button class="btn icon-btn" id="undoBtn" aria-label="Undo, go back one step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>Back
+        </button>
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn primary" id="nextBtn">Start</button>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="stepsBtn" aria-pressed="false" hidden>Show Steps</button>
+        <button class="btn" id="chromaBtn" aria-pressed="false">Show Chromatic Scale</button>
+        <button class="btn" id="replayBtn" hidden>Play again</button><!-- removed (CJ, Nov 7); kept hidden so the script needs no changes -->
+        <button class="btn" id="muteBtn" aria-pressed="false">Sound off</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="credit">Guitar sounds: tonejs-instruments by nbrosowsky, CC BY 3.0.</p>
+</div>
+
+<script>
+/* Acoustic guitar recordings (CC BY 3.0, nbrosowsky/tonejs-instruments) from jsDelivr, pinned */
+window.GUITAR_TONES={"acoustic": {"38": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D2.mp3", "39": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds2.mp3", "40": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E2.mp3", "41": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F2.mp3", "42": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs2.mp3", "43": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G2.mp3", "44": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs2.mp3", "45": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A2.mp3", "46": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As2.mp3", "47": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B2.mp3", "48": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C3.mp3", "49": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs3.mp3", "50": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D3.mp3", "51": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds3.mp3", "52": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E3.mp3", "53": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F3.mp3", "54": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs3.mp3", "55": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G3.mp3", "56": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs3.mp3", "57": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A3.mp3", "58": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As3.mp3", "59": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B3.mp3", "60": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C4.mp3", "61": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs4.mp3", "62": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D4.mp3", "63": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds4.mp3", "64": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E4.mp3", "65": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F4.mp3", "66": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs4.mp3", "67": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G4.mp3", "68": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs4.mp3", "69": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A4.mp3", "70": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As4.mp3", "71": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B4.mp3", "72": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C5.mp3", "73": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs5.mp3", "74": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D5.mp3"}};
+</script>
+<script>
+(() => {
+/* ---------- Music data ---------- */
+// Going up, notes are spelled with sharps; going down, with flats (C up a half step = C♯, D down a half step = D♭)
+const SHARP = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const FLAT  = ['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
+const NATURAL = [0,2,4,5,7,9,11], ALL12 = [0,1,2,3,4,5,6,7,8,9,10,11];
+const STEPS = {half:{label:'Half', n:1, name:'Half step'}, whole:{label:'Whole', n:2, name:'Whole step'}};
+const DIRS = {up:{label:'Up', s:1}, down:{label:'Down', s:-1}};
+const COUNTS = [10,20,30,50];
+// The 12 major keys: [name, tonic pitch class, letter index, accidental]; a chosen key gives its 7 scale notes, spelled in that key
+const LETTERS=['C','D','E','F','G','A','B'], LETTER_PC=[0,2,4,5,7,9,11], ACC={'-1':'♭','0':'','1':'♯'};
+const KEYS=[['C',0,0,0],['D♭',1,1,-1],['D',2,1,0],['E♭',3,2,-1],['E',4,2,0],['F',5,3,0],['G♭',6,4,-1],['G',7,4,0],['A♭',8,5,-1],['A',9,5,0],['B♭',10,6,-1],['B',11,6,0]];
+const FLAT_KEYS=[1,3,5,6,8,10];
+function keyScale(k){ const [,t,li]=KEYS[k]; return [0,2,4,5,7,9,11].map((iv,d)=>{ const l=(li+d)%7, pc=(t+iv)%12; return {pc, name:LETTERS[l]+ACC[((pc-LETTER_PC[l]+18)%12)-6]}; }); }
+const OPEN = [40,45,50,55,59,64];            // low E to high E (MIDI)
+const STRING_NAMES = ['E','A','D','G','B','E'];
+const MAXF = 14;                              // the neck shows the open string and frets 1-14
+const STR_OPTS = [['mix','Mix'],['0','Low E'],['1','A'],['2','D'],['3','G'],['4','B'],['5','High E']];
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(k,d){ try{ const v = localStorage.getItem('dgkp-dgsd:'+k); return v==null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem('dgkp-dgsd:'+k, JSON.stringify(v)); }catch(e){} }
+};
+const settings = Object.assign({steps:['half','whole'], dirs:['up','down'], notes:'nat', str:'mix', chroma:false, keyMode:'all', keys:[7], mode:'steps', showSteps:false, pace:5, perRound:20, sound:true}, store.get('settings', {}));
+if(!Array.isArray(settings.steps)||!settings.steps.filter(k=>STEPS[k]).length) settings.steps=['half','whole'];
+settings.dirs=['up','down']; // no Direction option (CJ, Nov 6): up or down at random
+settings.notes='all'; // no Notes option (CJ, Nov 6): all 12 notes at random
+settings.str='mix'; // no String option (CJ, Nov 6): every note goes on a random string
+if(!COUNTS.includes(settings.perRound)) settings.perRound=20;
+settings.pace=Math.min(11,Math.max(1,+settings.pace||5));
+const NT=()=>settings.pace>10; // Speed slider all the way right = No timer, like Find the Note (CJ Nov 23)
+const paceLab=()=>NT()?'No timer':settings.pace+'<span class="u">s</span>';
+if(!['all','pick'].includes(settings.keyMode)) settings.keyMode='all';
+if(!Array.isArray(settings.keys)||!settings.keys.filter(k=>KEYS[k]).length) settings.keys=[7]; // key of G
+settings.mode='steps'; // Major Scale Mode moved to its own tool, Key Workout (CJ, Nov 16)
+const save=()=>store.set('settings',settings);
+
+/* ---------- Setup ---------- */
+function renderSets(){
+  const seg=(label,items)=>{ const [l,cls='']=label.split(' '); return `<div class="prow"><div class="lab">${l}</div><div class="seg ${cls}" role="group" aria-label="${l}">${items}</div></div>`; };
+  const both=(list,all)=>list.length===all.length;
+  $('sets').innerHTML =
+    (settings.mode==='scale'?'':seg('Steps', `<button type="button" data-step="both" aria-pressed="${both(settings.steps,['half','whole'])}">Both</button>`+Object.keys(STEPS).map(k=>`<button type="button" data-step="${k}" aria-pressed="${settings.steps.length===1&&settings.steps[0]===k}">${STEPS[k].label}</button>`).join(''))) +
+    seg('Keys', `<button type="button" data-kmode="all" aria-pressed="${settings.keyMode==='all'}">All keys</button><button type="button" data-kmode="pick" aria-pressed="${settings.keyMode==='pick'}">Choose keys</button>`) +
+    (settings.keyMode==='pick' ? `<div class="prow"><div class="lab"></div><div class="seg keys" role="group" aria-label="Major keys">${KEYS.map(([n],k)=>`<button type="button" data-key="${k}" aria-pressed="${settings.keys.includes(k)}" aria-label="${n.replace('♭',' flat').replace('♯',' sharp')} major"><span class="kl">${n[0]}${n.length>1?`<span class="kacc">${n[1]}</span>`:''}</span></button>`).join('')}</div></div>` : '');
+}
+$('sets').addEventListener('click', e=>{
+  const md=e.target.closest('[data-mode]');
+  if(md){ settings.mode=md.dataset.mode; save(); renderSets(); idle(); return; }
+  const km=e.target.closest('[data-kmode]'), kb=e.target.closest('[data-key]');
+  if(km){ settings.keyMode=km.dataset.kmode; save(); renderSets(); idle(); return; }
+  if(kb){ const k=+kb.dataset.key, has=settings.keys.includes(k); if(has&&settings.keys.length===1) return; settings.keys=has?settings.keys.filter(x=>x!==k):[...settings.keys,k].sort((a,b)=>a-b); save(); renderSets(); idle(); return; }
+  const g=e.target.closest('[data-str]'), s=e.target.closest('[data-step]'), d=e.target.closest('[data-dir]'), n=e.target.closest('[data-notes]');
+  if(g) settings.str = g.dataset.str;
+  else if(s) settings.steps = s.dataset.step==='both'?['half','whole']:[s.dataset.step];
+  else if(d) settings.dirs = d.dataset.dir==='both'?['up','down']:[d.dataset.dir];
+  else if(n) settings.notes = n.dataset.notes;
+  else return;
+  save(); renderSets(); idle();
+});
+$('perRound').innerHTML=COUNTS.map(n=>`<option value="${n}"${n===settings.perRound?' selected':''}>${n}</option>`).join('');
+$('perRound').addEventListener('change',e=>{ settings.perRound=+e.target.value; save(); idle(); });
+$('pace').value=settings.pace; $('paceOut').innerHTML=paceLab();
+$('pace').addEventListener('input',e=>{ settings.pace=+e.target.value; $('paceOut').innerHTML=paceLab(); save(); });
+
+/* ---------- Drill items ---------- */
+// every start note x step x direction, shuffled; no item repeats until the pool is used up, never the same note twice in a row
+const DEG_Q=['maj','min','min','maj','maj','min','dim'];      // I ii iii IV V vi vii°
+const DEG_IV={maj:[0,4,7],min:[0,3,7],dim:[0,3,6]};
+// Major Scale mode: each item is one key with one of its 7 chords missing; never the same key and gap twice in a row
+function buildScaleSequence(n){
+  const keys=settings.keyMode==='all'?ALL12:settings.keys, pool=[];
+  for(const k of keys) for(let p=0;p<7;p++) pool.push({k,p});
+  const seq=[]; let bag=[];
+  while(seq.length<n){
+    if(!bag.length) bag=pool.slice().sort(()=>Math.random()-.5);
+    let it=bag.pop(); const prev=seq[seq.length-1];
+    if(prev&&prev.key===it.k&&bag.length){ bag.unshift(it); it=bag.pop(); }
+    const sc=keyScale(it.k), chords=sc.map((t,d)=>({name:t.name, q:DEG_Q[d], pc:t.pc}));
+    const r=chords[it.p]; let m=48; while(m%12!==r.pc) m++;   // missing chord played in root position, root between C3 and B3
+    seq.push({mode:'scale', key:it.k, miss:it.p, chords, midis:DEG_IV[r.q].map(iv=>m+iv)});
+  }
+  return seq;
+}
+function buildSequence(n){
+  if(settings.mode==='scale') return buildScaleSequence(n);
+  const pool=[];
+  // All keys (CJ): any of the 12 notes, each one spelled with sharps or flats at random (start note and answer alike). Chosen keys: the notes of those keys' major scales, spelled in the key
+  const starts = settings.keyMode==='all' ? ALL12.map(pc=>({pc,key:-1})) : settings.keys.flatMap(k=>keyScale(k).map(t=>({pc:t.pc,key:k,name:t.name})));
+  for(const n0 of starts) for(const st of settings.steps) for(const dr of settings.dirs){ const apc=(n0.pc+DIRS[dr].s*STEPS[st].n+12)%12; if(n0.key<0||keyScale(n0.key).some(t=>t.pc===apc)) pool.push({...n0,st,dr}); }
+  const seq=[]; let bag=[];
+  while(seq.length<n){
+    if(!bag.length) bag=pool.slice().sort(()=>Math.random()-.5);
+    let it=bag.pop(); const prev=seq[seq.length-1];
+    if(prev&&prev.pc===it.pc&&bag.length){ bag.unshift(it); it=bag.pop(); }
+    const s=DIRS[it.dr].s*STEPS[it.st].n, names=Math.random()<.5?SHARP:FLAT, apc=(it.pc+s+12)%12;
+    // a string (the chosen one, or a random one with Mix) and a fret where the start note and the answer both fit on frets 0-14
+    const strs=settings.str==='mix'?(settings.strs||[0,1,2,3,4,5]).slice().sort(()=>Math.random()-.5):[+settings.str];
+    let str=strs[0], fret=null;
+    for(const sx of strs){ const fs=[]; for(let f=0;f<=MAXF;f++) if((OPEN[sx]+f)%12===it.pc&&f+s>=0&&f+s<=MAXF&&f<=(settings.maxStart??MAXF)) fs.push(f); if(fs.length){ str=sx; fret=fs[Math.floor(Math.random()*fs.length)]; break; } }
+    if(prev&&prev.str===str&&prev.fret===fret&&bag.length){ /* fine: different step or direction */ }
+    let from=names[it.pc], to=names[apc];
+    if(it.key>=0){ const sc=keyScale(it.key), inKey=sc.find(t=>t.pc===apc); from=it.name; to=inKey?inKey.name:(FLAT_KEYS.includes(it.key)?FLAT:it.key===0?(it.dr==='up'?SHARP:FLAT):SHARP)[apc]; }
+    seq.push({...it, str, fret, to2:fret+s, from, to, m1:OPEN[str]+fret, m2:OPEN[str]+fret+s});
+  }
+  return seq;
+}
+
+/* ---------- Drawing ---------- */
+// Hand-drawn flat / sharp, small and raised beside the big letter (the font's own ♭ has a short stem)
+function accSVG(a){
+  if(a==='♭') return '<svg viewBox="0 0 12 26" aria-hidden="true"><path d="M2.5 1V24.5M2.5 24.5C8 21 11 16.5 8.5 14C6.8 12.4 4 13.2 2.5 15.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  return '<svg viewBox="0 0 14 26" aria-hidden="true"><path d="M5 2V24M9.5 1V23" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M1.5 10.5L12.5 7.5M1.5 17.5L12.5 14.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+}
+const spoken=n=>n.replace('♭',' flat').replace('♯',' sharp');
+// Letter centred in the dot; ♭ / ♯ drawn small and light, tucked at its top right
+function svgLabel(x,y,lab,size,fill,weight){
+  const acc=lab.slice(1), base=lab[0], F='font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif"';
+  let t=`<text x="${x}" y="${y}" text-anchor="middle" ${F} font-weight="${weight||700}" font-size="${size}" fill="${fill}">${base}</text>`;
+  if(acc) t+=`<text x="${x+size*.32}" y="${y-size*(acc==='♭'?.32:.38)}" text-anchor="start" ${F} font-weight="400" font-size="${size*(acc==='♭'?.92:.72)}" fill="${fill}">${acc}</text>`;   // flat a bit bigger (CJ Nov 22: it read too small)
+  return t;
+}
+// Horizontal neck, high E on top (like tab), zoomed in on 3 frets: a step up starts on the left fret and moves right,
+// a step down starts on the right fret and moves left. Fret markers and fret numbers stay so the spot on the neck is clear.
+function windowLo(c){
+  if(!c) return 1;
+  const g=c.fret; return Math.max(1, c.dr==='up' ? g : g-2);
+}
+// the extra grey note (CJ Nov 21/22): on a whole step, the note in between; on a half step, the note a whole step from the prompt note
+// in the same direction. Spelled like the drill's notes (flats if they use flats, sharps if sharps, else by direction). Returns {f,n} or null.
+function extraNote(c){
+  if(!c) return null;
+  const w=c.st==='whole', up=c.dr==='up', d=up?1:-1;
+  const f=w?(c.fret+c.to2)/2:c.fret+2*d;
+  if(f<0||f>MAXF+2) return null;
+  const pc=(c.pc+(w?d:2*d)+12)%12, s=c.from+c.to;
+  return {f, w, n:(s.includes('♭')?FLAT:s.includes('♯')?SHARP:up?SHARP:FLAT)[pc]};
+}
+function drawBoard(c,revealed,popAns){
+  const svg=$('board'), lo=windowLo(c), nut=lo===1;
+  const W=560, X0=60, X1=W-30, FW=(X1-X0)/3, SP=38, Y0=40, H=Y0+SP*5+58;
+  const wx=k=>X0+k*FW;                                   // x of the k-th fret wire in the window (k=0 is the nut or fret lo-1)
+  const nx=f=>f===0?X0-34:wx(f-lo)+FW/2;                 // x of a note played at fret f (open string sits left of the nut)
+  const sy=i=>Y0+(5-i)*SP;                               // y of string i (0 = low E at the bottom)
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  let h='';
+  const F='font-family="DGU Digits, Outfit, Figtree, system-ui, sans-serif"';
+  for(let f=lo;f<lo+3;f++){
+    const x=nx(f);
+    if([3,5,7,9,15].includes(f)) h+=`<circle cx="${x}" cy="${(sy(2)+sy(3))/2}" r="8" fill="#e8dcc4" opacity=".3"/>`;
+    if(f===12) h+=`<circle cx="${x}" cy="${(sy(1)+sy(2))/2}" r="8" fill="#e8dcc4" opacity=".3"/><circle cx="${x}" cy="${(sy(3)+sy(4))/2}" r="8" fill="#e8dcc4" opacity=".3"/>`;
+    h+=`<text x="${x}" y="${sy(0)+42}" text-anchor="middle" ${F} font-weight="600" font-size="18" fill="#8a7d6e">${f}</text>`;
+  }
+  // nut (or the fret wire below the window), then fret wires; they stop at the outer strings
+  h+= nut ? `<rect x="${X0-4}" y="${sy(5)-2}" width="8" height="${SP*5+4}" fill="#f1ebe2"/>` : `<rect x="${X0-1.5}" y="${sy(5)}" width="3" height="${SP*5}" fill="#8f877c"/>`;
+  for(let k=1;k<=3;k++) h+=`<rect x="${wx(k)-1.5}" y="${sy(5)}" width="3" height="${SP*5}" fill="#8f877c"/>`;
+  // strings run a little past the window (and past the nut side only when the window is up the neck); drill string bright, others dimmed
+  const on=c?c.str:-1;
+  for(let i=0;i<6;i++){
+    const act=i===on, w=[3.4,3,2.6,2.2,1.8,1.4][i];
+    h+=`<line x1="${nut?X0:X0-22}" x2="${X1+22}" y1="${sy(i)}" y2="${sy(i)}" stroke="#e9e2d4" stroke-width="${w}" opacity="${act?1:(c?.28:.55)}"/>`;
+    // no string-name labels (CJ, Nov 6)
+  }
+  const dot=(f,lab,fill,ink,cls)=>{ const x=nx(f), y=sy(c.str), r=22;
+    return f===0
+      ? `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="#000" stroke="${fill}" stroke-width="3.5"/>${svgLabel(x,y+8,lab,22,fill)}</g>`
+      : `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#fff4e3" stroke-width="2"/>${svgLabel(x,y+8,lab,22,ink)}</g>`; };
+  if(c){
+    // curved arrow from the given note dipping under the string to the fret of the note in question (CJ Nov 17); over the string on the low E
+    { const sx=nx(c.fret), tx=nx(c.to2), y=sy(c.str), up=c.str===0, k=up?-1:1, d=tx>sx?1:-1;
+      const x0=sx+d*22, y0=y+k*30, x1=tx-d*24, y1=y+k*30, dip=y+k*62;   // gaps so it never touches the notes (CJ Nov 17)
+      h+=`<path d="M${x0} ${y0} C${x0+d*20} ${dip} ${x1-d*34} ${dip} ${x1} ${y1}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round"/>`;
+      // arrowhead along the curve's end direction
+      const ang=Math.atan2(y1-dip,x1-(x1-d*34)), L=13, a1=ang+2.6, a2=ang-2.6;
+      h+=`<path d="M${x1+L*Math.cos(a1)} ${y1+L*Math.sin(a1)}L${x1} ${y1}L${x1+L*Math.cos(a2)} ${y1+L*Math.sin(a2)}" fill="none" stroke="#f2b25c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`; }
+    h+=dot(c.fret,c.from,'#f1e4cc','#1a120a',popAns&&!revealed?'dot':'');
+    if(revealed) h+=dot(c.to2,c.to,'#e09a3e','#1a120a',popAns?'dot':'');
+    // whole step: the note in between shows greyed out with the answer, as an extra learning point (CJ Nov 21)
+    // half step: the note a whole step from the prompt note shows the same way (CJ Nov 22)
+    const ex=revealed&&extraNote(c);
+    if(ex) h+=dot(ex.f,ex.n,ex.f===0?'#6e655b':'#2b2622','#a69b8d',popAns?'dot':'').replace('stroke="#fff4e3"','stroke="#5c534a"');   // in-between note: solid, just a quieter grey (CJ Nov 22: see-through was hard to read)
+  }
+  if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
+  svg.innerHTML=h;
+  svg.setAttribute('aria-label', c?`${c.from} on the ${STRING_NAMES[c.str]} string, fret ${c.fret}`+(revealed?`; answer ${c.to} at fret ${c.to2}`+(extraNote(c)?(extraNote(c).w?`, with ${extraNote(c).n} in between`:`, and ${extraNote(c).n} a whole step away`):''):''):'Guitar neck');
+}
+const DIMSVG='<span class="dim"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>';
+const DEGS=['1','2m','3m','4','5','6m','7°'];
+function degHTML(d){ return `<span class="deg" aria-label="${d.replace('°',' diminished')}">${d[0]}${d.includes('m')?'<span class="m">m</span>':''}${d.includes('°')?DIMSVG:''}</span>`; }
+function chordHTML(ch){ const n=ch.name; return `<span class="nm">${n[0]}${n[1]?`<span class="acc">${n[1]}</span>`:''}${ch.q==='min'?'<span class="m">m</span>':''}${ch.q==='dim'?DIMSVG:''}</span>`; }
+const STEP_GAPS=['W','W','H','W','W','W','H'];   // after 1, 2, 3, 4, 5, 6 and 7 (7 to the octave, CJ)
+function drawScale(c,revealed,pop){
+  const el=$('scale'); let h='';
+  for(let d=0;d<7;d++){
+    const ch=c?c.chords[d]:null, miss=c&&d===c.miss;
+    const box = !c ? '<div class="ch"></div>' : miss ? (revealed?`<div class="ch ans${pop?'':' still'}">${chordHTML(ch)}</div>`:'<div class="ch q" aria-label="missing chord">?</div>') : `<div class="ch">${chordHTML(ch)}</div>`;
+    h+=`<div class="cell">${degHTML(DEGS[d])}${box}</div>`;
+    h+=`<div class="gap${STEP_GAPS[d]==='H'?' h':''}" aria-label="${STEP_GAPS[d]==='H'?'half step':'whole step'}"><span>${STEP_GAPS[d]}</span></div>`;
+  }
+  el.innerHTML=h; el.classList.toggle('steps',!!settings.showSteps);
+}
+function syncMode(){
+  const sc=settings.mode==='scale';
+  $('scale').hidden=!sc; $('boardWrap').hidden=sc; $('askArrow').hidden=sc; $('keyTag').hidden=sc;
+  $('chroma').hidden=!settings.chroma; $('chromaBtn').hidden=false; $('stepsBtn').hidden=!sc; // Chromatic Scale in both modes (CJ)
+  $('roundUnit').textContent=sc?'scales':'notes';
+}
+function syncSteps(){ const b=$('stepsBtn'); b.textContent=settings.showSteps?'Hide Steps':'Show Steps'; b.setAttribute('aria-pressed',String(!!settings.showSteps)); $('scale').classList.toggle('steps',!!settings.showSteps); }
+$('stepsBtn').onclick=()=>{ settings.showSteps=!settings.showSteps; save(); syncSteps(); };
+let lastDraw=[null,false];
+function drawPair(c,revealed,popAns){ lastDraw=[c,revealed]; drawBoard(c,revealed,popAns); }
+
+/* ---------- Sound: recorded acoustic guitar (window.GUITAR_TONES.acoustic, MIDI 38-74) ---------- */
+let ctx=null; const bufCache={};
+function audio(){ if(!ctx){ try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(ctx&&ctx.state==='suspended') ctx.resume(); return ctx; }
+function pluckBuffer(midi){
+  if(bufCache[midi]) return bufCache[midi];
+  const a=ctx, sr=a.sampleRate, freq=440*Math.pow(2,(midi-69)/12), N=Math.round(sr/freq), len=Math.floor(sr*2.6);
+  const buf=a.createBuffer(1,len,sr), d=buf.getChannelData(0), ring=new Float32Array(N);
+  for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+  for(let k=0;k<2;k++) for(let i=1;i<N;i++) ring[i]=(ring[i]+ring[i-1])/2;
+  let p=0; const decay=.996;
+  for(let i=0;i<len;i++){ const n=(p+1)%N; const v=decay*0.5*(ring[p]+ring[n]); d[i]=ring[p]; ring[p]=v; p=n; }
+  let m=0; for(let i=0;i<len;i++) m=Math.max(m,Math.abs(d[i])); for(let i=0;i<len;i++) d[i]/=m||1;
+  return bufCache[midi]=buf;
+}
+const TONE='acoustic', sampleCache={};
+function nearestKey(tone,midi){
+  const keys=Object.keys((window.GUITAR_TONES||{})[tone]||{}).map(Number);
+  if(!keys.length) return null;
+  return keys.reduce((a,b)=>Math.abs(b-midi)<Math.abs(a-midi)?b:a);
+}
+function sampleBuffer(tone,key){
+  const id=tone+key; if(sampleCache[id]) return sampleCache[id];
+  const uri=window.GUITAR_TONES[tone][key];
+  if(!uri.startsWith('data:')) return sampleCache[id]=fetch(uri).then(r=>{ if(!r.ok) throw r.status; return r.arrayBuffer(); }).then(ab=>new Promise((res,rej)=>ctx.decodeAudioData(ab,res,rej))); // Dojo build streams the recordings from a CDN
+  const bin=atob(uri.split(',')[1]), bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return sampleCache[id]=new Promise((res,rej)=>ctx.decodeAudioData(bytes.buffer,res,rej));
+}
+let voices=[];
+function stopAll(){ if(!ctx) return; const t=ctx.currentTime; voices.forEach(v=>{ try{ v.g.gain.cancelScheduledValues(t); v.g.gain.setValueAtTime(v.g.gain.value,t); v.g.gain.linearRampToValueAtTime(0,t+.08); v.src.stop(t+.1); }catch(e){} }); voices=[]; }
+function startBuffer(buf,vol,rate,when,len){
+  const a=ctx, src=a.createBufferSource(), g=a.createGain(), t=a.currentTime+(when||0), L=len||2.4;
+  src.buffer=buf; src.playbackRate.value=rate||1;
+  g.gain.setValueAtTime(vol,t); g.gain.setValueAtTime(vol,t+L-.4); g.gain.linearRampToValueAtTime(0,t+L);
+  src.connect(g).connect(a.destination); src.start(t); src.stop(t+L+.05);
+  const v={src,g}; voices.push(v); src.onended=()=>{ voices=voices.filter(x=>x!==v); };
+}
+function playMidi(midi,when,len){
+  const key=nearestKey(TONE,midi), vol=.6;
+  if(key==null) return startBuffer(pluckBuffer(midi),.3,1,when,len);
+  sampleBuffer(TONE,key).then(b=>startBuffer(b,vol,Math.pow(2,(midi-key)/12),when,len)).catch(()=>startBuffer(pluckBuffer(midi),.3,1,when,len));
+}
+// the given note when it appears; only the answer note when it is revealed
+function playGiven(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); playMidi(c.m1,0,2.4); }
+function playStep(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); playMidi(c.m2,0,2.4); }
+// Major Scale mode: the missing chord, strummed low to high in root position
+function playChord(c,force){ if((!settings.sound&&!force)||!c||!audio()) return; stopAll(); c.midis.forEach((m,k)=>playMidi(m,k*.04,2)); }
+function preloadSamples(){ if(!ctx) return; for(let m=50;m<=70;m++){ const key=nearestKey(TONE,m); if(key!=null) sampleBuffer(TONE,key).catch(()=>{}); } }
+
+/* ---------- Session ---------- */
+let S=null;
+function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
+function setBar(fromPct,ms){
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
+  if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
+}
+function idle(over){ $('session').classList.remove('cinb');
+  if(!over) ssSetup();
+  demoStop(); if(S) clearT(); S=over?S:null; if(S) S.over=true;
+  $('progress').innerHTML='<b>&nbsp;</b>'; // keeps the line's height so nothing shifts
+  $('ask').className='ask'+(over?' brand':''); $('ask').textContent=over?'Round complete':'Ready';
+  $('said').textContent='';
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
+  $('nextBtn').textContent=over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
+  $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('replayBtn').disabled=true;
+  drawPair(null); setArrow(null); $('keyTag').textContent=''; syncMode(); drawScale(null);
+  if(!over) drawExample();
+  drawTap();
+}
+// start screen (CJ, Nov 17): two worked examples loop until Start, drawn in DGU blue (no sound), each step with a blue box + arrow
+let demoT=null, DEMO=false;
+let DEMOS=[{mode:'steps',st:'whole',dr:'up',pc:0,str:1,fret:3,to2:5,from:'C',to:'D',key:-1,m1:48,m2:50},
+  {mode:'steps',st:'half',dr:'down',pc:5,str:2,fret:3,to2:2,from:'F',to:'E',key:-1,m1:53,m2:52}];
+let DEMO_TIPS=[['Learning half or whole step note intervals','Identify which note is a whole step up from C',''],
+  ['Learning half or whole step note intervals','Identify which note is a half step down from F','']]; // CJ's script, Nov 17
+const SET_TIP='First pick your settings', DEMO_END='Press Start when ready';
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+// the X on a demo box stops the demo (CJ Nov 17)
+// get-ready moment before a run (CJ Nov 18): 'Ready', then 'Begin' for the last 1.5 s, fading out; done() after 4 s
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=host.ownerDocument.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.textContent='Ready'; void o.offsetWidth; o.classList.add('on');
+  o._t=[setTimeout(function(){ o.textContent='Begin'; o.classList.add('go'); },2500), setTimeout(function(){ o.classList.add('out'); },3300), setTimeout(function(){ o.className='prep'; if(done) done(); },4000)]; }
+function prepCancel(host){ var o=host.querySelector(':scope > .prep'); if(!o) return; (o._t||[]).forEach(clearTimeout); o._t=[]; o.className='prep'; }
+function demoX(){ clearTimeout(demoT); demoT=null; }
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
+    c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
+    c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); c.classList.toggle('below',!!below); // no orphan last word (CJ)
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('ask').closest('.wrap'),null); }
+function kwDemos(){ const K=settings.keys[0], sc=keyScale(K);
+  const at=(pc,lo,hi)=>{ for(const s0 of [1,2,3,0,4,5]){ const f=((pc-OPEN[s0])%12+12)%12; if(f>=lo&&f<=hi) return [s0,f]; } return [1,lo]; };
+  const [s1,f1]=at(sc[0].pc,1,9), [s2,f2]=at(sc[3].pc,2,10);
+  DEMOS=[{mode:'steps',st:'whole',dr:'up',str:s1,fret:f1,to2:f1+2,from:sc[0].name,to:sc[1].name,pc:sc[0].pc,key:K,m1:OPEN[s1]+f1,m2:OPEN[s1]+f1+2},
+    {mode:'steps',st:'half',dr:'down',str:s2,fret:f2,to2:f2-1,from:sc[3].name,to:sc[2].name,pc:sc[3].pc,key:K,m1:OPEN[s2]+f2,m2:OPEN[s2]+f2-1}];
+  DEMO_TIPS=[['Learning half or whole step note intervals',`Identify which note is a whole step up from ${sc[0].name}`,''],
+    ['Learning half or whole step note intervals',`Identify which note is a half step down from ${sc[3].name}`,'']]; }   // CJ's script, Nov 17, with the page key's notes
+function drawExample(i=0,step=-1){
+  clearTimeout(demoT); kwDemos();
+  if(i>=2*DEMOS.length){ coach($('ask').closest('.wrap'),ssGo($('nextBtn')),DEMO_END); demoT=setTimeout(()=>coach($('ask').closest('.wrap'),null),6000); return; } // plays through twice, then stops (CJ)
+  DEMO=true; $('session').classList.add('demo');
+  const k=i%DEMOS.length, ex=DEMOS[k], tip=DEMO_TIPS[k], host=$('ask').parentNode, rev=step===2;
+  const H=host.closest('.wrap');
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  if(step!==1){ $('ask').innerHTML=`${STEPS[ex.st].name} <span class="dir">${ex.dr}</span>`; drawPair(ex,rev,step>=0); }
+  const dots=$('board').querySelectorAll('circle[r="22"]');
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; $('said').textContent=SET_TIP; coach(H,$('setup'),SET_TIP,true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
+  $('said').textContent=tip[step];
+  if(step===0){ setBar(0,16500); coach(H,$('ask'),tip[0],true); demoT=setTimeout(()=>drawExample(i,1),5500); } // half as long (CJ Nov 17)
+  else if(step===1){ const ps=$('board').querySelectorAll('path'); coach(H,ps[ps.length-1]||dots[0],tip[1]); /* points at the target note (the arrow's end) */ demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(H,null); $('said').textContent=''; demoT=setTimeout(()=>drawExample(i+1,k===DEMOS.length-1?-1:0),3000); }
+}
+function start(){
+  ssPlay();
+  if(!start.go){ audio(); demoStop(); $('progress').innerHTML=''; { const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; } start.seq=buildSequence(settings.perRound); try{ coach($('ask').closest('.wrap'),null); }catch(e){} $('session').classList.remove('demo'); setArrow(null); drawScale(null); $('said').textContent=''; drawPair(start.seq[0],false); $('session').classList.add('cinb'); $('session').dataset.cinAt='#board'; $('nextBtn').disabled=true; prep($('session'),()=>{ $('session').classList.remove('cinb'); $('nextBtn').disabled=false; start.go=true; start(); start.go=false; }); return; } // 4 s Ready / Begin first (CJ Nov 18)
+  audio(); preloadSamples();
+  S={seq:start.seq||buildSequence(settings.perRound), i:0, phase:'ask', paused:false}; TAP={right:0,total:0};
+  demoStop(); $('ask').className='ask'; $('pauseBtn').disabled=false; $('undoBtn').disabled=false; $('pauseBtn').textContent='Pause';
+  start.seq=null; enter(true);
+}
+const card=()=>S.seq[S.i];
+// right = step up, left = step down (same as moving along the neck)
+const UPARROW='<svg viewBox="0 0 84 34"><path d="M4 17H78M66 5l12 12-12 12" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function setArrow(dr){ const a=$('askArrow'); a.innerHTML=UPARROW; a.style.visibility=dr?'visible':'hidden'; a.style.transform=dr==='down'?'scaleX(-1)':''; }
+function enter(sound){
+  clearT();
+  const c=card(), rev=S.phase==='reveal';
+  if(!rev&&c.mode!=='scale') tapUndo(c); drawTap();
+  $('progress').innerHTML=`<b>${S.i+1} <span class="of">of</span> ${S.seq.length}</b>`;
+  if(c.mode==='scale') return enterScale(c,rev,sound);
+  $('ask').innerHTML=`${STEPS[c.st].name} <span class="dir">${c.dr}</span>`;
+  drawPair(c,rev,sound); setArrow(c.dr);
+  $('keyTag').textContent = c.key>=0 ? `Key of ${KEYS[c.key][0]}` : '';
+  $('replayBtn').disabled=false;
+  if(!rev){
+    $('said').textContent=`${STEPS[c.st].name} ${c.dr} from ${spoken(c.from)}`;
+    $('nextBtn').textContent='Show answer';
+    const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
+    setBar(0,S.paused||NT()?0:ms);
+    if(!S.paused&&!NT()) S.timer=setTimeout(reveal,ms);   // No timer: waits for Show answer
+    if(sound) playGiven(c);
+  }else{
+    $('said').textContent=`${spoken(c.from)} ${STEPS[c.st].name.toLowerCase()} ${c.dr} is ${spoken(c.to)}`;
+    $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next note';
+    $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
+    const ms=(settings.pace>=8?3.5:3)*1000; S.remaining=ms; S.t0=performance.now();
+    if(!S.paused) S.timer=setTimeout(advance,ms);
+    if(sound) playStep(c);
+  }
+}
+function enterScale(c,rev,sound){
+  { const kn=KEYS[c.key][0]; $('ask').innerHTML=`Key of <span class="dir">${kn[0]}${kn[1]?`<span class="kacc">${kn[1]}</span>`:''}</span>`; }
+  drawScale(c,rev,sound);
+  $('replayBtn').disabled=!rev;
+  const miss=c.chords[c.miss], said=miss.name.replace('♭',' flat').replace('♯',' sharp')+(miss.q==='min'?' minor':miss.q==='dim'?' diminished':'');
+  if(!rev){
+    $('said').textContent=`Key of ${KEYS[c.key][0]}: which chord is missing?`;
+    $('nextBtn').textContent='Show answer';
+    const ms=settings.pace*1000; S.remaining=ms; S.t0=performance.now();
+    setBar(0,S.paused||NT()?0:ms);
+    if(!S.paused&&!NT()) S.timer=setTimeout(reveal,ms);   // No timer: waits for Show answer
+  }else{
+    $('said').textContent=`The missing chord is ${said}, chord ${DEGS[c.miss].replace('°',' diminished')}`;
+    $('nextBtn').textContent=S.i===S.seq.length-1?'Finish':'Next scale';
+    $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
+    const ms=(settings.pace>=8?2.5:2)*1000; S.remaining=ms; S.t0=performance.now(); // one second shorter than Steps mode (CJ)
+    if(!S.paused) S.timer=setTimeout(advance,ms);
+    if(sound) playChord(c);
+  }
+}
+function reveal(){ S.phase='reveal'; enter(true); }
+function advance(){ if(S.i>=S.seq.length-1) return idle(true); S.i++; S.phase='ask'; enter(true); }
+/* Tap to answer (CJ Nov 23): five note choices under the diagram (the answer, the notes a half and whole step either side of
+   the given note, and one more a half step further out on a random side, like the Key Workout Test). A tap shows the answer at once;
+   the round ends with how many taps were right. Saying it out loud still works: the timer and Show answer are unchanged. */
+let TAP={right:0,total:0};
+function tapQ(c){
+  if(c._tap) return c._tap;
+  const d=c.dr==='up'?1:-1, apc=(c.pc+d*(c.st==='whole'?2:1)+12)%12, s=c.from+c.to;
+  const nm=pc=>{ if(c.key>=0){ const t=keyScale(c.key).find(x=>x.pc===pc); if(t) return t.name; return (FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; }
+    return (s.includes('♭')?FLAT:s.includes('♯')?SHARP:d>0?SHARP:FLAT)[pc]; };
+  const opts=(c.key>=0?(()=>{ const rel=keyScale(c.key).map(t=>{ let k=(t.pc-c.pc+12)%12; if(k>6) k-=12; return k; }).filter(k=>k!==0), dn=rel.filter(k=>k<0).sort((a,b)=>b-a), up=rel.filter(k=>k>0).sort((a,b)=>a-b); return [dn[1],dn[0],up[0],up[1],(Math.random()<.5&&dn[2]!=null)||up[2]==null?dn[2]:up[2]].filter(k=>k!=null).sort((x,y)=>x-y); })():[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y)).map(k=>{ const pc=(c.pc+k+12)%12; return {pc, n:pc===apc?c.to:nm(pc)}; });
+  return c._tap={opts, apc, pick:null};
+}
+function tapUndo(c){ const q=c._tap; if(!q||q.pick==null) return; TAP.total--; if(q.opts[q.pick].pc===q.apc) TAP.right--; q.pick=null; }
+const tapLab=n=>n[0]+(n[1]?`<span class="acc${n[1]==='♭'?' fl':''}">${n[1]}</span>`:'');
+function drawTap(){
+  const el=$('tapCh'); if(!el) return;
+  if(!S||DEMO){ el.innerHTML=''; return; }
+  if(S.over){ el.innerHTML=TAP.total?`<div class="tap-score">You tapped ${TAP.right} of ${TAP.total} right</div>`:''; return; }
+  const c=card(); if(c.mode==='scale'){ el.innerHTML=''; return; }
+  const q=tapQ(c), rev=S.phase==='reveal';
+  el.innerHTML=q.opts.map((o,i)=>`<button type="button" data-i="${i}">${tapLab(o.n)}</button>`).join('');
+  const bs=[...el.querySelectorAll('button')];
+  if(rev) bs.forEach((b,i)=>{ b.disabled=true; const o=q.opts[i]; if(i===q.pick) b.classList.add(o.pc===q.apc?'ok':'no'); else if(o.pc===q.apc) b.classList.add('ans'); });
+  else bs.forEach((b,i)=>b.onclick=()=>tapPick(i));
+}
+function tapPick(i){
+  if(!S||S.over||S.paused||S.phase!=='ask') return;
+  const q=tapQ(card()); if(q.pick!=null) return;
+  q.pick=i; TAP.total++; if(q.opts[i].pc===q.apc) TAP.right++;
+  reveal();   // the answer shows on the diagram at once
+}
+function next(){ if(!S||S.over) return start(); if(S.phase==='ask') reveal(); else advance(); }
+function undo(){
+  if(!S||S.over) return;
+  if(S.phase==='reveal') S.phase='ask'; else if(S.i>0){ S.i--; S.phase='ask'; }
+  enter(true);
+}
+function togglePause(){
+  if(!S||S.over) return;
+  S.paused=!S.paused; $('pauseBtn').textContent=S.paused?'Resume':'Pause';
+  if(S.paused){
+    clearT(); S.remaining-=performance.now()-S.t0;
+    const bar=$('timerBar'); const w=getComputedStyle(bar).width; bar.style.transition='none'; bar.style.width=w;
+  }else{
+    S.t0=performance.now();
+    if(S.phase==='ask'){ const bar=$('timerBar'); void bar.offsetWidth; if(!NT()){ bar.style.transition=`width ${S.remaining}ms linear`; bar.style.width='100%'; S.timer=setTimeout(reveal,Math.max(0,S.remaining)); } }
+    else S.timer=setTimeout(advance,Math.max(0,S.remaining));
+  }
+}
+/* Chromatic scale strip, same as Find the Note: starts at A, sharp name with the flat name under it */
+function renderChroma(){
+  const acc=n=>n[0]+(n[1]?`<span class="a">${n[1]}</span>`:'');
+  $('chroma').innerHTML=[9,10,11,0,1,2,3,4,5,6,7,8].map(i=>SHARP[i]===FLAT[i]?`<span>${SHARP[i]}</span>`:`<span>${acc(SHARP[i])}<small>${acc(FLAT[i])}</small></span>`).join('');
+}
+function syncChroma(){ $('chroma').hidden=!settings.chroma; const b=$('chromaBtn'); b.textContent=settings.chroma?'Hide Chromatic Scale':'Show Chromatic Scale'; b.setAttribute('aria-pressed',String(settings.chroma)); }
+$('chromaBtn').onclick=()=>{ settings.chroma=!settings.chroma; save(); syncChroma(); };
+function syncMute(){ const b=$('muteBtn'); b.textContent=settings.sound?'Sound off':'Sound on'; b.setAttribute('aria-pressed',String(!settings.sound)); }
+
+$('nextBtn').onclick=next; $('undoBtn').onclick=undo; $('pauseBtn').onclick=togglePause;
+$('replayBtn').onclick=()=>{ if(!S||S.over) return; const c=card(); if(c.mode==='scale'){ if(S.phase==='reveal') playChord(c,true); return; } S.phase==='reveal'?playStep(c,true):playGiven(c,true); };
+$('muteBtn').onclick=()=>{ settings.sound=!settings.sound; save(); syncMute(); if(!settings.sound) stopAll(); };
+
+/* ===== Settings screen (CJ, Nov 21 2026): settings + Start on their own screen; the exercise on its own screen,
+   with a "Settings" button at the top to go back. Same pattern as Find the Note. Added by settings-screen/patch.py. ===== */
+function ssInit(o){ return;
+  const wrap=o.wrap, hid=(l,pre)=>l&&l.length?l.map(s=>pre+' '+s).join(',')+'{display:none!important}':'';
+  const st=document.createElement('style');
+  st.textContent=`
+.ss-top{display:none;align-items:center;gap:14px;width:100%}
+.ss-play .ss-top{display:flex}
+.ss-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line,#2e2822);background:transparent;color:var(--fg,#f1ebe2);border-radius:999px;padding:8px 18px 8px 12px;font:inherit;font-size:16px;font-weight:600;line-height:1.2;cursor:pointer;flex:none}
+.ss-back svg{width:18px;height:18px;flex:none}
+.ss-back:hover{border-color:var(--muted,#a69b8d)}
+.ss-back:focus-visible,.ss-go:focus-visible{outline:3px solid var(--accent,#e09a3e);outline-offset:2px}
+.ss-go{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-size:19px;font-weight:600;cursor:pointer;background:var(--accent,#e09a3e);color:var(--accent-ink,#1a120a)}
+.ss-go:disabled{opacity:.45;cursor:default}
+.ss-play .ss-go{display:none!important}
+${hid(o.play,'.ss-play')}
+${hid(o.setup,'.ss-wrap:not(.ss-play)')}
+${o.css||''}`;
+  (o.root.host?o.root:document.head).appendChild(st);
+  wrap.classList.add('ss-wrap');
+  const top=document.createElement('div'); top.className='ss-top';
+  top.innerHTML='<button type="button" class="ss-back" aria-label="Stop and go back to Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Settings</button>';
+  o.placeTop(top);
+  top.firstChild.onclick=()=>{ o.stop(); ssSetup(); };
+  let go=null;
+  if(o.startBtn){
+    go=document.createElement('button'); go.type='button'; go.className='ss-go';
+    o.placeGo(go);
+    const mirror=()=>{ const t=o.goLabel?o.goLabel():o.startBtn.textContent.trim()||'Start', d=!!(o.goDisabled?o.goDisabled():o.startBtn.disabled); if(go.textContent!==t) go.textContent=t; if(go.disabled!==d) go.disabled=d; }; // only touch it when something changed (no observer loop)
+    const mo=new MutationObserver(mirror); [o.startBtn].concat(o.watch||[]).forEach(el=>el&&mo.observe(el,{childList:true,characterData:true,subtree:true,attributes:true}));
+    mirror();
+    go.onclick=()=>{ if(o.onGo) o.onGo(); else o.startBtn.click(); };
+  }
+  o.go=go; ssInit.o=o;
+}
+// the big Start on the Settings screen (the demo's last box points at it)
+function ssGo(fallback){ const g=ssInit.o&&ssInit.o.go; return g&&g.offsetParent?g:fallback; }
+function ssScreen(play){
+  const o=ssInit.o; if(!o) return; const w=o.wrap, was=w.classList.contains('ss-play');
+  if(was===play) return;
+  w.classList.toggle('ss-play',play);
+  if(o.after) o.after(play);
+  const r=w.getBoundingClientRect(); if(r.top<0||(play&&r.top>80)) window.scrollBy(0,r.top-12);
+}
+function ssPlay(){ ssScreen(true); }
+function ssSetup(){ ssScreen(false); }
+
+/* ===== Space bar (CJ, Nov 22 2026): space starts / pauses / resumes the tool and NEVER scrolls the page.
+   dguSpace({host, act, visible?})  host = the tool's outer element (code block div or iframe), act = what space does.
+   One shared listener per window: with several tools on one page, space goes to the one last touched,
+   else the one most on screen. Typing in a text box keeps a normal space. Shared file: /mnt/project-files/space-bar/space.js ===== */
+function dguSpace(o){
+  const W=window, R=W.__dguSpace||(W.__dguSpace={v:1,list:[],last:null});
+  const me={host:o.host,act:o.act,vis:o.visible};
+  R.list.push(me);
+  o.host.addEventListener('pointerdown',()=>{ R.last=me; },true);
+  if(R.on) return; R.on=1;
+  const isSp=e=>(e.code==='Space'||e.key===' '||e.key==='Spacebar')&&!e.metaKey&&!e.ctrlKey&&!e.altKey;
+  const typing=e=>{ const t=(e.composedPath&&e.composedPath()[0])||e.target; if(!t) return false;
+    if(t.isContentEditable||t.tagName==='TEXTAREA') return true;
+    return t.tagName==='INPUT'&&!/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(t.type||''); };
+  const box=m=>{ const h=m.host; if(h.getBoundingClientRect().height) return h; // the code block's div can be display:contents on the site
+    const sr=h.shadowRoot; return (sr&&(sr.querySelector('.wrap,.w')||sr.firstElementChild&&[...sr.children].find(e=>e.getBoundingClientRect().height)))||h; };
+  const shown=m=>{ if(!m.host.isConnected||(m.vis&&!m.vis())) return 0; const r=box(m).getBoundingClientRect();
+    const h=Math.min(r.bottom,W.innerHeight)-Math.max(r.top,0); return r.width>0&&r.height>0&&h>0?h:0; };
+  R.pick=()=>{ if(R.last&&shown(R.last)) return R.last; let b=null,bh=0; R.list.forEach(m=>{ const h=shown(m); if(h>bh){ bh=h; b=m; } }); return b; };
+  R.press=()=>{ const m=R.pick(); if(m) try{ m.act(); }catch(err){ console.warn('space',err); } };
+  // capture on window: runs first, stops the page scroll, the focused button's own click and any older space handlers
+  W.addEventListener('keydown',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); if(!e.repeat) R.press(); },true);
+  W.addEventListener('keyup',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+  W.addEventListener('keypress',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+}
+// press a button only when it's on screen and enabled; true if pressed
+function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
+}
+/* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
+   "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.
+   Overrides the older prep(host,done) (a later function declaration wins); prepCancel(host) still works. */
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var rt=host.getRootNode(), d=host.ownerDocument;
+  if(!(rt.querySelector?rt:d).querySelector('#dgu-cin-css')){ var st=d.createElement('style'); st.id='dgu-cin-css';
+    st.textContent='div.prep{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(0,0,0,.96);color:#fff;font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1;transition:opacity .2s}'+
+      'div.prep.go{color:#fff}div.prep .cin{display:flex;gap:12px;justify-content:center}div.prep .cin i{width:12px;height:12px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}'+
+      'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
+    (rt.host?rt:d.head).appendChild(st); }
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
+  var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  // CJ Nov 23: where the tool has room, Ready sits ON the diagram / game area itself (host.dataset.cinAt = its selector)
+  var at=host.dataset&&host.dataset.cinAt&&host.querySelector(host.dataset.cinAt), t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(at&&at.getBoundingClientRect().height){ var ra=at.getBoundingClientRect();
+    o.style.cssText+=';inset:auto;left:'+(ra.left-hr.left+ra.width/2)+'px;top:'+(ra.top-hr.top+ra.height/2)+'px;transform:translate(-50%,-50%);height:auto;padding:14px 28px;border-radius:16px;white-space:nowrap;flex-direction:row;gap:18px;font-size:clamp(34px,5vw,52px);background:'+bg; }
+  else if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
+  prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
+  var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
+  o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
+{ const st=document.createElement('style'); st.textContent='.ss-play .coach,.ss-play .dgu-recnote{display:none!important}'; (typeof root!=='undefined'?root:document.head).appendChild(st); }
+const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
+dguSpace({host:document.querySelector('.wrap'), act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); if(!S||S.over) dguTap($('nextBtn')); else togglePause(); }});
+ssInit({root:document, wrap:document.querySelector('.wrap'), play:['header','#setup'], setup:['.controls'],
+  placeTop:t=>$('session').prepend(t), startBtn:$('nextBtn'), placeGo:g=>$('session').appendChild(g),
+  stop:()=>{ prepCancel($('session')); $('nextBtn').disabled=false; idle(); }});
+renderSets(); renderChroma(); syncChroma(); syncSteps(); syncMute(); idle();
+/* ---------- Scored Workout mode (CJ Nov 18): fixed settings, answer choices instead of saying it out loud, a score at the end ---------- */
+(function(){
+  const QS=new URLSearchParams(location.search), num=(k,d)=>{ const v=parseFloat(QS.get(k)); return isFinite(v)&&v>0?v:d; };
+  const CFG=Object.assign({n:Math.round(num('n',20)), pace:num('pace',8), lvl:QS.get('lvl')||'i', str:+(QS.get('str')||0)}, window.KWWO||{});
+  const LVNAME={b:'Beginner',i:'Intermediate',p:'Pro'}[CFG.lvl]||'Intermediate';   // level (CJ Nov 23): Beginner / Intermediate / Pro
+  try{ store.set=function(){}; }catch(e){}   // the workout never changes the member's own tool settings // the workout page passes the member's seconds per question and the count that fits (CJ Nov 18)
+  settings.steps=['half','whole']; settings.dirs=CFG.lvl==='b'?['up']:['up','down']; settings.perRound=CFG.n; settings.pace=CFG.pace; settings.sound=true; settings.chroma=false; settings.str=CFG.lvl==='b'?String(Math.max(0,Math.min(5,CFG.str|0))):'mix'; settings.strs=CFG.lvl==='i'?[0,1,2,3]:null; settings.maxStart=CFG.lvl==='b'?11:CFG.lvl==='i'?7:12; try{syncChroma();}catch(e){}
+  const css=document.createElement('style');
+  css.textContent=`#setup,#undoBtn,#stepsBtn,#chromaBtn,#keyBtn,#tip{display:none!important}
+.wo-ch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 12px;max-width:640px;min-height:58px}
+.wo-ch button{flex:0 1 auto;min-width:76px;padding:10px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,.45);background:#14110e;color:#f1ebe2;font:inherit;font-weight:700;font-size:26px;line-height:1.15;cursor:pointer}
+.wo-ch button:hover:not(:disabled){border-color:#18CEFB}
+.wo-ch button:disabled{cursor:default;opacity:.55}
+.wo-ch button.ok{background:#3ccf6e;border-color:#3ccf6e;color:#06210f;opacity:1}
+.wo-ch button.no{background:#ff5c5c;border-color:#ff5c5c;color:#2a0606;opacity:1}
+.wo-ch button.ans{border-color:#3ccf6e;box-shadow:inset 0 0 0 2px #3ccf6e;opacity:1}
+.wo-ch .wacc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
+.wo-ch .nm,.wo-ch .deg{font-size:inherit!important}
+.wo-ch .deg{justify-content:center}   /* numbers centered in their boxes (CJ Nov 22) */
+.wo-ch .acc{font-size:.62em;font-weight:500;vertical-align:.45em;margin-left:.04em}
+.wo-ch .m{font-size:.78em;font-weight:600}
+.wo-ch .dim{display:inline-block;width:.32em;height:.32em;vertical-align:.9em;margin-left:.05em;opacity:.8}.wo-ch .dim svg{display:block;width:100%;height:100%}   /* small, thin diminished circle (CJ Nov 22) */
+.wo-hint{text-align:center;color:#a69b8d;font-size:15px;margin-top:4px;min-height:20px}
+.wo-cur{outline:2px solid #18CEFB;outline-offset:4px;border-radius:10px}
+.wo-pick-ok{color:#3ccf6e!important}.wo-pick-no{color:#ff5c5c!important}
+.wo-score{text-align:center;margin:10px 0 4px;font-weight:700;font-size:clamp(30px,4vw,44px)}
+.wo-score .kwlv{display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;margin-bottom:4px}
+.wo-score small{display:block;font-size:16px;font-weight:500;color:#a69b8d;margin-top:2px}`;
+  document.head.appendChild(css);
+  const panel=document.createElement('div'); panel.innerHTML='<div class="wo-ch" id="woCh"></div><div class="wo-hint" id="woHint"></div>';
+  $('timerBar').parentNode.before(panel);
+  let W={res:[]};
+  const acc=n=>n[0]+(n[1]?`<span class="wacc">${n[1]}</span>`:'');
+  
+  const woNow=true;
+  function woQ(c){
+    const any=c.key<0, sc=any?[]:keyScale(c.key), nm=pc=>{ const t=sc.find(x=>x.pc===pc); return t?t.name:(any?(/♭/.test(c.from+c.to)?FLAT:SHARP):FLAT_KEYS.includes(c.key)?FLAT:SHARP)[pc]; };   // Pro: any of the 12 notes, sharps and flats (CJ Nov 23)
+    const apc=(c.pc+DIRS[c.dr].s*STEPS[c.st].n+12)%12;
+    // five choices (CJ Nov 22): one extra note a half step further out on a random side, so the start note isn't always in the middle
+    const opts=(any?[-2,-1,1,2,Math.random()<.5?-3:3].sort((x,y)=>x-y):(()=>{ const rel=keyScale(c.key).map(t=>{ let k=(t.pc-c.pc+12)%12; if(k>6) k-=12; return k; }).filter(k=>k!==0), dn=rel.filter(k=>k<0).sort((a,b)=>b-a), up=rel.filter(k=>k>0).sort((a,b)=>a-b); return [dn[1],dn[0],up[0],up[1],(Math.random()<.5&&dn[2]!=null)||up[2]==null?dn[2]:up[2]].filter(k=>k!=null).sort((x,y)=>x-y); })()).map(s=>{ const pc=(c.pc+s+12)%12; return {k:String(pc), h:acc(pc===apc?c.to:nm(pc))}; });
+    return [{opts, ans:String(apc)}];
+  }
+  function woMark(){} function woFill(){} function woDone(){}
+
+  function rec(){ return W.res[S.i]||(W.res[S.i]={slots:woQ(card()),got:[],done:false}); }
+  function draw(){
+    const ch=$('woCh'), hint=$('woHint');
+    if(!S||S.over){ ch.innerHTML=''; hint.textContent=''; woMark(null); return; }
+    const r=rec(), rev=S.phase==='reveal';
+    if(rev&&!r.done){ r.done=true; }
+    const k=r.done?r.slots.length-1:r.got.length, sl=r.slots[Math.min(k,r.slots.length-1)];
+    ch.innerHTML=sl.opts.map((o,i)=>`<button type="button" data-i="${i}">${o.h}</button>`).join('');
+    const bs=[...ch.querySelectorAll('button')];
+    if(r.done){
+      bs.forEach(b=>b.disabled=true);
+      // show every slot's result on the last slot's buttons only when there is one slot; otherwise mark the answer
+      const ans=sl.pool||[sl.ans], gs=sl.pool?r.got:[r.got[r.slots.indexOf(sl)]].filter(Boolean);
+      if(sl.pool||r.slots.length===1) sl.opts.forEach((o,i)=>{ const g=gs.find(x=>x.k===o.k); if(g) bs[i].classList.add(g.ok?'ok':'no'); else if(ans.includes(o.k)) bs[i].classList.add('ans'); });
+      try{ woDone(r); }catch(e){}
+      const right=r.got.filter(x=>x.ok).length;
+      hint.textContent=r.slots.length>1?`${right} of ${r.slots.length} right`:(r.got[0]?(r.got[0].ok?'Right':'Not quite'):'Time is up');
+      woMark(null,r);
+    }else{
+      hint.textContent='Tap the answer';
+      bs.forEach((b,i)=>b.onclick=()=>pick(i));
+      woMark(k,r);
+    }
+  }
+  function pick(i){
+    if(!S||S.over||S.paused||S.phase!=='ask') return;
+    const r=rec(); if(r.done) return;
+    const sl=r.slots[r.got.length], o=sl.opts[i], left=sl.pool?sl.pool.filter(x=>!r.got.some(g=>g.ok&&g.k===x)):[sl.ans], ok=left.includes(o.k);
+    r.got.push({k:o.k,ok,i});
+    woFill(r.got.length-1,r,o,ok);
+    const bs=[...$('woCh').querySelectorAll('button')];
+    bs[i].classList.add(ok?'ok':'no'); if(!ok) sl.opts.forEach((x,j)=>{ if(left.includes(x.k)) bs[j].classList.add('ans'); });
+    bs.forEach(b=>b.disabled=true);
+    if(r.got.length>=r.slots.length){ r.done=true; clearT(); setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') reveal(); },typeof woNow!=='undefined'&&woNow?0:ok?500:1100); }   // Steps Drill: the answer shows on the diagram at once (CJ Nov 22)
+    else setTimeout(()=>{ if(S&&!S.over&&S.phase==='ask') draw(); },ok?350:900);
+  }
+  const _enter=enter; enter=function(){ const v=_enter.apply(this,arguments); draw(); return v; };
+  const _start=start; start=function(){ W={res:[]}; $('woScore')&&$('woScore').remove(); const v=_start.apply(this,arguments); return v; };
+  const _idle=idle; idle=function(over){
+    const v=_idle.apply(this,arguments); draw();
+    if(over&&W.res.length){
+      let right=0,total=0; W.res.forEach(r=>{ if(!r) return; total+=r.slots.length; right+=r.got.filter(x=>x.ok).length; });
+      const n=S&&S.seq?S.seq.reduce((a,c,i)=>a+(W.res[i]?0:woQ(c).length),0):0; total+=n;
+      const score=total?Math.round(100*right/total):0;
+      // the score replaces "Done", colored by how high it is (CJ Nov 23)
+      const sc=score>=90?'#18CEFB':score>=70?'#3ccf6e':score>=50?'#f0b429':'#ff5c5c';
+      $('ask').className='ask'; $('ask').innerHTML=`<span style="color:${sc}">Score ${score}</span>`; $('nextBtn').style.display='none'; $('pauseBtn').style.display='none';
+      const el=document.createElement('div'); el.className='wo-score'; el.id='woScore'; el.innerHTML=`<small>${right} of ${total} right</small>`; $('ask').insertAdjacentHTML('afterbegin',`<span class="kwlv" style="display:block;font-size:12px;letter-spacing:.14em;font-weight:600;color:#a69b8d;line-height:1.2">${LVNAME.toUpperCase()}</span>`); $('woCh').before(el);
+      try{ window.parent.postMessage({kwwo:'done',tool:'steps-drill',score,right,total},'*'); }catch(e){}
+    } else if(!over&&!document.querySelector('.demo')){ $('ask').textContent='Ready'; }
+    return v;
+  };
+  /* the blue how-to demo still plays before each part (CJ Nov 23), without the 'pick your settings' box: the Test sets them */
+  { const st=document.createElement('style'); st.textContent='#tapCh{display:none!important}'; document.head.appendChild(st); } /* the workout has its own scored tap row (Nov 23) */ { const _de=drawExample; drawExample=function(i=0,step=-1){ return _de(i,step===-1?0:step); }; }
+  idle();
+  try{ window.parent.postMessage({kwwo:'ready',tool:'steps-drill'},'*'); }catch(e){}
+})();
+
+})();
+</script>
+<script>/* dgu-ans-right */
+/* Show answer on the right (CJ, Nov 25 2026): "the Show Answer button needs to be with the buttons to the right.
+   Only Pause/Resume and Back should be on the left under the tool. And make Pause/Resume the main button that has the bold yellow color."
+   dguAnsRight(root, {play: ()=>bool, keepMain: bool})
+   - moves #nextBtn (Show answer / Next / Skip / Go again) to the front of the right-hand toolbar while the exercise runs
+   - #pauseBtn is the yellow main button while it can be used; when Pause can't be used (round over: "Go again") #nextBtn is the main one
+   - play(): true while the exercise screen shows (Find the Note keeps its big Start in #bigrow on the Settings screen)
+   - keepMain false: #nextBtn never yellow during play (Find the Note: its round-over has its own Play again screen) */
+function dguAnsRight(root, o){
+  o = o || {};
+  const nb = root.getElementById('nextBtn'), pb = root.getElementById('pauseBtn');
+  const right = root.querySelectorAll('.controls .toolbar')[1];
+  if (!nb || !pb || !right) return;
+  const home = nb.parentNode, after = nb.nextSibling;
+  const st = document.createElement('style');
+  st.textContent = '.controls .toolbar #nextBtn.ar-r{min-width:9.3em;text-align:center}'
+    + '@media (max-width:560px){.controls .toolbar:has(> #nextBtn.ar-r){gap:6px!important}.controls .toolbar:has(> #nextBtn.ar-r) > .btn{padding:8px 9px!important;font-size:14px!important;min-width:0!important}.controls .toolbar #nextBtn.ar-r{min-width:7.9em!important}}';
+  (root.head || root).appendChild(st);
+  const sync = () => {
+    const play = o.play ? o.play() : true;
+    if (play && nb.parentNode !== right) { right.prepend(nb); nb.classList.add('ar-r'); }
+    if (!play && nb.parentNode !== home) { home.insertBefore(nb, after && after.parentNode === home ? after : null); nb.classList.remove('ar-r'); }
+    const can = !pb.disabled;
+    pb.classList.toggle('primary', play && (can || o.keepMain === false));
+    nb.classList.toggle('primary', !play || (!can && o.keepMain !== false));
+  };
+  const mo = new MutationObserver(sync);
+  mo.observe(pb, {attributes: true, attributeFilter: ['disabled']});
+  if (o.watch) mo.observe(o.watch, {attributes: true, attributeFilter: ['class']});
+  sync();
+}
+(function(){ var n=0; function go(){ var r=document;
+  if(!r.getElementById('pauseBtn')){ var h=[].slice.call(document.querySelectorAll('*')).find(function(e){ return e.shadowRoot&&e.shadowRoot.getElementById('pauseBtn'); });
+    if(!h){ if(++n<50) setTimeout(go,100); return; } r=h.shadowRoot; }
+  dguAnsRight(r); } go(); })();
+</script>

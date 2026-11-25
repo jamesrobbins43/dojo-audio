@@ -3,19 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chord Quality Evaluator</title>
+<title>Chord Clean-up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap">
-<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}</style>
+<style>.wrap>header,.credit{display:none!important}body{padding:6px 0 28px!important}.speed output{font-size:22px!important;min-width:48px!important}.speed output .u{font-size:.7em;font-weight:500}.coach{padding-right:34px!important}</style>
 <script>(function(){var k=+new URLSearchParams(location.search).get("key");window.KW_KEY=(k>=0&&k<12)?k:7;})();</script>
 <style>
-/* Chord Quality Evaluator: strum a chord once, then pick each string; the mic checks notes, tuning, ring and buzz */
+/* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,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) format('woff2');font-weight:100 900;unicode-range:U+0034}
+
+/* Chord Clean-up: strum a chord once, then pick each string; the mic checks notes, tuning, ring and buzz */
 :root{
   color-scheme:dark;
   --bg:#000000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;
   --brand:#18CEFB; /* Don't Give Up blue */
   --good:#5cbf80; --warn:#e8a54a; --bad:#ef6a5e;
-  --font:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font:"DGU Digits","Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -36,24 +39,27 @@ button:focus-visible,select:focus-visible{outline:3px solid var(--brand);outline
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
 
 /* settings */
-.sets{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px 28px;flex-wrap:wrap}
+.sets{background:var(--surface);border:0;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px 28px;flex-wrap:wrap}
 .sets h2{margin-right:6px}
 .opt{display:flex;align-items:center;gap:10px}
 .opt .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
 select{-webkit-appearance:none;-moz-appearance:none;appearance:none;font:inherit;font-size:16px;font-weight:600;background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center/12px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg);max-width:100%}
 select option,select optgroup{background:#000;color:var(--fg)}
 #chord{min-width:190px}
+#triOpt select{margin-right:6px}
 #input{min-width:190px;max-width:320px;text-overflow:ellipsis}
 
 /* main */
 .main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:900px){.main{grid-template-columns:1fr}}
 .stage{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:8px 0}
-.cname{font-weight:700;font-size:clamp(56px,7vw,84px);line-height:1;letter-spacing:-.01em;min-height:1em}
+.cname{font-weight:700;font-size:clamp(48px,5vw,64px);line-height:1;letter-spacing:-.01em;min-height:1em}
 .capo{font-size:16px;color:var(--muted);min-height:22px}
+.capo:empty{display:none}
 .acc{font-size:.55em;font-weight:300;position:relative;top:-.62em;margin-left:.03em}
 .suf{font-size:.62em;margin-left:.03em}
-.board{width:100%;max-width:270px;margin:0 auto}
+/* CJ Nov 23: the exercise must fit the screen height, so the diagram shrinks on short screens */
+.board{width:100%;max-width:min(270px,max(150px,calc((100vh - 480px) / 1.154)));margin:0 auto}
 .board svg{display:block;width:100%;height:auto}
 .hold{width:100%;max-width:520px;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
 .hold i{display:block;height:100%;width:0;background:var(--brand);border-radius:99px}
@@ -66,14 +72,25 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .sc .ov{padding-right:28px;border-right:1px solid var(--line)}
 .sc strong{font-size:36px;font-weight:600;line-height:1.1;color:#5d554b}
 .sc .ov strong{font-size:60px;line-height:1}
-.status{min-height:96px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.status{min-height:76px;display:flex;flex-direction:column;justify-content:center;gap:4px}
 .status .big{font-weight:700;font-size:clamp(30px,3.4vw,40px);line-height:1.1}
 .status .big.blue{color:var(--brand)}
 .status .small{font-size:17px;color:var(--muted);min-height:25px}
 
 /* results */
 .results{display:flex;flex-direction:column;gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+/* start screen (CJ, Nov 17): a demo plays twice before Start, with black instruction boxes + blue arrows */
+.extag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.wrap{position:relative}
+/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */
+.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}
+.coach.on{opacity:1;transform:none;pointer-events:auto}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}
+.coach::before{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}
+.coach::after{content:"";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}
+@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}
+.coach.below::before{top:auto;bottom:calc(100% + 2px)}
+.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}
+.card{background:var(--surface);border:0;border-radius:12px;padding:16px 18px}
 .card h2{margin-bottom:8px}
 .row{display:grid;grid-template-columns:116px minmax(0,1fr);gap:12px;align-items:center;padding:5px 0;min-height:34px}
 .row .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -107,19 +124,20 @@ select option,select optgroup{background:#000;color:var(--fg)}
 .err{color:var(--bad)}
 @media (max-width:560px){.row{grid-template-columns:96px minmax(0,1fr)}.srow{grid-template-columns:44px 22px 64px minmax(0,1fr);gap:8px}.lvl{display:none}.btn{min-width:104px;padding:9px 12px}}
 </style>
-<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
+<style>.kwopt{flex-basis:100%;align-items:flex-start}.kwopt .lab{padding-top:9px}.kwchips{display:flex;flex-wrap:wrap;gap:6px}.kwchips button{border:1px solid var(--line);background:rgba(0,0,0,.45);color:var(--muted);border-radius:8px;padding:7px 13px;font:600 16px/1.15 var(--font);display:flex;flex-direction:column;align-items:center}.kwchips button small{font-size:11px;font-weight:500;opacity:.8}.kwchips button{position:relative}.kwtip{display:none;position:absolute;z-index:20;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#15120f;border:0;border-radius:10px;padding:8px 10px 6px;flex-direction:column;align-items:center;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.6)}.kwtip b{font-size:15px;color:#f2b25c;font-weight:700;line-height:1}@media (hover:hover){.kwchips button:hover .kwtip{display:flex}}.kwchips button.show .kwtip{display:flex}.kwchips button:hover{color:var(--fg)}.kwchips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#001218}.kwprog{font-size:15px;font-weight:600;color:var(--brand);min-height:20px;letter-spacing:.04em}#kwList{display:flex;flex-direction:column;gap:4px;margin-top:10px}.kwrow{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:8px;padding:8px 12px;font:700 22px/1 var(--font);cursor:pointer;text-align:left}.kwrow:hover{border-color:var(--line)}.kwrow.on{background:rgba(24,206,251,.08);border-color:rgba(24,206,251,.45)}.kwrow strong{font-size:26px}</style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Chord Quality Evaluator</h1>
+    <h1>Chord Clean-up</h1>
     <p class="sub">Hear how clean your chords really sound</p>
   </header>
 
   <div class="sets">
     <h2>Settings</h2>
     <select id="chord" hidden></select><div class="opt kwopt"><span class="lab">Chords</span><div class="kwchips" id="kwChords" role="group" aria-label="Chords to test"></div></div>
-    <label class="opt"><span class="lab">Capo</span><select id="capo"></select></label>
+    <label class="opt" id="capoOpt"><span class="lab">Capo</span><select id="capo"></select></label>
+    <span class="opt" id="triOpt" hidden><span class="lab">Triad</span><select id="triRoot" aria-label="Triad"></select><select id="triInv" aria-label="Inversion"><option value="0">Root position</option><option value="1">1st inversion</option><option value="2">2nd inversion</option></select><select id="triSet" aria-label="Strings"><option value="0">E-A-D strings</option><option value="1">A-D-G strings</option><option value="2">D-G-B strings</option><option value="3">G-B-E strings</option></select></span>
     <label class="opt"><span class="lab">Input</span><select id="input"><option value="">Default microphone</option></select><span class="meter" title="Input level"><i id="meter"></i></span></label>
   </div>
 
@@ -138,6 +156,7 @@ select option,select optgroup{background:#000;color:var(--fg)}
 
     <section class="results">
       <div class="card">
+        <div class="extag" id="exTag" hidden>Example</div>
         <div class="sc">
           <div class="ov"><span class="tag">Overall</span><strong id="scO">—</strong></div>
           <div><span class="tag">Notes</span><strong id="scN">—</strong></div>
@@ -462,8 +481,8 @@ const CHORDS = [
     ['G',[3,2,0,0,0,3]],['G (worship)',[3,2,0,0,3,3],'G'],['C',[-1,3,2,0,1,0]],['Cadd9',[-1,3,2,0,3,3]],
     ['D',[-1,-1,0,2,3,2]],['Dsus4',[-1,-1,0,2,3,3]],['Dsus2',[-1,-1,0,2,3,0]],
     ['A',[-1,0,2,2,2,0]],['Asus2',[-1,0,2,2,0,0]],['Asus4',[-1,0,2,2,3,0]],
-    ['E',[0,2,2,1,0,0]],['Em',[0,2,2,0,0,0]],['Em7',[0,2,2,0,3,3]],
-    ['Am',[-1,0,2,2,1,0]],['Am7',[-1,0,2,0,1,0]],['Dm',[-1,-1,0,2,3,1]],['Fmaj7',[-1,-1,3,2,1,0]],
+    ['E',[0,2,2,1,0,0]],['Em',[0,2,2,0,0,0]],['Em7',[0,2,-1,0,3,3]],
+    ['Am',[-1,0,2,2,1,0]],['Bm11',[-1,2,-1,2,3,0]],['C#m7 (open)',[-1,4,2,4,0,0],'C#m7'],['Am7',[-1,0,2,0,1,0]],['Dm',[-1,-1,0,2,3,1]],['Fmaj7',[-1,-1,3,2,1,0]],
     ['A7',[-1,0,2,0,2,0]],['B7',[-1,2,1,2,0,2]],['C7',[-1,3,2,3,1,0]],['D7',[-1,-1,0,2,1,2]],['E7',[0,2,0,1,0,0]],['G7',[3,2,0,0,0,1]]
   ]],
   ['Barre chords', [
@@ -473,6 +492,21 @@ const CHORDS = [
 ];
 const LIST = [];
 CHORDS.forEach(([g, items]) => items.forEach(([label, frets, name]) => LIST.push({ group: g, label, frets, name: name || label })));
+// Triads (CJ Nov 17): close triad on 3 adjacent strings, lowest playable spot; built from the Triad pickers
+const TRI = LIST.length;
+LIST.push({ group: 'Triads', label: 'Triads', frets: [-1, -1, -1, -1, -1, -1], name: 'G' });
+const TRI_ROOTS = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'], TRI_Q = [['', [0, 4, 7]], ['m', [0, 3, 7]], ['°', [0, 3, 6]]];
+function triBuild(t) {
+  const iv = TRI_Q[t.q][1], order = [[0, 1, 2], [1, 2, 0], [2, 0, 1]][t.inv].map(i => (t.root + iv[i]) % 12);
+  const OPN = [40, 45, 50, 55, 59, 64], m = OPN.slice(t.set, t.set + 3);
+  for (let f0 = 0; f0 <= 17; f0++) {
+    if ((m[0] + f0) % 12 !== order[0]) continue;
+    let prev = m[0] + f0; const fr = [f0];
+    for (let k = 1; k < 3; k++) { let q = prev + 1; while (q % 12 !== order[k]) q++; fr.push(q - m[k]); prev = q; }
+    if (fr.every(f => f >= 0 && f <= 17) && Math.max(...fr) - Math.min(...fr) <= 4) { const out = [-1, -1, -1, -1, -1, -1]; fr.forEach((f, k) => out[t.set + k] = f); return out; }
+  }
+  return null;
+}
 
 // ---------- text helpers ----------
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -498,8 +532,18 @@ const rootPc = name => { const m = /^([A-G])([#b]?)/.exec(name); return (PC[m[1]
 const fmtC = c => (c > 0 ? '+' : c < 0 ? '−' : '') + Math.abs(Math.round(c)) + '¢';
 
 // ---------- settings ----------
-let st = { idx: 0, capo: 0, input: '' };
-try { const s = JSON.parse(localStorage.getItem('dgkp-nqe') || '{}'); if (s.idx >= 0 && s.idx < LIST.length) st.idx = s.idx; if (s.capo >= 0 && s.capo <= 7) st.capo = s.capo; if (typeof s.input === 'string') st.input = s.input; } catch (e) {}
+let st = { idx: 0, capo: 0, input: '', tri: { root: 7, q: 0, inv: 0, set: 2 } };
+try { const s = JSON.parse(localStorage.getItem('dgkp-nqe') || '{}'); if (s.idx >= 0 && s.idx < LIST.length) st.idx = s.idx; if (s.capo >= 0 && s.capo <= 7) st.capo = s.capo; if (typeof s.input === 'string') st.input = s.input; if (s.tri && s.tri.root >= 0 && s.tri.root < 12 && s.tri.q >= 0 && s.tri.q < 3 && s.tri.inv >= 0 && s.tri.inv < 3 && s.tri.set >= 0 && s.tri.set < 4) st.tri = s.tri; } catch (e) {}
+try { const _m = (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id(); if (_m) st.input = _m; } catch (e) {}
 const save = () => { try { localStorage.setItem('dgkp-nqe', JSON.stringify(st)); } catch (e) {} };
 // Key Workout: only the chord shapes that sound as a chord of the chosen key (with the chosen capo)
 const KW_K = window.KW_KEY;
@@ -507,10 +551,11 @@ const kwFits = (c, capo) => {
   const t = [0,1,2,3,4,5,6,7,8,9,10,11][KW_K], scale = [0,2,4,5,7,9,11].map(i => (t + i) % 12);
   const m = /^([A-G][#b]?)(.*)$/.exec(c.name), suf = m[2], d = scale.indexOf((rootPc(c.name) + capo) % 12);
   if (d < 0) return false;
-  if (suf === 'm' || suf === 'm7') return [1,2,5].includes(d);
+  if (suf === 'm' || suf === 'm7' || suf === 'm11') return [1,2,5].includes(d);
   if (suf === '7') return d === 4;
   if (suf === 'maj7') return d === 0 || d === 3;
-  return ['', 'sus2', 'sus4', 'add9'].includes(suf) && [0,3,4].includes(d);
+  if (suf === 'sus2') return d === 0 || d === 3;   // CJ Nov 17: no sus2 on the 5 chord
+  return ['', 'sus4', 'add9'].includes(suf) && [0,3,4].includes(d);
 };
 // sounding chord name spelled the way the key spells it (D♭, not C♯, in the key of A♭)
 const KW_LI = [0,1,1,2,2,3,4,4,5,5,6,6][KW_K];
@@ -539,7 +584,19 @@ function kwFill() {
 
 for (let i = 0; i <= 7; i++) { const o = document.createElement('option'); o.value = i; o.textContent = i ? 'Fret ' + i : 'None'; $('capo').appendChild(o); }
 { const ok = c => LIST.some(x => kwFits(x, c)); [...$('capo').options].forEach(o => o.disabled = !ok(+o.value)); if (!ok(st.capo)) { for (let c = 0; c <= 7; c++) if (ok(c)) { st.capo = c; break; } } kwFill(); $('capo').value = st.capo; }
-$('chord').onchange = () => { st.idx = +$('chord').value; save(); reset(); };
+// Triads: the chord list ends with 'Triads'; then the Triad pickers choose the triad, inversion and strings (no capo)
+{ const og = document.createElement('optgroup'); og.label = 'Triads'; const o = document.createElement('option'); o.value = TRI; o.textContent = 'Triads'; og.appendChild(o); $('chord').appendChild(og); }
+$('triRoot').innerHTML = TRI_Q.map((q, qi) => `<optgroup label="${['Major', 'Minor', 'Diminished'][qi]}">` + TRI_ROOTS.map((r, ri) => `<option value="${ri}-${qi}">${r.replace('#', '♯').replace(/^([A-G])b/, '$1♭')}${q[0]}</option>`).join('') + '</optgroup>').join('');
+function triApply() {
+  const t = st.tri, fr = triBuild(t), c = LIST[TRI];
+  c.frets = fr || [-1, -1, -1, -1, -1, -1]; c.name = TRI_ROOTS[t.root] + TRI_Q[t.q][0];
+  c.label = c.name; c.sub = ['Root position', '1st inversion', '2nd inversion'][t.inv] + ' · ' + ['E-A-D', 'A-D-G', 'D-G-B', 'G-B-E'][t.set] + ' strings';
+  $('triRoot').value = t.root + '-' + t.q; $('triInv').value = t.inv; $('triSet').value = t.set;
+}
+function triShow() { const on = st.idx === TRI; $('triOpt').hidden = !on; $('capoOpt').hidden = on; if (on) { st.capo = 0; $('capo').value = 0; } }
+['triRoot', 'triInv', 'triSet'].forEach(id => $(id).onchange = () => { const [r, q] = $('triRoot').value.split('-').map(Number); st.tri = { root: r, q, inv: +$('triInv').value, set: +$('triSet').value }; triApply(); save(); reset(); });
+triApply(); $('chord').value = st.idx; triShow();
+$('chord').onchange = () => { st.idx = +$('chord').value; triShow(); save(); reset(); };
 $('capo').onchange = () => { st.capo = +$('capo').value; kwFill(); save(); reset(); };
 
 const chord = () => LIST[st.idx];
@@ -571,7 +628,7 @@ function drawBoard() {
   const col = { good: 'var(--good)', warn: 'var(--warn)', bad: 'var(--bad)' };
   let g = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(c.label)} chord shape">`;
   for (let i = 0; i <= nF; i++) { const y = y0 + i * fh; g += `<line x1="${sx(0)}" y1="${y}" x2="${sx(5)}" y2="${y}" stroke="#6d655c" stroke-width="${i === 0 && first === 1 ? 3 : 1.5}"/>`; }
-  if (first > 1) g += `<text x="${x0 - 14}" y="${y0 + fh / 2 + 5}" text-anchor="end" font-family="Outfit,sans-serif" font-size="15" fill="#a69b8d"><tspan font-weight="600">${first}</tspan><tspan font-size="12" font-weight="300" fill="#8a8178">fr</tspan></text>`;
+  if (first > 1) g += `<text x="${x0 - 14}" y="${y0 + fh / 2 + 5}" text-anchor="end" font-family="'DGU Digits',Outfit,sans-serif" font-size="15" fill="#a69b8d"><tspan font-weight="600">${first}</tspan><tspan font-size="12" font-weight="300" fill="#8a8178">fr</tspan></text>`;
   for (let s = 0; s < 6; s++) {
     const on = fr[s] >= 0, x = sx(s), dim = !on || (cur >= 0 && cur !== s);
     const op = !on ? 0.28 : dim ? 0.45 : 1;
@@ -581,14 +638,14 @@ function drawBoard() {
     const mk = marks[s] ? col[marks[s]] : (cur === s ? 'var(--brand)' : null);
     const ny = y0 - 22;
     if (isOpen) g += `<circle cx="${x}" cy="${ny}" r="13" fill="none" stroke="${mk || '#f1ebe2'}" stroke-width="2" opacity="${op}"/>`;
-    g += `<text x="${x}" y="${ny + nameSize * 0.35}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="700" font-size="${nameSize}" fill="${isOpen && mk ? mk : '#f1ebe2'}" opacity="${op}">${SNAME[s]}</text>`;
+    g += `<text x="${x}" y="${ny + nameSize * 0.35}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="700" font-size="${nameSize}" fill="${isOpen && mk ? mk : '#f1ebe2'}" opacity="${op}">${SNAME[s]}</text>`;
     if (fr[s] > 0) {
       const y = y0 + (fr[s] - first + 0.5) * fh;
       const fill = mk || '#f1ebe2';
       g += `<g opacity="${dim ? 0.45 : 1}"><circle cx="${x}" cy="${y}" r="14" fill="${fill}"/>`;
       const n = NOTE[shapePc(s)];
-      g += `<text x="${x - (n.length > 1 ? 3 : 0)}" y="${y + 5}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="700" font-size="14" fill="#000">${n[0]}</text>`;
-      if (n.length > 1) g += `<text x="${x + 5.5}" y="${y - 1}" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="400" font-size="9" fill="#000">${n[1] === '#' ? '♯' : '♭'}</text>`;
+      g += `<text x="${x - (n.length > 1 ? 3 : 0)}" y="${y + 5}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="700" font-size="14" fill="#000">${n[0]}</text>`;
+      if (n.length > 1) g += `<text x="${x + 5.5}" y="${y - 1}" text-anchor="middle" font-family="'DGU Digits',Outfit,sans-serif" font-weight="400" font-size="9" fill="#000">${n[1] === '#' ? '♯' : '♭'}</text>`;
       g += `</g>`;
     }
   }
@@ -606,7 +663,7 @@ function blankRows() {
 function renderHeader() {
   const c = chord();
   $('cname').innerHTML = chordHTML(c.name);
-  $('capoLine').innerHTML = st.capo ? `Capo ${st.capo} · sounds like ${chordHTML(kwSpell(c.name, st.capo))}` : '';
+  $('capoLine').innerHTML = st.capo ? `Capo ${st.capo} · sounds like ${chordHTML(kwSpell(c.name, st.capo))}` : c.sub ? esc(c.sub) : '';
 }
 function transName(name, k) {
   const m = /^([A-G][#b]?)(.*)$/.exec(name);
@@ -779,6 +836,16 @@ async function openMic() {
     if (ac.state === 'suspended') await ac.resume();
     const base = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
     try {
+      st.input = await (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).pick(st.input, true);
       stream = await navigator.mediaDevices.getUserMedia({ audio: st.input ? Object.assign({ deviceId: { exact: st.input } }, base) : base });
     } catch (e) {
       if (!st.input || e.name === 'NotAllowedError') throw e;
@@ -786,6 +853,16 @@ async function openMic() {
       st.input = ''; save();
       stream = await navigator.mediaDevices.getUserMedia({ audio: base });
     }
+    if (st.input) { (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).save(stream.getAudioTracks()[0]); save(); }
     fillInputs();
   } catch (e) {
     stream = null;
@@ -900,11 +977,55 @@ function stopAll(keep) {
   if (!keep) status('Stopped', 'Press Start to try again');
 }
 function reset() {
+  ssSetup();
   stopAll(true); strum = null; picks = {}; marks = {}; lastString = -1; reveal = false; clearScores();
   renderHeader(); drawBoard(); blankRows(); renderStrings(); renderTips(false); buttons();
   status('Ready', 'Strum once, then pick each string');
+  example(true);
+}
+// start screen (CJ, Nov 17): settings, strum, pick each string, score, tips; plays twice then stops; each step gets a box + arrow
+let demoT = null;
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+// the X on a demo box stops the demo (CJ Nov 17)
+function demoX(){ clearTimeout(demoT); demoT=null; }
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
+    c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
+    c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); c.classList.toggle('below',!!below); // no orphan last word (CJ)
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+let demoOn = false;
+function example(on) {
+  clearTimeout(demoT); demoT = null; $('exTag').hidden = !on; demoOn = !!on;
+  if (!on) { coach($('go').closest('.wrap'), null); $('hold').style.transition = ''; $('hold').style.width = '0'; return; }
+  demo(0, 0);
+}
+function demo(i, step) {
+  clearTimeout(demoT);
+  const H = $('go').closest('.wrap'), hold = $('hold'), next = (ms) => { demoT = setTimeout(() => step < 4 ? demo(i, step + 1) : demo(i + 1, 0), ms); };
+  if (i >= 2) { cur = -1; drawBoard(); renderStrings(); coach(H, ssGo($('go')), 'Press Start when ready'); demoT = setTimeout(() => coach(H, null), 6000); return; } // plays through twice, then stops (CJ)
+  hold.style.transition = 'none'; hold.style.width = '0';
+  if (step < 3) { clearScores(); $('exTag').hidden = true; }
+  if (step === 0) { cur = -1; drawBoard(); renderStrings(); status('Ready', 'Strum once, then pick each string');
+    coach(H, $('go').closest('.wrap').querySelector('.sets'), 'First pick your settings', true); return next(4000); }
+  if (step === 1) { status('Strum once', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
+    coach(H, $('board'), 'Press Start and strum the chord once. Let it ring until the blue bar fills.'); return next(11000); }
+  if (step === 2) { cur = 2; drawBoard(); renderStrings(); status('Pick the D string', 'Let it ring', true); void hold.offsetWidth; hold.style.transition = 'width 11s linear'; hold.style.width = '100%';
+    coach(H, $('board'), 'Then pick each string on its own when it lights up.'); return next(11000); }
+  if (step === 3) { cur = -1; drawBoard(); renderStrings(); status('Done', 'Here is how it sounded', true); $('exTag').hidden = false;
+    [['scO', 92], ['scN', 95], ['scT', 88], ['scR', 84], ['scC', 96]].forEach(a => setScore(a[0], a[1]));
+    coach(H, $('scO').closest('.card'), 'At the end you get a score for the notes, tuning, ring and how clean it sounds.', true); return next(11000); }
+  coach(H, $('tips').closest('.card'), 'Below that are tips on what to work on next.'); return next(11000);
 }
 async function begin(steps) {
+  if (demoOn) { example(false); clearScores(); }
   if (!(await openMic())) return;
   running = true; queue = steps.slice(); L.calib = 0; buttons(); next();
 }
@@ -1017,8 +1138,29 @@ function hideResults() { reveal = false; marks = {}; blankRows(); clearScores();
 // Pick any chords of the key, record them one after another (strum + each string), then ONE overall score
 // plus a score for each chord. Tap a chord in "Your chords" to see its details.
 let KW_SEL = Array.isArray(st.kwsel) ? st.kwsel.slice() : null, KW_RUN = null;
-const kwAvail = () => LIST.map((c, i) => i).filter(i => kwFits(LIST[i], st.capo));
-const kwDefault = () => { const a = kwAvail(), d = a.filter(i => /^[A-G][#b]?m?$/.test(LIST[i].name) && !/\(/.test(LIST[i].label)); return (d.length ? d : a).slice(0, 4); };
+// chips in key order (CJ Nov 17): by the sounding chord's number in the key (1-7), then the original list order
+const kwDeg = i => [0,2,4,5,7,9,11].map(x => (KW_K + x) % 12).indexOf((rootPc(LIST[i].name) + st.capo) % 12);
+const kwAvail = () => LIST.map((c, i) => i).filter(i => kwFits(LIST[i], st.capo)).sort((a, b) => kwDeg(a) - kwDeg(b) || a - b);
+// small vertical chord diagram shown when a chip is hovered or tapped (CJ Nov 17)
+const KW_NUM = ['1','2m','3m','4','5','6m','7°'];
+function kwDiagram(i) {
+  const fr = LIST[i].frets, on = fr.filter(f => f > 0), hi = on.length ? Math.max(...on) : 0;
+  const base = hi <= 4 ? 1 : Math.min(...on), W = 108, X0 = 16, DX = 14, Y0 = 26, DY = 19, R = 5.2;   // a bit bigger (CJ Nov 17)
+  let g = '';
+  for (let f = 0; f <= 4; f++) g += `<line x1="${X0}" x2="${X0 + 5 * DX}" y1="${Y0 + f * DY}" y2="${Y0 + f * DY}" stroke="#6f665b" stroke-width="${f === 0 && base === 1 ? 3 : 1}"/>`;
+  for (let s = 0; s < 6; s++) g += `<line x1="${X0 + s * DX}" x2="${X0 + s * DX}" y1="${Y0}" y2="${Y0 + 4 * DY}" stroke="#6f665b" stroke-width="1"/>`;
+  fr.forEach((f, s) => { const x = X0 + s * DX;
+    if (f < 0) g += `<text x="${x}" y="${Y0 - 7}" text-anchor="middle" font-size="12" fill="#a69b8d">×</text>`;
+    else if (f === 0) g += `<circle cx="${x}" cy="${Y0 - 11}" r="3.8" fill="none" stroke="#a69b8d" stroke-width="1.2"/>`;
+    else g += `<circle cx="${x}" cy="${Y0 + (f - base + .5) * DY}" r="${R}" fill="#f2b25c"/>`; });
+  if (base > 1) g += `<text x="${X0 + 5 * DX + 6}" y="${Y0 + .5 * DY + 3}" font-size="11" fill="#a69b8d">${base}fr</text>`;
+  const d = kwDeg(i);
+  return `<span class="kwtip" aria-hidden="true"><b>${d >= 0 ? KW_NUM[d] : ''}</b><svg viewBox="0 0 ${W} ${Y0 + 4 * DY + 4}" width="${W}" height="${Y0 + 4 * DY + 4}">${g}</svg></span>`;
+}
+// default: one plain shape each for 1, 4, 5 and 6m when the capo allows, else the first plain shapes
+const kwDefault = () => { const a = kwAvail(), d = a.filter(i => /^[A-G][#b]?m?$/.test(LIST[i].name) && !/\(/.test(LIST[i].label));
+  const pick = [0, 3, 4, 5].map(g => d.find(i => kwDeg(i) === g)).filter(i => i != null);
+  return pick.length >= 2 ? pick : (d.length ? d : a).slice(0, 4); };
 const kwAcc = s => s.replace('#', '♯').replace(/^([A-G])b/, '$1♭');
 const kwLabel = i => { const c = LIST[i]; return st.capo ? kwAcc(kwSpell(c.name, st.capo)) + '<small>' + kwAcc(c.label) + ' shape</small>' : kwAcc(c.label); };
 function kwPicker() {
@@ -1026,7 +1168,7 @@ function kwPicker() {
   KW_SEL = (KW_SEL || []).filter(i => a.includes(i));
   if (!KW_SEL.length) KW_SEL = kwDefault();
   st.kwsel = KW_SEL; save();
-  $('kwChords').innerHTML = a.map(i => `<button type="button" data-kc="${i}" aria-pressed="${KW_SEL.includes(i)}">${kwLabel(i)}</button>`).join('');
+  $('kwChords').innerHTML = a.map(i => `<button type="button" data-kc="${i}" aria-pressed="${KW_SEL.includes(i)}">${kwLabel(i)}${kwDiagram(i)}</button>`).join('');
   st.idx = KW_SEL[0];
 }
 $('kwChords').addEventListener('click', e => {
@@ -1035,6 +1177,8 @@ $('kwChords').addEventListener('click', e => {
   if (has && KW_SEL.length === 1) return;
   KW_SEL = has ? KW_SEL.filter(x => x !== i) : kwAvail().filter(x => x === i || KW_SEL.includes(x));
   kwPicker(); reset();
+  // a tap on a phone has no hover: show that chord's diagram for a moment
+  const nb = $('kwChords').querySelector(`[data-kc="${i}"]`); if (nb) { nb.classList.add('show'); setTimeout(() => nb.classList.remove('show'), 1800); }
 });
 const kwFill0 = kwFill;
 kwFill = function () { kwFill0(); kwPicker(); };
@@ -1057,6 +1201,7 @@ function kwStartChord() {
   $('kwProg').textContent = r.order.length > 1 ? `Chord ${r.i + 1} of ${r.order.length}` : '';
 }
 function kwStart() {
+  ssPlay();
   KW_RUN = { order: KW_SEL.slice(), i: 0, results: [], sel: 0, done: false };
   $('kwCard').hidden = true;
   kwStartChord();
@@ -1105,6 +1250,150 @@ function kwSummary(sel) {
   status('Done', r.results.length > 1 ? 'Tap a chord to see its details' : 'Go again to beat your score');
 }
 $('kwList').addEventListener('click', e => { const b = e.target.closest('[data-kr]'); if (!b || running || !KW_RUN) return; kwSummary(+b.dataset.kr); });
+/* ===== Settings screen (CJ, Nov 21 2026): settings + Start on their own screen; the exercise on its own screen,
+   with a "Settings" button at the top to go back. Same pattern as Find the Note. Added by settings-screen/patch.py. ===== */
+function ssInit(o){
+  const wrap=o.wrap, hid=(l,pre)=>l&&l.length?l.map(s=>pre+' '+s).join(',')+'{display:none!important}':'';
+  const st=document.createElement('style');
+  st.textContent=`
+.ss-top{display:none;align-items:center;gap:14px;width:100%}
+.ss-play .ss-top{display:flex}
+.ss-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line,#2e2822);background:transparent;color:var(--fg,#f1ebe2);border-radius:999px;padding:8px 18px 8px 12px;font:inherit;font-size:16px;font-weight:600;line-height:1.2;cursor:pointer;flex:none}
+.ss-back svg{width:18px;height:18px;flex:none}
+.ss-back:hover{border-color:var(--muted,#a69b8d)}
+.ss-back:focus-visible,.ss-go:focus-visible{outline:3px solid var(--accent,#e09a3e);outline-offset:2px}
+.ss-go{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-size:19px;font-weight:600;cursor:pointer;background:var(--accent,#e09a3e);color:var(--accent-ink,#1a120a)}
+.ss-go:disabled{opacity:.45;cursor:default}
+.ss-play .ss-go{display:none!important}
+${hid(o.play,'.ss-play')}
+${hid(o.setup,'.ss-wrap:not(.ss-play)')}
+${o.css||''}`;
+  (o.root.host?o.root:document.head).appendChild(st);
+  wrap.classList.add('ss-wrap');
+  const top=document.createElement('div'); top.className='ss-top';
+  top.innerHTML='<button type="button" class="ss-back" aria-label="Stop and go back to Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Settings</button>';
+  o.placeTop(top);
+  top.firstChild.onclick=()=>{ o.stop(); ssSetup(); };
+  let go=null;
+  if(o.startBtn){
+    go=document.createElement('button'); go.type='button'; go.className='ss-go';
+    o.placeGo(go);
+    const mirror=()=>{ const t=o.goLabel?o.goLabel():o.startBtn.textContent.trim()||'Start', d=!!(o.goDisabled?o.goDisabled():o.startBtn.disabled); if(go.textContent!==t) go.textContent=t; if(go.disabled!==d) go.disabled=d; }; // only touch it when something changed (no observer loop)
+    const mo=new MutationObserver(mirror); [o.startBtn].concat(o.watch||[]).forEach(el=>el&&mo.observe(el,{childList:true,characterData:true,subtree:true,attributes:true}));
+    mirror();
+    go.onclick=()=>{ if(o.onGo) o.onGo(); else o.startBtn.click(); };
+  }
+  o.go=go; ssInit.o=o;
+}
+// the big Start on the Settings screen (the demo's last box points at it)
+function ssGo(fallback){ const g=ssInit.o&&ssInit.o.go; return g&&g.offsetParent?g:fallback; }
+function ssScreen(play){
+  const o=ssInit.o; if(!o) return; const w=o.wrap, was=w.classList.contains('ss-play');
+  if(was===play) return;
+  w.classList.toggle('ss-play',play);
+  if(o.after) o.after(play);
+  const r=w.getBoundingClientRect(); if(r.top<0||(play&&r.top>80)) window.scrollBy(0,r.top-12);
+}
+function ssPlay(){ ssScreen(true); }
+function ssSetup(){ ssScreen(false); }
+
+/* ===== Space bar (CJ, Nov 22 2026): space starts / pauses / resumes the tool and NEVER scrolls the page.
+   dguSpace({host, act, visible?})  host = the tool's outer element (code block div or iframe), act = what space does.
+   One shared listener per window: with several tools on one page, space goes to the one last touched,
+   else the one most on screen. Typing in a text box keeps a normal space. Shared file: /mnt/project-files/space-bar/space.js ===== */
+function dguSpace(o){
+  const W=window, R=W.__dguSpace||(W.__dguSpace={v:1,list:[],last:null});
+  const me={host:o.host,act:o.act,vis:o.visible};
+  R.list.push(me);
+  o.host.addEventListener('pointerdown',()=>{ R.last=me; },true);
+  if(R.on) return; R.on=1;
+  const isSp=e=>(e.code==='Space'||e.key===' '||e.key==='Spacebar')&&!e.metaKey&&!e.ctrlKey&&!e.altKey;
+  const typing=e=>{ const t=(e.composedPath&&e.composedPath()[0])||e.target; if(!t) return false;
+    if(t.isContentEditable||t.tagName==='TEXTAREA') return true;
+    return t.tagName==='INPUT'&&!/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(t.type||''); };
+  const box=m=>{ const h=m.host; if(h.getBoundingClientRect().height) return h; // the code block's div can be display:contents on the site
+    const sr=h.shadowRoot; return (sr&&(sr.querySelector('.wrap,.w')||sr.firstElementChild&&[...sr.children].find(e=>e.getBoundingClientRect().height)))||h; };
+  const shown=m=>{ if(!m.host.isConnected||(m.vis&&!m.vis())) return 0; const r=box(m).getBoundingClientRect();
+    const h=Math.min(r.bottom,W.innerHeight)-Math.max(r.top,0); return r.width>0&&r.height>0&&h>0?h:0; };
+  R.pick=()=>{ if(R.last&&shown(R.last)) return R.last; let b=null,bh=0; R.list.forEach(m=>{ const h=shown(m); if(h>bh){ bh=h; b=m; } }); return b; };
+  R.press=()=>{ const m=R.pick(); if(m) try{ m.act(); }catch(err){ console.warn('space',err); } };
+  // capture on window: runs first, stops the page scroll, the focused button's own click and any older space handlers
+  W.addEventListener('keydown',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); if(!e.repeat) R.press(); },true);
+  W.addEventListener('keyup',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+  W.addEventListener('keypress',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+}
+// press a button only when it's on screen and enabled; true if pressed
+function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
+}
+/* "Ready" count-in, same as Find the Note (CJ, Nov 22 2026): replaces the old full Ready / Begin overlay.
+   "Ready" sits in the exercise area with four dots that light up one per beat (800 ms); the run starts after the 4th.
+   Overrides the older prep(host,done) (a later function declaration wins); prepCancel(host) still works. */
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var rt=host.getRootNode(), d=host.ownerDocument;
+  if(!(rt.querySelector?rt:d).querySelector('#dgu-cin-css')){ var st=d.createElement('style'); st.id='dgu-cin-css';
+    st.textContent='div.prep{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(0,0,0,.96);color:#fff;font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1;transition:opacity .2s}'+
+      'div.prep.go{color:#fff}div.prep .cin{display:flex;gap:12px;justify-content:center}div.prep .cin i{width:12px;height:12px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}'+
+      'div.prep .cin i.on{background:var(--accent,#e09a3e);box-shadow:0 0 9px var(--accent,#e09a3e)}';
+    (rt.host?rt:d.head).appendChild(st); }
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=d.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  // background = the tool's own colour behind it (CJ: Chord Trainer's Ready box must match the tool)
+  var bg='#000', e=host; while(e&&e.nodeType===1){ var c=getComputedStyle(e).backgroundColor; if(c&&c!=='transparent'&&!/rgba\([^)]*,\s*0\)$/.test(c)){ bg=c; break; } e=e.parentElement||(e.getRootNode()&&e.getRootNode().host); }
+  // CJ Nov 22: never a separate Ready screen. The tool stays visible; "Ready" + dots only cover the prompt line
+  // (Steps Drill / Find the Number #ask, Numbers Play Along #main, Chord Trainer chord name .nm), like Find the Note.
+  // CJ Nov 23: where the tool has room, Ready sits ON the diagram / game area itself (host.dataset.cinAt = its selector)
+  var at=host.dataset&&host.dataset.cinAt&&host.querySelector(host.dataset.cinAt), t=host.querySelector('#ask, #main, .nm, .prompt')||null, hr=host.getBoundingClientRect();
+  o.style.cssText='background:'+bg;
+  if(at&&at.getBoundingClientRect().height){ var ra=at.getBoundingClientRect();
+    o.style.cssText+=';inset:auto;left:'+(ra.left-hr.left+ra.width/2)+'px;top:'+(ra.top-hr.top+ra.height/2)+'px;transform:translate(-50%,-50%);height:auto;padding:14px 28px;border-radius:16px;white-space:nowrap;flex-direction:row;gap:18px;font-size:clamp(34px,5vw,52px);background:'+bg; }
+  else if(t&&t.getBoundingClientRect().height){ var r=t.getBoundingClientRect(), h=Math.max(58,r.height), col=h>=76;
+    o.style.cssText+=';inset:auto;left:'+(r.left-hr.left+r.width/2)+'px;top:'+(r.top-hr.top+r.height/2)+'px;transform:translate(-50%,-50%);'+
+      'min-width:'+r.width+'px;height:'+h+'px;padding:0 18px;white-space:nowrap;flex-direction:'+(col?'column':'row')+';gap:'+(col?'10px':'16px')+
+      ';font-size:'+Math.round(col?Math.min(68,h-28):Math.min(48,h*.78))+'px;background:'+bg; }
+  else o.style.cssText+=';inset:auto;left:50%;top:12px;transform:translateX(-50%);height:auto;padding:6px 18px;flex-direction:row;font-size:34px;border-radius:12px'; // no prompt found: a small strip at the top, tool stays visible
+  // CJ Nov 23: once Ready starts, nothing from the how-to demo stays (its timer bar is reset here; demo boxes are hidden by space.js)
+  (rt.querySelectorAll?rt:d).querySelectorAll('#timerBar, .timer > i').forEach(function(b){ b.style.transition='none'; b.style.width='0%'; });
+  prepCancel(host); o.innerHTML='Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'; void o.offsetWidth; o.classList.add('on');
+  var ds=o.querySelectorAll('.cin i'); o._t=[0,1,2,3].map(function(i){ return setTimeout(function(){ ds[i].classList.add('on'); },i*800); });
+  o._t.push(setTimeout(function(){ o.className='prep'; if(done) done(); },4*800+250)); }
+{ const st=document.createElement('style'); st.textContent='.ss-play .coach,.ss-play .dgu-recnote{display:none!important}'; (typeof root!=='undefined'?root:document.head).appendChild(st); }
+const ssOn=()=>ssInit.o&&!ssInit.o.wrap.classList.contains('ss-play');
+dguSpace({host:document.querySelector('.wrap'), act:()=>{ if(ssOn()) return dguTap(ssInit.o.go); dguTap($('go')); }});
+ssInit({root:document, wrap:document.querySelector('.wrap'), play:['header','.sets'], setup:['.stage .toolbar'],
+  placeTop:t=>document.querySelector('.main').before(t), startBtn:$('go'), placeGo:g=>document.querySelector('.stage .toolbar').after(g),
+  css:'.ss-go{background:var(--brand);color:#001218;margin-top:4px}',
+  stop:()=>{ stopAll(true); reset(); }});
 
 kwPicker();
 reset();
