@@ -1,0 +1,1072 @@
+<!-- Don't Give Up Dojo: Find the Note. Paste this whole block into a Squarespace Code Block (Display Source off). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Figtree:wght@400;500;600&amp;family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Inter:wght@400;600;700&amp;display=swap">
+<style>/* closed 4 (CJ, Nov 17): Outfit's 4 is open; only U+0034 comes from Figtree (OFL). Put "DGU Digits" FIRST in every font-family that uses Outfit. */
+@font-face{font-family:'DGU Digits';src:url(data:font/woff2;base64,d09GMgABAAAAAAi0ABIAAAAAD0AAAAhOAAIAgwAAAAAAAAAAAAAAAAAAAAAAAAAAGyAcKj9IVkFSSwZgP1NUQVSBHCcqADQvahEICogYhn0whjIBNgIkAywLGAAEIAWHAAcgG1UNIxGmbNST7B+JsTHzpi2xS6UIk8qjYFu0++96/n/v1O6bkWVFkplTZvjaY6VE2S5BidFOgVnD2+mLOIUv8eXSNoAv0JXc/vcoc+3fOHX9UAD8tNa+3kNEmg4qoVMJmVKO2bNhMNvFzAbRCiHiIYkNal/ESwjfH31bMEYEFrJPZee46v9+bhAAGUGEQTVrN2wJCQIA6DoAAJZrbuQF25h5YLeRg+EFAJQq4Bxbcd9SBUlu0KJJVVQFZPVdfoXF5gyGYgUKg0MhLmQYRGaUYITA7FQQBoBNZW0BNOB86ozi3QGG4Qn4PyGfib0oinJ8sy4C/AJu2I70ju182ig4CAQJDIATEoBMsDF9+o4kAF+UuRW5QbAiiIIoi5poio7om4PacgN3YmCUjf2U3hq1oRZ7M2vLWm17O49aOvn4sBwERh4glroZ0l6MAAbyimNdreztoghMyL8id+9SrUqUuA2zARaDOh3wwlJAFAQgWu7eSSiqD2PPdYF2soKB4IQR8g2WFcQTIUgVCCRtO1IGyV6zAVJI7fwOIBOZgYchy0LWG+5ANrLjm+RADnLiuiG5KknXYWFQLAF3FG5ITSpvAUBIYYjDCKNY1uBzMKtVzVVM4fGo1Rg0q40LdJuaTpOWk6NMS6WQvHix9TTxRFo6LU99MiRTKcWw86JM005cKJAvKKRtOFDBvOLABtL2m6V7vaY5pyU0bAmdABO6TU2fzi/4bdcxZdpFkmVa4cL+Dm7NW3nFmeS6x7IdYSKV+ihMgYzuCo9SWFiwK4Vj/155pR1MUFuuCIdNfHWFmlSOu7zAIlv5N4RvNkAlE0IIX8s58vvXNYZVfpypJM3TLbtnH+1RZ5IYIhzXbGwXpIHgXCTJVHu1K3jEGUtQltiWn6+ec0iOR6MT+YJVS1sVm+tQYlus1iRPLDd9ipQ75LimrweUX/q2wH2Ywi3fRn3qPzJ3wkvUdrnEnYODeOvtXcLC+5VkzkE27sMYFlb6L3tW9k5d6x/ujoKUbAWS10c7/j8Wz/bIrSYRxsTJVkkeO885LuC0MsWtg43NB8tvjZCSyj6uE6JrURpQSN8SdpwPnCSWMnVbjIg2BB/2cPbcRn78DiCqdOsqZdDp17ut/bDC5ZAr7A5Zj6rVeqgxngBoxe9neEUbTrIAKRZzAmFWSq8y6mGy3FVLhLNrJ+FyQwAjW5bi/+S+Dmrsbta9syuJUZkkXFgWMADkZjgbkff2yRGkT1aR1zUKAZlGnl5ZitKzvg7eAPd6CqqMUDDfBPiE88wmQ8dgMY1+SCjyQSwji7GdsHlG25wPBKYkPMLWBpV8waSNlqFt+97X+72xGd1OmHEmzywnJJzAY8qSUgxHZO5wEcbvZmvwpGITmfkUNyreILp4hcWrCdA/VxAKAKAwAMCD/GiHbCzEKRLISQ0oqyqSBAkewKSCiHODgQyMM6ZK+suHYv7jm8XaHWK2CWLz6K9ro4PBpw8BMJ06lbp1586zJ7dvVOTCqSWr6pPiuP/mWVRZnAhAq4Tw66FnMVfxS2fO5vCeqcFS7YaO/PD7iyVesn5LenDZIjUwC0uxEn/zZs1QWEvG61at166jVXp//+aJpT+T53nbj1y6+4F2/Pr89rEDR71Drfv2He8MvTYvHhSuHjnXokGpsPPpZg50J4TpegnzXt7Fr+6uMrVbnN5/RXSHC5cjh1LlShTlZPoR1LSIpXyvbr169yKnYuYnh7bIHE4fr55c/c9N5s75dfb2p1my/unF40eP7j/58O5zJpmzYYZEjBibXE+6celgo1CjKjdCOZv98G6GdyqAcOsCSBg/Xjl7vUd1+5fzcyv8s+940crnH/hqa9epWa1OmXwJ2jxohUXTrLYCZUs17UsOpa33ttxg38k7mjJ7tlWVjKLsCjjE8W7Qs04xMtCnF3yx+3c/uRrjud5/+JFRrX+Phg1K5skVj5GnoIU93LPM056HLFSrfd1aIcQ0TYQ3vXf39NlHWQnCovl/sdOTgkMxJ0dhxBm6dm2YS3lzegc1Pf1GydWw67hM4L6dIbDg2bMC/VUxL4kCWpKyszVsDdK1KpCIEzE2UTYULHHitWhB//nxxzfvpHNSV68/+W4JR3MlEj5f0Pb9n3++Bzx1AitXRps0iX7NYlw0TuRGUaAsc+cynqtXPcrO4otlL8QY8PDW8UcD0Xwlhg+qWDmfasC3gv0J763Nu1Pp51++6VkOgyNSvvtY8tS9fES4doR7TUBMK6LrRlsgWKyIRyenH3r7Tr2dXBfO3XzKeff9x7fv+pw5Gy6/MxerSd++mPnd5Q1zxoEAMIz7wrbO6WKp+F7i/BEAXJtRqi8A3AsWV9Bb6x1CQ54NQAQDABDwaSNBGGkY/tDO8wjpogo7iJ7sJxSnv1GN5UGYBVCD9d02ZBU3K4qizI5CrA8qyrEIgwAoaAURvWFs9KlQXpF8VHzVTcgAsBQQRPBjKWIwYz/iKIqzrGAjA/wEIrKu380GmUr6IUClyqykMRloMsl5FIwUhKk+UqFSX2RCkEYiM6yUjSyI0lxkhUR7kQ1eOorssNMt5ECc3iAnZOZELvhZGLmhsrLEY7+9mrdwamx+IhIKT7WgMIq2GMJki9QgUwAlt4lmJVJRoX5YFE0vxDClkclt2uMiTo11OwMICkXM46Z9Q34qAZE5xVhgIpLJOiGFzKtjg9nG780er4hariNDXTHurVeiQ3D0co5KPdEQq4ESO3gmmHDctSJUsqU3RJypgFklA6EDRaLKG0Ui2+MmoP460QskNiqm4gFsQGtoiIoziTllUl5oMJOK4y7kjzmqVDLKxLsFEap7IOVcmEwfRqb/iwIAAAA=) format('woff2');font-weight:100 900;unicode-range:U+0034}
+</style>
+<div id="dgu-find-the-note" style="background:#000"></div>
+<script>
+(function(){
+  var host = document.getElementById('dgu-find-the-note');
+  if (!host || host.shadowRoot) return;
+  // paint the whole Squarespace section the tool's black so there is no light border around it
+  var sec = host.closest('section');
+  if (sec) { sec.style.background = '#000'; var sb = sec.querySelector('.section-background'); if (sb) { sb.style.background = '#000'; sb.innerHTML = ''; } }
+  var root = host.attachShadow({mode:'open'});
+  var FTNCSS = `
+/* Settings on one line (CJ) */
+.optbreak{display:none}
+.optbar{gap:12px 22px;padding:14px 16px;justify-content:space-between}
+.opt{gap:8px}
+.opt.rng input{width:96px}
+.pill{padding:8px 11px}
+/* Record mode (scoring) */
+.mode{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;align-self:flex-start}
+.mode button{border:0;background:transparent;color:var(--muted);font:600 15px/1 var(--body);padding:10px 18px}
+.mode button+button{border-left:1px solid var(--line)}
+.mode button.on{background:var(--accent);color:var(--accent-ink)}
+.mode button[data-m=rec].on{background:#4a0d0d;color:#fff}
+.rp{display:none;align-items:center;gap:8px 12px;flex-wrap:wrap;border:2px solid var(--brand);border-radius:10px;padding:8px 12px;background:rgba(24,206,251,.07)}
+.rp.ok{border:1px solid var(--line);background:transparent}
+.rstep{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:16px;color:var(--brand);white-space:nowrap}
+.rstep b{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--brand);color:#000;font-size:14px}
+.rp.ok .rstep{color:#3ccf6e}
+.rp.ok .rstep b{background:#3ccf6e}
+.w-rec .rp{display:flex}
+.rp .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.rp .f span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.rp select{max-width:280px}
+.meter{flex:1;min-width:120px;height:8px;border-radius:99px;background:#1c1915;overflow:hidden}
+.meter b{display:block;height:100%;width:0;background:#3ccf6e;border-radius:99px}
+.meter b.hot{background:#ff5c5c}
+.rinfo{flex-basis:100%;font-size:14px;color:var(--fg);line-height:1.35}
+.rinfo:empty{display:none}
+.btn.recgo{background:#ff5c5c;border-color:#ff5c5c;color:#fff;min-width:120px}
+/* settings screen (CJ, Nov 23 "cutting off the bottom from view"): smaller example so Start shows without scrolling */
+.wrap:not(.w-play) header{margin-bottom:0!important}
+.wrap:not(.w-play) .stage{gap:8px;padding-top:14px;padding-bottom:12px}
+.wrap:not(.w-play) .stage-top{min-height:0}
+.wrap:not(.w-play) .q .note{font-size:clamp(44px,4.5vw,56px)}
+.wrap:not(.w-play) .q .on{font-size:clamp(26px,2.6vw,34px)}
+.wrap:not(.w-play) .board-wrap{margin-top:0}
+.wrap:not(.w-play) .board-wrap svg{max-height:max(110px,calc(100vh - 700px))}
+.w-rec:not(.w-live) #optbar,.w-rec:not(.w-live) #session{display:none} /* Record: settings stay closed until the guitar is connected (CJ, Nov 23) */
+.rp .cname{font-weight:400;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
+.rp .lnk{border:0;background:none;padding:0;color:var(--brand);font:600 15px/1 var(--body);cursor:pointer}
+.rp .lnk:hover{text-decoration:underline}
+.rp .cname,.rp .lnk{display:none}
+.rp.ok .cname,.rp.ok .lnk{display:inline}
+.rp.ok:not(.chg) select,.rp.ok:not(.chg) .meter,.rp.ok:not(.chg) .rinfo{display:none}
+.rp.ok:not(.chg){padding:6px 12px}
+.rp.chg .cname{display:none}
+.rmon{display:none;position:absolute;top:16px;right:24px;width:210px;flex-direction:column;gap:6px;align-items:stretch}
+.w-rec.w-live .rmon{display:flex} /* tuner only once the input is connected (CJ, Nov 23) */
+.tmt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.tmt b{font-family:var(--notes);font-size:26px;line-height:1}
+.tmc{font-size:13px;font-weight:600;color:#f0b429}
+.tmc.ok{color:#18CEFB}
+.tm{position:relative;height:16px;border-radius:99px;background:linear-gradient(90deg,#ff5c5c33,#f0b42933 35%,#18CEFB44 45%,#18CEFB44 55%,#f0b42933 65%,#ff5c5c33)}
+.tmz{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:#fff6}
+.tmn{position:absolute;left:50%;top:-4px;width:6px;height:24px;margin-left:-3px;border-radius:3px;background:#f0b429;transition:left .08s linear}
+.tmn.ok{background:#18CEFB}
+.tmn.idle{background:#3a342d}
+.heard{font-family:var(--notes);font-weight:700;font-size:18px;text-align:right;line-height:1.2}
+.heard small{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.heard:empty{display:none}
+.lis{display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#ff5c5c}
+.lis i{width:10px;height:10px;border-radius:50%;background:#ff5c5c;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.25}}
+.res{border:1px solid var(--line);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:18px;background:#000}
+.res-top{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.ov{font-family:var(--notes);font-weight:700;font-size:clamp(56px,7vw,88px);line-height:1}
+.ov small{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.bars{flex:1;min-width:240px;display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:80px 1fr 44px;gap:12px;align-items:center;font-weight:600}
+.bar .tr{height:10px;border-radius:99px;background:#1c1915;overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:99px}
+.bar b{font-family:var(--notes);text-align:right}
+.res-btns{display:flex;gap:10px;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cd{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cd .t{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cd .nm{font-family:var(--notes);font-weight:700;font-size:22px}
+.cd .nm span{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px}
+.cd .sc{font-family:var(--notes);font-weight:700;font-size:18px}
+.cd .why{font-size:13px;color:var(--muted);line-height:1.35}
+.cd .mini{display:flex;gap:6px}
+.cd .mini i{flex:1;height:4px;border-radius:99px}
+@media (max-width:520px){.rmon{position:static;width:100%;order:9}.res{padding:16px}.cards{grid-template-columns:1fr 1fr}}
+/* ===== New design (CJ, Nov 21 2026): one screen at a time, kind hints, a small win at the end ===== */
+.topbar,.fb,#done{display:none}
+.w-play .topbar{display:flex}
+.w-play .fb{display:flex}
+.w-play header,.w-play #mode,.w-play #rp,.w-play #optbar,.w-play .dgu-demo-panel,.w-play .progress{display:none!important}
+.w-done header,.w-done #mode,.w-done #rp,.w-done #optbar,.w-done .dgu-demo-panel,.w-done .stage,.w-done .controls,.w-done .topbar,.w-done .fb,.w-done .bigrow{display:none!important}
+.wrap:not(.w-play) .controls{display:none!important}
+.w-done #done:not([hidden]){display:flex}
+/* Practice | Record toggle as a pill */
+.mode{border-radius:999px;padding:4px;gap:2px}
+.mode button{border-radius:999px;padding:9px 22px}
+.mode button+button{border-left:0}
+/* top bar: end round, progress through the round, count */
+.topbar{align-items:center;gap:14px;margin:0 0 -6px}
+.w-play .stage{padding-top:14px}
+.w-play .stage-top{min-height:0}
+.tb-x{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);font-size:16px;font-weight:600;line-height:1.2;padding:8px 18px 8px 12px;flex:none}
+.tb-x svg{width:18px;height:18px;flex:none}
+.tb-x:hover{border-color:var(--muted)}
+.tb-prog{flex:1;height:10px;border-radius:99px;background:#1c1915;overflow:hidden}
+.tb-prog i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s ease}
+.tb-count{font-family:var(--notes);font-weight:600;font-size:17px;color:var(--muted);min-width:66px;text-align:right;font-variant-numeric:tabular-nums}
+.w-play .controls{justify-content:center;margin-top:12px!important}
+/* hint strip under the diagram */
+.fb{min-height:76px;border-radius:16px;padding:12px 18px;align-items:center;gap:14px;font-size:19px;font-weight:500;border:1px solid var(--line);color:var(--muted);margin-top:14px;transition:background .2s,border-color .2s}
+.fb .ic{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:19px;font-weight:700;border:1px solid var(--line)}
+.fb .tx{flex:1;min-width:0}
+.fb .tx small{display:block;font-size:15px;opacity:.85;font-weight:400}
+.fb.good{background:rgba(60,207,110,.13);border-color:transparent;color:#c4f2d4}
+.fb.good .ic{background:#3ccf6e;color:#06210f;border:0}
+.fb.soft{background:rgba(240,180,41,.11);border-color:transparent;color:#f6dcae}
+.fb.soft .ic{background:#e7b866;color:#2a1c05;border:0}
+.facc{font-size:.62em;vertical-align:.55em;font-weight:400;margin-left:.02em}
+/* one big button */
+.bigrow{margin-top:14px}
+.bigrow #nextBtn{display:block;width:100%;min-width:0;padding:15px;font-size:19px;border-radius:14px}
+/* round done */
+#done{flex-direction:column;align-items:center;text-align:center;gap:20px;padding:12px 0 8px}
+.dn-stars{display:flex;gap:10px;justify-content:center}
+.dn-stars svg{width:60px;height:60px;display:block}
+@keyframes starIn{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.dn-stars .lit{animation:starIn .45s ease-out both}
+.dn-t{font-family:var(--notes);font-weight:700;font-size:clamp(36px,6vw,52px);line-height:1.05;margin:0}
+.dn-s{color:var(--muted);font-size:18px;margin:6px 0 0}
+.dn-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;max-width:620px}
+.dn-stat{border:1px solid var(--line);border-radius:14px;padding:14px 8px}
+.dn-stat b{display:block;font-family:var(--notes);font-size:30px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.dn-stat span{font-size:14px;color:var(--muted)}
+.dn-work{width:100%;max-width:620px;border-radius:14px;background:var(--surface);padding:14px 16px;text-align:left}
+.dn-work .lb{font-size:14px;color:var(--muted);margin-bottom:8px}
+.dn-chips{display:flex;flex-wrap:wrap;gap:8px}
+.dn-chips span{border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-family:var(--notes);font-weight:600;font-size:18px}
+.dn-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:620px}
+.dn-btns .btn{padding:15px;font-size:19px;border-radius:14px}
+.res .dn-head{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;display:none}
+@media (max-width:520px){.dn-stat b{font-size:24px}.fb{font-size:17px}.dn-stars svg{width:50px;height:50px}}
+@media (prefers-reduced-motion:reduce){.dn-stars .lit{animation:none}.tb-prog i{transition:none}}
+.w-nt .timer{visibility:hidden}
+.w-play .controls .btn{min-width:0!important}
+@media (max-width:560px){.w-play .controls{gap:8px}.w-play .controls .toolbar{gap:8px;justify-content:center}.w-play .controls .btn{padding:8px 12px;font-size:14px}.w-play .controls .icon-btn svg{width:16px;height:16px}}
+.board-wrap{position:relative}
+/* Ready count-in sits ON the fretboard (CJ, Nov 23) */
+.cinb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;align-items:center;gap:18px;padding:14px 28px;border-radius:16px;background:#000;color:#fff;font-family:var(--notes);font-weight:700;font-size:clamp(34px,5vw,52px);line-height:1;white-space:nowrap}
+.cinb .cin i{width:12px;height:12px}
+.q .note.cnt{display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 0 4px}
+.cin{display:flex;gap:11px;justify-content:center}
+.cin i{width:10px;height:10px;border-radius:50%;background:#2a2520;transition:background .08s,box-shadow .08s}
+.cin i.on{background:var(--accent);box-shadow:0 0 9px var(--accent)}
+
+`;
+  root.innerHTML = '<style>' + "\n/* Layout: setlist-style level picker; in session, one black stage with prompt, optional chromatic strip and fretboard stacked tight */\n:host{\n  color-scheme:dark;\n  --bg:#000; --surface:#181410; --fg:#f1ebe2; --muted:#a69b8d; --line:#2e2822;\n  --brand:#18cefb; /* Don't Give Up blue: the site's primary button color */\n  --accent:#e09a3e; --accent-ink:#1a120a; --accent-soft:#3a2a16; --good:#5cbf80;\n  --wood:#000000; --wood-2:#000000; --fret:#c9c3b8; --string:#e9e2d4; --inlay:#e8dcc4;\n  --notes:\"DGU Digits\",\"Outfit\",Helvetica,Arial,sans-serif;\n  --display:\"DGU Digits\",\"Outfit\",Arial,sans-serif;\n  --body:\"DGU Digits\",\"Outfit\",system-ui,-apple-system,\"Segoe UI\",sans-serif;\n  --mono:\"JetBrains Mono\",ui-monospace,Menlo,monospace;\n}\n*,*::before,*::after{box-sizing:border-box}\n[hidden]{display:none!important}\n:host{display:block;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;\n  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}\n.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}\nheader{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}\n.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}\nh1{font-family:var(--notes);font-weight:700;font-size:clamp(40px,5.2vw,62px);line-height:1;margin:0;text-wrap:balance;letter-spacing:-.01em}\nh2{font-family:var(--display);font-weight:600;font-size:26px;margin:0;line-height:1.1}\np{margin:0}\n.muted{color:var(--muted)}\nbutton{font:inherit;cursor:pointer}\nbutton:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}\n.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 16px;font-weight:600}\n.btn:hover{border-color:var(--accent)}\n#nextBtn{min-width:140px}\n#pauseBtn{min-width:92px}\n#chromaBtn{min-width:200px}\n#notesBtn{min-width:130px}\n#muteBtn{min-width:136px}\n.stage-top{min-height:110px}\n.q .note.msg{font-size:clamp(40px,5.2vw,62px);padding:18px 0 14px}\n.q .note.msg.brand{color:var(--brand)}\n.opt.rng input{width:120px;accent-color:var(--accent)}\n.opt.rng output{font-family:var(--notes);font-weight:700;min-width:34px;font-size:15px}\n.subtitle{margin:6px 0 0;font-size:18px}\nheader{margin-bottom:16px}\n.optbreak{flex-basis:100%;height:0}\nbutton:disabled{opacity:.4;pointer-events:none}\n.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}\n.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}\n.icon-btn svg{width:20px;height:20px}\n.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}\n.optbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:18px 16px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}\n.opt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}\n.opt-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}\n.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}\n.pill{font:600 15px/1 var(--body);padding:8px 13px;background:transparent;color:var(--muted);border:0;border-left:1px solid var(--line)}\n.seg .pill:first-child{border-left:0}\n.pill.str{font-family:var(--notes);font-weight:700;min-width:36px;font-size:16px}\n.pill:hover{color:var(--fg)}\n.pill[aria-pressed=\"true\"],.pill[aria-checked=\"true\"]{background:var(--accent);color:var(--accent-ink)}\n\n/* Setup */\n.setup{display:block}\n.setup .panel{max-width:560px;gap:20px;padding:24px}\n.start-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}\n.start-row .btn{min-width:140px;padding:12px 22px;font-size:17px}\n.levels{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}\n.level{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}\n.level:first-child{border-top:0}\n.level .num{font-family:var(--display);font-size:34px;font-weight:700;color:var(--muted);line-height:1;font-variant-numeric:tabular-nums}\n.level.done .num{color:var(--good)}\n.level .name{font-weight:600}\n.level .desc{font-size:14px;color:var(--muted)}\n.count{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}\n.sel{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;align-self:flex-start}\n/* Dropdowns (CJ, Nov 4, all tools): see-through black, soft border; the opened list stays solid black */\nselect{-webkit-appearance:none;appearance:none;background:rgba(0,0,0,.45) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a69b8d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") no-repeat right 10px center/11px 8px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:6px;padding:6px 32px 6px 10px!important;color:var(--fg);cursor:pointer}\nselect option{background:#000;color:var(--fg)}\n.count select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 6px}\n.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:16px}\n.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px}\n.field{display:flex;flex-direction:column;gap:6px}\n.field label{font-weight:600;font-size:14px}\n.range-row{display:flex;align-items:center;gap:12px}\n.range-row input{flex:1;accent-color:var(--accent)}\n.range-row output{font-family:var(--mono);min-width:44px;text-align:right}\n.check{display:flex;gap:10px;align-items:center;font-size:15px}\n.check input{accent-color:var(--accent);width:18px;height:18px}\nkbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:var(--bg)}\n.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;font-size:14px;align-items:center}\n\n/* Session */\n.stage{position:relative;background:#000;border:1px solid var(--line);border-radius:14px;padding:18px 24px 16px;display:flex;flex-direction:column;gap:14px}\n.stage-top{display:flex;justify-content:center;align-items:flex-end;gap:16px;flex-wrap:wrap}\n.q{font-family:var(--notes);font-weight:700;line-height:1;display:flex;align-items:baseline;justify-content:center;gap:30px;flex-wrap:wrap;text-align:center}\n.q .note{font-size:clamp(72px,8vw,104px);letter-spacing:-.01em;color:var(--fg)}\n.q .note .acc{font-weight:400;font-size:.55em;vertical-align:.7em;margin-left:.04em}\n.q .note .acc.flat{margin-left:-.08em;vertical-align:.55em}\n.q .on{font-size:clamp(34px,3.6vw,48px);color:var(--muted)}\n.q .on b{color:var(--fg);font-weight:700;font-size:1.3em;margin-left:.22em}\n.timer{margin:0 1.25% 0 10%;height:6px;border-radius:99px;background:#2a2520;overflow:hidden}\n.timer i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}\n.answer{min-height:64px;font-size:16px;text-align:right;display:flex;flex-direction:column;justify-content:flex-end}\n.answer:empty{display:none}\n.answer strong{font-family:var(--notes);font-size:36px;color:var(--accent);display:block;line-height:1.1}\n.progress{position:absolute;top:18px;left:24px;font-family:var(--notes);font-weight:700;font-size:18px;color:var(--fg);display:flex;align-items:baseline;gap:.3em}\n.progress .of{font-weight:400;color:var(--muted)}\n.chroma{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:880px;width:100%;margin:0 auto}\n.chroma span{font-family:var(--notes);font-weight:700;font-size:20px;text-align:center;padding:7px 2px;border-radius:6px;background:#15120f;color:#d9cfc1;line-height:1.15}\n.chroma span small{display:block;font-size:15px;color:#8f8476;font-weight:700}\n.chroma span.on{background:var(--accent);color:#1a120a}\n.chroma span.on small{color:#3a2410}\n.board-wrap{overflow-x:auto;margin-top:8px}\n.board-wrap svg{width:100%;min-width:620px;height:auto;display:block}\n.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}\n.done-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:560px}\n.done-card .big{font-family:var(--notes);font-size:clamp(40px,5.2vw,62px);font-weight:700;line-height:1;letter-spacing:-.01em;color:var(--brand)}\n\n@media (max-width:860px){.setup,.session{grid-template-columns:1fr}.side{position:static}}\n@media (max-width:520px){.level{grid-template-columns:40px minmax(0,1fr);row-gap:8px}.level .count,.level .btn{grid-column:2}}\n@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}\n.dot{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}\n@media (prefers-reduced-motion:reduce){.dot{animation:none}.timer i{transition:none!important}}\n.credit{margin:28px 0 0;text-align:center;font-size:11px;color:var(--muted);opacity:.6}\n/* start screen (CJ, Nov 17): two examples loop before Start in DGU blue, with black instruction boxes + arrows */\n.tag{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}\n.demo .timer i{background:var(--brand)}\n.wrap{position:relative}\n/* demo callout (CJ, Nov 17): one short instruction at a time, pointing at the part of the screen it describes */\n.coach{position:absolute;z-index:6;max-width:min(340px,86%);padding:9px 14px;border-radius:10px;background:#000;border:2px solid #18CEFB;color:#fff;font-size:18px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.6);line-height:1.3;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;font-family:inherit}\n.coach.on{opacity:1;transform:none;pointer-events:auto}.coach .cx{position:absolute;top:2px;right:4px;width:28px;height:28px;border:0;background:none;color:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;opacity:.75;padding:0}.coach .cx:hover{opacity:1}.coach{padding-right:34px}.coach .ct{text-wrap:balance}.coach{padding-right:34px!important}.prep{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;font-size:clamp(56px,11vw,120px);font-weight:700;line-height:1;pointer-events:none;opacity:0;transition:opacity .35s}.prep.on{opacity:1}.prep.go{color:#18CEFB}.prep.out{transition:opacity .7s;opacity:0}\n.coach::before{content:\"\";position:absolute;left:var(--px,50%);top:calc(100% + 2px);width:3px;height:22px;background:#18CEFB;transform:translateX(-50%)}\n.coach::after{content:\"\";position:absolute;left:var(--px,50%);top:calc(100% + 22px);transform:translateX(-50%);border:9px solid transparent;border-bottom:0;border-top:11px solid #18CEFB}\n@media (max-width:560px){.coach{font-size:16px;padding:8px 11px}}\n.coach.below::before{top:auto;bottom:calc(100% + 2px)}\n.coach.below::after{top:auto;bottom:calc(100% + 22px);border-top:0;border-bottom:11px solid #18CEFB;border-bottom-width:11px;border-top-width:0}\n\nbutton,input,select{font:inherit}\nh1,h2,p{margin:0}\n" + FTNCSS + '</style>' + "<div class=\"wrap\">\n  <header>\n    <div>\n      <h1>Find the Note <button class=\"dgu-play\" type=\"button\" aria-label=\"Play the demo video\" title=\"Watch the demo\" style=\"display:inline-flex;flex-direction:column;align-items:center;gap:4px;margin-left:12px;vertical-align:middle;border:0;background:transparent;color:var(--accent);cursor:pointer;padding:0;position:relative;top:6px\"><span style=\"display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink)\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" aria-hidden=\"true\" style=\"margin-left:2px\"><path d=\"M7 4.5v15l12.5-7.5z\" fill=\"currentColor\"/></svg></span><span style=\"font-size:9px;font-weight:700;letter-spacing:.14em;line-height:1\">DEMO</span></button></h1>\n      <p class=\"muted subtitle\">A simple way to learn guitar notes</p>\n    </div>\n  </header>\n  <div class=\"dgu-demo-panel\" style=\"display:none;margin:0 0 24px\"><div style=\"display:flex;justify-content:flex-end;margin:0 0 8px\"><button class=\"dgu-close\" type=\"button\" aria-label=\"Close the demo video\" style=\"display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:20px;border:0;background:var(--accent);color:var(--accent-ink);font-size:14px;font-weight:700;cursor:pointer\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>Close</button></div><div class=\"dgu-demo\" style=\"position:relative;padding-top:59.69%;border-radius:12px;overflow:hidden;background:#000\"><iframe data-src=\"https://player.vimeo.com/video/1244690470?h=aa4a1bf00f&title=0&byline=0&portrait=0&dnt=1\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Find the Note demo\"></iframe></div></div>\n\n  <!-- SETUP -->\n  <div class=\"optbar\" id=\"optbar\">\n    <div class=\"opt\"><span class=\"opt-label\">Instrument</span><div class=\"seg\" id=\"instPick\" role=\"radiogroup\" aria-label=\"Instrument\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt\"><span class=\"opt-label\">Strings</span><div class=\"seg\" id=\"strPick\"></div></div>\n    <div class=\"opt\"><span class=\"opt-label\">Notes</span><div class=\"seg\" id=\"notePick\" role=\"radiogroup\" aria-label=\"Notes to practice\"></div></div>\n    <div class=\"optbreak\"></div>\n    <div class=\"opt rng\"><label class=\"opt-label\" for=\"base\">Speed</label><input id=\"base\" type=\"range\" min=\"1\" max=\"20\" step=\"0.5\" value=\"10\"><output id=\"baseOut\">10s</output></div>\n    <div class=\"opt\"><label class=\"opt-label\" for=\"perLevel\">Notes per round</label><select id=\"perLevel\" class=\"sel\"></select></div>\n  </div>\n  <!-- SESSION -->\n  <section id=\"session\">\n    <div class=\"stage\">\n      <div class=\"progress\" id=\"progress\">1 of 20</div>\n      <div class=\"stage-top\">\n        <div class=\"q\"><span class=\"note\" id=\"qNote\">D</span><span class=\"on\">on <b id=\"qString\">B</b>-string</span></div>\n        <div class=\"answer\" id=\"answer\" aria-live=\"polite\"></div>\n      </div>\n      <div class=\"chroma\" id=\"chroma\" hidden aria-label=\"The 12 notes of the chromatic scale\"></div>\n      <div class=\"timer\" aria-hidden=\"true\"><i id=\"timerBar\"></i></div>\n      <div class=\"board-wrap\"><svg id=\"board\" viewBox=\"0 26 960 292\" role=\"img\" aria-label=\"Guitar fretboard, all six strings, frets 0 to 12\"></svg></div>\n    </div>\n    <div class=\"controls\" style=\"margin-top:16px\">\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"undoBtn\" aria-label=\"Restart the round\">Restart</button>\n        <button class=\"btn\" id=\"pauseBtn\">Pause</button>\n        <button class=\"btn primary\" id=\"nextBtn\">Start</button>\n      </div>\n      <div class=\"toolbar\">\n        <button class=\"btn\" id=\"notesBtn\" aria-pressed=\"false\">Show Notes</button>\n        <button class=\"btn\" id=\"chromaBtn\" aria-pressed=\"false\">Show Chromatic Scale</button>\n        <button class=\"btn icon-btn\" id=\"muteBtn\" aria-pressed=\"false\">Sound off</button>\n      </div>\n    </div>\n  </section>\n\n  <p class=\"credit\">Guitar samples by Nicholaus Brosowsky, CC BY 3.0</p>\n</div>";
+  /* Acoustic guitar recordings (CC BY 3.0, nbrosowsky/tonejs-instruments), served by the jsDelivr CDN, pinned to one commit. */
+  if (!window.GUITAR_TONES) window.GUITAR_TONES = {"acoustic": {"38": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D2.mp3", "39": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds2.mp3", "40": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E2.mp3", "41": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F2.mp3", "42": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs2.mp3", "43": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G2.mp3", "44": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs2.mp3", "45": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A2.mp3", "46": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As2.mp3", "47": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B2.mp3", "48": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C3.mp3", "49": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs3.mp3", "50": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D3.mp3", "51": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds3.mp3", "52": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E3.mp3", "53": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F3.mp3", "54": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs3.mp3", "55": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G3.mp3", "56": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs3.mp3", "57": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A3.mp3", "58": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As3.mp3", "59": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B3.mp3", "60": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C4.mp3", "61": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs4.mp3", "62": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D4.mp3", "63": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Ds4.mp3", "64": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/E4.mp3", "65": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/F4.mp3", "66": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Fs4.mp3", "67": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/G4.mp3", "68": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Gs4.mp3", "69": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/A4.mp3", "70": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/As4.mp3", "71": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/B4.mp3", "72": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/C5.mp3", "73": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/Cs5.mp3", "74": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@622c2f1c32c8cfce4158ddc3eb26e518ddef37e5/samples/guitar-acoustic/D5.mp3"}};
+  (() => {
+/* Instrument layouts (CJ, Nov 17): Guitar, 4-string bass (E A D G), 5-string bass (B E A D G). All span y 50-270. */
+const LAYOUTS = {
+ guitar:{dbl:44, order:['e','B','G','D','A','E'], strings:{
+  e:{label:'High E', short:'E', midi:64, y:50,  w:1.4},
+  B:{label:'B',               midi:59, y:94,  w:1.9},
+  G:{label:'G',               midi:55, y:138, w:2.6},
+  D:{label:'D',               midi:50, y:182, w:3.2},
+  A:{label:'A',               midi:45, y:226, w:3.8},
+  E:{label:'Low E', short:'E', midi:40, y:270, w:4.5},
+ }},
+ bass4:{dbl:73.3, order:['bG','bD','bA','bE'], strings:{
+  bG:{label:'G', midi:43, y:50,    w:2.6},
+  bD:{label:'D', midi:38, y:123.3, w:3.4},
+  bA:{label:'A', midi:33, y:196.7, w:4.2},
+  bE:{label:'E', midi:28, y:270,   w:5.0},
+ }},
+ bass5:{dbl:82.5, order:['bG','bD','bA','bE','bB'], strings:{
+  bG:{label:'G', midi:43, y:50,  w:2.4},
+  bD:{label:'D', midi:38, y:105, w:3.1},
+  bA:{label:'A', midi:33, y:160, w:3.8},
+  bE:{label:'E', midi:28, y:215, w:4.5},
+  bB:{label:'B', midi:23, y:270, w:5.3},
+ }},
+};
+const INSTRUMENTS=[['guitar','Guitar'],['bass4','4-String Bass'],['bass5','5-String Bass']];
+let STRINGS, ORDER, LAYOUT;
+function useLayout(k){ LAYOUT=LAYOUTS[k]||LAYOUTS.guitar; STRINGS=LAYOUT.strings; ORDER=LAYOUT.order; }
+const TOPY = 50, BOTY = 270;
+const SHARP = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const FLAT  = ['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
+const NATURAL = [0,2,4,5,7,9,11];
+
+const RANGE = {lo:0, hi:12}; // every note uses all frets 0-12
+const COUNTS = [10,20,30,40,50];
+function delayAt(i,n){ return settings.base; } // one fixed speed for the whole round
+
+const $ = id => root.getElementById(id);
+const store = {
+  get(k,d){ try{ const v = localStorage.getItem('t3ni:'+k); return v==null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem('t3ni:'+k, JSON.stringify(v)); }catch(e){} }
+};
+
+const settings = Object.assign({delay:4, hold:2, sound:true, fretnums:true, chroma:false, strings:['G','B','e'], notes:'nat', tone:'acoustic', warmup:false, base:21, last:2, perLevel:20}, store.get('settings', {}));
+if(!['all','nat','sharp','flat'].includes(settings.notes)) settings.notes='nat';
+if(!COUNTS.includes(settings.perLevel)) settings.perLevel=20;
+if(settings.base>21) settings.base=21; if(!settings.oneSpeed){ settings.base=21; settings.oneSpeed=1; } // single Speed slider (Nov 4), max 20s (Nov 5)
+if(!LAYOUTS[settings.instrument]) settings.instrument='guitar';
+useLayout(settings.instrument);
+function defaultStrings(){ return settings.instrument==='guitar' ? ['G','B','e'] : ORDER.slice(); }
+settings.strings = (settings.strings||[]).filter(k=>STRINGS[k]); if(!settings.strings.length) settings.strings=defaultStrings();
+
+/* Note-type picker */
+const NOTE_MODES=[['all','All'],['nat','Natural'],['sharp','Sharps'],['flat','Flats']];
+function renderNotes(){
+  $('notePick').innerHTML=NOTE_MODES.map(([k,t])=>`<button type="button" class="pill" role="radio" data-notes="${k}" aria-checked="${settings.notes===k}">${t}</button>`).join('');
+}
+root.addEventListener('click',e=>{ const b=e.target.closest('[data-notes]'); if(b){ settings.notes=b.dataset.notes; store.set('settings',settings); renderNotes(); idle(); } });
+
+/* Show Notes button (CJ, Nov 5): every note shows on the chosen strings; the drill runs as normal */
+function syncNotesBtn(){ const b=$('notesBtn'); b.textContent=settings.warmup?'Hide Notes':'Show Notes'; b.setAttribute('aria-pressed',String(!!settings.warmup)); }
+function toggleNotes(){ settings.warmup=!settings.warmup; store.set('settings',settings); syncNotesBtn(); drawBoard(S&&!S.over?card():null); }
+
+/* String picker */
+function renderStrings(){
+  $('strPick').innerHTML = ORDER.slice().reverse().map(k=>`<button type="button" class="pill str" data-str="${k}" aria-pressed="${settings.strings.includes(k)}" title="${STRINGS[k].label} string">${STRINGS[k].short||STRINGS[k].label}</button>`).join('');
+}
+function renderInst(){ $('instPick').innerHTML=INSTRUMENTS.map(([k,t])=>`<button type="button" class="pill" role="radio" data-inst="${k}" aria-checked="${settings.instrument===k}">${t}</button>`).join(''); }
+function setStrings(list){ settings.strings=list; store.set('settings',settings); renderStrings(); idle(); }
+root.addEventListener('click',e=>{
+  const inst=e.target.closest('[data-inst]'); if(inst&&inst.dataset.inst!==settings.instrument){
+    settings.sets=settings.sets||{}; settings.sets[settings.instrument]=settings.strings;
+    settings.instrument=inst.dataset.inst; useLayout(settings.instrument);
+    const saved=(settings.sets[settings.instrument]||[]).filter(k=>STRINGS[k]);
+    renderInst(); setStrings(saved.length?saved:defaultStrings()); return; }
+  const c=e.target.closest('[data-str]'); if(c){ const k=c.dataset.str; const has=settings.strings.includes(k);
+    if(has && settings.strings.length===1) return; setStrings(has?settings.strings.filter(x=>x!==k):[...settings.strings,k]); }
+  const q=e.target.closest('[data-preset]'); if(q) setStrings(q.dataset.preset==='top'?['G','B','e']:q.dataset.preset==='low'?['E','A','D']:ORDER.slice());
+});
+
+/* Chromatic scale strip */
+function renderChroma(pc){
+  // starts at A (CJ, Nov 4): A A# B C ... G#
+  $('chroma').innerHTML = [9,10,11,0,1,2,3,4,5,6,7,8].map(i=>{ const n=SHARP[i]; return n===FLAT[i]
+    ? `<span class="${i===pc?'on':''}">${n}</span>`
+    : `<span class="${i===pc?'on':''}">${n}<small>${FLAT[i]}</small></span>`; }).join('');
+}
+function syncChroma(){
+  $('chroma').hidden=!settings.chroma;
+  const b=$('chromaBtn'); b.textContent=settings.chroma?'Hide Chromatic Scale':'Show Chromatic Scale'; b.setAttribute('aria-pressed',String(settings.chroma));
+}
+function toggleChroma(v){ settings.chroma=v; store.set('settings',settings); syncChroma(); }
+
+/* ---------- Setup screen ---------- */
+
+function bindRange(id,key){
+  const el=$(id), out=$(id+'Out');
+  el.value=settings[key]; out.textContent=settings[key]+'s';
+  el.addEventListener('input',()=>{ settings[key]=+el.value; out.textContent=el.value+'s'; store.set('settings',settings); });
+}
+$('perLevel').innerHTML=COUNTS.map(c=>`<option${c==settings.perLevel?' selected':''}>${c}</option>`).join('');
+$('perLevel').addEventListener('change',e=>{ settings.perLevel=+e.target.value; store.set('settings',settings); idle(); });
+function syncBase(){ $('base').max=21; $('base').value=settings.base; $('baseOut').textContent=settings.base>20?'No timer':settings.base+'s'; }
+$('base').addEventListener('input',e=>{ settings.base=+e.target.value; store.set('settings',settings); syncBase(); if(!S||S.over) idle(); });
+syncBase();
+
+/* ---------- Note pool ---------- */
+function poolFor(L){ L=L||RANGE;
+  const pool=[];
+  for(const s of settings.strings){
+    const seen=new Map();
+    for(let f=L.lo; f<=L.hi; f++){
+      const pc=(STRINGS[s].midi+f)%12;
+      const nat=NATURAL.includes(pc);
+      const kind = settings.notes==='all' ? 'all' : (settings.notes==='nat' ? 'nat' : 'acc');
+      if(kind==='nat'&&!nat) continue;
+      if(kind==='acc'&&nat) continue;
+      if(!seen.has(pc)) seen.set(pc,[]);
+      seen.get(pc).push(f);
+    }
+    for(const [pc,frets] of seen) pool.push({s,pc,frets});
+  }
+  return pool;
+}
+function spell(pc){
+  if(NATURAL.includes(pc)) return SHARP[pc];
+  if(settings.notes==='sharp') return SHARP[pc];
+  if(settings.notes==='flat') return FLAT[pc];
+  return Math.random()<.5?SHARP[pc]:FLAT[pc];
+}
+function buildSequence(L,n){
+  const pool=poolFor(L), seq=[]; let bag=[];
+  while(seq.length<n){
+    if(!bag.length){
+      // Open-string notes (G on the G string, E on the E string...) come up only about a quarter as often
+      bag=pool.filter(it=>!it.frets.includes(0)||Math.random()<.25).sort(()=>Math.random()-.5);
+      if(!bag.length) bag=pool.slice();
+    }
+    let item=bag.pop();
+    const prev=seq[seq.length-1];
+    if(prev&&prev.pc===item.pc){ const k=bag.findIndex(x=>x.pc!==prev.pc); if(k>-1){ bag.push(item); item=bag.splice(k,1)[0]; } else { const alt=pool.filter(x=>x.pc!==prev.pc); if(alt.length){ bag.push(item); item=alt[Math.floor(Math.random()*alt.length)]; } } } // same note never back to back, even on another string (CJ Nov 21)
+    // a note that is also its string's open note: the answer is the octave at fret 12, marked HIGH (CJ, Nov 18)
+    seq.push(item.frets.includes(0)&&item.frets.includes(12) ? {...item, frets:[12], high:true, name:spell(item.pc)} : {...item, name:spell(item.pc)});
+  }
+  return seq;
+}
+
+/* ---------- Fretboard ---------- */
+const NUT=104, END=940;
+const scale=n=>1-Math.pow(2,-n/12);
+const fretX=n=>NUT+(END-NUT)*scale(n)/scale(12);
+const spotX=f=>f===0?NUT-30:(fretX(f-1)+fretX(f))/2;
+function drawBoard(card){
+  const svg=$('board'); let h='';
+  const mid=(TOPY+BOTY)/2;
+  for(const f of [3,5,7,9]) h+=`<circle cx="${spotX(f)}" cy="${mid}" r="9" fill="var(--inlay)" opacity=".85"/>`;
+  h+=`<circle cx="${spotX(12)}" cy="${mid-LAYOUT.dbl}" r="9" fill="var(--inlay)" opacity=".85"/><circle cx="${spotX(12)}" cy="${mid+LAYOUT.dbl}" r="9" fill="var(--inlay)" opacity=".85"/>`;
+  for(let f=1;f<=12;f++) h+=`<rect x="${fretX(f)-2}" y="${TOPY}" width="4" height="${BOTY-TOPY}" fill="var(--fret)"/>`;
+  h+=`<rect x="${NUT-8}" y="${TOPY-2}" width="10" height="${BOTY-TOPY+4}" rx="2" fill="#efe8da"/>`;
+  for(const k of ORDER){
+    const S=STRINGS[k];
+    const hl=card&&card.s===k;
+    const bright = card ? hl : settings.strings.includes(k);
+    h+=`<line x1="${NUT}" x2="${END+8}" y1="${S.y}" y2="${S.y}" stroke="var(--string)" stroke-width="${S.w}" opacity="${bright?1:.28}"/>`;
+    h+=`<text x="${NUT-31}" y="${S.y+(bright?11:8)}" text-anchor="middle" font-family="'DGU Digits', Outfit, Helvetica, Arial, sans-serif" font-weight="700" font-size="${bright?32:24}" fill="${hl?'#f2b25c':bright?'#e6dccd':'#5a524a'}">${S.short||S.label}</text>`;
+  }
+  for(let f=1;f<=12;f++) h+=`<text x="${spotX(f)}" y="${BOTY+42}" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="600" font-size="16" fill="#a8998a">${f}</text>`;
+  if(settings.warmup){
+    // every note in the Notes choice on each chosen string, frets 1-12 (the open note is the string name)
+    const kind=settings.notes;
+    for(const k of settings.strings){
+      const y=STRINGS[k].y;
+      for(let f=1;f<=12;f++){
+        if(card&&card.revealed&&card.s===k&&card.frets.includes(f)) continue;
+        const pc=(STRINGS[k].midi+f)%12, nat=NATURAL.includes(pc);
+        if(kind==='nat'&&!nat) continue; if((kind==='sharp'||kind==='flat')&&nat) continue;
+        const nm= nat?SHARP[pc] : kind==='flat'?FLAT[pc] : SHARP[pc];
+        const x=spotX(f);
+        h+=`<g class="wu"><circle cx="${x}" cy="${y}" r="14" fill="#000" stroke="#6d6358" stroke-width="1.5"/>`+
+           `<text x="${x-(nm.length>1?2:0)}" y="${y+5.5}" text-anchor="middle" font-family="'DGU Digits', Outfit, Helvetica, Arial, sans-serif" font-weight="500" font-size="16" fill="#d9cfc1">${nm[0]}</text>`+
+           (nm.length>1?`<text x="${x+(nm.endsWith('♭')?3:5)}" y="${y+(nm.endsWith('♭')?0:-2)}" font-family="'DGU Digits', Outfit, Helvetica, Arial, sans-serif" font-weight="400" font-size="11" fill="#d9cfc1">${nm.slice(1)}</text>`:'')+`</g>`;
+      }
+    }
+  }
+  if(card&&card.revealed){
+    const y=STRINGS[card.s].y;
+    for(const f of card.frets){
+      h+=`<g class="dot"><circle cx="${spotX(f)}" cy="${y}" r="19" fill="${card.mark==='ok'?'#3ccf6e':'#e09a3e'}" stroke="#fff4e3" stroke-width="2.5"/>`+
+         `<text x="${spotX(f)-(card.name.length>1?2:0)}" y="${y+7}" text-anchor="middle" font-family="'DGU Digits', Outfit, Helvetica, Arial, sans-serif" font-weight="700" font-size="20" fill="#1a120a">${card.name[0]}</text>`+
+         (card.name.length>1?`<text x="${spotX(f)+(card.name.endsWith('♭')?4:6)}" y="${y+(card.name.endsWith('♭')?1:-1)}" font-family="'DGU Digits', Outfit, Helvetica, Arial, sans-serif" font-weight="400" font-size="13" fill="#1a120a">${card.name.slice(1)}</text>`:'')+`</g>`;
+    }
+  }
+  if(card&&card.miss){
+    // wrong taps (CJ, Nov 21): a solid grey dot naming the note they tapped
+    const y=STRINGS[card.s].y;
+    for(const f of card.miss){ if(card.revealed&&card.frets.includes(f)) continue; const x=spotX(f);
+      h+=missDot(card,f,x,y); }
+  }
+  if(card&&!card.revealed&&S&&!S.over&&!S.lead&&S.phase==='ask'){
+    // tap the note's spot between the frets to answer (CJ, Nov 17)
+    const j=ORDER.indexOf(card.s), y=STRINGS[card.s].y;
+    const yU=j>0?(STRINGS[ORDER[j-1]].y+y)/2:y-30, yD=j<ORDER.length-1?(STRINGS[ORDER[j+1]].y+y)/2:y+30;
+    for(let f=0;f<=12;f++){ const x0=f?fretX(f-1)+2:NUT-58, x1=f?fretX(f)-2:NUT-9;
+      h+=`<rect class="tap" data-f="${f}" x="${x0}" y="${yU}" width="${x1-x0}" height="${yD-yU}" fill="#fff" fill-opacity="0" style="cursor:pointer"/>`; }
+  }
+  if(DEMO) h=h.replaceAll('#e09a3e','#18CEFB').replaceAll('#f2b25c','#18CEFB');
+  svg.innerHTML=h;
+}
+$('board').addEventListener('click',e=>{ const t=e.target.closest('.tap'); if(t) tapAnswer(+t.dataset.f); });
+// Tap to answer (CJ, Nov 17): the tapped note sounds at once; a wrong spot gets a red X and they can keep trying until time runs out; the right spot shows the normal answer
+function tapAnswer(f){
+  if(!S||S.over||S.lead||S.phase!=='ask') return;
+  const c=card(), ok=c.frets.includes(f);
+  if(settings.sound&&audio()){ hush(); ringFor=S.d<=2.5?1.1:2.2; playMidi(STRINGS[c.s].midi+f); }
+  if(S.rec){
+    // Record mode: once they tap, taps decide this note (the mic would hear the tapped sound)
+    const L=R.L; if(L){ L.done=true; R.L=null; $('lis').hidden=true; $('heard').innerHTML=''; }
+    if(!c.tapT0) c.tapT0=L?L.t0:S.t0;
+    const prev=R.res[S.i];
+    if(!prev||prev.tap){
+      const t=Math.max(0,(performance.now()-c.tapT0)/1000), miss=(c.miss||[]).length+(ok?0:1);
+      const n=ok?(miss?50:100):0, ts=ok?tScore(t,S.d):SP_MIN;
+      R.res[S.i]={name:c.name,s:c.s,frets:c.frets,played:null,tap:true,n,t:ts,u:null,sc:Math.round((n+ts)/2),
+        why: ok?`Tapped in ${t.toFixed(1)} s`+(miss?` after ${miss} wrong ${miss>1?'tries':'try'}`:'') : `Tapped ${miss} wrong ${miss>1?'spots':'spot'}`};
+    }
+  }
+  S.tapped=1;
+  if(!ok){ c.miss=c.miss||[]; if(!c.miss.includes(f)) c.miss.push(f); drawBoard(c); missFb(c,f); return; }
+  if(!S.tapped) S.tapped=1; S.found=(S.found||0)+1; if(!c.miss) S.first=(S.first||0)+1;
+  c.mark='ok'; S.quiet=true; reveal();
+}
+// Right/wrong mark next to the prompt (CJ, Nov 17): green check or red X; sits outside the title so the title never shifts
+{ const st=document.createElement('style'); st.textContent='#qNote{position:relative}#qNote .hi{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:-.12em;font-size:15px;line-height:1;letter-spacing:.16em;font-weight:700;color:var(--muted)}.q{position:relative}.qmark{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:18px;font-size:clamp(40px,4.6vw,60px);line-height:0}.qmark svg{display:block;width:1em;height:1em}.qmark:empty{display:none}@keyframes qpop{from{transform:translateY(-50%) scale(.4);opacity:0}to{transform:translateY(-50%) scale(1);opacity:1}}.qmark.pop{animation:qpop .2s ease-out}@media (max-width:700px){.qmark{left:auto;right:-6px;top:-8px;transform:none;margin:0;font-size:34px}.qmark.pop{animation:none}}'; root.appendChild(st);
+  $('qNote').parentElement.insertAdjacentHTML('beforeend','<span class="qmark" id="qmark" aria-live="polite"></span>');
+  // simple end-of-round score when they answered by tapping (CJ, Nov 17)
+  const s2=document.createElement('style'); s2.textContent='.tscore{text-align:center;font-family:var(--notes);font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.2;margin-top:-4px}.tscore b{color:#3ccf6e}.tscore small{display:block;font-family:var(--body);font-weight:500;font-size:16px;color:var(--muted);margin-top:4px}'; root.appendChild(s2);
+  root.querySelector('.stage-top').insertAdjacentHTML('afterend','<div class="tscore" id="tscore" hidden></div>'); }
+function setMark(v){ if(v==='no') v=''; const m=$('qmark'); if(!m) return; const was=m.dataset.v||''; v=v||''; m.dataset.v=v;
+  m.innerHTML = v==='ok' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Correct"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#3ccf6e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    : v==='no' ? '<svg viewBox="0 0 24 24" role="img" aria-label="Wrong"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#ff5c5c" stroke-width="3.4" stroke-linecap="round"/></svg>' : '';
+  if(v&&v!==was){ m.classList.remove('pop'); void m.offsetWidth; m.classList.add('pop'); } }
+
+/* ---------- Sound (plucked string synth) ---------- */
+let ctx=null; const bufCache={};
+function audio(){ if(!ctx){ try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(ctx&&ctx.state==='suspended') ctx.resume(); return ctx; }
+function pluckBuffer(midi){
+  if(bufCache[midi]) return bufCache[midi];
+  const a=ctx, sr=a.sampleRate, freq=440*Math.pow(2,(midi-69)/12), N=Math.round(sr/freq), len=Math.floor(sr*2.4);
+  const buf=a.createBuffer(1,len,sr), d=buf.getChannelData(0), ring=new Float32Array(N);
+  for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+  // soften the attack (pick near the neck)
+  for(let k=0;k<2;k++) for(let i=1;i<N;i++) ring[i]=(ring[i]+ring[i-1])/2;
+  let p=0; const decay=.996;
+  for(let i=0;i<len;i++){ const n=(p+1)%N; const v=decay*0.5*(ring[p]+ring[n]); d[i]=ring[p]; ring[p]=v; p=n; }
+  let m=0; for(let i=0;i<len;i++) m=Math.max(m,Math.abs(d[i])); for(let i=0;i<len;i++) d[i]/=m||1;
+  return bufCache[midi]=buf;
+}
+/* Recorded guitar tones (window.GUITAR_TONES[tone][midi]). The nearest recorded note is pitch-shifted with playbackRate. Falls back to the synth if decoding fails. */
+const sampleCache={};
+function nearestKey(tone,midi){
+  const keys=Object.keys((window.GUITAR_TONES||{})[tone]||{}).map(Number);
+  if(!keys.length) return null;
+  return keys.reduce((a,b)=>Math.abs(b-midi)<Math.abs(a-midi)?b:a);
+}
+function sampleBuffer(tone,key){
+  const id=tone+key; if(sampleCache[id]) return sampleCache[id];
+  const uri=window.GUITAR_TONES[tone][key];
+  if(!uri.startsWith('data:')) return sampleCache[id]=fetch(uri).then(r=>{ if(!r.ok) throw r.status; return r.arrayBuffer(); }).then(ab=>new Promise((res,rej)=>ctx.decodeAudioData(ab,res,rej)));
+  const bin=atob(uri.split(',')[1]), bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return sampleCache[id]=new Promise((res,rej)=>ctx.decodeAudioData(bytes.buffer,res,rej));
+}
+let ringFor=2.2; // seconds the note rings before fading; shorter on Levels 9-10
+function startBuffer(buf,vol,rate,when){
+  const a=ctx, src=a.createBufferSource(), g=a.createGain(), t=a.currentTime+(when||0), r=ringFor, fade=Math.min(.6,r/2);
+  src.buffer=buf; src.playbackRate.value=rate||1;
+  g.gain.setValueAtTime(vol,t); g.gain.setValueAtTime(vol,t+r); g.gain.linearRampToValueAtTime(0,t+r+fade);
+  src.connect(g).connect(a.destination); src.start(t); src.stop(t+r+fade+.1);
+  PLAYING.push({src,g}); src.onended=()=>{ const i=PLAYING.findIndex(x=>x.src===src); if(i>-1) PLAYING.splice(i,1); };
+}
+// Record mode: the answer sound is cut off the moment the next note starts listening, so a device microphone never hears it
+const PLAYING=[];
+function hush(){ if(!ctx) return; const t=ctx.currentTime; PLAYING.splice(0).forEach(({src,g})=>{ try{ g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value,t); g.gain.linearRampToValueAtTime(0,t+.03); src.stop(t+.05); }catch(e){} }); }
+function playMidi(midi,when){
+  const tone=settings.tone, key=nearestKey(tone,midi);
+  if(key==null) return startBuffer(pluckBuffer(midi),.45,1,when);
+  sampleBuffer(tone,key).then(b=>startBuffer(b,.9,Math.pow(2,(midi-key)/12),when)).catch(()=>startBuffer(pluckBuffer(midi),.45,1,when));
+}
+function play(card){
+  if(!settings.sound) return;
+  const a=audio(); if(!a) return;
+  const midi=STRINGS[card.s].midi+card.frets[0];
+  ringFor = S&&S.d<=2.5 ? 1.1 : 2.2;
+  playMidi(midi);
+}
+function preloadSamples(){ if(!ctx) return; const t=settings.tone; for(const k of settings.strings) for(let f=0;f<=12;f++){ const key=nearestKey(t,STRINGS[k].midi+f); if(key!=null) sampleBuffer(t,key).catch(()=>{}); } }
+
+/* ---------- Session ---------- */
+let S=null; // {level, seq, i, phase:'ask'|'reveal', paused, t0, remaining, timer}
+function idle(over){
+  cinOff();
+  demoStop(); if(S) clearT(); if(R.L){ R.L=null; $('lis').hidden=true; } $('heard').innerHTML=''; S=over?S:null; if(S) S.over=true; if(!over) screen('setup');
+  const n=settings.perLevel, a=delayAt(0,n), b=delayAt(n-1,n);
+  $('progress').innerHTML='';
+  $('qNote').className='note msg'+(over?' brand':''); $('qNote').textContent= over?'Round complete':'Ready';
+  $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%';
+  $('nextBtn').textContent= over?'Go again':'Start'; $('pauseBtn').textContent='Pause';
+  $('pauseBtn').disabled=true; $('undoBtn').disabled=true; $('nextBtn').disabled=false;
+  drawBoard(null); renderChroma(-1);
+  if(!over) drawExample();
+}
+// start screen (CJ, Nov 17): two examples loop until Start, in DGU blue, no sound; each step gets a black box with an arrow
+let demoT=null, DEMO=false;
+// demo callout: put one blue bubble next to el (above it, or below with below=true), its pointer aimed at el's centre
+// the X on a demo box stops the demo (CJ Nov 17)
+// get-ready moment before a run (CJ Nov 18): 'Ready', then 'Begin' for the last 1.5 s, fading out; done() after 4 s
+function prep(host,done){ if(getComputedStyle(host).position==='static') host.style.position='relative';
+  var o=host.querySelector(':scope > .prep'); if(!o){ o=host.ownerDocument.createElement('div'); o.className='prep'; o.setAttribute('aria-live','assertive'); host.appendChild(o); }
+  prepCancel(host); o.textContent='Ready'; void o.offsetWidth; o.classList.add('on');
+  o._t=[setTimeout(function(){ o.textContent='Begin'; o.classList.add('go'); },2500), setTimeout(function(){ o.classList.add('out'); },3300), setTimeout(function(){ o.className='prep'; if(done) done(); },4000)]; }
+function prepCancel(host){ var o=host.querySelector(':scope > .prep'); if(!o) return; (o._t||[]).forEach(clearTimeout); o._t=[]; o.className='prep'; }
+function demoX(){ clearTimeout(demoT); demoT=null; }
+function coach(host,el,text,below){
+  let c=host.querySelector(':scope > .coach');
+  if(!el){ if(c) c.classList.remove('on'); return; }
+  if(!c){ c=host.ownerDocument.createElement('div'); c.className='coach'; c.setAttribute('aria-live','polite'); host.appendChild(c);
+    c.innerHTML='<span class="ct"></span><button type="button" class="cx" aria-label="Close the how-to">&times;</button>';
+    c.querySelector('.cx').onclick=()=>{ c.classList.remove('on'); demoX(); }; }
+  c.classList.remove('on'); c.querySelector('.ct').textContent=text.replace(/ (\S+)$/,'\u00a0$1'); c.classList.toggle('below',!!below); // no orphan last word (CJ)
+  const hr=host.getBoundingClientRect(), r=el.getBoundingClientRect(), cw=c.offsetWidth, chh=c.offsetHeight;
+  const cx=r.left+r.width/2-hr.left, left=Math.max(4,Math.min(hr.width-cw-4,cx-cw/2));
+  c.style.left=left+'px'; c.style.top=(below? r.bottom-hr.top+48 : r.top-hr.top-chh-48)+'px';
+  c.style.setProperty('--px',Math.max(14,Math.min(cw-14,cx-left))+'px');
+  void c.offsetWidth; c.classList.add('on');
+}
+function demoStop(){ clearTimeout(demoT); demoT=null; DEMO=false; $('session').classList.remove('demo'); coach($('qNote').closest('.wrap'),null); }
+function demoCard(i){
+  const ss=settings.strings.length?settings.strings:[ORDER[0]], k=ss[i%2&&ss.length>1?1:0], st=STRINGS[k];
+  const f=(i%2?[5,7,8,9,4,10]:[2,3,1,4,5,7,8]).find(x=>NATURAL.includes((st.midi+x)%12));
+  return {s:k,frets:[f],name:SHARP[(st.midi+f)%12],revealed:false};
+}
+function drawExample(i=0,step=-1){
+  clearTimeout(demoT);
+  if(recOn()&&!(R.stream&&R.state!=='arm')){ demoStop(); return; } // Record: no how-to until the guitar is connected (CJ, Nov 23)
+  const H=$('qNote').closest('.wrap');
+  if(i>=4){ coach(H,$('nextBtn'),'Press Start when ready'); demoT=setTimeout(()=>coach(H,null),6000); return; } // plays through twice, then stops (CJ)
+  DEMO=true; $('session').classList.add('demo');
+  const ex=demoCard(i%2), host=H;
+  ex.revealed=step===2;
+  $('progress').innerHTML='<span class="tag">Example</span>';
+  $('qNote').className='note'; $('qNote').textContent=ex.name;
+  $('qString').textContent=strName(ex.s); $('qNote').nextElementSibling.hidden=false;
+  drawBoard(ex);
+  if(step===-1){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; coach(host,$('optbar'),'First pick your settings',true); demoT=setTimeout(()=>drawExample(i,0),4000); return; }
+  const tips=[`Find this note: ${ex.name} on the ${strName(ex.s)} string.`, 'Tap the spot on the fretboard, or play it in Record mode, before the note is revealed.', `The answer lights up: ${ex.name} is at fret ${ex.frets[0]}.`];
+  if(step===0){ setBar(0,4000); coach(host,$('qNote'),tips[0],true); demoT=setTimeout(()=>drawExample(i,2),4000); } // short before the reveal (CJ Nov 17)
+  else if(step===1){ demoT=setTimeout(()=>drawExample(i,2),11000); }
+  else { const b=$('timerBar'); b.style.transition='none'; b.style.width='100%'; coach(host,$('board').querySelector('.dot circle'),tips[1]); demoT=setTimeout(()=>drawExample(i+1,i%2?-1:0),9000); }
+}
+function start(){
+  audio(); preloadSamples();
+  if(recOn()&&!R.stream){ connect(true); return; } // Record mode: connect the input first, then start straight away (CJ, Nov 23)
+  screen('play'); ST=newStats();
+  R.res=[]; $('heard').innerHTML=''; demoStop();
+  S={seq:buildSequence(RANGE, settings.perLevel), i:0, phase:'ask', paused:false, d:settings.base, rec:recOn()};
+  // 2.5 s to get ready after Start or Restart (CJ)
+  S.lead=true; $('pauseBtn').textContent='Pause'; $('pauseBtn').disabled=true; $('undoBtn').disabled=false; $('nextBtn').disabled=true; $('nextBtn').textContent='Starting…';
+  $('progress').innerHTML=''; countIn(); $('qNote').nextElementSibling.hidden=true; $('answer').innerHTML=''; setMark(null); $('tscore').hidden=true;
+  { const bar=$('timerBar'); bar.style.transition='none'; bar.style.width='0%'; } drawBoard(null);
+  S.timer=setTimeout(()=>{ S.timer=null; S.lead=false; $('pauseBtn').disabled=false; $('nextBtn').disabled=false; $('qNote').className='note'; enter(); },4*BEAT+250);
+}
+function card(){ return S.seq[S.i]; }
+// "High E"/"Low E" only when both E strings are in play; otherwise just "E"
+function strName(k){ return STRINGS[k].label; } // always say High E / Low E on guitar (CJ, Nov 22)
+function clearT(){ if(S&&S.timer){ clearTimeout(S.timer); S.timer=null; } }
+function setBar(fromPct,ms){
+  const bar=$('timerBar'); bar.style.transition='none'; bar.style.width=fromPct+'%'; void bar.offsetWidth;
+  if(ms>0){ bar.style.transition=`width ${ms}ms linear`; bar.style.width='100%'; }
+}
+function cinOff(){ root.querySelectorAll('.cinb').forEach(e=>e.remove()); }
+function enter(){
+  cinOff();
+  clearT();
+  const c=card(); c.revealed = S.phase==='reveal'; if(S.phase==='ask'){ c.miss=null; c.tapT0=0; c.mark=null; } setMark(c.mark);
+  S.d=delayAt(S.i,S.seq.length);
+  $('progress').innerHTML=`${S.i+1}<span class="of">of</span>${S.seq.length}`; topProg();
+  $('qNote').innerHTML=c.name.replace(/([♯♭])/,(m)=>`<span class="acc${m==='♭'?' flat':''}">${m}</span>`);
+  if(c.high) $('qNote').insertAdjacentHTML('beforeend','<span class="hi">HIGH</span>');
+  $('qString').textContent=strName(c.s);
+  $('qNote').nextElementSibling.hidden = settings.strings.length===1; // one string picked: just the note (CJ, Nov 6)
+  drawBoard(c);
+  renderChroma(-1);
+  if(S.phase==='ask'){
+    $('answer').innerHTML='';
+    $('nextBtn').textContent='Show answer';
+    const ms=S.d*1000; S.remaining=ms; S.t0=performance.now();
+    if(NT()) noBar(); else setBar(0, S.paused?0:ms);
+    if(!S.paused&&!NT()) S.timer=setTimeout(reveal, ms);
+    askFb(c);
+    if(S.rec) listen();
+  }else{
+    if(S.rec) stopListen();
+    const fr=c.frets.length>1?`Frets ${c.frets.join(' and ')}`:(c.frets[0]===0?'Open string':`Fret ${c.frets[0]}`);
+    $('answer').innerHTML='';
+    $('nextBtn').textContent= S.i===S.seq.length-1 ? 'Finish' : 'Next note';
+    $('timerBar').style.transition='none'; $('timerBar').style.width='100%';
+    const rr=S.rec&&R.res[S.i], ms=rr&&rr.n===100&&!rr.tap?1500:NT()?(c.mark==='ok'?1500:3000):Math.max(1500,(S.d>=10?5:S.d>=5?4:S.d>2.5?3.5:3)*1000-(c.mark==='ok'?1500:0)); S.remaining=ms; S.t0=performance.now(); revealFb(c);
+    if(!S.paused) S.timer=setTimeout(advance, ms);
+  }
+}
+function reveal(){ stat(); S.phase='reveal'; enter(); if(!S.quiet) play(card()); S.quiet=false; }
+function advance(){
+  if(S.i>=S.seq.length-1) return finish();
+  S.i++; S.phase='ask'; enter();
+}
+// Restart (CJ): start the round over from the first note with a fresh set
+function restart(){ if(!S||S.over) return; clearT(); if(R.L){ R.L=null; $('lis').hidden=true; } hush(); start(); }
+function next(){ if(S&&S.lead) return; if(!S||S.over) return start(); if(S.phase==='ask') reveal(); else advance(); }
+function undo(){
+  if(S.phase==='reveal'){ S.phase='ask'; }
+  else if(S.i>0){ S.i--; S.phase='ask'; }
+  enter();
+}
+function togglePause(){
+  S.paused=!S.paused; $('pauseBtn').textContent=S.paused?'Resume':'Pause';
+  if(S.paused){
+    S.pAt=performance.now();
+    clearT(); S.remaining-=performance.now()-S.t0;
+    const bar=$('timerBar'); const w=getComputedStyle(bar).width; bar.style.transition='none'; bar.style.width=w;
+  }else{
+    S.t0=performance.now(); if(R.L&&S.pAt) R.L.t0+=S.t0-S.pAt;
+    if(S.phase==='ask'){ const bar=$('timerBar'); void bar.offsetWidth; bar.style.transition=`width ${S.remaining}ms linear`; bar.style.width='100%'; if(!NT()) S.timer=setTimeout(reveal,Math.max(0,S.remaining)); }
+    else S.timer=setTimeout(advance,Math.max(0,S.remaining));
+  }
+}
+function finish(){ const rec=S&&S.rec, tapped=S&&S.tapped; idle(true); screen('done'); if(rec) results(); doneScreen(rec,tapped); }
+function syncMute(){ const b=$('muteBtn'); b.innerHTML=settings.sound?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>Sound off':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>Sound on'; b.setAttribute('aria-pressed',String(!settings.sound));  }
+
+$('nextBtn').onclick=next; $('undoBtn').onclick=restart; $('pauseBtn').onclick=()=>S&&!S.over&&togglePause();
+$('notesBtn').onclick=toggleNotes;
+$('chromaBtn').onclick=()=>toggleChroma(!settings.chroma);
+$('muteBtn').onclick=()=>{ settings.sound=!settings.sound; store.set('settings',settings); syncMute(); };
+
+
+/* ---------- Record mode: listen to the guitar and score each note (Notes, Speed, Pitch) ---------- */
+const PCN=SHARP;
+const col=s=>s>=90?'#18CEFB':s>=70?'#3ccf6e':s>=50?'#f0b429':'#ff5c5c';
+const esc=s=>String(s).replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'})[c]);
+const R={mode:store.get('mode','prac'), stream:null, src:null, an:null, raf:0, dev:store.get('dev','')||(window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).id(), state:'idle', L:null, res:[]};
+const wrap=root.querySelector('.wrap');
+root.querySelector('header').insertAdjacentHTML('afterend','<div class="mode" id="mode"><button type="button" data-m="prac">Practice</button><button type="button" data-m="rec">Record</button></div>');
+root.querySelector('.stage').insertAdjacentHTML('beforeend','<div class="rmon"><div class="tmt"><b id="tmNote">–</b><span class="tmc" id="tmC"></span></div><div class="tm"><i class="tmz"></i><i class="tmn idle" id="tmN"></i></div><div class="lis" id="lis" hidden><i></i>Listening</div><div class="heard" id="heard" aria-live="polite"></div></div>');
+root.querySelector('.stage').insertAdjacentHTML('afterend','<div class="res" id="res" hidden></div>');
+root.querySelector('#optbar').insertAdjacentHTML('beforebegin','<div class="rp" id="rp"><span class="rstep" id="rstep"><b>1</b>Connect your guitar first</span><span class="cname" id="cname"></span><button class="lnk" id="chgin" type="button">Change</button><select id="dev" aria-label="Audio input"><option value="">Press Connect to list your inputs</option></select><div class="meter" title="Input level"><b id="mtr"></b></div><button class="btn recgo" id="go" type="button">Connect</button><div class="rinfo" id="rinfo"></div></div>');
+const recOn=()=>R.mode==='rec';
+function setMode(m){
+  if(S&&!S.over&&S.rec) return;
+  R.mode=m; store.set('mode',m);
+  root.querySelectorAll('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  wrap.classList.toggle('w-rec',m==='rec'); $('res').hidden=true; root.querySelector('.stage').hidden=false;
+  if(m==='rec'&&!R.stream) devList(); rinfo(); idle();
+}
+root.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
+function rinfo(t){ root.querySelector('.wrap').classList.toggle('w-live',!!R.stream&&R.state!=='arm'); $('rinfo').textContent=t!==undefined?t: !R.stream?'Plug in your guitar, press Connect and allow access.' : 'Press Start, then play each note as soon as you find it, or tap it on the fretboard.'; $('go').hidden=!!R.stream&&R.state!=='arm'; const ok=!!R.stream&&R.state!=='arm'; $('rp').classList.toggle('ok',ok); $('rstep').innerHTML=ok?'<b>✓</b>Guitar connected':'<b>1</b>Connect your guitar first'; if(!ok){ $('rp').classList.remove('chg'); $('chgin').textContent='Change'; } cname(); }
+function cname(){ const sel=$('dev'), o=sel.options[sel.selectedIndex]; $('cname').textContent=o&&o.value?o.text:''; }
+function devList(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices) return;
+  navigator.mediaDevices.enumerateDevices().then(ds=>{
+    const ins=ds.filter(d=>d.kind==='audioinput'), sel=$('dev');
+    if(!ins.some(d=>d.label)){ sel.innerHTML='<option value="">Press Connect to list your inputs</option>'; return; }
+    sel.innerHTML=ins.map((d,i)=>`<option value="${esc(d.deviceId)}">${esc(d.label||'Input '+(i+1))}</option>`).join('');
+    if(R.dev) sel.value=R.dev; if(sel.selectedIndex<0) sel.selectedIndex=0; cname();
+  });
+}
+// keep the input list fresh when an interface is plugged in or out (Nov 23)
+if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange',function(){ try{ devList(); }catch(e){} });
+function closeStream(){ if(R.src){ try{R.src.disconnect();}catch(e){} R.src=null; } if(R.stream){ R.stream.getTracks().forEach(t=>t.stop()); R.stream=null; } }
+// getUserMedia can hang when the browser's permission prompt is hidden or dismissed: give up after 6 s (CJ, Nov 23)
+function gum(a){ return new Promise((res,rej)=>{ let late=false; const t=setTimeout(()=>{ late=true; rej(new Error('timeout')); },6000);
+  navigator.mediaDevices.getUserMedia(a).then(s=>{ clearTimeout(t); if(late) s.getTracks().forEach(x=>x.stop()); else res(s); }, e=>{ clearTimeout(t); if(!late) rej(e); }); }); }
+function openStream(id){
+  closeStream();
+  const c={echoCancellation:false,noiseSuppression:false,autoGainControl:false}, c2=Object.assign({},c); if(id) c2.deviceId={exact:id};
+  return gum({audio:c2}).catch(e=>{ if(id) return gum({audio:c}); throw e; }).then(s=>{
+    R.stream=s; const tr=s.getAudioTracks()[0], st=tr&&tr.getSettings?tr.getSettings():{}; R.dev=st.deviceId||R.dev; if(R.dev){ store.set('dev',R.dev); (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).save(tr); }
+    R.src=ctx.createMediaStreamSource(s); R.an=ctx.createAnalyser(); R.an.fftSize=4096; R.src.connect(R.an);
+    R.buf=new Float32Array(R.an.fftSize);
+  });
+}
+function connect(go){
+  if(R.state==='arm') return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ rinfo('This browser can’t listen to an input. Try Chrome, Edge or Safari.'); return; }
+  audio(); if(!ctx) return;
+  R.state='arm'; $('go').disabled=true; rinfo('Allow access to your audio input…');
+  (window.dguMic||(window.dguMic={
+  read(){ try{ const v=localStorage.getItem('dgu-mic'); if(!v) return null; if(v[0]==='{') return JSON.parse(v); return {id:v,label:''}; }catch(e){ return null; } },
+  id(){ const s=this.read(); return s&&s.id||''; },
+  save(t){ try{ if(!t) return; const set=t.getSettings?t.getSettings():{}; const id=set.deviceId||''; if(!id) return; localStorage.setItem('dgu-mic',JSON.stringify({id,label:t.label||''})); }catch(e){} },
+  async pick(cur,strict){ const sv=this.read(); const want=cur||(!strict&&sv&&sv.id)||''; if(!want) return '';
+    let ds=[]; try{ ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput'); }catch(e){ return want; }
+    if(ds.some(d=>d.deviceId===want)) return want;
+    if(sv&&sv.label&&((!cur&&!strict)||cur===sv.id)){ const m=ds.find(d=>d.label===sv.label); if(m) return m.deviceId; }
+    return want; }
+})).pick(R.dev).then(id=>{ R.dev=id; return openStream(id); }).then(()=>{ R.state='idle'; $('go').disabled=false; devList(); cancelAnimationFrame(R.raf); loop(); rinfo(); if(go===true&&R.stream) start(); else if(!S) idle(); })
+  .catch(e=>{ R.state='idle'; $('go').disabled=false; rinfo(e&&e.message==='timeout'?'Click the microphone icon in the address bar, allow it, then press Connect again.':'Couldn’t open an audio input. Check that your interface is plugged in and that this site is allowed to use it.'); $('go').hidden=false; });
+}
+$('go').addEventListener('click',connect);
+$('chgin').addEventListener('click',function(){ const r=$('rp'); r.classList.toggle('chg'); this.textContent=r.classList.contains('chg')?'Done':'Change'; });
+$('dev').addEventListener('change',function(){ R.dev=this.value; store.set('dev',R.dev); $('rp').classList.remove('chg'); $('chgin').textContent='Change'; cname(); if(R.stream) openStream(R.dev).then(()=>{ cancelAnimationFrame(R.raf); loop(); }); });
+
+/* Pitch: YIN on the latest 4096 samples */
+function yin(d,sr){
+  const W=Math.floor(d.length/2), tmin=Math.floor(sr/1000), tmax=Math.min(W-1,Math.floor(sr/70)), df=new Float32Array(tmax+1); let run=0, best=-1, t, i;
+  for(t=1;t<=tmax;t++){ let s2=0; for(i=0;i<W;i++){ const v=d[i]-d[i+t]; s2+=v*v; } run+=s2; df[t]=run?s2*t/run:1; }
+  for(t=tmin;t<=tmax;t++) if(df[t]<.15){ while(t+1<=tmax&&df[t+1]<df[t]) t++; best=t; break; }
+  if(best<0) return 0;
+  const a=df[best-1]||df[best], c=df[best+1]||df[best], dn=a-2*df[best]+c, sh=dn>0?.5*(a-c)/dn:0;
+  return sr/(best+sh);
+}
+/* One loop drives the level meter and, while a note is asked, the listening.
+   A note counts only when it starts with a fresh pick attack after the prompt shows, so a string still ringing from the last note never counts. */
+function loop(){
+  if(!R.an) return;
+  R.an.getFloatTimeDomainData(R.buf); const d=R.buf; let e=0, pk=0;
+  for(let i=0;i<d.length;i++){ e+=d[i]*d[i]; const v=Math.abs(d[i]); if(v>pk) pk=v; }
+  const rms=Math.sqrt(e/d.length), db=20*Math.log10(rms+1e-9), m=$('mtr');
+  m.style.width=Math.max(0,Math.min(100,(db+60)/60*100))+'%'; m.classList.toggle('hot',pk>.97);
+  const f=rms>.002?yin(d,ctx.sampleRate):0, mm=f>70&&f<1400?69+12*Math.log2(f/440):0;
+  if(recOn()) tuner(mm);
+  const L=R.L;
+  if(L&&!L.done&&!(S&&S.paused)){
+    const now=performance.now(), t=(now-L.t0)/1000;
+    L.env.push(rms); if(L.env.length>12) L.env.shift();
+    const floor=Math.min(...L.env);
+    if(!L.arm&&!L.hit&&t>.12&&rms>.004&&rms>floor*1.8) { L.arm={t:t, n:0, fs:[], peak:rms} }
+    if(L.arm&&!L.hit){
+      const A=L.arm; A.peak=Math.max(A.peak,rms);
+      if(mm){ A.fs.push(mm); if(A.fs.length>6) A.fs.shift(); }
+      if(++A.n>45&&!L.hit) L.arm=null; // ~0.75 s with no clear pitch: wait for the next attack
+      if(A.fs.length>=4){
+        const q=A.fs.slice(-4).sort((x,y)=>x-y), md=(q[1]+q[2])/2;
+        if(q[3]-q[0]<.6) heard(L,Math.round(md),A.t);
+      }
+    } else if(L.hit){
+      // Pitch: how far the held note sits from the true note, in cents, once the pick attack has passed
+      const H=L.hit, dt=t-H.t;
+      if(mm&&dt>.1&&Math.abs(mm-H.midi)<.6){ H.cs.push(100*(mm-H.midi)); H.miss=0; } else if(dt>.1) H.miss=(H.miss||0)+1;
+      if((H.cs.length>=24&&dt>=.7)||H.miss>10||dt>1.6){ L.done=true; settle(L); }
+    }
+  }
+  R.raf=requestAnimationFrame(loop);
+}
+/* Tuner-style meter: the note being played and how sharp or flat it is, live */
+const TM={h:[], miss:0};
+function tuner(mm){
+  if(mm){ TM.h.push(mm); if(TM.h.length>5) TM.h.shift(); TM.miss=0; } else if(++TM.miss>90) TM.h=[];
+  const nd=$('tmN'), tn=$('tmNote'), tc=$('tmC');
+  if(TM.h.length>=3&&!TM.miss){
+    const q=TM.h.slice().sort((x,y)=>x-y), md=q[q.length>>1], r=Math.round(md), c=Math.round(100*(md-r)), pc=((r%12)+12)%12, ok=Math.abs(c)<=5;
+    tn.textContent=NATURAL.includes(pc)?SHARP[pc]:SHARP[pc]+'/'+FLAT[pc];
+    tc.textContent=ok?'In tune':Math.abs(c)+(c>0?' sharp':' flat'); tc.className='tmc'+(ok?' ok':'');
+    nd.className='tmn'+(ok?' ok':''); nd.style.left=(50+Math.max(-50,Math.min(50,c)))+'%';
+  } else if(!TM.h.length){ tn.textContent='–'; tc.textContent=''; nd.className='tmn idle'; nd.style.left='50%'; }
+}
+function heard(L,midi,t){
+  const c=L.card, base=STRINGS[c.s].midi, targets=c.frets.map(f=>base+f);
+  const pc=((midi%12)+12)%12;
+  const ok=targets.includes(midi), oct=!ok&&pc===c.pc;
+  L.hit={midi, t, cs:[], peak:L.arm.peak, ok, oct}; L.arm=null;
+  c.mark=ok?'ok':'no'; if(S&&S.i===L.i) setMark(c.mark);
+  const nm= (c.name.length>1&&pc===c.pc) ? c.name : NATURAL.includes(pc)?SHARP[pc]:SHARP[pc]+'/'+FLAT[pc];
+  $('lis').hidden=true;
+  $('heard').innerHTML=`<small>You played</small><span style="color:${ok?'#18CEFB':'#f0b429'}">${nm}${ok?' ✓':''}</span>`;
+  if(!ok&&!oct){ L.done=true; settle(L); micMiss(c,nm,L.i); } // a wrong note is final: the timer runs on to the answer (No timer: the answer shows)
+}
+// Speed, relative to the chosen time (CJ, Nov 23): 100 when found in the first 15% of the time (at least 0.75 s), down to 20 right at the limit.
+// Any note played scores at least 20; only 'no note' scores 0. No timer: 100 at 1.5 s or less, down to 20 at 8 s.
+const SP_FULL=1.5, SP_ZERO=8, SP_MIN=20;
+function tScore(t,D){ const timed=D&&D<=20, z=timed?D:SP_ZERO, f=timed?Math.max(.75,D*.15):SP_FULL; return t<=f?100:Math.max(SP_MIN,Math.round(SP_MIN+(100-SP_MIN)*(z-t)/(z-f))); }
+// Pitch: within 5 cents = 100, down to 0 at 40 cents off
+const PI_FULL=5, PI_ZERO=40;
+function pScore(c){ c=Math.abs(c); return c<=PI_FULL?100:Math.max(0,Math.round(100*(PI_ZERO-c)/(PI_ZERO-PI_FULL))); }
+function settle(L){
+  const c=L.card, H=L.hit;
+  const r={name:c.name, s:c.s, frets:c.frets, played:H?H.midi:null};
+  if(!H){ r.n=0; r.t=0; r.u=0; r.why='No note heard' }
+  else{
+    r.n=H.ok?100:H.oct?50:0;
+    r.t=r.n?tScore(H.t,L.D):SP_MIN; // a wrong note still counts as a note played
+    const q=H.cs.slice().sort((x,y)=>x-y), cents=q.length?Math.round(q[q.length>>1]):null;
+    r.u=r.n&&cents!==null?pScore(cents):0;
+    const pn=SHARP[((H.midi%12)+12)%12];
+    const pt=cents===null?'pitch not clear':Math.abs(cents)<=PI_FULL?'in tune':`${Math.abs(cents)} cents ${cents>0?'sharp':'flat'}`;
+    r.why=H.ok?`Found in ${H.t.toFixed(1)} s, ${pt}` : H.oct?`Right note, wrong octave (wrong string or fret)` : `Played ${pn} instead`;
+  }
+  r.sc=Math.round((r.n+r.t+r.u)/3);
+  R.res[L.i]=r;
+  if(H&&H.ok&&S&&S.rec&&S.i===L.i&&S.phase==='ask') { reveal(); } // right: show and play the answer now (the pitch is already measured), no need to wait out the timer
+}
+function listen(){
+  if(!S||!S.rec) return;
+  hush();
+  stopListen();
+  if(R.res[S.i]) { $('heard').innerHTML=''; return; }
+  R.L={i:S.i, card:card(), t0:performance.now(), env:[], D:S.d};
+  $('heard').innerHTML=''; $('lis').hidden=false;
+}
+function stopListen(){
+  const L=R.L; R.L=null; $('lis').hidden=true;
+  if(L&&!L.done){ L.done=true; if(L.hit) settle(L); else if(!R.res[L.i]) settle(L); }
+}
+function results(){
+  const rs=R.res.filter(Boolean), n=rs.length||1;
+  const avg=k=>Math.round(rs.reduce((a,r)=>a+r[k],0)/n);
+  const N=avg('n'), T=avg('t'), pu=rs.filter(r=>r.u!=null), U=pu.length?Math.round(pu.reduce((a,r)=>a+r.u,0)/pu.length):null, ov=U===null?Math.round((N+T)/2):Math.round((N+T+U)/3);
+  const bar=(l,v)=>`<div class="bar"><span>${l}</span><div class="tr"><i style="width:${v}%;background:${col(v)}"></i></div><b style="color:${col(v)}">${v}</b></div>`;
+  $('res').innerHTML=`<div class="res-top"><div class="ov" style="color:${col(ov)}"><small>Overall</small>${ov}</div><div class="bars">${bar('Notes',N)}${bar('Speed',T)}${U===null?'':bar('Pitch',U)}</div></div>`+
+    `<div class="res-btns"><button class="btn recgo" id="again" type="button">Record again</button><button class="btn" id="toPrac" type="button">Practice</button></div>`+
+    `<div class="cards">${rs.map((r,i)=>`<div class="cd"><div class="t"><span class="nm">${r.name}<span>${strName(r.s)}${settings.strings.length>1?' string':''}</span></span><span class="sc" style="color:${col(r.sc)}">${r.sc}</span></div><div class="mini"><i title="Notes ${r.n}" style="background:${col(r.n)}"></i><i title="Speed ${r.t}" style="background:${col(r.t)}"></i>${r.u==null?'':`<i title="Pitch ${r.u}" style="background:${col(r.u)}"></i>`}</div><div class="why">${r.why}</div></div>`).join('')}</div>`;
+  root.querySelector('.stage').hidden=true; root.querySelector('.controls').hidden=true; $('res').hidden=false;
+  $('again').onclick=()=>{ $('res').hidden=true; root.querySelector('.stage').hidden=false; root.querySelector('.controls').hidden=false; start(); };
+  $('toPrac').onclick=()=>{ root.querySelector('.controls').hidden=false; setMode('prac'); };
+}
+
+/* ===== New design (CJ, Nov 21 2026): one screen at a time, kind hints, a small win at the end ===== */
+const NT=()=>settings.base>20; // Speed slider all the way right = No timer
+function noBar(){ const b=$('timerBar'); b.style.transition='none'; b.style.width='0%'; }
+let ST=null;
+function newStats(){ return {first:0,streak:0,best:0,times:[],missed:[],n:0}; }
+const facc=nm=>String(nm).replace(/([♯♭])/g,'<span class="facc">$1</span>');
+{ const sess=$('session'), ctl=root.querySelector('.controls');
+  root.querySelector('.stage').insertAdjacentHTML('afterbegin','<div class="topbar" id="topbar"><button type="button" class="tb-x" id="endBtn" aria-label="Stop and go back to Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Settings</button><div class="tb-prog" aria-hidden="true"><i id="tbBar"></i></div><span class="tb-count" id="tbCount"></span></div>');
+  ctl.insertAdjacentHTML('afterend','<div class="fb" id="fb" aria-live="polite"></div><div class="bigrow" id="bigrow"></div><div id="done" hidden></div><canvas class="confetti" id="confetti" aria-hidden="true"></canvas>');
+  $('bigrow').appendChild($('nextBtn'));
+  $('endBtn').onclick=()=>{ hush(); idle(); };
+}
+function screen(n){
+  const w=root.querySelector('.wrap'), was=w.classList.contains('w-play')?'play':w.classList.contains('w-done')?'done':'setup';
+  w.classList.toggle('w-play',n==='play'); w.classList.toggle('w-done',n==='done');
+  if(n!=='done') $('done').hidden=true;
+  if(n!=='play') w.classList.remove('w-nt');
+  if(n==='setup') fbSet('','','');
+  if(n!==was){ const r=w.getBoundingClientRect(); if(r.top<0||(n==='play'&&r.top>80)) window.scrollBy(0,r.top-12); }
+}
+function topProg(){ if(!S||!S.seq) return; root.querySelector('.wrap').classList.toggle('w-nt',NT()); const n=S.seq.length, d=S.i+(S.phase==='reveal'?1:0);
+  $('tbCount').textContent=`${S.i+1} of ${n}`; $('tbBar').style.width=(d/n*100)+'%'; }
+function fbSet(kind,icon,html){ const f=$('fb'); f.className='fb'+(kind?' '+kind:''); f.innerHTML=icon||html?`<span class="ic">${icon}</span><span class="tx">${html}</span>`:''; }
+function askFb(c){ fbSet('','?', S.rec?'Play it on your guitar, or tap the fret.':'Find it on your guitar, or tap the fret.'); }
+function fretTxt(c){ return `${facc(c.name)} is on fret ${c.frets[0]}.`; }
+function missDot(card,f,x,y){
+  const pc=((STRINGS[card.s].midi+f)%12+12)%12, nm=NATURAL.includes(pc)?SHARP[pc]:(String(card.name).includes('♭')?FLAT[pc]:SHARP[pc]), ff="'DGU Digits', Outfit, Helvetica, Arial, sans-serif";
+  return `<g class="dot"><circle cx="${x}" cy="${y}" r="19" fill="#4a4743" stroke="#000" stroke-width="2.5"/>`+
+    `<text x="${x-(nm.length>1?2:0)}" y="${y+7}" text-anchor="middle" font-family="${ff}" font-weight="700" font-size="20" fill="#fff">${nm[0]}</text>`+
+    (nm.length>1?`<text x="${x+(nm.endsWith('♭')?4:6)}" y="${y+(nm.endsWith('♭')?1:-1)}" font-family="${ff}" font-weight="400" font-size="13" fill="#fff">${nm.slice(1)}</text>`:'')+'</g>';
+}
+// a wrong tap: name the note they hit and give a gentle hint; the second miss shows the answer
+function missFb(c,f){
+  const pc=((STRINGS[c.s].midi+f)%12+12)%12, got=NATURAL.includes(pc)?SHARP[pc]:(String(c.name).includes('♭')?FLAT[pc]:SHARP[pc]);
+  if(c.miss.length>=2){ hush(); S.quiet=false; reveal(); return; }
+  const d=c.frets[0]-f, k=Math.abs(d);
+  fbSet('soft','~',`That's ${facc(got)}. <small>${k<=2?'Close! ':''}${facc(c.name)} is ${k} fret${k>1?'s':''} ${d>0?'higher':'lower'}. Try again.</small>`);
+}
+// Record mode: a wrong note was heard
+function micMiss(c,nm,i){
+  c.wrong=true;
+  if(!S||S.over||S.i!==i||S.phase!=='ask') return;
+  fbSet('soft','~',`That's ${facc(nm)}. <small>${NT()?'Here comes the answer.':'The answer shows when time is up.'}</small>`);
+  if(NT()) setTimeout(()=>{ if(S&&!S.over&&S.i===i&&S.phase==='ask') reveal(); },1300);
+}
+function stat(){
+  if(!ST||!S||S.phase!=='ask') return;
+  const c=card(), ok=c.mark==='ok', clean=ok&&!(c.miss&&c.miss.length)&&!c.wrong;
+  ST.n++; c.clean=clean;
+  if(clean){ ST.first++; ST.streak++; ST.best=Math.max(ST.best,ST.streak); } else { ST.streak=0; if(!ST.missed.includes(c.name)) ST.missed.push(c.name); }
+  if(ok) ST.times.push((performance.now()-S.t0)/1000);
+}
+function revealFb(c){
+  if(c.mark==='ok'){
+    const p=c.clean?['Yes!','Nice!','Got it!','Perfect!'][Math.floor(Math.random()*4)]:'There it is!';
+    fbSet('good','✓',`${p}${c.clean&&ST&&ST.streak>=3?` ${ST.streak} in a row.`:''} <small>${fretTxt(c)}</small>`);
+  } else fbSet('soft','→',`Here it is. <small>${fretTxt(c)}</small>`);
+}
+const STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.3l-5.8 3.1 1.2-6.5L2.6 9.4l6.5-.8z" fill="FILL"/></svg>';
+function starsHTML(n){ let h=`<div class="dn-stars" role="img" aria-label="${n} of 3 stars">`; for(let i=0;i<3;i++) h+=`<span${i<n?` class="lit" style="animation-delay:${.15+i*.22}s"`:''}>${STAR.replace('FILL',i<n?'var(--accent)':'rgba(255,255,255,.14)')}</span>`; return h+'</div>'; }
+const TITLES=['Good start!','Nice work!','Great round!'], SUBS=['Every round makes the next one easier. Keep going.','Almost there. One more round and you’ll have these.','You know these notes. Try adding another string next.'];
+function doneScreen(rec,tapped){
+  if(rec){ // Record: stars from the overall score, on top of the usual results
+    const ov=$('res').querySelector('.ov'), sc=ov?parseInt(ov.lastChild.textContent,10)||0:0, n=sc>=90?3:sc>=70?2:1;
+    $('res').insertAdjacentHTML('afterbegin',`<div class="dn-head">${starsHTML(n)}<p class="dn-t">${TITLES[n-1]}</p></div>`);
+  } else {
+    const d=$('done'), total=(S&&S.seq?S.seq.length:ST.n)||1;
+    let h='';
+    if(tapped&&ST){
+      const n=ST.first/total>=.9?3:ST.first/total>=.7?2:1, avg=ST.times.length?ST.times.reduce((a,b)=>a+b,0)/ST.times.length:0;
+      h+=starsHTML(n)+`<div><p class="dn-t">${TITLES[n-1]}</p><p class="dn-s">${SUBS[n-1]}</p></div>`+
+        `<div class="dn-stats"><div class="dn-stat"><b>${ST.first}/${total}</b><span>first try</span></div><div class="dn-stat"><b>${ST.best}</b><span>best streak</span></div><div class="dn-stat"><b>${ST.times.length?avg.toFixed(1)+'s':'–'}</b><span>avg time</span></div></div>`+
+        (ST.missed.length?`<div class="dn-work"><div class="lb">Notes to work on next time</div><div class="dn-chips">${ST.missed.map(m=>`<span>${facc(m)}</span>`).join('')}</div></div>`:'');
+    } else {
+      h+=`<div><p class="dn-t">Round complete!</p><p class="dn-s">Nice work. You went through all ${total} notes.</p></div>`;
+    }
+    h+='<div class="dn-btns"><button type="button" class="btn primary" id="dnAgain">Play again</button><button type="button" class="btn" id="dnSet">Change settings</button></div>';
+    d.innerHTML=h; d.hidden=false;
+    $('dnAgain').onclick=()=>{ d.hidden=true; start(); };
+    $('dnSet').onclick=()=>{ d.hidden=true; idle(); };
+  }
+  if(settings.sound&&audio()){ ringFor=2.2; [48,52,55,60].forEach((m,i)=>playMidi(m,i*.13)); }
+  confetti();
+}
+function confetti(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=$('confetti'); c.style.display='block';
+  const x=c.getContext('2d'), dp=window.devicePixelRatio||1, W=c.width=innerWidth*dp, H=c.height=innerHeight*dp;
+  const cols=['#18CEFB','#e09a3e','#3ccf6e','#ffffff'], P=[];
+  for(let i=0;i<110;i++) P.push({x:W/2+(Math.random()-.5)*W*.2,y:H*.3,vx:(Math.random()-.5)*16*dp,vy:(-Math.random()*14-4)*dp,s:(Math.random()*6+4)*dp,c:cols[i%4],r:Math.random()*6,vr:(Math.random()-.5)*.3});
+  const t0=performance.now();
+  (function f(now){
+    x.clearRect(0,0,W,H);
+    for(const p of P){ p.vy+=.45*dp; p.x+=p.vx; p.y+=p.vy; p.vx*=.99; p.r+=p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle=p.c; x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); x.restore(); }
+    if(now-t0<2600) requestAnimationFrame(f); else { x.clearRect(0,0,W,H); c.style.display='none'; }
+  })(t0);
+}
+// count-in before a run (CJ Nov 21): "Ready" where the note goes, four dots light up on the beats
+const BEAT=800;
+function countIn(){
+  cinOff(); const q=$('qNote'); q.className='note msg'; q.innerHTML='&nbsp;';
+  root.querySelector('.board-wrap').insertAdjacentHTML('beforeend','<div class="cinb" aria-live="assertive">Ready<span class="cin" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>');
+  const run=S; topProg(); fbSet('','♩','Get ready. The first note comes after the 4th dot.');
+  for(let i=0;i<4;i++) setTimeout(()=>{ if(S!==run||!S.lead) return; const d=root.querySelectorAll('.cinb .cin i')[i]; if(d) d.classList.add('on'); }, i*BEAT);
+}
+
+/* ===== Space bar (CJ, Nov 22 2026): space starts / pauses / resumes the tool and NEVER scrolls the page.
+   dguSpace({host, act, visible?})  host = the tool's outer element (code block div or iframe), act = what space does.
+   One shared listener per window: with several tools on one page, space goes to the one last touched,
+   else the one most on screen. Typing in a text box keeps a normal space. Shared file: /mnt/project-files/space-bar/space.js ===== */
+function dguSpace(o){
+  const W=window, R=W.__dguSpace||(W.__dguSpace={v:1,list:[],last:null});
+  const me={host:o.host,act:o.act,vis:o.visible};
+  R.list.push(me);
+  o.host.addEventListener('pointerdown',()=>{ R.last=me; },true);
+  if(R.on) return; R.on=1;
+  const isSp=e=>(e.code==='Space'||e.key===' '||e.key==='Spacebar')&&!e.metaKey&&!e.ctrlKey&&!e.altKey;
+  const typing=e=>{ const t=(e.composedPath&&e.composedPath()[0])||e.target; if(!t) return false;
+    if(t.isContentEditable||t.tagName==='TEXTAREA') return true;
+    return t.tagName==='INPUT'&&!/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(t.type||''); };
+  const box=m=>{ const h=m.host; if(h.getBoundingClientRect().height) return h; // the code block's div can be display:contents on the site
+    const sr=h.shadowRoot; return (sr&&(sr.querySelector('.wrap,.w')||sr.firstElementChild&&[...sr.children].find(e=>e.getBoundingClientRect().height)))||h; };
+  const shown=m=>{ if(!m.host.isConnected||(m.vis&&!m.vis())) return 0; const r=box(m).getBoundingClientRect();
+    const h=Math.min(r.bottom,W.innerHeight)-Math.max(r.top,0); return r.width>0&&r.height>0&&h>0?h:0; };
+  R.pick=()=>{ if(R.last&&shown(R.last)) return R.last; let b=null,bh=0; R.list.forEach(m=>{ const h=shown(m); if(h>bh){ bh=h; b=m; } }); return b; };
+  R.press=()=>{ const m=R.pick(); if(m) try{ m.act(); }catch(err){ console.warn('space',err); } };
+  // capture on window: runs first, stops the page scroll, the focused button's own click and any older space handlers
+  W.addEventListener('keydown',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); if(!e.repeat) R.press(); },true);
+  W.addEventListener('keyup',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+  W.addEventListener('keypress',e=>{ if(!isSp(e)||typing(e)) return; e.preventDefault(); e.stopImmediatePropagation(); },true);
+}
+// press a button only when it's on screen and enabled; true if pressed
+function dguTap(b){ if(!b||b.disabled||!b.getClientRects().length) return false; b.click(); return true; }
+/* No footer, no empty space below the tool (CJ, Nov 22 2026): the site footer and any page sections below the tool never show,
+   the section's bottom padding / spare grid rows are removed, and while running the credit line hides and the page scrolls
+   so the tool sits right under the fixed site header. dguNoFooter(host, wrap, isRunning) */
+function dguNoFooter(host,wrap,on){
+  const d=document, de=d.documentElement;
+  if(!d.getElementById('dgu-nofoot')){ const s=d.createElement('style'); s.id='dgu-nofoot';
+    s.textContent='html[data-dgu-tool],html[data-dgu-tool] body,html[data-dgu-tool] #siteWrapper,html[data-dgu-tool] .site-wrapper,html[data-dgu-tool] main,html[data-dgu-tool] #page{background:#000!important}'+
+      'html[data-dgu-tool] footer,html[data-dgu-tool] #footer-sections,html[data-dgu-tool] .dgu-below{display:none!important}'+
+      'html[data-dgu-tool] .dgu-sec{min-height:0!important}html[data-dgu-tool] .dgu-sec .content-wrapper{padding-bottom:0!important}'+
+      'html[data-dgu-tool] .dgu-sec .fluid-engine{grid-template-rows:none!important;grid-auto-rows:auto!important}';
+    d.head.appendChild(s); }
+  de.setAttribute('data-dgu-tool',''); host.style.setProperty('padding-bottom','12px','important');
+  const sec=host.closest('section,.page-section');
+  if(sec){ sec.classList.add('dgu-sec'); let n=sec.nextElementSibling; while(n){ n.classList.add('dgu-below'); n=n.nextElementSibling; } }
+  const sr=host.shadowRoot; let was=null;
+  // the demo's hidden instruction box must not add page height while the exercise runs
+  if(sr){ const cs=d.createElement('style'); cs.textContent='.ss-play .coach,.w-play .coach,.w-done .coach{display:none!important}'; sr.appendChild(cs); }
+  const headerBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position; if(p!=='fixed'&&p!=='sticky') return 0; return Math.max(0,h.getBoundingClientRect().bottom); };
+  // while running, pull the tool's section up so nothing empty sits above it: at the top of the page the tool
+  // is right under the header and you can't scroll up into blank space (CJ Nov 22, Steps Drill)
+  const lift=sec||host; let lifted=0;
+  const headerDocBottom=()=>{ const h=d.querySelector('header,#header'); if(!h) return 0; const p=getComputedStyle(h).position, b=h.getBoundingClientRect().bottom;
+    return Math.max(0,(p==='fixed'||p==='sticky')?b:b+window.scrollY); };
+  // settings screen too (CJ Nov 23 "too much unused space at the top"): the tool's title sits 24px under the header
+  const fit=()=>{ const run=!!was, t=wrap.getBoundingClientRect().top+window.scrollY, want=headerDocBottom()+(run?8:24);
+    lifted=Math.min(0,lifted-(t-want)); lift.style.setProperty('margin-top',lifted+'px','important'); if(run) window.scrollTo(0,0); };
+  const sync=()=>{ const r=!!on(); if(r===was) return; was=r;
+    if(sr) sr.querySelectorAll('.credit').forEach(c=>{ c.style.display=r?'none':''; });
+    requestAnimationFrame(fit); };
+  window.addEventListener('resize',()=>requestAnimationFrame(fit));
+  window.addEventListener('load',()=>requestAnimationFrame(fit)); setTimeout(fit,1500); setTimeout(fit,4000);
+  new MutationObserver(sync).observe(wrap,{attributes:true,attributeFilter:['class']}); sync();
+}
+/* Record note (CJ, Nov 22 2026): with Record picked, a small line beside the Practice | Record switch:
+   "*Play your answer to get a score."  dguRecNote(modeEl, belowEl?) - modeEl holds buttons data-m="prac" / data-m="rec", the picked one has class "on".
+   Without belowEl the switch and the note share a wrapping row (note to the right, drops under it on a phone); with belowEl the note goes on its own line after belowEl. */
+function dguRecNote(m,below,text){ if(!m) return; const d=m.ownerDocument, n=d.createElement('span'); n.className='dgu-recnote';
+  n.textContent=text||'*Play your answer to get a score.';
+  n.style.cssText='font-size:14px;font-weight:400;line-height:1.35;color:var(--muted,#a69b8d)';
+  if(below){ n.style.display='block'; n.style.margin='8px 0 0'; below.after(n); }
+  else { const row=d.createElement('div'); row.style.cssText='display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px'; m.before(row); row.append(m,n);
+    const cs=getComputedStyle(m); row.style.marginTop=cs.marginTop; row.style.marginBottom=cs.marginBottom; m.style.margin='0'; }
+  const sync=()=>{ const r=m.querySelector('[data-m="rec"]'); const on=!!(r&&r.classList.contains('on')); n.hidden=!on; n.style.display=on?(below?'block':''):'none'; }; // inline display would override hidden (bug: note showed in Practice)
+  new MutationObserver(sync).observe(m,{subtree:true,attributes:true,attributeFilter:['class']}); sync(); }
+/* Find the Note, compact run screen (CJ, Nov 22 2026): hint box first, then ONE row with the small buttons and Show answer */
+{ const st=document.createElement('style'); st.textContent=`
+.w-play .fb{min-height:0;padding:7px 14px;font-size:16px;margin-top:10px;gap:10px;border-radius:12px}
+.w-play .fb .ic{width:28px;height:28px;font-size:15px}.w-play .fb .tx small{font-size:14px}
+.ftn-row{display:block}
+.w-play .ftn-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:10px}
+.w-play .ftn-row .controls{margin:0!important;flex:0 1 auto}
+.w-play .ftn-row .controls .btn{padding:8px 13px;font-size:15px}
+.w-play .ftn-row .bigrow{margin:0;flex:1 1 180px}
+.w-play .ftn-row .bigrow #nextBtn{padding:9px 14px;font-size:16px;border-radius:10px}
+.w-play .stage{padding-bottom:10px;padding-top:10px;gap:6px}
+.w-play .stage-top{min-height:0}.w-play .q .note{font-size:clamp(56px,6vw,76px)}
+.w-play .board-wrap{margin-top:2px}.w-play .board-wrap>svg,.w-play #board{max-width:960px;margin-left:auto;margin-right:auto;display:block}
+@media (max-width:560px){.w-play .ftn-row{gap:6px}.w-play .ftn-row .controls,.w-play .ftn-row .controls .toolbar{gap:6px!important}.w-play .ftn-row .controls .btn{padding:7px 10px;font-size:13px}.w-play .ftn-row .controls .icon-btn svg{width:14px;height:14px}.w-play .ftn-row .bigrow{flex-basis:100%}}`; root.appendChild(st);
+  const ctl=root.querySelector('.controls'), big=$('bigrow'), fb=$('fb'), row=document.createElement('div'); row.className='ftn-row';
+  ctl.before(fb); fb.after(row); row.append(ctl,big); }
+dguRecNote($('mode'));
+// Space bar (CJ Nov 22): Start on the settings screen, pause / resume while running, Play again at the end; never scrolls the page
+dguNoFooter(root.host, root.querySelector('.wrap'), ()=>/w-play|w-done/.test(root.querySelector('.wrap').className));
+dguSpace({host:root.host, act:()=>{ if(S&&S.lead) return; if(!S||S.over){ dguTap($('dnAgain'))||dguTap($('nextBtn')); } else togglePause(); }});
+settings.tone='acoustic';
+renderInst(); renderStrings(); renderNotes(); syncNotesBtn(); syncChroma(); syncMute(); setMode(R.mode);
+/* Show answer on the right (CJ, Nov 25 2026): "the Show Answer button needs to be with the buttons to the right.
+   Only Pause/Resume and Back should be on the left under the tool. And make Pause/Resume the main button that has the bold yellow color."
+   dguAnsRight(root, {play: ()=>bool, keepMain: bool})
+   - moves #nextBtn (Show answer / Next / Skip / Go again) to the front of the right-hand toolbar while the exercise runs
+   - #pauseBtn is the yellow main button while it can be used; when Pause can't be used (round over: "Go again") #nextBtn is the main one
+   - play(): true while the exercise screen shows (Find the Note keeps its big Start in #bigrow on the Settings screen)
+   - keepMain false: #nextBtn never yellow during play (Find the Note: its round-over has its own Play again screen) */
+function dguAnsRight(root, o){
+  o = o || {};
+  const nb = root.getElementById('nextBtn'), pb = root.getElementById('pauseBtn');
+  const right = root.querySelectorAll('.controls .toolbar')[1];
+  if (!nb || !pb || !right) return;
+  const home = nb.parentNode, after = nb.nextSibling;
+  const st = document.createElement('style');
+  st.textContent = '.controls .toolbar #nextBtn.ar-r{min-width:9.3em;text-align:center}'
+    + '@media (max-width:560px){.controls .toolbar:has(> #nextBtn.ar-r){gap:6px!important}.controls .toolbar:has(> #nextBtn.ar-r) > .btn{padding:8px 9px!important;font-size:14px!important;min-width:0!important}.controls .toolbar #nextBtn.ar-r{min-width:7.9em!important}}';
+  root.appendChild(st);
+  const sync = () => {
+    const play = o.play ? o.play() : true;
+    if (play && nb.parentNode !== right) { right.prepend(nb); nb.classList.add('ar-r'); }
+    if (!play && nb.parentNode !== home) { home.insertBefore(nb, after && after.parentNode === home ? after : null); nb.classList.remove('ar-r'); }
+    const can = !pb.disabled;
+    pb.classList.toggle('primary', play && (can || o.keepMain === false));
+    nb.classList.toggle('primary', !play || (!can && o.keepMain !== false));
+  };
+  const mo = new MutationObserver(sync);
+  mo.observe(pb, {attributes: true, attributeFilter: ['disabled']});
+  if (o.watch) mo.observe(o.watch, {attributes: true, attributeFilter: ['class']});
+  sync();
+}
+{ const st=document.createElement('style'); st.textContent='.w-play .ftn-row .controls{flex:1 1 100%;justify-content:space-between!important}.w-play .ftn-row .bigrow{display:none}.w-play .ftn-row #nextBtn.ar-r{min-width:8em!important}@media (max-width:560px){.w-play .ftn-row .controls .toolbar > .btn{padding:7px 10px!important;font-size:13px!important}}'; root.appendChild(st); }
+dguAnsRight(root, {play:()=>root.querySelector('.wrap').classList.contains('w-play'), watch:root.querySelector('.wrap'), keepMain:false});
+})();
+})();
+</script>
+
+<!-- Demo video play icon: opens the hidden demo video panel and plays it; Close button or Esc hides it -->
+<script>
+(function(){
+  document.querySelectorAll('[id^="dgu-"]').forEach(function(host){
+    var r = host.shadowRoot; if (!r) return;
+    // spacing: title closer to the top, more room between title and settings
+    var sec = host.closest('section'), cw = sec && sec.querySelector('.content-wrapper');
+    if (cw) cw.style.setProperty('padding-top', '36px', 'important');
+    host.style.setProperty('padding-top', '8px', 'important');
+    var hd = r.querySelector('header'); if (hd) hd.style.marginBottom = '36px';
+    var b = r.querySelector('.dgu-play'), p = r.querySelector('.dgu-demo-panel'), x = r.querySelector('.dgu-close');
+    var f = p && p.querySelector('iframe');
+    if (!b || !p || !f) return;
+    function close(){ f.src = 'about:blank'; p.style.display = 'none'; }
+    b.addEventListener('click', function(){
+      p.style.display = 'block';
+      f.src = f.getAttribute('data-src') + '&autoplay=1';
+    });
+    if (x) x.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && p.style.display !== 'none') close(); });
+  });
+})();
+</script>
